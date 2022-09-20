@@ -125,7 +125,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
             pass
 
         for geometry_type in list_of_geometry_types:
-            datablock.append(f'from otlmow_model.GeometrieArtefact.{geometry_type} import {geometry_type}')
+            datablock.append(f'from otlmow_model.GeometrieTypes.{geometry_type} import {geometry_type}')
 
         datablock.append('')
         datablock.append('')
