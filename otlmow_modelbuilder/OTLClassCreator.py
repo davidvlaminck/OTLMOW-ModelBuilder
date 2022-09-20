@@ -1,5 +1,6 @@
 import logging
 
+from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
 from otlmow_modelbuilder.GeometrieInheritanceProcessor import GeometrieInheritanceProcessor
 from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns
@@ -156,7 +157,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         self.add_relations_to_datablock(datablock, oslo_class.objectUri)
 
-        self.add_attributen_to_data_block(attributen, datablock, for_class_use=True)
+        add_attributen_to_data_block(attributen, datablock, for_class_use=True)
         if len(inheritances) == 0 and len(attributen) == 0:
             datablock.append('        pass')
 

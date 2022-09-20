@@ -6,6 +6,7 @@ import rdflib
 from rdflib import URIRef, Graph
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
+from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent
 from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
 from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes
@@ -73,7 +74,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         datablock.append('    options = {')
 
         for waarde in sorted(keuzelijst_waardes, key=lambda w: w.invulwaarde):
-            whitespace = AbstractDatatypeCreator.get_white_space_equivalent(f"        '{waarde.invulwaarde}': KeuzelijstWaarde(")
+            whitespace = get_white_space_equivalent(f"        '{waarde.invulwaarde}': KeuzelijstWaarde(")
             datablock.append(f"        '{waarde.invulwaarde}': KeuzelijstWaarde(invulwaarde='{waarde.invulwaarde}',")
             datablock.append(f"{whitespace}label='{waarde.label}',")
             if waarde.status != '':
