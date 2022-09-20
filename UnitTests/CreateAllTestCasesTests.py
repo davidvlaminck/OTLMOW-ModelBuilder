@@ -5,7 +5,7 @@ from pathlib import Path
 
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
 from otlmow_modelbuilder.GeometrieInMemoryCreator import GeometrieInMemoryCreator
-from otlmow_modelbuilder.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLModelCreator import OTLModelCreator
 from otlmow_modelbuilder.SQLDbReader import SQLDbReader

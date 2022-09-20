@@ -1,8 +1,8 @@
 import logging
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
-from otlmow_modelbuilder.OSLOCollector import OSLOCollector
-from otlmow_modelbuilder.OSLODatatypeComplex import OSLODatatypeComplex
+from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplex import OSLODatatypeComplex
 
 
 class OTLComplexDatatypeCreator(AbstractDatatypeCreator):

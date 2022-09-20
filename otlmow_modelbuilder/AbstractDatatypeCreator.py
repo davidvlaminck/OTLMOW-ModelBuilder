@@ -3,8 +3,8 @@ from abc import ABC
 
 from typing import List
 
-from otlmow_modelbuilder.OSLOCollector import OSLOCollector
-from otlmow_modelbuilder.StringHelper import wrap_in_quotes
+from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes
 
 
 class AbstractDatatypeCreator(ABC):

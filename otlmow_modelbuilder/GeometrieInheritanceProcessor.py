@@ -1,8 +1,8 @@
 import copy
 
 from otlmow_modelbuilder.GeometrieType import GeometrieType
-from otlmow_modelbuilder.Inheritance import Inheritance
-from otlmow_modelbuilder.OSLOClass import OSLOClass
+from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
+from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
 
 
 class GeometrieInheritanceProcessor:

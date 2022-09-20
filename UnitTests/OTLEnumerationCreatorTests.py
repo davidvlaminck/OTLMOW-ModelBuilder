@@ -5,8 +5,8 @@ from unittest.mock import MagicMock
 
 import rdflib
 
-from otlmow_modelbuilder.OSLOCollector import OSLOCollector
-from otlmow_modelbuilder.OSLOEnumeration import OSLOEnumeration
+from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator, KeuzelijstWaarde
 from otlmow_modelbuilder.SQLDbReader import SQLDbReader

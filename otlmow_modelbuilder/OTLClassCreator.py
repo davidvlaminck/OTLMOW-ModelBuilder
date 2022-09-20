@@ -4,9 +4,9 @@ from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactColl
 from otlmow_modelbuilder.GeometrieInheritanceProcessor import GeometrieInheritanceProcessor
 from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
-from otlmow_modelbuilder.Inheritance import Inheritance
-from otlmow_modelbuilder.OSLOClass import OSLOClass
-from otlmow_modelbuilder.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
+from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
+from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
 
 
 class OTLClassCreator(AbstractDatatypeCreator):

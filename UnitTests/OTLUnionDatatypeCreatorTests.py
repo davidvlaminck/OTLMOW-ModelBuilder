@@ -4,12 +4,12 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 
-from otlmow_modelbuilder.OSLODatatypeUnion import OSLODatatypeUnion
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnion import OSLODatatypeUnion
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator
 from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
-from otlmow_modelbuilder.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 

@@ -3,10 +3,10 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from otlmow_modelbuilder.OSLOCollector import OSLOCollector
-from otlmow_modelbuilder.OSLODatatypePrimitive import OSLODatatypePrimitive
+from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import OSLODatatypePrimitive
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
-from otlmow_modelbuilder.OSLOTypeLink import OSLOTypeLink
+from otlmow_modelbuilder.SQLDataClasses.OSLOTypeLink import OSLOTypeLink
 from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatypeCreator
 from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
