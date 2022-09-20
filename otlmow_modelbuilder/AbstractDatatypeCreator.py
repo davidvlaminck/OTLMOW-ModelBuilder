@@ -167,7 +167,7 @@ class AbstractDatatypeCreator(ABC):
 
     def create_block_to_write_from_complex_primitive_or_union_types(self, oslo_datatype, type_field='',
                                                                     model_location=''):
-        attributen = self.get_attributen_by_type_field(type_field, oslo_datatype)
+        attributen = AbstractDatatypeCreator.get_attributen_by_type_field(self.oslo_collector, type_field, oslo_datatype)
 
         datablock = ['# coding=utf-8',
                      'from otlmow_model.BaseClasses.AttributeInfo import AttributeInfo',
@@ -211,7 +211,7 @@ class AbstractDatatypeCreator(ABC):
             datablock.append('    def __init__(self, parent=None):')
             datablock.append('        AttributeInfo.__init__(self, parent)')
 
-        self.add_attributen_to_data_block(attributen, datablock, type_field=type_field)
+        AbstractDatatypeCreator.add_attributen_to_data_block(attributen=attributen, datablock=datablock, type_field=type_field)
 
         if type_field == 'Primitive' or type_field == 'KwantWrd':
             type_field = 'OTL'
@@ -238,22 +238,24 @@ class AbstractDatatypeCreator(ABC):
 
         return datablock
 
-    def get_attributen_by_type_field(self, type_field, oslo_datatype):
+    @staticmethod
+    def get_attributen_by_type_field(oslo_collector, type_field, oslo_datatype):
         if type_field == 'Complex':
-            return self.oslo_collector.find_complex_datatype_attributes_by_class_uri(oslo_datatype.objectUri)
+            return oslo_collector.find_complex_datatype_attributes_by_class_uri(oslo_datatype.objectUri)
         elif type_field == 'UnionType':
-            return self.oslo_collector.find_union_datatype_attributes_by_class_uri(oslo_datatype.objectUri)
+            return oslo_collector.find_union_datatype_attributes_by_class_uri(oslo_datatype.objectUri)
         else:
-            return self.oslo_collector.find_primitive_datatype_attributes_by_class_uri(oslo_datatype.objectUri)
+            return oslo_collector.find_primitive_datatype_attributes_by_class_uri(oslo_datatype.objectUri)
 
-    def add_attributen_to_data_block(self, attributen, datablock, for_class_use=False, type_field=''):
+    @staticmethod
+    def add_attributen_to_data_block(attributen, datablock, for_class_use=False, type_field=''):
         prop_datablock = []
         for attribuut in sorted(attributen, key=lambda a: a.name):
             if attribuut.overerving == 1:
                 raise NotImplementedError(f"overerving 1 is not implemented, found in {attributen.objectUri}")
 
-            whitespace = self.get_white_space_equivalent(f'        self._{attribuut.name} = OTLAttribuut(')
-            field_name = self.get_single_field_from_type_uri(attribuut.type)
+            whitespace = AbstractDatatypeCreator.get_white_space_equivalent(f'        self._{attribuut.name} = OTLAttribuut(')
+            field_name = AbstractDatatypeCreator.get_single_field_from_type_uri(attribuut.type)
 
             datablock.append(f'        self._{attribuut.name} = OTLAttribuut(field={field_name},')
             datablock.append(f'{whitespace}naam={wrap_in_quotes(attribuut.name)},')
