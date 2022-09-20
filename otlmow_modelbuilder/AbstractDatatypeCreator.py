@@ -12,65 +12,65 @@ class AbstractDatatypeCreator(ABC):
         self.oslo_collector = oslo_collector
 
     def get_type_link_from_attribuut(self, attribuut):
-        typeLink = self.oslo_collector.find_type_link_by_uri(attribuut.type)
-        if typeLink is not None:
-            return typeLink.item_tabel
+        type_link = self.oslo_collector.find_type_link_by_uri(attribuut.type)
+        if type_link is not None:
+            return type_link
 
     @staticmethod
-    def get_single_field_from_type_uri(fieldType: str):
-        if fieldType.startswith('https://wegenenverkeer.data.vlaanderen.be/ns/') and '#' in fieldType:
-            return fieldType.split('#')[1]
-        if fieldType is None:
+    def get_single_field_from_type_uri(field_type: str):
+        if field_type.startswith('https://wegenenverkeer.data.vlaanderen.be/ns/') and '#' in field_type:
+            return field_type.split('#')[1]
+        if field_type is None:
             return ''
-        elif fieldType == 'http://www.w3.org/2001/XMLSchema#decimal':
+        elif field_type == 'http://www.w3.org/2001/XMLSchema#decimal':
             return 'FloatOrDecimalField'
-        elif fieldType == 'http://www.w3.org/2001/XMLSchema#string':
+        elif field_type == 'http://www.w3.org/2001/XMLSchema#string':
             return 'StringField'
-        elif fieldType == 'http://www.w3.org/2001/XMLSchema#boolean':
+        elif field_type == 'http://www.w3.org/2001/XMLSchema#boolean':
             return 'BooleanField'
-        elif fieldType == 'http://www.w3.org/2001/XMLSchema#integer':
+        elif field_type == 'http://www.w3.org/2001/XMLSchema#integer':
             return 'IntegerField'
-        elif fieldType == 'http://www.w3.org/2001/XMLSchema#nonNegativeInteger':
+        elif field_type == 'http://www.w3.org/2001/XMLSchema#nonNegativeInteger':
             return 'NonNegIntegerField'
-        elif fieldType == 'http://www.w3.org/2001/XMLSchema#date':
+        elif field_type == 'http://www.w3.org/2001/XMLSchema#date':
             return 'DateField'
-        elif fieldType == 'http://www.w3.org/2001/XMLSchema#dateTime':
+        elif field_type == 'http://www.w3.org/2001/XMLSchema#dateTime':
             return 'DateTimeField'
-        elif fieldType == 'http://www.w3.org/2001/XMLSchema#time':
+        elif field_type == 'http://www.w3.org/2001/XMLSchema#time':
             return 'TimeField'
-        elif fieldType == 'http://www.w3.org/2001/XMLSchema#anyURI':
+        elif field_type == 'http://www.w3.org/2001/XMLSchema#anyURI':
             return 'URIField'
-        elif fieldType == 'https://schema.org/OpeningHoursSpecification':
+        elif field_type == 'https://schema.org/OpeningHoursSpecification':
             return 'DtcOpeningsurenSpecificatie'
-        elif fieldType == 'https://schema.org/ContactPoint':
+        elif field_type == 'https://schema.org/ContactPoint':
             return 'DtcContactinfo'
-        elif fieldType == 'http://www.w3.org/2000/01/rdf-schema#Literal':
+        elif field_type == 'http://www.w3.org/2000/01/rdf-schema#Literal':
             return 'StringField'
         else:
-            raise NotImplemented('not supported fieldType in get_single_field_from_type_uri()')
+            raise NotImplemented('not supported field_type in get_single_field_from_type_uri()')
 
     @staticmethod
-    def get_non_single_field_from_type_uri(fieldType: str):
-        if '#Dtc' in fieldType:
-            typeName = fieldType[fieldType.find("#") + 1::]
-            return ['ComplexField', typeName]
-        if fieldType.startswith("https://schema.org/"):
-            if fieldType == "https://schema.org/ContactPoint":
+    def get_non_single_field_from_type_uri(field_type: str):
+        if '#Dtc' in field_type:
+            type_name = field_type[field_type.find("#") + 1::]
+            return ['ComplexField', type_name]
+        if field_type.startswith("https://schema.org/"):
+            if field_type == "https://schema.org/ContactPoint":
                 return ['ComplexField', "DtcContactinfo"]
-            if fieldType == "https://schema.org/OpeningHoursSpecification":
+            if field_type == "https://schema.org/OpeningHoursSpecification":
                 return ['ComplexField', "DtcOpeningsurenSpecificatie"]
-            raise NotImplementedError(f"Field of type {fieldType} is not implemented in DatatypeCreator")
-        if '#Dte' in fieldType or '#KwantWrd' in fieldType:
-            typeName = fieldType[fieldType.find("#") + 1::]
-            return ['ComplexField', typeName]
-        if '#Kl' in fieldType:
-            typeName = fieldType[fieldType.find("#") + 1::]
-            return ['KeuzelijstField', typeName]
-        if '#Dtu' in fieldType:
-            typeName = fieldType[fieldType.find("#") + 1::]
-            return ['UnionTypeField', typeName]
+            raise NotImplementedError(f"Field of type {field_type} is not implemented in DatatypeCreator")
+        if '#Dte' in field_type or '#KwantWrd' in field_type:
+            type_name = field_type[field_type.find("#") + 1::]
+            return ['ComplexField', type_name]
+        if '#Kl' in field_type:
+            type_name = field_type[field_type.find("#") + 1::]
+            return ['KeuzelijstField', type_name]
+        if '#Dtu' in field_type:
+            type_name = field_type[field_type.find("#") + 1::]
+            return ['UnionTypeField', type_name]
 
-        raise NotImplemented(f'not supported fieldType {fieldType} in get_non_single_field_from_type_uri()')
+        raise NotImplemented(f'not supported field_type {field_type} in get_non_single_field_from_type_uri()')
 
     @staticmethod
     def write_to_file(datatype, directory: str, data_to_write: List[str], relative_path=''):
@@ -85,29 +85,29 @@ class AbstractDatatypeCreator(ABC):
             for line in data_to_write:
                 file.write(line + "\n")
 
-    def get_fields_to_import_from_list_of_attributes(self, attributen, listToStartFrom=None):
-        if listToStartFrom is None:
-            listToStartFrom = []
+    def get_fields_to_import_from_list_of_attributes(self, attributen, list_to_start_from=None):
+        if list_to_start_from is None:
+            list_to_start_from = []
         if len(attributen) == 0:
-            return listToStartFrom
+            return list_to_start_from
 
-        collectedList = []
-        collectedList.extend(listToStartFrom)
+        collected_list = []
+        collected_list.extend(list_to_start_from)
 
         for attribuut in attributen:
-            typeLink = self.get_type_link_from_attribuut(attribuut)
-            if typeLink == "OSLOEnumeration":
-                collectedList.append(self.get_type_name_of_enum_uri(attribuut.type))
-            elif typeLink == "OSLODatatypePrimitive":
-                collectedList.append(self.get_single_field_from_type_uri(attribuut.type))
-            elif typeLink == "OSLODatatypeComplex":
-                collectedList.append(self.get_type_name_of_complex_attribuut(attribuut.type))
-            elif typeLink == "OSLODatatypeUnion":
-                collectedList.append(self.get_type_name_of_union_attribuut(attribuut.type))
+            type_link = self.get_type_link_from_attribuut(attribuut).item_tabel
+            if type_link == "OSLOEnumeration":
+                collected_list.append(self.get_type_name_of_enum_uri(attribuut.type))
+            elif type_link == "OSLODatatypePrimitive":
+                collected_list.append(self.get_single_field_from_type_uri(attribuut.type))
+            elif type_link == "OSLODatatypeComplex":
+                collected_list.append(self.get_type_name_of_complex_attribuut(attribuut.type))
+            elif type_link == "OSLODatatypeUnion":
+                collected_list.append(self.get_type_name_of_union_attribuut(attribuut.type))
             else:
-                raise not NotImplementedError(f"{typeLink.item_tabel} not implemented")
+                raise not NotImplementedError(f"{type_link} not implemented")
 
-        distinct_types_list = list(set(collectedList))
+        distinct_types_list = list(set(collected_list))
         sorted_list = sorted(distinct_types_list, key=lambda t: t)
         return sorted_list
 
@@ -115,13 +115,15 @@ class AbstractDatatypeCreator(ABC):
         if len(attributen) == 0:
             return []
 
-        primitiveTypesList = list(filter(lambda t: t.type.startswith('http://www.w3.org/2001/XMLSchema#'), attributen))
-        otherTypesList = list(filter(lambda t: not t.type.startswith('http://www.w3.org/2001/XMLSchema#'), attributen))
+        primitive_types_list = list(
+            filter(lambda t: t.type.startswith('http://www.w3.org/2001/XMLSchema#'), attributen))
+        other_types_list = list(
+            filter(lambda t: not t.type.startswith('http://www.w3.org/2001/XMLSchema#'), attributen))
 
         select_types_list = list(
-            map(lambda a: (self.get_single_field_from_type_uri(a.type), a.name), primitiveTypesList))
+            map(lambda a: (self.get_single_field_from_type_uri(a.type), a.name), primitive_types_list))
 
-        for nonPrimitiveType in otherTypesList:
+        for nonPrimitiveType in other_types_list:
             select_types_list.append((self.get_field_name_from_type_uri(nonPrimitiveType.type), nonPrimitiveType.name))
 
         distinct_types_list = list(set(select_types_list))
@@ -132,12 +134,12 @@ class AbstractDatatypeCreator(ABC):
     def get_white_space_equivalent(string):
         return ''.join(' ' * len(string))
 
-    def get_field_name_from_type_uri(self, attribuutType):
-        if attribuutType.startswith('http://www.w3.org/2001/XMLSchema#'):
-            return self.get_single_field_from_type_uri(attribuutType)
-        if attribuutType.startswith("https://schema.org/"):
-            return self.get_non_single_field_from_type_uri(attribuutType)[1]
-        return self.get_non_single_field_from_type_uri(attribuutType)[1]
+    def get_field_name_from_type_uri(self, attribuut_type):
+        if attribuut_type.startswith('http://www.w3.org/2001/XMLSchema#'):
+            return self.get_single_field_from_type_uri(attribuut_type)
+        if attribuut_type.startswith("https://schema.org/"):
+            return self.get_non_single_field_from_type_uri(attribuut_type)[1]
+        return self.get_non_single_field_from_type_uri(attribuut_type)[1]
 
     @staticmethod
     def get_type_name_of_enum_uri(type_uri: str):
@@ -163,27 +165,27 @@ class AbstractDatatypeCreator(ABC):
 
         raise NotImplementedError(f"get_type_name_of_complex_attribuut fails to get typename from {type_uri}")
 
-    def create_block_to_write_from_complex_primitive_or_union_types(self, osloDatatype, typeField='',
+    def create_block_to_write_from_complex_primitive_or_union_types(self, oslo_datatype, type_field='',
                                                                     model_location=''):
-        attributen = self.get_attributen_by_typeField(typeField, osloDatatype)
+        attributen = self.get_attributen_by_type_field(type_field, oslo_datatype)
 
         datablock = ['# coding=utf-8',
                      'from otlmow_model.BaseClasses.AttributeInfo import AttributeInfo',
                      'from otlmow_model.BaseClasses.OTLAttribuut import OTLAttribuut']
 
-        list_fields_to_start_with = [f'{typeField}Field']
-        if typeField == 'UnionType':
+        list_fields_to_start_with = [f'{type_field}Field']
+        if type_field == 'UnionType':
             list_fields_to_start_with.append('UnionWaarden')
-        elif typeField == 'Primitive' or typeField == 'KwantWrd':
+        elif type_field == 'Primitive' or type_field == 'KwantWrd':
             datablock.append('from otlmow_model.BaseClasses.OTLField import OTLField')
             list_fields_to_start_with = []
-        listOfFields = self.get_fields_to_import_from_list_of_attributes(attributen, list_fields_to_start_with)
+        list_of_fields = self.get_fields_to_import_from_list_of_attributes(attributen, list_fields_to_start_with)
         base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
                        'IntegerField',
                        'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField', 'NonNegIntegerField',
                        'TimeField',
                        'StringField', 'UnionWaarden']
-        for module in listOfFields:
+        for module in list_of_fields:
             model_module = 'otlmow_model'
             if model_location != '' and module not in base_fields:
                 if 'UnitTests' in model_location:
@@ -199,61 +201,61 @@ class AbstractDatatypeCreator(ABC):
         datablock.append('')
         datablock.append('')
         datablock.append(f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit')
-        if typeField == 'UnionType':
-            datablock.append(f'class {osloDatatype.name}Waarden(AttributeInfo, UnionWaarden):')
+        if type_field == 'UnionType':
+            datablock.append(f'class {oslo_datatype.name}Waarden(AttributeInfo, UnionWaarden):')
             datablock.append('    def __init__(self, parent=None):')
             datablock.append('        AttributeInfo.__init__(self, parent)')
             datablock.append('        UnionWaarden.__init__(self)')
         else:
-            datablock.append(f'class {osloDatatype.name}Waarden(AttributeInfo):')
+            datablock.append(f'class {oslo_datatype.name}Waarden(AttributeInfo):')
             datablock.append('    def __init__(self, parent=None):')
             datablock.append('        AttributeInfo.__init__(self, parent)')
 
-        self.add_attributen_to_dataBlock(attributen, datablock, forClassUse=False, typeField=typeField)
+        self.add_attributen_to_data_block(attributen, datablock, type_field=type_field)
 
-        if typeField == 'Primitive' or typeField == 'KwantWrd':
-            typeField = 'OTL'
+        if type_field == 'Primitive' or type_field == 'KwantWrd':
+            type_field = 'OTL'
 
         datablock.append(''),
         datablock.append(f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit')
-        datablock.append(f'class {osloDatatype.name}({typeField}Field, AttributeInfo):')
-        datablock.append(f'    """{osloDatatype.definition}"""')
-        datablock.append(f'    naam = {wrap_in_quotes(osloDatatype.name)}')
-        datablock.append(f'    label = {wrap_in_quotes(osloDatatype.label)}')
-        datablock.append(f'    objectUri = {wrap_in_quotes(osloDatatype.objectUri)}')
-        datablock.append(f'    definition = {wrap_in_quotes(osloDatatype.definition)}')
-        if osloDatatype.usagenote != '':
-            datablock.append(f'    usagenote = {wrap_in_quotes(osloDatatype.usagenote)}')
-        if osloDatatype.deprecated_version != '':
-            datablock.append(f'    deprecated_version = {wrap_in_quotes(osloDatatype.deprecated_version)}'),
-        if typeField == 'OTL':
+        datablock.append(f'class {oslo_datatype.name}({type_field}Field, AttributeInfo):')
+        datablock.append(f'    """{oslo_datatype.definition}"""')
+        datablock.append(f'    naam = {wrap_in_quotes(oslo_datatype.name)}')
+        datablock.append(f'    label = {wrap_in_quotes(oslo_datatype.label)}')
+        datablock.append(f'    objectUri = {wrap_in_quotes(oslo_datatype.objectUri)}')
+        datablock.append(f'    definition = {wrap_in_quotes(oslo_datatype.definition)}')
+        if oslo_datatype.usagenote != '':
+            datablock.append(f'    usagenote = {wrap_in_quotes(oslo_datatype.usagenote)}')
+        if oslo_datatype.deprecated_version != '':
+            datablock.append(f'    deprecated_version = {wrap_in_quotes(oslo_datatype.deprecated_version)}'),
+        if type_field == 'OTL':
             datablock.append('    waarde_shortcut_applicable = True')
-        datablock.append(f'    waardeObject = {osloDatatype.name}Waarden')
+        datablock.append(f'    waardeObject = {oslo_datatype.name}Waarden')
         datablock.append(f'')
         datablock.append(f'    def __str__(self):')
-        datablock.append(f'        return {typeField}Field.__str__(self)')
+        datablock.append(f'        return {type_field}Field.__str__(self)')
         datablock.append('')
 
         return datablock
 
-    def get_attributen_by_typeField(self, TypeField, osloDatatype):
-        if TypeField == 'Complex':
-            return self.oslo_collector.find_complex_datatype_attributes_by_class_uri(osloDatatype.objectUri)
-        elif TypeField == 'UnionType':
-            return self.oslo_collector.find_union_datatype_attributes_by_class_uri(osloDatatype.objectUri)
+    def get_attributen_by_type_field(self, type_field, oslo_datatype):
+        if type_field == 'Complex':
+            return self.oslo_collector.find_complex_datatype_attributes_by_class_uri(oslo_datatype.objectUri)
+        elif type_field == 'UnionType':
+            return self.oslo_collector.find_union_datatype_attributes_by_class_uri(oslo_datatype.objectUri)
         else:
-            return self.oslo_collector.find_primitive_datatype_attributes_by_class_uri(osloDatatype.objectUri)
+            return self.oslo_collector.find_primitive_datatype_attributes_by_class_uri(oslo_datatype.objectUri)
 
-    def add_attributen_to_dataBlock(self, attributen, datablock, forClassUse=False, typeField=''):
+    def add_attributen_to_data_block(self, attributen, datablock, for_class_use=False, type_field=''):
         prop_datablock = []
         for attribuut in sorted(attributen, key=lambda a: a.name):
             if attribuut.overerving == 1:
                 raise NotImplementedError(f"overerving 1 is not implemented, found in {attributen.objectUri}")
 
             whitespace = self.get_white_space_equivalent(f'        self._{attribuut.name} = OTLAttribuut(')
-            fieldName = self.get_single_field_from_type_uri(attribuut.type)
+            field_name = self.get_single_field_from_type_uri(attribuut.type)
 
-            datablock.append(f'        self._{attribuut.name} = OTLAttribuut(field={fieldName},')
+            datablock.append(f'        self._{attribuut.name} = OTLAttribuut(field={field_name},')
             datablock.append(f'{whitespace}naam={wrap_in_quotes(attribuut.name)},')
             datablock.append(f'{whitespace}label={wrap_in_quotes(attribuut.label)},')
             datablock.append(f'{whitespace}objectUri={wrap_in_quotes(attribuut.objectUri)},')
@@ -274,14 +276,14 @@ class AbstractDatatypeCreator(ABC):
             datablock.append(f'{whitespace}owner=self)')
             datablock.append('')
 
-            ownerself = ', owner=self'
-            if not forClassUse:
-                ownerself += '._parent'
+            owner_self = ', owner=self'
+            if not for_class_use:
+                owner_self += '._parent'
 
             prop_datablock.append(f'    @property'),
             prop_datablock.append(f'    def {attribuut.name}(self):'),
             prop_datablock.append(f'        """{attribuut.definition}"""'),
-            if typeField == 'KwantWrd' and attribuut.name == 'standaardEenheid':
+            if type_field == 'KwantWrd' and attribuut.name == 'standaardEenheid':
                 prop_datablock.append(f'        return self._{attribuut.name}.usagenote.split(\'"\')[1]'),
             else:
                 prop_datablock.append(f'        return self._{attribuut.name}.get_waarde()'),
@@ -290,8 +292,8 @@ class AbstractDatatypeCreator(ABC):
                 prop_datablock.append(f'    @{attribuut.name}.setter'),
                 prop_datablock.append(f'    def {attribuut.name}(self, value):'),
 
-                prop_datablock.append(f'        self._{attribuut.name}.set_waarde(value{ownerself})'),
-                if typeField == 'UnionType':
+                prop_datablock.append(f'        self._{attribuut.name}.set_waarde(value{owner_self})'),
+                if type_field == 'UnionType':
                     prop_datablock.append(f'        if value is not None:')
                     prop_datablock.append(f"            self.clear_other_props('_{attribuut.name}')")
                 prop_datablock.append(f'')

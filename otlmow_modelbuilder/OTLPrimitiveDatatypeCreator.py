@@ -6,28 +6,28 @@ from otlmow_modelbuilder.OSLODatatypePrimitive import OSLODatatypePrimitive
 
 
 class OTLPrimitiveDatatypeCreator(AbstractDatatypeCreator):
-    def __init__(self, osloCollector: OSLOCollector):
-        super().__init__(osloCollector)
+    def __init__(self, oslo_collector: OSLOCollector):
+        super().__init__(oslo_collector)
         logging.info("Created an instance of OTLPrimitiveDatatypeCreator")
 
-    def create_block_to_write_from_primitive_types(self, osloDatatypePrimitive: OSLODatatypePrimitive, model_location=''):
-        if not isinstance(osloDatatypePrimitive, OSLODatatypePrimitive):
+    def create_block_to_write_from_primitive_types(self, oslo_datatype_primitive: OSLODatatypePrimitive, model_location=''):
+        if not isinstance(oslo_datatype_primitive, OSLODatatypePrimitive):
             raise ValueError(f"Input is not a OSLODatatypePrimitive")
-        if osloDatatypePrimitive.objectUri == '' or not (osloDatatypePrimitive.objectUri.startswith('http://www.w3.org/200') or
-                                                         osloDatatypePrimitive.objectUri.startswith(
+        if oslo_datatype_primitive.objectUri == '' or not (oslo_datatype_primitive.objectUri.startswith('http://www.w3.org/200') or
+                                                           oslo_datatype_primitive.objectUri.startswith(
                                                              'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Dte')
-                                                         or osloDatatypePrimitive.objectUri.startswith(
+                                                           or oslo_datatype_primitive.objectUri.startswith(
                     'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrd')):
-            raise ValueError(f"OSLODatatypePrimitive.objectUri is invalid. Value = '{osloDatatypePrimitive.objectUri}'")
-        if osloDatatypePrimitive.name == '':
-            raise ValueError(f"OSLODatatypePrimitive.name is invalid. Value = '{osloDatatypePrimitive.name}'")
+            raise ValueError(f"OSLODatatypePrimitive.objectUri is invalid. Value = '{oslo_datatype_primitive.objectUri}'")
+        if oslo_datatype_primitive.name == '':
+            raise ValueError(f"OSLODatatypePrimitive.name is invalid. Value = '{oslo_datatype_primitive.name}'")
 
-        if osloDatatypePrimitive.objectUri.startswith(
+        if oslo_datatype_primitive.objectUri.startswith(
                 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrd'):
-            return self.create_block_to_write_from_complex_primitive_or_union_types(osloDatatypePrimitive,
-                                                                                    typeField='KwantWrd',
+            return self.create_block_to_write_from_complex_primitive_or_union_types(oslo_datatype_primitive,
+                                                                                    type_field='KwantWrd',
                                                                                     model_location=model_location)
-        if osloDatatypePrimitive.objectUri.startswith('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Dte'):
-            return self.create_block_to_write_from_complex_primitive_or_union_types(osloDatatypePrimitive,
-                                                                                    typeField='Primitive',
+        if oslo_datatype_primitive.objectUri.startswith('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Dte'):
+            return self.create_block_to_write_from_complex_primitive_or_union_types(oslo_datatype_primitive,
+                                                                                    type_field='Primitive',
                                                                                     model_location=model_location)

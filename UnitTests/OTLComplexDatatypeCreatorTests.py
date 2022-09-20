@@ -77,7 +77,7 @@ class OTLComplexDatatypeCreatorTests(unittest.TestCase):
                                                   deprecated_version='')
 
         with self.assertRaises(ValueError) as exception_empty_uri:
-            creator.CreateBlockToWriteFromComplexTypes(osloDatatypeComplex)
+            creator.create_block_to_write_from_complex_types(osloDatatypeComplex)
         self.assertEqual(str(exception_empty_uri.exception), "OSLODatatypeComplex.objectUri is invalid. Value = ''")
 
     def test_InvalidOSLODatatypeComplexBadUri(self):
@@ -87,7 +87,7 @@ class OTLComplexDatatypeCreatorTests(unittest.TestCase):
                                                   usagenote='', deprecated_version='')
 
         with self.assertRaises(ValueError) as exception_bad_uri:
-            creator.CreateBlockToWriteFromComplexTypes(osloDatatypeComplex)
+            creator.create_block_to_write_from_complex_types(osloDatatypeComplex)
         self.assertEqual(str(exception_bad_uri.exception), "OSLODatatypeComplex.objectUri is invalid. Value = 'Bad objectUri'")
 
     def test_InvalidOSLODatatypeComplexEmptyName(self):
@@ -98,7 +98,7 @@ class OTLComplexDatatypeCreatorTests(unittest.TestCase):
                                                   definition='', label='', usagenote='', deprecated_version='')
 
         with self.assertRaises(ValueError) as exception_bad_name:
-            creator.CreateBlockToWriteFromComplexTypes(osloDatatypeComplex)
+            creator.create_block_to_write_from_complex_types(osloDatatypeComplex)
         self.assertEqual(str(exception_bad_name.exception), "OSLODatatypeComplex.name is invalid. Value = ''")
 
     def test_InValidType(self):
@@ -106,7 +106,7 @@ class OTLComplexDatatypeCreatorTests(unittest.TestCase):
         collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
         creator = OTLComplexDatatypeCreator(collector)
         with self.assertRaises(ValueError) as exception_bad_name:
-            creator.CreateBlockToWriteFromComplexTypes(bad_Complex)
+            creator.create_block_to_write_from_complex_types(bad_Complex)
         self.assertEqual(str(exception_bad_name.exception), "Input is not a OSLODatatypeComplex")
 
     def setUp(self) -> OSLOCollector:
@@ -123,5 +123,5 @@ class OTLComplexDatatypeCreatorTests(unittest.TestCase):
         creator = OTLComplexDatatypeCreator(collector)
         datatype_complex = collector.find_complex_datatype_by_uri(
             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcIdentificator')
-        data_to_write = creator.create_block_to_write_from_complex_primitive_or_union_types(datatype_complex, typeField='Complex')
+        data_to_write = creator.create_block_to_write_from_complex_primitive_or_union_types(datatype_complex, type_field='Complex')
         self.assertEqual(expectedDtc, data_to_write)

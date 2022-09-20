@@ -3,11 +3,11 @@ from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
 
 class GeometrieInMemoryCreator:
-    def __init__(self, sQLDbReader: SQLDbReader):
-        self.sqlDbReader = sQLDbReader
+    def __init__(self, sql_db_reader: SQLDbReader):
+        self.sqlDbReader = sql_db_reader
 
     def get_all_geometrie_types(self) -> [GeometrieType]:
-        data = self.sqlDbReader.performReadQuery(
+        data = self.sqlDbReader.perform_read_query(
             'SELECT * FROM GeometrieType', {})
 
         lijst = []

@@ -6,35 +6,35 @@ from otlmow_modelbuilder.OSLODatatypeComplex import OSLODatatypeComplex
 
 
 class OTLComplexDatatypeCreator(AbstractDatatypeCreator):
-    def __init__(self, osloCollector: OSLOCollector):
-        super().__init__(osloCollector)
+    def __init__(self, oslo_collector: OSLOCollector):
+        super().__init__(oslo_collector)
         logging.info("Created an instance of OTLComplexDatatypeCreator")
 
-    def CreateBlockToWriteFromComplexTypes(self, osloDatatypeComplex: OSLODatatypeComplex, model_location=''):
-        if not isinstance(osloDatatypeComplex, OSLODatatypeComplex):
+    def create_block_to_write_from_complex_types(self, oslo_datatype_complex: OSLODatatypeComplex, model_location=''):
+        if not isinstance(oslo_datatype_complex, OSLODatatypeComplex):
             raise ValueError(f"Input is not a OSLODatatypeComplex")
 
-        if osloDatatypeComplex.objectUri == '' or not (osloDatatypeComplex.objectUri == 'https://schema.org/ContactPoint' or
-                                                       osloDatatypeComplex.objectUri == 'https://schema.org/OpeningHoursSpecification' or
-                                                       (osloDatatypeComplex.objectUri.startswith(
-                                                           'https://wegenenverkeer.data.vlaanderen.be/ns/') and 'Dtc' in osloDatatypeComplex.objectUri)):
-            raise ValueError(f"OSLODatatypeComplex.objectUri is invalid. Value = '{osloDatatypeComplex.objectUri}'")
+        if oslo_datatype_complex.objectUri == '' or not (oslo_datatype_complex.objectUri == 'https://schema.org/ContactPoint' or
+                                                         oslo_datatype_complex.objectUri == 'https://schema.org/OpeningHoursSpecification' or
+                                                         (oslo_datatype_complex.objectUri.startswith(
+                                                           'https://wegenenverkeer.data.vlaanderen.be/ns/') and 'Dtc' in oslo_datatype_complex.objectUri)):
+            raise ValueError(f"OSLODatatypeComplex.objectUri is invalid. Value = '{oslo_datatype_complex.objectUri}'")
 
-        if osloDatatypeComplex.name == '':
-            raise ValueError(f"OSLODatatypeComplex.name is invalid. Value = '{osloDatatypeComplex.name}'")
+        if oslo_datatype_complex.name == '':
+            raise ValueError(f"OSLODatatypeComplex.name is invalid. Value = '{oslo_datatype_complex.name}'")
 
-        if osloDatatypeComplex.objectUri.startswith(
-                'https://wegenenverkeer.data.vlaanderen.be/ns/') and 'Dtc' in osloDatatypeComplex.objectUri:
-            return self.create_block_to_write_from_complex_primitive_or_union_types(osloDatatypeComplex, typeField='Complex',
+        if oslo_datatype_complex.objectUri.startswith(
+                'https://wegenenverkeer.data.vlaanderen.be/ns/') and 'Dtc' in oslo_datatype_complex.objectUri:
+            return self.create_block_to_write_from_complex_primitive_or_union_types(oslo_datatype_complex, type_field='Complex',
                                                                                     model_location=model_location)
-        elif osloDatatypeComplex.objectUri.startswith('https://schema.org/'):
-            return self.create_block_to_write_from_complex_primitive_or_union_types(osloDatatypeComplex, typeField='Complex',
+        elif oslo_datatype_complex.objectUri.startswith('https://schema.org/'):
+            return self.create_block_to_write_from_complex_primitive_or_union_types(oslo_datatype_complex, type_field='Complex',
                                                                                     model_location=model_location)
         else:
             raise NotImplementedError
 
     @staticmethod
-    def getEenheidFromConstraints(constraints: str):
+    def get_unit_from_constraints(constraints: str):
         if constraints == '':
             raise ValueError
         split_text = constraints.split('"')

@@ -26,7 +26,6 @@ class KeuzelijstWaarde:
         return self.invulwaarde + ' (' + self.status + ')'
 
 
-
 class OTLEnumerationCreator(AbstractDatatypeCreator):
     default_environment = 'prd'
     most_recent_graph = None

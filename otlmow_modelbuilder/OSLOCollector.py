@@ -129,6 +129,6 @@ class OSLOCollector:
     def find_type_link_by_uri(self, type_uri: str) -> OSLOTypeLink:
         return next((p for p in self.typeLinks if p.item_uri == type_uri), None)
 
-    def find_outgoing_relations(self, object_uri: str) -> [OSLORelatie]:
-        return sorted(list(filter(lambda r: r.bron_uri == object_uri and r.bron_overerving == '' and
+    def find_outgoing_relations(self, objectUri: str) -> [OSLORelatie]:
+        return sorted(list(filter(lambda r: r.bron_uri == objectUri and r.bron_overerving == '' and
                                             r.doel_overerving == '', self.relations)), key=lambda r: r.objectUri)

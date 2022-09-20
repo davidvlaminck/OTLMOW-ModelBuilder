@@ -22,5 +22,5 @@ class OTLUnionDatatypeCreator(AbstractDatatypeCreator):
             raise ValueError(f"OSLODatatypeUnion.name is invalid. Value = '{union_datatype.name}'")
 
         return self.create_block_to_write_from_complex_primitive_or_union_types(union_datatype,
-                                                                                typeField='UnionType',
+                                                                                type_field='UnionType',
                                                                                 model_location=model_location)

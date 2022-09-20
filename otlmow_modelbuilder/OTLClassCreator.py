@@ -10,14 +10,14 @@ from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 
 
 class OTLClassCreator(AbstractDatatypeCreator):
-    def __init__(self, oslo_collector: OSLOCollector, geoA_collector: GeometrieArtefactCollector = None):
+    def __init__(self, oslo_collector: OSLOCollector, geo_a_collector: GeometrieArtefactCollector = None):
         super().__init__(oslo_collector)
         logging.info("Created an instance of OTLClassCreator")
         self.osloCollector = oslo_collector
-        self.geoACollector = geoA_collector
+        self.geoACollector = geo_a_collector
         self.geometry_types = []
 
-        if geoA_collector is not None:
+        if geo_a_collector is not None:
             gip = GeometrieInheritanceProcessor(classes=oslo_collector.classes,
                                                 geometrie_types=self.geoACollector.geometrie_types,
                                                 inheritances=self.osloCollector.inheritances)
@@ -133,7 +133,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
         datablock.append('')
         datablock.append('')
         datablock.append(f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit')
-        datablock.append(self.get_classline_from_class_and_inheritances(oslo_class, inheritances, list_of_geometry_types))
+        datablock.append(self.get_class_line_from_class_and_inheritances(oslo_class, inheritances, list_of_geometry_types))
         datablock.append(f'    """{oslo_class.definition}"""')
         datablock.append('')
         datablock.append(f"    typeURI = '{oslo_class.objectUri}'")
@@ -159,7 +159,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         self.add_relations_to_datablock(datablock, oslo_class.objectUri)
 
-        self.add_attributen_to_dataBlock(attributen, datablock, forClassUse=True)
+        self.add_attributen_to_data_block(attributen, datablock, for_class_use=True)
         if len(inheritances) == 0 and len(attributen) == 0:
             datablock.append('        pass')
 
@@ -168,7 +168,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         return datablock
 
-    def get_classline_from_class_and_inheritances(self, oslo_class, inheritances, geometry_types):
+    def get_class_line_from_class_and_inheritances(self, oslo_class, inheritances, geometry_types):
         if oslo_class.abstract + len(inheritances) + len(geometry_types) < 1:
             raise NotImplementedError(f"{oslo_class.objectUri} class structure not implemented")
         if oslo_class.abstract == 1 and len(inheritances) + len(geometry_types) < 1:

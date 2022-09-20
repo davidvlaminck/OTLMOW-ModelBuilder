@@ -91,7 +91,7 @@ class AbstractDatatypeCreatorTests(unittest.TestCase):
         attribute = next(c for c in collector.complex_datatype_attributen if c.type == 'http://www.w3.org/2001/XMLSchema#boolean')
 
         typeLink = creator.get_type_link_from_attribuut(attribute)
-        self.assertEqual("OSLODatatypePrimitive", typeLink)
+        self.assertEqual("OSLODatatypePrimitive", typeLink.item_tabel)
 
     def test_get_type_link_from_attribuut_DtcTestComplexType2(self):
         collector = self.setUp()
@@ -99,7 +99,7 @@ class AbstractDatatypeCreatorTests(unittest.TestCase):
         attribute = next(c for c in collector.complex_datatype_attributen if c.type == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType2')
 
         typeLink = creator.get_type_link_from_attribuut(attribute)
-        self.assertEqual("OSLODatatypeComplex", typeLink)
+        self.assertEqual("OSLODatatypeComplex", typeLink.item_tabel)
 
     def test_add_attributen_to_dataBlock_StringField(self):
         creator = AbstractDatatypeCreator(oslo_collector=MagicMock(spec=OSLOCollector))
@@ -127,7 +127,7 @@ class AbstractDatatypeCreatorTests(unittest.TestCase):
                              '        self._huisnummer.set_waarde(value, owner=self._parent)',
                              '']
 
-        self.assertEqual(expectedDatablock, creator.add_attributen_to_dataBlock([attribuut], []))
+        self.assertEqual(expectedDatablock, creator.add_attributen_to_data_block([attribuut], []))
 
     def test_add_attributen_to_dataBlock_DteField(self):
         creator = AbstractDatatypeCreator(oslo_collector=MagicMock(spec=OSLOCollector))
@@ -154,7 +154,7 @@ class AbstractDatatypeCreatorTests(unittest.TestCase):
                              '        self._toestandBuis.set_waarde(value, owner=self._parent)',
                              '']
 
-        self.assertEqual(expectedDatablock, creator.add_attributen_to_dataBlock([attribuut], []))
+        self.assertEqual(expectedDatablock, creator.add_attributen_to_data_block([attribuut], []))
 
     def test_add_attributen_to_dataBlock_KwantWrd(self):
         creator = AbstractDatatypeCreator(oslo_collector=MagicMock(spec=OSLOCollector))
@@ -181,7 +181,7 @@ class AbstractDatatypeCreatorTests(unittest.TestCase):
                              '        self._lengte.set_waarde(value, owner=self._parent)',
                              '']
 
-        self.assertEqual(expectedDatablock, creator.add_attributen_to_dataBlock([attribuut], []))
+        self.assertEqual(expectedDatablock, creator.add_attributen_to_data_block([attribuut], []))
 
     def test_add_attributen_to_dataBlock_DtcAdres(self):
         creator = AbstractDatatypeCreator(oslo_collector=MagicMock(spec=OSLOCollector))
@@ -209,7 +209,7 @@ class AbstractDatatypeCreatorTests(unittest.TestCase):
                              '        self._adres.set_waarde(value, owner=self._parent)',
                              '']
 
-        self.assertEqual(expectedDatablock, creator.add_attributen_to_dataBlock([attribuut], []))
+        self.assertEqual(expectedDatablock, creator.add_attributen_to_data_block([attribuut], []))
 
     def test_get_white_space_equivalent_Empty_string(self):
         result = AbstractDatatypeCreator.get_white_space_equivalent('')

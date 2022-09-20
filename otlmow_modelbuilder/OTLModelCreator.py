@@ -72,7 +72,7 @@ class OTLModelCreator:
 
         for complex_datatype in self.oslo_collector.complex_datatypes:
             try:
-                data_to_write = creator.CreateBlockToWriteFromComplexTypes(complex_datatype, model_location=directory)
+                data_to_write = creator.create_block_to_write_from_complex_types(complex_datatype, model_location=directory)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {complex_datatype.name}")
                     pass
@@ -153,7 +153,8 @@ class OTLModelCreator:
         if result != 0:
             raise NewOTLBaseClassNotImplemented()
 
-    def check_and_create_subdirectories(self, directory):
+    @staticmethod
+    def check_and_create_subdirectories(directory):
         if not path.exists(directory):
             raise OSError(f'The directory {directory} does not exist. Please create it first.')
         if not path.isdir(directory):

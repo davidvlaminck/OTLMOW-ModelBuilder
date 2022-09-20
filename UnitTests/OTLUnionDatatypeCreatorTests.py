@@ -136,7 +136,7 @@ class OTLUnionDatatypeCreatorTests(unittest.TestCase):
     def test_create_block(self):
         collector = self.setUp()
         creator = OTLUnionDatatypeCreator(collector)
-        datatype_DtuTestUnionType = collector.find_union_datatype_by_uri(
+        datatype_dtu_test_union_type = collector.find_union_datatype_by_uri(
             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtuTestUnionType')
-        data_to_write = creator.create_block_to_write_from_union_types(datatype_DtuTestUnionType)
+        data_to_write = creator.create_block_to_write_from_union_types(datatype_dtu_test_union_type)
         self.assertEqual(expectedDtu, data_to_write)
