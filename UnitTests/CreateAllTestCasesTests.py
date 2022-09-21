@@ -19,11 +19,13 @@ class CreateAllTestCasesTests(unittest.TestCase):
         subset_file_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
 
         with self.assertLogs() as captured:
-            model_creator = self._init_otl_model_creator(otl_file_location=subset_file_location)
-            self._create_otl_datamodel(directory=Path(f'{base_dir}/TestClasses'), model_creator=model_creator)
-            self._create_otl_datamodel(directory=Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestClasses'), model_creator=model_creator)
-            allcasesclass_location = Path(f'{base_dir}/TestClasses/Classes/Onderdeel/AllCasesTestClass.py')
-            self.assertTrue(os.path.isfile(allcasesclass_location))
+            oslo_collector, geo_artefact_collector = self._init_otl_model_creator(otl_file_location=subset_file_location)
+            self._create_otl_datamodel(directory=Path(f'{base_dir}/TestClasses'), oslo_collector=oslo_collector,
+                                       geo_artefact_collector=geo_artefact_collector)
+            self._create_otl_datamodel(directory=Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestClasses'),
+                                       oslo_collector=oslo_collector, geo_artefact_collector=geo_artefact_collector)
+            all_cases_class_location = Path(f'{base_dir}/TestClasses/Classes/Onderdeel/AllCasesTestClass.py')
+            self.assertTrue(os.path.isfile(all_cases_class_location))
 
         errors = list(filter(lambda r: r.levelno >= logging.ERROR, list(captured.records)))
         self.assertListEqual([], errors)
@@ -35,23 +37,24 @@ class CreateAllTestCasesTests(unittest.TestCase):
         self.assertIsInstance(instance, AllCasesTestClass)
 
     @staticmethod
-    def _init_otl_model_creator(otl_file_location: Path = None, geoA_file_location: Path = None) -> OTLModelCreator:
+    def _init_otl_model_creator(otl_file_location: Path = None, geo_a_file_location: Path = None) -> (OSLOCollector, GeometrieArtefactCollector):
         sql_reader = SQLDbReader(otl_file_location)
         oslo_creator = OSLOInMemoryCreator(sql_reader)
         collector = OSLOCollector(oslo_creator)
         geo_artefact_collector = None
-        if geoA_file_location != None:
-            sql_reader_GA = SQLDbReader(geoA_file_location)
-            geo_memory_creator = GeometrieInMemoryCreator(sql_reader_GA)
+        if geo_a_file_location is not None:
+            sql_reader_ga = SQLDbReader(geo_a_file_location)
+            geo_memory_creator = GeometrieInMemoryCreator(sql_reader_ga)
             geo_artefact_collector = GeometrieArtefactCollector(geo_memory_creator)
-        return OTLModelCreator(collector, geo_artefact_collector)
+        return collector, geo_artefact_collector
 
     @staticmethod
-    def _create_otl_datamodel(model_creator: OTLModelCreator, directory: Path = None, environment: str = ''):
-        model_creator.oslo_collector.collect()
-        if model_creator.geo_artefact_collector is not None:
-            model_creator.geo_artefact_collector.collect()
-        if directory == None:
-            current_file_path = Path(__file__)
-            directory = current_file_path.parents[1]
-        model_creator.create_full_model(directory=directory, environment=environment)
+    def _create_otl_datamodel(oslo_collector, geo_artefact_collector, directory: Path = None, environment: str = ''):
+        oslo_collector.collect()
+        if geo_artefact_collector is not None:
+            geo_artefact_collector.collect()
+        if directory is None:
+            this_file_path = Path(__file__)
+            directory = this_file_path.parents[1]
+        OTLModelCreator.create_full_model(directory=directory, environment=environment, oslo_collector=oslo_collector,
+                                          geo_artefact_collector=geo_artefact_collector)

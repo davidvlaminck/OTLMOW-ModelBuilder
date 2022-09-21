@@ -13,7 +13,7 @@ logging.warning = print
 logging.error = print
 
 
-def _init_otl_model_creator(otl_file_location: Path = None, geo_a_file_location: Path = None) -> OTLModelCreator:
+def _init_otl_model_creator(otl_file_location: Path = None, geo_a_file_location: Path = None) -> (OSLOCollector, GeometrieArtefactCollector):
     sql_reader = SQLDbReader(otl_file_location)
     oslo_creator = OSLOInMemoryCreator(sql_reader)
     collector = OSLOCollector(oslo_creator)
@@ -22,18 +22,18 @@ def _init_otl_model_creator(otl_file_location: Path = None, geo_a_file_location:
         sql_reader_ga = SQLDbReader(geo_a_file_location)
         geo_memory_creator = GeometrieInMemoryCreator(sql_reader_ga)
         geo_artefact_collector = GeometrieArtefactCollector(geo_memory_creator)
-    return OTLModelCreator(collector, geo_artefact_collector)
+    return collector, geo_artefact_collector
 
 
-def _create_otl_datamodel(model_creator: OTLModelCreator, directory: Path = None, environment: str = ''):
-    model_creator.oslo_collector.collect()
-    if model_creator.geo_artefact_collector is not None:
-        model_creator.geo_artefact_collector.collect()
+def _create_otl_datamodel(oslo_collector, geo_artefact_collector, directory: Path = None, environment: str = ''):
+    oslo_collector.collect()
+    if geo_artefact_collector is not None:
+        geo_artefact_collector.collect()
     if directory is None:
         this_file_path = Path(__file__)
         directory = this_file_path.parents[1]
-    model_creator.create_full_model(directory=directory, environment=environment)
-
+    OTLModelCreator.create_full_model(directory=directory, environment=environment, oslo_collector=oslo_collector,
+                                      geo_artefact_collector=geo_artefact_collector)
 
 if __name__ == '__main__':
     logger = logging.getLogger(__name__)
@@ -48,6 +48,7 @@ if __name__ == '__main__':
     otl_file_path = Path(f'{base_dir}/InputFiles/OTL 2.4.db')
     GA_file_path = Path(f'{base_dir}/InputFiles/Geometrie_Artefact_2.4.db')
 
-    model_creator_instance = _init_otl_model_creator(otl_file_location=otl_file_path, geo_a_file_location=GA_file_path)
-    _create_otl_datamodel(directory=Path(f'{base_dir}/../../OTLMOW-Model/otlmow_model'),
-                          model_creator=model_creator_instance, environment='prd')
+    oslo_collector, geo_artefact_collector = _init_otl_model_creator(otl_file_location=otl_file_path,
+                                                                     geo_a_file_location=GA_file_path)
+    _create_otl_datamodel(directory=Path(f'{base_dir}/../../OTLMOW-Model/otlmow_model'), environment='prd',
+                          oslo_collector=oslo_collector, geo_artefact_collector=geo_artefact_collector)

@@ -21,22 +21,25 @@ class OTLModelCreator:
         self.geo_artefact_collector = geo_artefact_collector
         logging.info("Created an instance of OTLModelCreator")
 
-    def create_full_model(self, directory, environment: str = ''):
+    @staticmethod
+    def create_full_model(directory, oslo_collector, geo_artefact_collector, environment: str = ''):
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         directory = abspath(directory)
-        self.check_and_create_subdirectories(directory)
-        self.oslo_collector.query_correct_base_classes()
-        self.create_primitive_datatypes(directory=directory)
-        self.create_complex_datatypes(directory=directory)
-        self.create_union_datatypes(directory=directory)
-        self.create_enumerations(directory=directory, environment=environment)
-        self.create_classes(model_directory=directory)
+        OTLModelCreator.check_and_create_subdirectories(directory)
+        oslo_collector.query_correct_base_classes()
+        OTLModelCreator.create_primitive_datatypes(directory=directory, oslo_collector=oslo_collector)
+        OTLModelCreator.create_complex_datatypes(directory=directory, oslo_collector=oslo_collector)
+        OTLModelCreator.create_union_datatypes(directory=directory, oslo_collector=oslo_collector)
+        OTLModelCreator.create_enumerations(directory=directory, environment=environment, oslo_collector=oslo_collector)
+        OTLModelCreator.create_classes(model_directory=directory, oslo_collector=oslo_collector,
+                                       geo_artefact_collector=geo_artefact_collector)
         logging.info('finished creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 
-    def create_primitive_datatypes(self, directory):
-        creator = OTLPrimitiveDatatypeCreator(self.oslo_collector)
+    @staticmethod
+    def create_primitive_datatypes(directory, oslo_collector):
+        creator = OTLPrimitiveDatatypeCreator(oslo_collector)
 
-        for prim_datatype in self.oslo_collector.primitive_datatypes:
+        for prim_datatype in oslo_collector.primitive_datatypes:
             if prim_datatype.objectUri in ['http://www.w3.org/2000/01/rdf-schema#Literal',
                                            'http://www.w3.org/2001/XMLSchema#dateTime',
                                            'http://www.w3.org/2001/XMLSchema#integer',
@@ -64,10 +67,11 @@ class OTLModelCreator:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {prim_datatype.name}")
 
-    def create_complex_datatypes(self, directory):
-        creator = OTLComplexDatatypeCreator(self.oslo_collector)
+    @staticmethod
+    def create_complex_datatypes(directory, oslo_collector):
+        creator = OTLComplexDatatypeCreator(oslo_collector)
 
-        for complex_datatype in self.oslo_collector.complex_datatypes:
+        for complex_datatype in oslo_collector.complex_datatypes:
             try:
                 data_to_write = creator.create_block_to_write_from_complex_types(complex_datatype, model_location=directory)
                 if data_to_write is None:
@@ -82,10 +86,11 @@ class OTLModelCreator:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {complex_datatype.name}")
 
-    def create_union_datatypes(self, directory):
-        creator = OTLUnionDatatypeCreator(self.oslo_collector)
+    @staticmethod
+    def create_union_datatypes(directory, oslo_collector):
+        creator = OTLUnionDatatypeCreator(oslo_collector)
 
-        for union_datatype in self.oslo_collector.union_datatypes:
+        for union_datatype in oslo_collector.union_datatypes:
             try:
                 data_to_write = creator.create_block_to_write_from_union_types(union_datatype, model_location=directory)
                 if data_to_write is None:
@@ -100,10 +105,11 @@ class OTLModelCreator:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {union_datatype.name}")
 
-    def create_enumerations(self, directory, environment: str = ''):
-        creator = OTLEnumerationCreator(self.oslo_collector)
+    @staticmethod
+    def create_enumerations(directory, oslo_collector, environment: str = ''):
+        creator = OTLEnumerationCreator(oslo_collector)
 
-        for enumeration in self.oslo_collector.enumerations:
+        for enumeration in oslo_collector.enumerations:
 
             try:
                 data_to_write = creator.create_block_to_write_from_enumerations(enumeration, environment=environment)
@@ -119,10 +125,11 @@ class OTLModelCreator:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {enumeration.name}")
 
-    def create_classes(self, model_directory):
-        creator = OTLClassCreator(self.oslo_collector, self.geo_artefact_collector)
+    @staticmethod
+    def create_classes(model_directory, oslo_collector, geo_artefact_collector):
+        creator = OTLClassCreator(oslo_collector, geo_artefact_collector)
 
-        for oslo_class in self.oslo_collector.classes:
+        for oslo_class in oslo_collector.classes:
             try:
                 data_to_write = creator.create_blocks_to_write_from_classes(oslo_class, model_location=model_directory)
                 if data_to_write is None:
