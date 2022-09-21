@@ -4,6 +4,7 @@ from pathlib import Path
 from unittest import mock, skip
 from unittest.mock import MagicMock
 
+from otlmow_modelbuilder.GenericBuilderFunctions import write_to_file
 from otlmow_modelbuilder.GeometrieType import GeometrieType
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
@@ -186,15 +187,6 @@ class OTLClassCreatorTests(unittest.TestCase):
 
         self.assertEqual(collector.expectedDataGebouw, dataToWrite)
 
-    @skip('change the write_file test') # TODO change this test
-    def test_WriteToFileContainerBuis(self):
-        collector, creator = self.set_up_real_collector_and_creator()
-        containerBuis = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis')
-        dataToWrite = creator.create_blocks_to_write_from_classes(containerBuis)
-        creator.write_to_file(containerBuis, 'Classes', dataToWrite, '../../src/OTLMOW/')
-
-        filelocation = os.path.abspath(os.path.join(os.sep, ROOT_DIR, 'src/OTLMOW/OTLModel/Classes/ContainerBuis.py'))
-        self.assertTrue(os.path.isfile(filelocation))
 
     # TODO change these tests to implementation assumptions
     def test_CheckInheritances_Agent(self):

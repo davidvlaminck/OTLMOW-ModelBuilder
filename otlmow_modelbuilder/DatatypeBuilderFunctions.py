@@ -85,3 +85,36 @@ def get_type_name_of_complex_attribuut(type_uri: str):
             f"Field of type {type_uri} is not implemented in DatatypeCreator.get_type_name_of_complex_attribuut")
 
     raise NotImplementedError(f"get_type_name_of_complex_attribuut fails to get typename from {type_uri}")
+
+
+def get_type_link_from_attribuut(oslo_collector, attribuut):
+    type_link = oslo_collector.find_type_link_by_uri(attribuut.type)
+    if type_link is not None:
+        return type_link
+
+
+def get_fields_and_names_from_list_of_attributes(attributen):
+    if len(attributen) == 0:
+        return []
+
+    primitive_types_list = list(
+        filter(lambda t: t.type.startswith('http://www.w3.org/2001/XMLSchema#'), attributen))
+    other_types_list = list(
+        filter(lambda t: not t.type.startswith('http://www.w3.org/2001/XMLSchema#'), attributen))
+
+    select_types_list = list(
+        map(lambda a: (get_single_field_from_type_uri(a.type), a.name), primitive_types_list))
+
+    for nonPrimitiveType in other_types_list:
+        select_types_list.append((get_field_name_from_type_uri(nonPrimitiveType.type), nonPrimitiveType.name))
+
+    distinct_types_list = list(set(select_types_list))
+    sorted_list = sorted(distinct_types_list, key=lambda t: t)
+    return sorted_list
+
+
+def get_type_name_of_union_attribuut(type_uri: str):
+    if type_uri.startswith("https://wegenenverkeer.data.vlaanderen.be/ns/"):
+        return type_uri[type_uri.find("#") + 1::]
+
+    raise NotImplementedError(f"get_type_name_of_complex_attribuut fails to get typename from {type_uri}")

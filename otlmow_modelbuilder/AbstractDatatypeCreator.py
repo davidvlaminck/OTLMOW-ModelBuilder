@@ -2,9 +2,9 @@ import os
 from abc import ABC
 from typing import List
 
-from otlmow_modelbuilder.DatatypeBuilderFunctions import get_single_field_from_type_uri, \
-    get_field_name_from_type_uri, get_attributen_by_type_field, get_type_name_of_complex_attribuut
-from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent, add_attributen_to_data_block
+from otlmow_modelbuilder.DatatypeBuilderFunctions import get_attributen_by_type_field
+from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block, \
+    get_fields_to_import_from_list_of_attributes
 from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes
 from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
 
@@ -12,82 +12,6 @@ from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
 class AbstractDatatypeCreator(ABC):
     def __init__(self, oslo_collector: OSLOCollector):
         self.oslo_collector = oslo_collector
-
-    def get_type_link_from_attribuut(self, attribuut):
-        type_link = self.oslo_collector.find_type_link_by_uri(attribuut.type)
-        if type_link is not None:
-            return type_link
-
-    @staticmethod
-    def write_to_file(datatype, directory: str, data_to_write: List[str], relative_path=''):
-        if relative_path == '':
-            base_dir = os.path.dirname(os.path.realpath(__file__))
-            base_dir = os.path.abspath(os.path.join(base_dir, os.pardir))
-        else:
-            base_dir = relative_path
-        path = f"{base_dir}/{directory}/{datatype.name}.py"
-
-        with open(path, "w", encoding='utf-8') as file:
-            for line in data_to_write:
-                file.write(line + "\n")
-
-    def get_fields_to_import_from_list_of_attributes(self, attributen, list_to_start_from=None):
-        if list_to_start_from is None:
-            list_to_start_from = []
-        if len(attributen) == 0:
-            return list_to_start_from
-
-        collected_list = []
-        collected_list.extend(list_to_start_from)
-
-        for attribuut in attributen:
-            type_link = self.get_type_link_from_attribuut(attribuut).item_tabel
-            if type_link == "OSLOEnumeration":
-                collected_list.append(self.get_type_name_of_enum_uri(attribuut.type))
-            elif type_link == "OSLODatatypePrimitive":
-                collected_list.append(get_single_field_from_type_uri(attribuut.type))
-            elif type_link == "OSLODatatypeComplex":
-                collected_list.append(get_type_name_of_complex_attribuut(attribuut.type))
-            elif type_link == "OSLODatatypeUnion":
-                collected_list.append(self.get_type_name_of_union_attribuut(attribuut.type))
-            else:
-                raise not NotImplementedError(f"{type_link} not implemented")
-
-        distinct_types_list = list(set(collected_list))
-        sorted_list = sorted(distinct_types_list, key=lambda t: t)
-        return sorted_list
-
-    def get_fields_and_names_from_list_of_attributes(self, attributen):
-        if len(attributen) == 0:
-            return []
-
-        primitive_types_list = list(
-            filter(lambda t: t.type.startswith('http://www.w3.org/2001/XMLSchema#'), attributen))
-        other_types_list = list(
-            filter(lambda t: not t.type.startswith('http://www.w3.org/2001/XMLSchema#'), attributen))
-
-        select_types_list = list(
-            map(lambda a: (get_single_field_from_type_uri(a.type), a.name), primitive_types_list))
-
-        for nonPrimitiveType in other_types_list:
-            select_types_list.append((get_field_name_from_type_uri(nonPrimitiveType.type), nonPrimitiveType.name))
-
-        distinct_types_list = list(set(select_types_list))
-        sorted_list = sorted(distinct_types_list, key=lambda t: t)
-        return sorted_list
-
-
-    @staticmethod
-    def get_type_name_of_enum_uri(type_uri: str):
-        return type_uri.split('#')[1]
-
-    def get_type_name_of_union_attribuut(self, type_uri: str):
-        if type_uri.startswith("https://wegenenverkeer.data.vlaanderen.be/ns/"):
-            return type_uri[type_uri.find("#") + 1::]
-
-        raise NotImplementedError(f"get_type_name_of_complex_attribuut fails to get typename from {type_uri}")
-
-
 
     def create_block_to_write_from_complex_primitive_or_union_types(self, oslo_datatype, type_field='',
                                                                     model_location=''):
@@ -103,7 +27,7 @@ class AbstractDatatypeCreator(ABC):
         elif type_field == 'Primitive' or type_field == 'KwantWrd':
             datablock.append('from otlmow_model.BaseClasses.OTLField import OTLField')
             list_fields_to_start_with = []
-        list_of_fields = self.get_fields_to_import_from_list_of_attributes(attributen, list_fields_to_start_with)
+        list_of_fields = get_fields_to_import_from_list_of_attributes(self.oslo_collector, attributen, list_fields_to_start_with)
         base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
                        'IntegerField',
                        'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField', 'NonNegIntegerField',

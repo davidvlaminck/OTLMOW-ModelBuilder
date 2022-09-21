@@ -4,6 +4,7 @@ from datetime import datetime
 from os import path
 from os.path import abspath
 
+from otlmow_modelbuilder.GenericBuilderFunctions import write_to_file
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
 from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns
 from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
@@ -61,7 +62,7 @@ class OTLModelCreator:
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {prim_datatype.name}")
                     pass
-                creator.write_to_file(prim_datatype, 'Datatypes', data_to_write, relative_path=directory)
+                write_to_file(prim_datatype, 'Datatypes', data_to_write, relative_path=directory)
                 logging.info(f"Created a class for {prim_datatype.name}")
             except BaseException as e:
                 logging.error(str(e))
@@ -79,7 +80,7 @@ class OTLModelCreator:
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {complex_datatype.name}")
                     pass
-                creator.write_to_file(complex_datatype, 'Datatypes', data_to_write, relative_path=directory)
+                write_to_file(complex_datatype, 'Datatypes', data_to_write, relative_path=directory)
                 logging.info(f"Created a class for {complex_datatype.name}")
             except BaseException as e:
                 logging.error(str(e))
@@ -97,7 +98,7 @@ class OTLModelCreator:
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {union_datatype.name}")
                     pass
-                creator.write_to_file(union_datatype, 'Datatypes', data_to_write, relative_path=directory)
+                write_to_file(union_datatype, 'Datatypes', data_to_write, relative_path=directory)
                 logging.info(f"Created a class for {union_datatype.name}")
             except BaseException as e:
                 logging.error(str(e))
@@ -116,7 +117,7 @@ class OTLModelCreator:
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {enumeration.name}")
                     pass
-                creator.write_to_file(enumeration, 'Datatypes', data_to_write, relative_path=directory)
+                write_to_file(enumeration, 'Datatypes', data_to_write, relative_path=directory)
                 logging.info(f"Created a class for {enumeration.name}")
             except BaseException as e:
                 logging.error(str(e))
@@ -142,7 +143,7 @@ class OTLModelCreator:
                 if ns is not None:
                     class_directory = get_class_directory_from_ns(ns)
 
-                creator.write_to_file(oslo_class, class_directory, data_to_write, relative_path=model_directory)
+                write_to_file(oslo_class, class_directory, data_to_write, relative_path=model_directory)
                 logging.info(f"Created a class for {oslo_class.name}")
             except Exception as e:
                 logging.error(str(e))

@@ -1,6 +1,7 @@
 import logging
 
-from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block
+from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block, \
+    get_fields_to_import_from_list_of_attributes
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
 from otlmow_modelbuilder.GeometrieInheritanceProcessor import GeometrieInheritanceProcessor
 from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns
@@ -105,7 +106,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
         if any(atr.readonly == 1 for atr in attributen):
             raise NotImplementedError("readonly property is assumed to be 0 on value fields")
 
-        list_of_fields = self.get_fields_to_import_from_list_of_attributes(attributen)
+        list_of_fields = get_fields_to_import_from_list_of_attributes(self.oslo_collector, attributen)
         base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField', 'IntegerField',
                        'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField', 'NonNegIntegerField', 'TimeField',
                        'StringField', 'UnionWaarden']

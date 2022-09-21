@@ -1,11 +1,74 @@
+import os
 import unittest
+from pathlib import Path
+from unittest import skip
 
-from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent, add_attributen_to_data_block
+from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent, add_attributen_to_data_block, \
+    get_fields_to_import_from_list_of_attributes, write_to_file
+from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
+from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import OSLODatatypeComplexAttribuut
+from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 class GenericBuilderFunctionsTests(unittest.TestCase):
+    def setUp(self) -> OSLOCollector:
+        base_dir = os.path.dirname(os.path.realpath(__file__))
+        file_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
+        sql_reader = SQLDbReader(file_location)
+        oslo_creator = OSLOInMemoryCreator(sql_reader)
+        collector = OSLOCollector(oslo_creator)
+        collector.collect()
+        return collector
+
+    def test_get_fields_to_import_from_list_of_attributes_List_with_elements_Non_empty_start_list(self):
+        collector = self.setUp()
+        list_of_attributes = collector.find_complex_datatype_attributes_by_class_uri('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType2')
+
+        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, list_of_attributes, ['BooleanField'])
+
+        self.assertEqual(['BooleanField', 'KwantWrdTest', 'StringField'], list_of_fields)
+
+    def test_get_fields_to_import_from_list_of_attributes_List_with_elements_Empty_start_list(self):
+        collector = self.setUp()
+        list_of_attributes = collector.find_complex_datatype_attributes_by_class_uri('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType2')
+
+        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, list_of_attributes)
+
+        self.assertEqual(['KwantWrdTest', 'StringField'], list_of_fields)
+
+    def test_get_fields_to_import_from_list_of_attributes_List_with_ComplexType(self):
+        collector = self.setUp()
+        list_of_attributes = collector.find_complex_datatype_attributes_by_class_uri(
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType')
+        complex_attributes_list = list(filter(lambda x: "Complex" in x.name, list_of_attributes))
+
+        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, complex_attributes_list)
+
+        self.assertEqual(['DtcTestComplexType2'], list_of_fields)
+
+    def test_get_fields_to_import_from_list_of_attributes_List_two_StringField(self):
+        collector = self.setUp()
+        list_of_attributes = collector.find_complex_datatype_attributes_by_class_uri(
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType')
+        complex_attributes_list = list(filter(lambda x: "String" in x.name, list_of_attributes))
+
+        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, complex_attributes_list)
+
+        self.assertEqual(['StringField'], list_of_fields)
+
+    def test_get_fields_to_import_from_list_of_attributes_List_two_StringField_and_two_BooleanField(self):
+        collector = self.setUp()
+        list_of_attributes = collector.find_complex_datatype_attributes_by_class_uri(
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType')
+        complex_attributes_list = list(filter(lambda x: "String" in x.name or "Boolean" in x.name, list_of_attributes))
+
+        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, complex_attributes_list)
+
+        self.assertEqual(['BooleanField', 'StringField'], list_of_fields)
+
     def test_get_white_space_equivalent_empty_string(self):
         result = get_white_space_equivalent('')
         self.assertEqual('', result)
@@ -127,3 +190,13 @@ class GenericBuilderFunctionsTests(unittest.TestCase):
                               '']
 
         self.assertEqual(expected_datablock, add_attributen_to_data_block([attribuut], []))
+
+    @skip('change the write_file test') # TODO change this test
+    def test_WriteToFileContainerBuis(self):
+        collector, creator = self.set_up_real_collector_and_creator()
+        containerBuis = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis')
+        dataToWrite = creator.create_blocks_to_write_from_classes(containerBuis)
+        write_to_file(containerBuis, 'Classes', dataToWrite, '../../src/OTLMOW/')
+
+        filelocation = os.path.abspath(os.path.join(os.sep, ROOT_DIR, 'src/OTLMOW/OTLModel/Classes/ContainerBuis.py'))
+        self.assertTrue(os.path.isfile(filelocation))
