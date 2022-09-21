@@ -10,7 +10,8 @@ class OTLUnionDatatypeCreator(AbstractDatatypeCreator):
         super().__init__(oslo_collector)
         logging.info("Created an instance of OTLUnionDatatypeCreator")
 
-    def create_block_to_write_from_union_types(self, union_datatype: OSLODatatypeUnion, model_location='') -> [str]:
+    def create_block_to_write_from_union_types(self, union_datatype: OSLODatatypeUnion,
+                                               model_location: str = '') -> [str]:
         if not isinstance(union_datatype, OSLODatatypeUnion):
             raise ValueError(f"Input is not a OSLODatatypeUnion")
 
@@ -21,6 +22,6 @@ class OTLUnionDatatypeCreator(AbstractDatatypeCreator):
         if union_datatype.name == '':
             raise ValueError(f"OSLODatatypeUnion.name is invalid. Value = '{union_datatype.name}'")
 
-        return self.create_block_to_write_from_complex_primitive_or_union_types(union_datatype,
+        return self.create_block_to_write_from_complex_primitive_or_union_types(oslo_datatype=union_datatype,
                                                                                 type_field='UnionType',
                                                                                 model_location=model_location)

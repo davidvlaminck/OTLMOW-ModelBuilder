@@ -10,7 +10,7 @@ class OTLComplexDatatypeCreator(AbstractDatatypeCreator):
         super().__init__(oslo_collector)
         logging.info("Created an instance of OTLComplexDatatypeCreator")
 
-    def create_block_to_write_from_complex_types(self, oslo_datatype_complex: OSLODatatypeComplex, model_location=''):
+    def create_block_to_write_from_complex_types(self, oslo_datatype_complex: OSLODatatypeComplex, model_location='') -> [str]:
         if not isinstance(oslo_datatype_complex, OSLODatatypeComplex):
             raise ValueError(f"Input is not a OSLODatatypeComplex")
 

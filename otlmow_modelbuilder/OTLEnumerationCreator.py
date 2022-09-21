@@ -36,7 +36,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         logging.info("Created an instance of OTLEnumerationCreator")
         self.osloCollector = oslo_collector
 
-    def create_block_to_write_from_enumerations(self, oslo_enumeration: OSLOEnumeration, environment: str = default_environment):
+    def create_block_to_write_from_enumerations(self, oslo_enumeration: OSLOEnumeration, environment: str = default_environment) -> [str]:
         if not isinstance(oslo_enumeration, OSLOEnumeration):
             raise ValueError(f"Input is not a OSLOEnumeration")
         if oslo_enumeration.objectUri == '' or not oslo_enumeration.objectUri.startswith(
@@ -45,9 +45,9 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         if oslo_enumeration.name == '':
             raise ValueError(f"OSLOEnumeration.name is invalid. Value = '{oslo_enumeration.name}'")
 
-        return self.create_block_to_write_from_enumeration(oslo_enumeration, environment=environment)
+        return self.create_block_to_write_from_enumeration(oslo_enumeration=oslo_enumeration, environment=environment)
 
-    def create_block_to_write_from_enumeration(self, oslo_enumeration: OSLOEnumeration, environment: str = default_environment):
+    def create_block_to_write_from_enumeration(self, oslo_enumeration: OSLOEnumeration, environment: str = default_environment) -> [str]:
         keuzelijst_waardes = self.get_keuzelijstwaardes_by_name(oslo_enumeration.name, env=environment)
         adm_status = self.get_adm_status_by_name(oslo_enumeration.name, env=environment)
 

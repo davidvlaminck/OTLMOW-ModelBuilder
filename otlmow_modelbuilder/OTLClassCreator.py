@@ -4,6 +4,7 @@ from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_b
     get_fields_to_import_from_list_of_attributes
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
 from otlmow_modelbuilder.GeometrieInheritanceProcessor import GeometrieInheritanceProcessor
+from otlmow_modelbuilder.GeometrieType import GeometrieType
 from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
@@ -30,8 +31,9 @@ class OTLClassCreator(AbstractDatatypeCreator):
             raise ValueError(f"Input is not a OSLOClass")
 
         if oslo_class.objectUri == '' or not (
-                oslo_class.objectUri.startswith('https://wegenenverkeer.data.vlaanderen.be/ns/') or oslo_class.objectUri.
-                startswith('http://purl.org/dc/terms')):
+                oslo_class.objectUri.startswith(
+                    'https://wegenenverkeer.data.vlaanderen.be/ns/') or oslo_class.objectUri.
+                        startswith('http://purl.org/dc/terms')):
             raise ValueError(f"OSLOClass.objectUri is invalid. Value = '{oslo_class.objectUri}'")
 
         if oslo_class.name == '':
@@ -52,13 +54,15 @@ class OTLClassCreator(AbstractDatatypeCreator):
             inheritances.append(
                 Inheritance(base_name='OTLAsset', base_uri='', class_name='', class_uri='', deprecated_version=''))
             inheritances.append(
-                Inheritance(base_name='RelatieInteractor', base_uri='', class_name='', class_uri='', deprecated_version=''))
+                Inheritance(base_name='RelatieInteractor', base_uri='', class_name='', class_uri='',
+                            deprecated_version=''))
 
         elif oslo_class.objectUri == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject':
             inheritances.append(
                 Inheritance(base_name='AttributeInfo', base_uri='', class_name='', class_uri='', deprecated_version=''))
             inheritances.append(
-                Inheritance(base_name='DavieRelatieAttributes', base_uri='', class_name='', class_uri='', deprecated_version=''))
+                Inheritance(base_name='DavieRelatieAttributes', base_uri='', class_name='', class_uri='',
+                            deprecated_version=''))
             inheritances.append(
                 Inheritance(base_name='OTLObject', base_uri='', class_name='', class_uri='', deprecated_version=''))
 
@@ -68,7 +72,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
             inheritances.append(
                 Inheritance(base_name='OTLObject', base_uri='', class_name='', class_uri='', deprecated_version=''))
             inheritances.append(
-                Inheritance(base_name='RelatieInteractor', base_uri='', class_name='', class_uri='', deprecated_version=''))
+                Inheritance(base_name='RelatieInteractor', base_uri='', class_name='', class_uri='',
+                            deprecated_version=''))
 
         datablock = ['# coding=utf-8']
         if len(attributen) > 0:
@@ -84,7 +89,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
             for inheritance in inheritances:
                 if inheritance.base_name in ['OTLAsset', 'OTLObject', 'RelatieInteractor',
                                              'AttributeInfo', 'DavieRelatieAttributes']:
-                    datablock.append(f'from otlmow_model.BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
+                    datablock.append(
+                        f'from otlmow_model.BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
                 else:
                     class_directory = 'Classes'
                     ns = None
@@ -106,17 +112,18 @@ class OTLClassCreator(AbstractDatatypeCreator):
         if any(atr.readonly == 1 for atr in attributen):
             raise NotImplementedError("readonly property is assumed to be 0 on value fields")
 
-        list_of_fields = get_fields_to_import_from_list_of_attributes(self.oslo_collector, attributen)
-        base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField', 'IntegerField',
-                       'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField', 'NonNegIntegerField', 'TimeField',
-                       'StringField', 'UnionWaarden']
+        list_of_fields = get_fields_to_import_from_list_of_attributes(oslo_collector=self.oslo_collector,
+                                                                      attributen=attributen)
+        base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
+                       'IntegerField', 'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField',
+                       'NonNegIntegerField', 'TimeField', 'StringField', 'UnionWaarden']
         for type_field in list_of_fields:
             model_module = 'otlmow_model'
             if model_location != '' and type_field not in base_fields:
                 if 'UnitTests' in model_location:
                     model_module = 'UnitTests'
                 modules_index = model_location.rfind('/' + model_module)
-                modules = model_location[modules_index+1:]
+                modules = model_location[modules_index + 1:]
                 model_module = modules.replace('/', '.')
             if type_field not in base_fields:
                 datablock.append(f'from {model_module}.Datatypes.{type_field} import {type_field}')
@@ -132,7 +139,9 @@ class OTLClassCreator(AbstractDatatypeCreator):
         datablock.append('')
         datablock.append('')
         datablock.append(f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit')
-        datablock.append(self.get_class_line_from_class_and_inheritances(oslo_class, inheritances, list_of_geometry_types))
+        datablock.append(self.get_class_line_from_class_and_inheritances(oslo_class=oslo_class,
+                                                                         inheritances=inheritances,
+                                                                         geometry_types=list_of_geometry_types))
         datablock.append(f'    """{oslo_class.definition}"""')
         datablock.append('')
         datablock.append(f"    typeURI = '{oslo_class.objectUri}'")
@@ -167,7 +176,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         return datablock
 
-    def get_class_line_from_class_and_inheritances(self, oslo_class, inheritances, geometry_types):
+    def get_class_line_from_class_and_inheritances(self, oslo_class: OSLOClass, inheritances: [Inheritance],
+                                                   geometry_types: [GeometrieType]) -> str:
         if oslo_class.abstract + len(inheritances) + len(geometry_types) < 1:
             raise NotImplementedError(f"{oslo_class.objectUri} class structure not implemented")
         if oslo_class.abstract == 1 and len(inheritances) + len(geometry_types) < 1:
@@ -184,11 +194,11 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         raise NotImplementedError(f"{oslo_class.objectUri} class structure not implemented")
 
-    def get_geometry_types_from_uri(self, objectUri):
+    def get_geometry_types_from_uri(self, object_uri: str) -> [str]:
         if len(self.geometry_types) == 0:
             return []
 
-        geom_type = next((g for g in self.geometry_types if g.objectUri == objectUri), None)
+        geom_type = next((g for g in self.geometry_types if g.objectUri == object_uri), None)
         if geom_type is None:
             return []
 
@@ -204,8 +214,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         return geom_types
 
-    def add_relations_to_datablock(self, datablock, objectUri):
-        relations = self.osloCollector.find_outgoing_relations(objectUri)
+    def add_relations_to_datablock(self, datablock: [str], object_uri: str) -> None:
+        relations = self.osloCollector.find_outgoing_relations(object_uri)
         if len(relations) == 0:
             return
 
@@ -213,5 +223,6 @@ class OTLClassCreator(AbstractDatatypeCreator):
             deprecated = ''
             if relation.deprecated_version != '':
                 deprecated = f", deprecated='{relation.deprecated_version}'"
-            datablock.append(f"        self.add_valid_relation(relation='{relation.objectUri}', target='{relation.doel_uri}'{deprecated})")
+            datablock.append(
+                f"        self.add_valid_relation(relation='{relation.objectUri}', target='{relation.doel_uri}'{deprecated})")
         datablock.append('')
