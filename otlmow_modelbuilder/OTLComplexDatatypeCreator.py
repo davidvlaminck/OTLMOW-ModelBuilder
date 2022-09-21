@@ -34,7 +34,7 @@ class OTLComplexDatatypeCreator(AbstractDatatypeCreator):
             raise NotImplementedError
 
     @staticmethod
-    def get_unit_from_constraints(constraints: str):
+    def get_unit_from_constraints(constraints: str) -> str:
         if constraints == '':
             raise ValueError
         split_text = constraints.split('"')
