@@ -1,0 +1,2 @@
+class NewOTLBaseClassNotImplemented(NotImplementedError):
+    pass

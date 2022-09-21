@@ -15,10 +15,6 @@ from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatype
 from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator
 
 
-class NewOTLBaseClassNotImplemented(NotImplementedError):
-    pass
-
-
 class OTLModelCreator:
     def __init__(self, oslo_collector: OSLOCollector, geo_artefact_collector: GeometrieArtefactCollector = None):
         self.oslo_collector = oslo_collector
@@ -29,7 +25,7 @@ class OTLModelCreator:
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         directory = abspath(directory)
         self.check_and_create_subdirectories(directory)
-        self.query_correct_base_classes()
+        self.oslo_collector.query_correct_base_classes()
         self.create_primitive_datatypes(directory=directory)
         self.create_complex_datatypes(directory=directory)
         self.create_union_datatypes(directory=directory)
@@ -148,11 +144,6 @@ class OTLModelCreator:
             except Exception as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {oslo_class.name}")
-
-    def query_correct_base_classes(self):
-        result = self.oslo_collector.memory_creator.check_on_base_classes()
-        if result != 0:
-            raise NewOTLBaseClassNotImplemented()
 
     @staticmethod
     def check_and_create_subdirectories(directory):

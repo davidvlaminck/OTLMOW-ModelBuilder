@@ -1,5 +1,6 @@
 from typing import List
 
+from otlmow_modelbuilder.NewOTLBaseClassNotImplemented import NewOTLBaseClassNotImplemented
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
@@ -132,3 +133,8 @@ class OSLOCollector:
     def find_outgoing_relations(self, objectUri: str) -> [OSLORelatie]:
         return sorted(list(filter(lambda r: r.bron_uri == objectUri and r.bron_overerving == '' and
                                             r.doel_overerving == '', self.relations)), key=lambda r: r.objectUri)
+
+    def query_correct_base_classes(self):
+        result = self.memory_creator.check_on_base_classes()
+        if result != 0:
+            raise NewOTLBaseClassNotImplemented()
