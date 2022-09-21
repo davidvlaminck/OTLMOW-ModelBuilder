@@ -45,8 +45,8 @@ if __name__ == '__main__':
     current_file_path = Path(__file__)
     base_dir = current_file_path.parents[0]
     settings_file_location = Path(f'{base_dir}/settings_OTLMOW.json')
-    otl_file_path = Path(f'{base_dir}/InputFiles/OTL 2.4.db')
-    GA_file_path = Path(f'{base_dir}/InputFiles/Geometrie_Artefact_2.4.db')
+    otl_file_path = Path(f'{base_dir}/InputFiles/OTL 2.5.db')
+    GA_file_path = Path(f'{base_dir}/InputFiles/Geometrie_Artefact_2.5.db')
 
     oslo_collector, geo_artefact_collector = _init_otl_model_creator(otl_file_location=otl_file_path,
                                                                      geo_a_file_location=GA_file_path)
