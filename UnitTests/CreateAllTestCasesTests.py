@@ -20,21 +20,16 @@ class CreateAllTestCasesTests(unittest.TestCase):
 
         with self.assertLogs() as captured:
             oslo_collector, geo_artefact_collector = self._init_otl_model_creator(otl_file_location=subset_file_location)
-            self._create_otl_datamodel(directory=Path(f'{base_dir}/TestClasses'), oslo_collector=oslo_collector,
-                                       geo_artefact_collector=geo_artefact_collector)
-            self._create_otl_datamodel(directory=Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestClasses'),
-                                       oslo_collector=oslo_collector, geo_artefact_collector=geo_artefact_collector)
+
+            paths_to_create_AllCasesTestClass = [Path(f'{base_dir}/TestClasses'), Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestClasses'), Path(f'{base_dir}/../../OTLMOW-Converter/UnitTests/TestClasses')]
+            for path in paths_to_create_AllCasesTestClass:
+                self._create_otl_datamodel(directory=path, oslo_collector=oslo_collector,
+                                           geo_artefact_collector=geo_artefact_collector)
             all_cases_class_location = Path(f'{base_dir}/TestClasses/Classes/Onderdeel/AllCasesTestClass.py')
             self.assertTrue(os.path.isfile(all_cases_class_location))
 
         errors = list(filter(lambda r: r.levelno >= logging.ERROR, list(captured.records)))
         self.assertListEqual([], errors)
-
-    @unittest.skip
-    def test_use_AllCasesTestClass(self):
-        instance = AssetFactory.dynamic_create_instance_from_uri('https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass',
-                                                                 directory='UnitTests.TestClasses.OTLModel.Classes')
-        self.assertIsInstance(instance, AllCasesTestClass)
 
     @staticmethod
     def _init_otl_model_creator(otl_file_location: Path = None, geo_a_file_location: Path = None) -> (OSLOCollector, GeometrieArtefactCollector):
