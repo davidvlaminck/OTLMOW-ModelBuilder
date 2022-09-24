@@ -182,12 +182,9 @@ class OTLModelCreator:
 
     @staticmethod
     def clean_directory(directory):
-        for name in os.listdir(directory):
-            file_path = os.path.join(directory, name)
+        for subdir in ['Classes', 'Datatypes']:
+            dir_path = os.path.join(directory, subdir)
             try:
-                if os.path.isfile(file_path) or os.path.islink(file_path):
-                    os.unlink(file_path)
-                elif os.path.isdir(file_path):
-                    shutil.rmtree(file_path)
+                shutil.rmtree(dir_path)
             except Exception as e:
-                print('Failed to delete %s. Reason: %s' % (file_path, e))
+                print(f'Failed to delete {subdir}. Reason: {e}')
