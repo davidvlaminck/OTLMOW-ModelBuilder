@@ -13,7 +13,8 @@ logging.warning = print
 logging.error = print
 
 
-def _init_otl_model_creator(otl_file_location: Path = None, geo_a_file_location: Path = None) -> (OSLOCollector, GeometrieArtefactCollector):
+def _init_otl_model_creator(otl_file_location: Path = None, geo_a_file_location: Path = None) -> (
+OSLOCollector, GeometrieArtefactCollector):
     sql_reader = SQLDbReader(otl_file_location)
     oslo_creator = OSLOInMemoryCreator(sql_reader)
     collector = OSLOCollector(oslo_creator)
@@ -34,6 +35,7 @@ def _create_otl_datamodel(oslo_collector, geo_artefact_collector, directory: Pat
         directory = this_file_path.parents[1]
     OTLModelCreator.create_full_model(directory=directory, environment=environment, oslo_collector=oslo_collector,
                                       geo_artefact_collector=geo_artefact_collector)
+
 
 if __name__ == '__main__':
     logger = logging.getLogger(__name__)
