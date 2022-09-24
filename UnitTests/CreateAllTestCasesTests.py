@@ -21,7 +21,9 @@ class CreateAllTestCasesTests(unittest.TestCase):
         with self.assertLogs() as captured:
             oslo_collector, geo_artefact_collector = self._init_otl_model_creator(otl_file_location=subset_file_location)
 
-            paths_to_create_test_class = [Path(f'{base_dir}/TestClasses'), Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestClasses'), Path(f'{base_dir}/../../OTLMOW-Converter/UnitTests/TestClasses')]
+            paths_to_create_test_class = [Path(f'{base_dir}/TestClasses'),
+                                          Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestClasses'),
+                                          Path(f'{base_dir}/../../OTLMOW-Converter/UnitTests/TestClasses')]
             for path in paths_to_create_test_class:
                 self._create_otl_datamodel(directory=path, oslo_collector=oslo_collector,
                                            geo_artefact_collector=geo_artefact_collector)

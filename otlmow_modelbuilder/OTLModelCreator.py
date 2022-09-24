@@ -1,5 +1,6 @@
 import logging
 import os
+import shutil
 from datetime import datetime
 from os import path
 from os.path import abspath
@@ -159,6 +160,8 @@ class OTLModelCreator:
         if not path.isdir(directory):
             raise NotADirectoryError(f'{directory} is not a directory.')
 
+        OTLModelCreator.clean_directory(directory)
+
         if not path.exists(directory + '/Classes'):
             os.mkdir(directory + '/Classes')
         if not path.exists(directory + '/Datatypes'):
@@ -176,3 +179,15 @@ class OTLModelCreator:
             os.mkdir(directory + '/Classes/Onderdeel')
         if not path.exists(directory + '/Classes/ProefEnMeting'):
             os.mkdir(directory + '/Classes/ProefEnMeting')
+
+    @staticmethod
+    def clean_directory(directory):
+        for name in os.listdir(directory):
+            file_path = os.path.join(directory, name)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print('Failed to delete %s. Reason: %s' % (file_path, e))
