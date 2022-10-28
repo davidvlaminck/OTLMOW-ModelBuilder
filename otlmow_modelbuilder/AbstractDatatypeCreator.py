@@ -18,14 +18,16 @@ class AbstractDatatypeCreator(ABC):
         attributen = get_attributen_by_type_field(self.oslo_collector, type_field, oslo_datatype)
 
         datablock = ['# coding=utf-8',
-                     'from otlmow_model.BaseClasses.AttributeInfo import AttributeInfo',
                      'from otlmow_model.BaseClasses.OTLAttribuut import OTLAttribuut']
 
         list_fields_to_start_with = [f'{type_field}Field']
         if type_field == 'UnionType':
             list_fields_to_start_with.append('UnionWaarden')
+        elif type_field == 'Complex':
+            datablock.append('from otlmow_model.BaseClasses.WaardenObject import WaardenObject')
         elif type_field == 'Primitive' or type_field == 'KwantWrd':
             datablock.append('from otlmow_model.BaseClasses.OTLField import OTLField')
+            datablock.append('from otlmow_model.BaseClasses.WaardenObject import WaardenObject')
             list_fields_to_start_with = []
         list_of_fields = get_fields_to_import_from_list_of_attributes(self.oslo_collector, attributen, list_fields_to_start_with)
         base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
@@ -50,14 +52,14 @@ class AbstractDatatypeCreator(ABC):
         datablock.append('')
         datablock.append(f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit')
         if type_field == 'UnionType':
-            datablock.append(f'class {oslo_datatype.name}Waarden(AttributeInfo, UnionWaarden):')
-            datablock.append('    def __init__(self, parent=None):')
-            datablock.append('        AttributeInfo.__init__(self, parent)')
+            datablock.append(f'class {oslo_datatype.name}Waarden(UnionWaarden):')
+            datablock.append('    def __init__(self):')
+#            datablock.append('        AttributeInfo.__init__(self, parent)')
             datablock.append('        UnionWaarden.__init__(self)')
         else:
-            datablock.append(f'class {oslo_datatype.name}Waarden(AttributeInfo):')
-            datablock.append('    def __init__(self, parent=None):')
-            datablock.append('        AttributeInfo.__init__(self, parent)')
+            datablock.append(f'class {oslo_datatype.name}Waarden(WaardenObject):')
+            datablock.append('    def __init__(self):')
+            datablock.append('        WaardenObject.__init__(self)')
 
         add_attributen_to_data_block(attributen=attributen, datablock=datablock, type_field=type_field)
 
@@ -66,7 +68,7 @@ class AbstractDatatypeCreator(ABC):
 
         datablock.append(''),
         datablock.append(f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit')
-        datablock.append(f'class {oslo_datatype.name}({type_field}Field, AttributeInfo):')
+        datablock.append(f'class {oslo_datatype.name}({type_field}Field):')
         datablock.append(f'    """{oslo_datatype.definition}"""')
         datablock.append(f'    naam = {wrap_in_quotes(oslo_datatype.name)}')
         datablock.append(f'    label = {wrap_in_quotes(oslo_datatype.label)}')

@@ -194,18 +194,18 @@ class OTLClassCreatorTests(unittest.TestCase):
 
         agent = collector.find_class_by_uri('http://purl.org/dc/terms/Agent')
         dataToWrite = creator.create_blocks_to_write_from_classes(agent)
-        inheritanceLine = "class Agent(AttributeInfo, OTLObject, RelatieInteractor):"
+        inheritanceLine = "class Agent(OTLObject, RelationInteractor):"
 
-        self.assertEqual(inheritanceLine, dataToWrite[11])
+        self.assertEqual(inheritanceLine, dataToWrite[10])
 
     def test_CheckInheritances_AIMObject(self):
         collector, creator = self.set_up_real_collector_and_creator()
 
         aimObject = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject')
         dataToWrite = creator.create_blocks_to_write_from_classes(aimObject)
-        inheritanceLine = "class AIMObject(AIMDBStatus, AIMToestand, AttributeInfo, OTLAsset, RelatieInteractor):"
+        inheritanceLine = "class AIMObject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):"
 
-        self.assertEqual(inheritanceLine, dataToWrite[15])
+        self.assertEqual(inheritanceLine, dataToWrite[14])
 
     def test_CheckInheritances_RelatieObject(self):
         collector, creator = self.set_up_real_collector_and_creator()
@@ -213,18 +213,18 @@ class OTLClassCreatorTests(unittest.TestCase):
         relatieObject = collector.find_class_by_uri(
             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject')
         dataToWrite = creator.create_blocks_to_write_from_classes(relatieObject)
-        inheritanceLine = "class RelatieObject(AIMDBStatus, AttributeInfo, DavieRelatieAttributes, OTLObject):"
+        inheritanceLine = "class RelatieObject(AIMDBStatus, DavieRelatieAttributes, OTLObject):"
 
-        self.assertEqual(inheritanceLine, dataToWrite[11])
+        self.assertEqual(inheritanceLine, dataToWrite[10])
 
     def test_CheckInheritances_DerdenObject(self):
         collector, creator = self.set_up_real_collector_and_creator()
 
         derdenobject = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject')
         dataToWrite = creator.create_blocks_to_write_from_classes(derdenobject)
-        inheritanceLine = "class Derdenobject(AIMDBStatus, AIMToestand, AttributeInfo, OTLAsset, RelatieInteractor):"
+        inheritanceLine = "class Derdenobject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):"
 
-        self.assertEqual(inheritanceLine, dataToWrite[14])
+        self.assertEqual(inheritanceLine, dataToWrite[13])
 
     @staticmethod
     def set_up_real_collector_and_creator():

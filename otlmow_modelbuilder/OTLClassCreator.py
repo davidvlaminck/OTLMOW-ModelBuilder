@@ -50,16 +50,12 @@ class OTLClassCreator(AbstractDatatypeCreator):
                                     'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject',
                                     'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie']:
             inheritances.append(
-                Inheritance(base_name='AttributeInfo', base_uri='', class_name='', class_uri='', deprecated_version=''))
-            inheritances.append(
                 Inheritance(base_name='OTLAsset', base_uri='', class_name='', class_uri='', deprecated_version=''))
             inheritances.append(
-                Inheritance(base_name='RelatieInteractor', base_uri='', class_name='', class_uri='',
+                Inheritance(base_name='RelationInteractor', base_uri='', class_name='', class_uri='',
                             deprecated_version=''))
 
         elif oslo_class.objectUri == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject':
-            inheritances.append(
-                Inheritance(base_name='AttributeInfo', base_uri='', class_name='', class_uri='', deprecated_version=''))
             inheritances.append(
                 Inheritance(base_name='DavieRelatieAttributes', base_uri='', class_name='', class_uri='',
                             deprecated_version=''))
@@ -68,11 +64,9 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         elif oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
             inheritances.append(
-                Inheritance(base_name='AttributeInfo', base_uri='', class_name='', class_uri='', deprecated_version=''))
-            inheritances.append(
                 Inheritance(base_name='OTLObject', base_uri='', class_name='', class_uri='', deprecated_version=''))
             inheritances.append(
-                Inheritance(base_name='RelatieInteractor', base_uri='', class_name='', class_uri='',
+                Inheritance(base_name='RelationInteractor', base_uri='', class_name='', class_uri='',
                             deprecated_version=''))
 
         datablock = ['# coding=utf-8']
@@ -87,8 +81,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         if len(inheritances) > 0:
             for inheritance in inheritances:
-                if inheritance.base_name in ['OTLAsset', 'OTLObject', 'RelatieInteractor',
-                                             'AttributeInfo', 'DavieRelatieAttributes']:
+                if inheritance.base_name in ['OTLAsset', 'OTLObject', 'RelationInteractor', 'DavieRelatieAttributes']:
                     datablock.append(
                         f'from otlmow_model.BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
                 else:
