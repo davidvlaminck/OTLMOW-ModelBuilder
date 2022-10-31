@@ -187,7 +187,6 @@ class OTLClassCreatorTests(unittest.TestCase):
 
         self.assertEqual(collector.expectedDataGebouw, dataToWrite)
 
-
     # TODO change these tests to implementation assumptions
     def test_CheckInheritances_Agent(self):
         collector, creator = self.set_up_real_collector_and_creator()
