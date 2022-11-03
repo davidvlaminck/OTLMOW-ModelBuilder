@@ -13,17 +13,16 @@ class OTLModelCreatorTests(TestCase):
     def test_nested_lists(self):
         current_file_path = Path(__file__)
         base_dir = current_file_path.parents[0]
-        settings_file_location = Path(f'{base_dir}/settings_OTLMOW.json')
         subset_file_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
 
         sql_reader = SQLDbReader(subset_file_location)
         oslo_creator = OSLOInMemoryCreator(sql_reader)
         collector = OSLOCollector(oslo_creator)
         collector.collect()
+        find_by_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testComplexTypeMetKard'
 
         with self.subTest('valid testclass, no nested lists'):
-            OTLModelCreator.check_for_nested_attributes_in_classes(directory=Path(f'{base_dir}/TestClasses'),
-                                                                   collector=collector, oslo_creator=oslo_creator)
+            OTLModelCreator.check_for_nested_attributes_in_classes(collector=collector)
             self.assertTrue(True)
 
         with self.subTest('invalid testclass, with nested lists'):
@@ -38,6 +37,5 @@ class OTLModelCreatorTests(TestCase):
             collector.complex_datatype_attributen.append(c)
 
             with self.assertRaises(NotImplementedError) as exc:
-                OTLModelCreator.check_for_nested_attributes_in_classes(directory=Path(f'{base_dir}/TestClasses'),
-                                                                       collector=collector, oslo_creator=oslo_creator)
+                OTLModelCreator.check_for_nested_attributes_in_classes(collector=collector)
             print(exc.exception.args[0])

@@ -17,8 +17,6 @@ from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatype
 from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator
 
 
-
-
 class OTLModelCreator:
     def __init__(self, oslo_collector: OSLOCollector, geo_artefact_collector: GeometrieArtefactCollector = None):
         self.oslo_collector = oslo_collector
@@ -31,6 +29,7 @@ class OTLModelCreator:
         directory = abspath(directory)
         OTLModelCreator.check_and_create_subdirectories(directory)
         oslo_collector.query_correct_base_classes()
+        OTLModelCreator.check_for_nested_attributes_in_classes(collector=oslo_collector)
         OTLModelCreator.create_primitive_datatypes(directory=directory, oslo_collector=oslo_collector)
         OTLModelCreator.create_complex_datatypes(directory=directory, oslo_collector=oslo_collector)
         OTLModelCreator.create_union_datatypes(directory=directory, oslo_collector=oslo_collector)
@@ -58,7 +57,8 @@ class OTLModelCreator:
                 continue
 
             try:
-                data_to_write = creator.create_block_to_write_from_primitive_types(prim_datatype, model_location=directory)
+                data_to_write = creator.create_block_to_write_from_primitive_types(prim_datatype,
+                                                                                   model_location=directory)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {prim_datatype.name}")
                     pass
@@ -77,7 +77,8 @@ class OTLModelCreator:
 
         for complex_datatype in oslo_collector.complex_datatypes:
             try:
-                data_to_write = creator.create_block_to_write_from_complex_types(complex_datatype, model_location=directory)
+                data_to_write = creator.create_block_to_write_from_complex_types(complex_datatype,
+                                                                                 model_location=directory)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {complex_datatype.name}")
                     pass
@@ -193,13 +194,18 @@ class OTLModelCreator:
                 print(f'Failed to delete {subdir}. Reason: {e}')
 
     @staticmethod
-    def check_for_nested_attributes_in_classes(directory, collector: OSLOCollector, oslo_creator: OSLOInMemoryCreator):
+    def check_for_nested_attributes_in_classes(collector: OSLOCollector, exceptions=None):
+        if exceptions is None:
+            exceptions = ['https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testComplexTypeMetKard']
         for cl in collector.classes:
             if cl.abstract:
                 continue
 
             attributes = collector.find_attributes_by_class(cl)
             for attr in attributes:
+                if attr.objectUri in exceptions:
+                    # exception for test classes
+                    continue
                 list_found = False
                 if attr.kardinaliteit_max != '1':
                     list_found = True
@@ -210,7 +216,12 @@ class OTLModelCreator:
                     nested_attrs = collector.find_union_datatype_attributes_by_class_uri(attr.type)
 
                 if len(nested_attrs) > 1:
-                    OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)
+                    try:
+                        OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)
+                    except NotImplementedError as exc:
+                        if cl.objectUri not in ['http://purl.org/dc/terms/Agent',
+                                                'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene']:
+                            raise NotImplementedError(f'found in {cl.objectUri} {attr.objectUri}') from exc
 
     @staticmethod
     def check_for_nested_attributes_in_attributes(list_already_found, attributes, collector):
