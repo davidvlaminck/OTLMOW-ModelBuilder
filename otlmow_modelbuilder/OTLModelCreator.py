@@ -8,12 +8,15 @@ from os.path import abspath
 from otlmow_modelbuilder.GenericBuilderFunctions import write_to_file
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
 from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns
+from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OTLClassCreator import OTLClassCreator
 from otlmow_modelbuilder.OTLComplexDatatypeCreator import OTLComplexDatatypeCreator
 from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator
 from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatypeCreator
 from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator
+
+
 
 
 class OTLModelCreator:
@@ -188,3 +191,42 @@ class OTLModelCreator:
                 shutil.rmtree(dir_path)
             except Exception as e:
                 print(f'Failed to delete {subdir}. Reason: {e}')
+
+    @staticmethod
+    def check_for_nested_attributes_in_classes(directory, collector: OSLOCollector, oslo_creator: OSLOInMemoryCreator):
+        for cl in collector.classes:
+            if cl.abstract:
+                continue
+
+            attributes = collector.find_attributes_by_class(cl)
+            for attr in attributes:
+                list_found = False
+                if attr.kardinaliteit_max != '1':
+                    list_found = True
+                nested_attrs = collector.find_complex_datatype_attributes_by_class_uri(attr.type)
+                if len(nested_attrs) == 0:
+                    nested_attrs = collector.find_primitive_datatype_attributes_by_class_uri(attr.type)
+                if len(nested_attrs) == 0:
+                    nested_attrs = collector.find_union_datatype_attributes_by_class_uri(attr.type)
+
+                if len(nested_attrs) > 1:
+                    OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)
+
+    @staticmethod
+    def check_for_nested_attributes_in_attributes(list_already_found, attributes, collector):
+        for attr in attributes:
+            list_found = False
+            if attr.kardinaliteit_max != '1':
+                list_found = True
+
+            if list_found and list_already_found:
+                raise NotImplementedError(f'Found nested list attributes: {attr.objectUri}')
+            nested_attrs = collector.find_complex_datatype_attributes_by_class_uri(attr.type)
+            if len(nested_attrs) == 0:
+                nested_attrs = collector.find_primitive_datatype_attributes_by_class_uri(attr.type)
+            if len(nested_attrs) == 0:
+                nested_attrs = collector.find_union_datatype_attributes_by_class_uri(attr.type)
+
+            if len(nested_attrs) > 1:
+                list_found = list_found or list_already_found
+                OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)

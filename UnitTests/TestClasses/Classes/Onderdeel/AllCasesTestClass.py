@@ -42,14 +42,6 @@ class AllCasesTestClass(AIMObject):
                                              definition='Test attribuut voor een complexe waarde',
                                              owner=self)
 
-        self._testComplexTypeMetKard = OTLAttribuut(field=DtcTestComplexType,
-                                                    naam='testComplexTypeMetKard',
-                                                    label='Test ComplexType Met Kard',
-                                                    objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testComplexTypeMetKard',
-                                                    kardinaliteit_max='*',
-                                                    definition='Test attribuut voor een complexe waarde met kardinaliteit > 1',
-                                                    owner=self)
-
         self._testDateField = OTLAttribuut(field=DateField,
                                            naam='testDateField',
                                            label='Test DateField',
@@ -193,15 +185,6 @@ class AllCasesTestClass(AIMObject):
     @testComplexType.setter
     def testComplexType(self, value):
         self._testComplexType.set_waarde(value, owner=self)
-
-    @property
-    def testComplexTypeMetKard(self):
-        """Test attribuut voor een complexe waarde met kardinaliteit > 1"""
-        return self._testComplexTypeMetKard.get_waarde()
-
-    @testComplexTypeMetKard.setter
-    def testComplexTypeMetKard(self, value):
-        self._testComplexTypeMetKard.set_waarde(value, owner=self)
 
     @property
     def testDateField(self):
