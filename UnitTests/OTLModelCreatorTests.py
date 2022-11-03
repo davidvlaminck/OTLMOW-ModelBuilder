@@ -19,7 +19,6 @@ class OTLModelCreatorTests(TestCase):
         oslo_creator = OSLOInMemoryCreator(sql_reader)
         collector = OSLOCollector(oslo_creator)
         collector.collect()
-        find_by_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testComplexTypeMetKard'
 
         with self.subTest('valid testclass, no nested lists'):
             OTLModelCreator.check_for_nested_attributes_in_classes(collector=collector)
@@ -38,4 +37,3 @@ class OTLModelCreatorTests(TestCase):
 
             with self.assertRaises(NotImplementedError) as exc:
                 OTLModelCreator.check_for_nested_attributes_in_classes(collector=collector)
-            print(exc.exception.args[0])
