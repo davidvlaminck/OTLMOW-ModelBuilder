@@ -108,6 +108,10 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             env = 'master'
         elif env == 'tei':
             env = 'test'
+        elif env == 'dev':
+            env = 'dev'
+        elif env == 'aim':
+            env = 'aim'
 
         # create a Graph
         g = rdflib.Graph()
