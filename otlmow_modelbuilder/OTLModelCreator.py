@@ -20,7 +20,6 @@ class OTLModelCreator:
     def __init__(self, oslo_collector: OSLOCollector, geo_artefact_collector: GeometrieArtefactCollector = None):
         self.oslo_collector = oslo_collector
         self.geo_artefact_collector = geo_artefact_collector
-        logging.info("Created an instance of OTLModelCreator")
 
     @staticmethod
     def create_full_model(directory, oslo_collector, geo_artefact_collector, environment: str = ''):
