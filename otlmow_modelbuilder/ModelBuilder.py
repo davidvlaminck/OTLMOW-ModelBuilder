@@ -10,7 +10,9 @@ from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
 class ModelBuilder:
     @staticmethod
-    def build_otl_datamodel(otl_subset_location: Path, directory: Path,  environment: str = 'prd',
+    def build_otl_datamodel(otl_subset_location: Path,
+                            directory: Path,
+                            environment: str = 'prd',
                             geometry_artefact_location: Path = None):
         if directory is None:
             this_file_path = Path(__file__)
