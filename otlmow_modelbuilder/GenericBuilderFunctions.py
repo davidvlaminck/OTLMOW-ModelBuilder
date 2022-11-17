@@ -10,6 +10,12 @@ def get_white_space_equivalent(string):
     return ''.join(' ' * len(string))
 
 
+def get_type_hint_from_field(field_name):
+    if field_name == 'StringField':
+        return ' -> str'
+    return ''
+
+
 def add_attributen_to_data_block(attributen, datablock: List[str], for_class_use=False, type_field=''):
     prop_datablock = []
     for attribuut in sorted(attributen, key=lambda a: a.name):
@@ -44,8 +50,10 @@ def add_attributen_to_data_block(attributen, datablock: List[str], for_class_use
         if not for_class_use:
             owner_self += '._parent'
 
+        type_hint = get_type_hint_from_field(field_name)
+
         prop_datablock.append(f'    @property'),
-        prop_datablock.append(f'    def {attribuut.name}(self):'),
+        prop_datablock.append(f'    def {attribuut.name}(self){type_hint}:'),
         prop_datablock.append(f'        """{attribuut.definition}"""'),
         if type_field == 'KwantWrd' and attribuut.name == 'standaardEenheid':
             prop_datablock.append(f'        return self._{attribuut.name}.usagenote.split(\'"\')[1]'),

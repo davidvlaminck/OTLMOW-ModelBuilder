@@ -97,7 +97,7 @@ class GenericBuilderFunctionsTests(unittest.TestCase):
                               "                                        owner=self)",
                               '',
                               '    @property',
-                              '    def huisnummer(self):',
+                              '    def huisnummer(self) -> str:',
                               '        """Een nummer dat door de gemeente aan bv. een huis wordt toegekend."""',
                               '        return self._huisnummer.get_waarde()',
                               '',
