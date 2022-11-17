@@ -11,6 +11,16 @@ def get_white_space_equivalent(string):
     return ''.join(' ' * len(string))
 
 
+def import_datetime(datablock, var_datetime):
+    for index, line in enumerate(datablock):
+        if line == '':
+            datablock.insert(1, f'from datetime import {var_datetime}')
+            break
+        if 'datetime' in line:
+            datablock[index] = line + ', ' + var_datetime
+            break
+
+
 def get_type_hint_from_field(attribute, datablock):
     field_name = get_single_field_from_type_uri(attribute.type)
     if field_name == 'StringField':
@@ -22,16 +32,23 @@ def get_type_hint_from_field(attribute, datablock):
     elif field_name in ['IntegerField', 'NonNegIntegerField']:
         return ' -> int'
     elif field_name == 'DateField':
-        datablock.insert(1, 'from datetime import date')
-        # edit datablock: what if already exists
+        import_datetime(datablock, 'date')
         return ' -> date'
+    elif field_name == 'DateTimeField':
+        import_datetime(datablock, 'datetime')
+        return ' -> datetime'
+    elif field_name == 'TimeField':
+        import_datetime(datablock, 'time')
+        return ' -> time'
     else:
         field_name = get_non_single_field_from_type_uri(attribute.type)
         if field_name[0] == 'KeuzelijstField':
             return ' -> str'
-        if field_name[0] == 'ComplexField':
+        if field_name[0] == 'ComplexField' or field_name[0] == 'UnionTypeField':
             for index, line in enumerate(datablock):
-                if not field_name[1] in line:
+                if line[0] not in ['#', 'f']:  # only loop over the import part
+                    break
+                if field_name[1] not in line:
                     continue
                 if f'{field_name[1]}Waarden' in line:
                     break

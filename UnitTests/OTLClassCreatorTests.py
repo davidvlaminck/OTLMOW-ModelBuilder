@@ -45,7 +45,7 @@ class ClassOSLOCollector(OSLOCollector):
         self.expectedDataGebouw = ['# coding=utf-8',
                                    'from otlmow_model.BaseClasses.OTLAttribuut import OTLAttribuut',
                                    'from otlmow_model.Classes.Abstracten.Behuizing import Behuizing',
-                                   'from otlmow_model.Datatypes.DtcDocument import DtcDocument',
+                                   'from otlmow_model.Datatypes.DtcDocument import DtcDocument, DtcDocumentWaarden',
                                    'from otlmow_model.GeometrieTypes.VlakGeometrie import VlakGeometrie',
                                    '',
                                    '',
@@ -68,7 +68,7 @@ class ClassOSLOCollector(OSLOCollector):
                                    "                                       owner=self)",
                                    "",
                                    "    @property",
-                                   "    def grondplan(self):",
+                                   "    def grondplan(self) -> DtcDocumentWaarden:",
                                    '        """Plattegrond van het gebouw met aanduidingen van de verschillende aanwezige elementen zoals kelder, kasten met kastnummers, toegangscontrole en meer."""',
                                    "        return self._grondplan.get_waarde()",
                                    "",
@@ -204,7 +204,7 @@ class OTLClassCreatorTests(unittest.TestCase):
         dataToWrite = creator.create_blocks_to_write_from_classes(aimObject)
         inheritanceLine = "class AIMObject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):"
 
-        self.assertEqual(inheritanceLine, dataToWrite[14])
+        self.assertEqual(inheritanceLine, dataToWrite[15])
 
     def test_CheckInheritances_RelatieObject(self):
         collector, creator = self.set_up_real_collector_and_creator()
