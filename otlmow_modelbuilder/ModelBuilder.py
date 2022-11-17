@@ -14,7 +14,7 @@ class ModelBuilder:
                             geometry_artefact_location: Path = None):
         if directory is None:
             this_file_path = Path(__file__)
-            directory = this_file_path.parents[1]
+            directory = this_file_path.parent
 
         sql_reader = SQLDbReader(otl_subset_location)
         oslo_creator = OSLOInMemoryCreator(sql_reader)
