@@ -104,7 +104,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         if env is None or env == '':
             env = cls.default_environment
 
-        if env == 'prd':
+        if env == 'prd' or env == 'UnitTests.TestClasses':
             env = 'master'
         elif env == 'tei':
             env = 'test'
