@@ -196,6 +196,8 @@ class OTLModelCreator:
     @staticmethod
     def clean_directory(directory):
         for subdir in ['Classes', 'Datatypes']:
+            if not path.exists(subdir):
+                continue
             dir_path = os.path.join(directory, subdir)
             try:
                 shutil.rmtree(dir_path)
