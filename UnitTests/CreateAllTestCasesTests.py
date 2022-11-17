@@ -16,8 +16,9 @@ class CreateAllTestCasesTests(unittest.TestCase):
             ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location, directory=Path(f'{base_dir}/TestClasses'))
 
             paths_to_create_test_class = [Path(f'{base_dir}/TestClasses'),
-                                          # Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestClasses'),
-                                          # Path(f'{base_dir}/../../OTLMOW-Converter/UnitTests/TestClasses')
+                                          Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestClasses'),
+                                          Path(f'{base_dir}/../../OTLMOW-Converter/UnitTests/TestClasses'),
+                                          Path(f'{base_dir}/../../OTLMOW-Template/UnitTests/TestClasses')
                                           ]
             for path in paths_to_create_test_class:
                 ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location,
