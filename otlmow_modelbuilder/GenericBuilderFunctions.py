@@ -21,29 +21,42 @@ def import_datetime(datablock, var_datetime):
             break
 
 
+def cardinality_check(attribute, type_string, datablock):
+    if attribute.kardinaliteit_max != '1':
+        for index, line in enumerate(datablock):
+            if line == '':
+                datablock.insert(1, 'from typing import List')
+                break
+            if line == 'from typing import List':
+                break
+        return f'List[{type_string}]'
+    else:
+        return type_string
+
+
 def get_type_hint_from_field(attribute, datablock):
     field_name = get_single_field_from_type_uri(attribute.type)
     if field_name == 'StringField':
-        return ' -> str'
+        return f' -> {cardinality_check(attribute, "str", datablock)}'
     elif field_name == 'FloatOrDecimalField':
-        return ' -> float'
+        return f' -> {cardinality_check(attribute, "float", datablock)}'
     elif field_name == 'BooleanField':
-        return ' -> bool'
+        return f' -> {cardinality_check(attribute, "bool", datablock)}'
     elif field_name in ['IntegerField', 'NonNegIntegerField']:
-        return ' -> int'
+        return f' -> {cardinality_check(attribute, "int", datablock)}'
     elif field_name == 'DateField':
         import_datetime(datablock, 'date')
-        return ' -> date'
+        return f' -> {cardinality_check(attribute, "date", datablock)}'
     elif field_name == 'DateTimeField':
         import_datetime(datablock, 'datetime')
-        return ' -> datetime'
+        return f' -> {cardinality_check(attribute, "datetime", datablock)}'
     elif field_name == 'TimeField':
         import_datetime(datablock, 'time')
-        return ' -> time'
+        return f' -> {cardinality_check(attribute, "time", datablock)}'
     else:
         field_name = get_non_single_field_from_type_uri(attribute.type)
         if field_name[0] == 'KeuzelijstField':
-            return ' -> str'
+            return f' -> {cardinality_check(attribute, "str", datablock)}'
         if field_name[0] == 'ComplexField' or field_name[0] == 'UnionTypeField':
             for index, line in enumerate(datablock):
                 if line[0] not in ['#', 'f']:  # only loop over the import part
@@ -54,7 +67,7 @@ def get_type_hint_from_field(attribute, datablock):
                     break
                 datablock[index] = line + f', {field_name[1]}Waarden'
                 break
-            return f' -> {field_name[1]}Waarden'
+            return f' -> {cardinality_check(attribute, field_name[1] + "Waarden", datablock)}'
         else:
             print('not complexe waarde')
     return ''

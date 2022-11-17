@@ -132,6 +132,7 @@ class OTLClassCreatorTests(unittest.TestCase):
         self.assertEqual(str(exception_bad_name.exception), "Input is not a OSLOClass")
 
     expectedDataContainerBuis = ['# coding=utf-8',
+                                 'from typing import List',
                                  'from otlmow_model.BaseClasses.OTLAttribuut import OTLAttribuut',
                                  'from abc import abstractmethod, ABC',
                                  'from otlmow_model.BaseClasses.StringField import StringField',
@@ -162,7 +163,7 @@ class OTLClassCreatorTests(unittest.TestCase):
                                  "                                   owner=self)",
                                  '',
                                  '    @property',
-                                 '    def kleur(self) -> str:',
+                                 '    def kleur(self) -> List[str]:',
                                  '        """De kleur van de coating."""',
                                  '        return self._kleur.get_waarde()',
                                  '',
@@ -195,7 +196,7 @@ class OTLClassCreatorTests(unittest.TestCase):
         dataToWrite = creator.create_blocks_to_write_from_classes(agent)
         inheritanceLine = "class Agent(OTLObject, RelationInteractor):"
 
-        self.assertEqual(inheritanceLine, dataToWrite[10])
+        self.assertEqual(inheritanceLine, dataToWrite[11])
 
     def test_CheckInheritances_AIMObject(self):
         collector, creator = self.set_up_real_collector_and_creator()
@@ -204,7 +205,7 @@ class OTLClassCreatorTests(unittest.TestCase):
         dataToWrite = creator.create_blocks_to_write_from_classes(aimObject)
         inheritanceLine = "class AIMObject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):"
 
-        self.assertEqual(inheritanceLine, dataToWrite[15])
+        self.assertEqual(inheritanceLine, dataToWrite[16])
 
     def test_CheckInheritances_RelatieObject(self):
         collector, creator = self.set_up_real_collector_and_creator()
@@ -223,7 +224,7 @@ class OTLClassCreatorTests(unittest.TestCase):
         dataToWrite = creator.create_blocks_to_write_from_classes(derdenobject)
         inheritanceLine = "class Derdenobject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):"
 
-        self.assertEqual(inheritanceLine, dataToWrite[13])
+        self.assertEqual(inheritanceLine, dataToWrite[14])
 
     @staticmethod
     def set_up_real_collector_and_creator():
