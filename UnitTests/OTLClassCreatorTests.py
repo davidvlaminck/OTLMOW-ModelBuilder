@@ -162,7 +162,7 @@ class OTLClassCreatorTests(unittest.TestCase):
                                  "                                   owner=self)",
                                  '',
                                  '    @property',
-                                 '    def kleur(self):',
+                                 '    def kleur(self) -> str:',
                                  '        """De kleur van de coating."""',
                                  '        return self._kleur.get_waarde()',
                                  '',

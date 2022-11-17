@@ -41,7 +41,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         return self.create_block_from_class(oslo_class, model_location)
 
-    def create_block_from_class(self, oslo_class: OSLOClass, model_location='') -> [str]:
+    def create_block_from_class(self, oslo_class: OSLOClass, model_location: str = '') -> [str]:
         attributen = self.osloCollector.find_attributes_by_class(oslo_class)
         inheritances = self.osloCollector.find_inheritances_by_class(oslo_class)
         list_of_geometry_types = self.get_geometry_types_from_uri(oslo_class.objectUri)

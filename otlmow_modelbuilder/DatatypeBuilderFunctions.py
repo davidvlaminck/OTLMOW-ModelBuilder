@@ -52,7 +52,7 @@ def get_non_single_field_from_type_uri(field_type: str):
         type_name = field_type[field_type.find("#") + 1::]
         return ['UnionTypeField', type_name]
 
-    raise NotImplemented(f'not supported field_type {field_type} in get_non_single_field_from_type_uri()')
+    raise NotImplementedError(f'not supported field_type {field_type} in get_non_single_field_from_type_uri()')
 
 
 def get_field_name_from_type_uri(attribuut_type):
