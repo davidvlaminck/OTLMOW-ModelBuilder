@@ -2,7 +2,8 @@ import os
 from typing import List
 
 from otlmow_modelbuilder.DatatypeBuilderFunctions import get_single_field_from_type_uri, get_type_link_from_attribuut, \
-    get_type_name_of_complex_attribuut, get_type_name_of_union_attribuut
+    get_type_name_of_complex_attribuut, get_type_name_of_union_attribuut, get_field_name_from_type_uri, \
+    get_non_single_field_from_type_uri
 from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes
 
 
@@ -10,9 +11,35 @@ def get_white_space_equivalent(string):
     return ''.join(' ' * len(string))
 
 
-def get_type_hint_from_field(field_name):
+def get_type_hint_from_field(attribute, datablock):
+    field_name = get_single_field_from_type_uri(attribute.type)
     if field_name == 'StringField':
         return ' -> str'
+    elif field_name == 'FloatOrDecimalField':
+        return ' -> float'
+    elif field_name == 'BooleanField':
+        return ' -> bool'
+    elif field_name in ['IntegerField', 'NonNegIntegerField']:
+        return ' -> int'
+    elif field_name == 'DateField':
+        datablock.insert(1, 'from datetime import date')
+        # edit datablock: what if already exists
+        return ' -> date'
+    else:
+        field_name = get_non_single_field_from_type_uri(attribute.type)
+        if field_name[0] == 'KeuzelijstField':
+            return ' -> str'
+        if field_name[0] == 'ComplexField':
+            for index, line in enumerate(datablock):
+                if not field_name[1] in line:
+                    continue
+                if f'{field_name[1]}Waarden' in line:
+                    break
+                datablock[index] = line + f', {field_name[1]}Waarden'
+                break
+            return f' -> {field_name[1]}Waarden'
+        else:
+            print('not complexe waarde')
     return ''
 
 
@@ -50,7 +77,7 @@ def add_attributen_to_data_block(attributen, datablock: List[str], for_class_use
         if not for_class_use:
             owner_self += '._parent'
 
-        type_hint = get_type_hint_from_field(field_name)
+        type_hint = get_type_hint_from_field(attribuut, datablock)
 
         prop_datablock.append(f'    @property'),
         prop_datablock.append(f'    def {attribuut.name}(self){type_hint}:'),
