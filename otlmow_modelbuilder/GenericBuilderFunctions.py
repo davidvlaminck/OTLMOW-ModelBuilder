@@ -36,7 +36,7 @@ def cardinality_check(attribute, type_string, datablock):
 
 def get_type_hint_from_field(attribute, datablock):
     field_name = get_single_field_from_type_uri(attribute.type)
-    if field_name == 'StringField':
+    if field_name == 'StringField' or field_name == 'URIField':
         return f' -> {cardinality_check(attribute, "str", datablock)}'
     elif field_name == 'FloatOrDecimalField':
         return f' -> {cardinality_check(attribute, "float", datablock)}'
