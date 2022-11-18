@@ -91,10 +91,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         datablock.append("")
         datablock.append("    @classmethod")
         datablock.append("    def create_dummy_data(cls):")
-        datablock.append("        return random.choice(list(map(lambda x: x.invulwaarde,")
-        datablock.append("                                      "
-                         "filter(lambda option: option.status == 'ingebruik', cls.options.values()))))")
-
+        datablock.append("        return cls.create_dummy_data_keuzelijst(cls.options)")
         datablock.append('')
 
         return datablock
