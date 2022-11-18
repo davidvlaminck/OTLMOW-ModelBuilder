@@ -32,9 +32,9 @@ class OSLOCollector:
         self.typeLinks: [OSLOTypeLink] = []
         self.relations: [OSLORelatie] = []
 
-    def collect(self):
+    def collect(self, include_abstract=False):
         self.classes = self.memory_creator.get_all_classes()
-        self.attributes = self.memory_creator.get_all_attributes()
+        self.attributes = self.memory_creator.get_all_attributes(include_abstract=include_abstract)
         self.inheritances = self.memory_creator.get_all_inheritances()
         self.primitive_datatypes = self.memory_creator.get_all_primitive_datatypes()
         self.primitive_datatype_attributen = self.memory_creator.get_all_primitive_datatype_attributes()

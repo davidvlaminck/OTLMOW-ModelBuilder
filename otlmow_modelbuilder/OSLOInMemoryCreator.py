@@ -72,10 +72,13 @@ class OSLOInMemoryCreator:
         if len(lijst) == 1:
             return lijst[0]
 
-    def get_attributes_by_class_uri(self, class_uri) -> [OSLOAttribuut]:
+    def get_attributes_by_class_uri(self, class_uri, include_abstract=False) -> [OSLOAttribuut]:
+        overerving_in_query = ''
+        if not include_abstract:
+            overerving_in_query = 'overerving = 0 AND '
         data = self.sqlDbReader.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, overerving, constraints, readonly, usagenote_nl, deprecated_version "
-            "FROM OSLOAttributen WHERE class_uri=:uriclass AND overerving = 0 and name <> 'typeURI' "
+            f"FROM OSLOAttributen WHERE class_uri=:uriclass AND {overerving_in_query}name <> 'typeURI' "
             "ORDER BY uri",
             {"uriclass": class_uri})
 
@@ -87,10 +90,13 @@ class OSLOInMemoryCreator:
 
         return lijst
 
-    def get_all_attributes(self) -> [OSLOAttribuut]:
+    def get_all_attributes(self, include_abstract=False) -> [OSLOAttribuut]:
+        overerving_in_query = ''
+        if not include_abstract:
+            overerving_in_query = 'overerving = 0 AND '
         data = self.sqlDbReader.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, overerving, constraints, readonly, usagenote_nl, deprecated_version "
-            "FROM OSLOAttributen WHERE overerving = 0 and name <> 'typeURI' ORDER BY uri",
+            f"FROM OSLOAttributen WHERE {overerving_in_query}name <> 'typeURI' ORDER BY uri",
             {})
 
         lijst = []
