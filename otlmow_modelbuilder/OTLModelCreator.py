@@ -125,7 +125,7 @@ class OTLModelCreator:
         for enumeration in oslo_collector.enumerations:
             try:
                 model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
-                data_to_write = creator.create_block_to_write_from_enumerations(enumeration, environment=model_name)
+                data_to_write = creator.create_block_to_write_from_enumerations(enumeration, environment=environment)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {enumeration.name}")
                     pass
