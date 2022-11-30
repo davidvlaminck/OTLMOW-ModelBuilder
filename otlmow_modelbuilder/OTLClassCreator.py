@@ -16,14 +16,14 @@ class OTLClassCreator(AbstractDatatypeCreator):
     def __init__(self, oslo_collector: OSLOCollector, geo_a_collector: GeometrieArtefactCollector = None):
         super().__init__(oslo_collector)
         logging.info("Created an instance of OTLClassCreator")
-        self.osloCollector = oslo_collector
+        self.oslo_collector = oslo_collector
         self.geoACollector = geo_a_collector
         self.geometry_types = []
 
         if geo_a_collector is not None:
             gip = GeometrieInheritanceProcessor(classes=oslo_collector.classes,
                                                 geometrie_types=self.geoACollector.geometrie_types,
-                                                inheritances=self.osloCollector.inheritances)
+                                                inheritances=self.oslo_collector.inheritances)
             self.geometry_types = gip.process_inheritances()
 
     def create_blocks_to_write_from_classes(self, oslo_class: OSLOClass, model_location='') -> [str]:
@@ -42,8 +42,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
         return self.create_block_from_class(oslo_class, model_location)
 
     def create_block_from_class(self, oslo_class: OSLOClass, model_location: str = '') -> [str]:
-        attributen = self.osloCollector.find_attributes_by_class(oslo_class)
-        inheritances = self.osloCollector.find_inheritances_by_class(oslo_class)
+        attributen = self.oslo_collector.find_attributes_by_class(oslo_class)
+        inheritances = self.oslo_collector.find_inheritances_by_class(oslo_class)
         list_of_geometry_types = self.get_geometry_types_from_uri(oslo_class.objectUri)
 
         if oslo_class.objectUri in ['https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
@@ -208,7 +208,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
         return geom_types
 
     def add_relations_to_datablock(self, datablock: [str], object_uri: str) -> None:
-        relations = self.osloCollector.find_outgoing_relations(object_uri)
+        relations = self.oslo_collector.find_outgoing_relations(object_uri)
         if len(relations) == 0:
             return
 
