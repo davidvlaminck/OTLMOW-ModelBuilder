@@ -3,7 +3,6 @@ import os
 import shutil
 from datetime import datetime
 from os import path
-from os.path import abspath
 from pathlib import Path
 
 from otlmow_modelbuilder.GenericBuilderFunctions import write_to_file

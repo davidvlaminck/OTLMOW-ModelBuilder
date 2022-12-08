@@ -11,9 +11,11 @@ class CreateAllTestCasesTests(unittest.TestCase):
         current_file_path = Path(__file__)
         base_dir = current_file_path.parent
         otl_subset_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
+        GA_location = Path(f'{base_dir}/GeometrieArtefact_AllCasesTestClass.db')
 
         with self.assertLogs() as captured:
-            ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location, directory=Path(f'{base_dir}/TestClasses'))
+            ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location, directory=Path(f'{base_dir}/TestClasses'),
+                                             geometry_artefact_location=GA_location)
 
             paths_to_create_test_class = [Path(f'{base_dir}/TestClasses'),
                                           Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestClasses'),
