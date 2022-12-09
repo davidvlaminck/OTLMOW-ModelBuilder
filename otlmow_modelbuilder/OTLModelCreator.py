@@ -33,7 +33,7 @@ class OTLModelCreator:
         OTLModelCreator.create_enumerations(directory=directory, environment=environment, oslo_collector=oslo_collector)
         OTLModelCreator.create_classes(directory=directory, oslo_collector=oslo_collector,
                                        geo_artefact_collector=geo_artefact_collector)
-        logging.info('finished creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+        logging.info(f'finished creating model in {directory} at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 
     @staticmethod
     def create_primitive_datatypes(directory, oslo_collector):
