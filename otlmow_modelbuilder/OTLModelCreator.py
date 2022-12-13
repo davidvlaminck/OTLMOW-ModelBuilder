@@ -168,6 +168,8 @@ class OTLModelCreator:
     @staticmethod
     def check_and_create_subdirectories(directory: Path):
         if not path.exists(directory):
+            os.makedirs(directory)
+        if not path.exists(directory):
             raise OSError(f'The directory {directory} does not exist. Please create it first.')
         if not path.isdir(directory):
             raise NotADirectoryError(f'{directory} is not a directory.')
