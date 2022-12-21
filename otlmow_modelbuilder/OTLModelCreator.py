@@ -1,9 +1,12 @@
+import concurrent.futures
 import logging
 import os
 import shutil
 from datetime import datetime
 from os import path
 from pathlib import Path
+
+from tqdm import tqdm
 
 from otlmow_modelbuilder.GenericBuilderFunctions import write_to_file
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
@@ -39,7 +42,7 @@ class OTLModelCreator:
     def create_primitive_datatypes(directory, oslo_collector):
         creator = OTLPrimitiveDatatypeCreator(oslo_collector)
 
-        for prim_datatype in oslo_collector.primitive_datatypes:
+        for prim_datatype in tqdm(oslo_collector.primitive_datatypes):
             if prim_datatype.objectUri in ['http://www.w3.org/2000/01/rdf-schema#Literal',
                                            'http://www.w3.org/2001/XMLSchema#dateTime',
                                            'http://www.w3.org/2001/XMLSchema#integer',
@@ -64,7 +67,6 @@ class OTLModelCreator:
                     logging.info(f"Could not create a class for {prim_datatype.name}")
                     pass
                 write_to_file(prim_datatype, 'Datatypes', data_to_write, relative_path=directory)
-                logging.info(f"Created a class for {prim_datatype.name}")
             except BaseException as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {prim_datatype.name}")
@@ -80,7 +82,7 @@ class OTLModelCreator:
     def create_complex_datatypes(directory, oslo_collector):
         creator = OTLComplexDatatypeCreator(oslo_collector)
 
-        for complex_datatype in oslo_collector.complex_datatypes:
+        for complex_datatype in tqdm(oslo_collector.complex_datatypes):
             try:
                 model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
                 data_to_write = creator.create_block_to_write_from_complex_types(complex_datatype,
@@ -92,7 +94,6 @@ class OTLModelCreator:
                     logging.info(f"Could not create a class for {complex_datatype.name}")
                     pass
                 write_to_file(complex_datatype, 'Datatypes', data_to_write, relative_path=directory)
-                logging.info(f"Created a class for {complex_datatype.name}")
             except BaseException as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {complex_datatype.name}")
@@ -101,10 +102,11 @@ class OTLModelCreator:
     def create_union_datatypes(directory, oslo_collector):
         creator = OTLUnionDatatypeCreator(oslo_collector)
 
-        for union_datatype in oslo_collector.union_datatypes:
+        for union_datatype in tqdm(oslo_collector.union_datatypes):
             try:
                 model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
-                data_to_write = creator.create_block_to_write_from_union_types(union_datatype, model_location=model_name)
+                data_to_write = creator.create_block_to_write_from_union_types(union_datatype,
+                                                                               model_location=model_name)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {union_datatype.name}")
                     pass
@@ -112,7 +114,6 @@ class OTLModelCreator:
                     logging.info(f"Could not create a class for {union_datatype.name}")
                     pass
                 write_to_file(union_datatype, 'Datatypes', data_to_write, relative_path=directory)
-                logging.info(f"Created a class for {union_datatype.name}")
             except BaseException as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {union_datatype.name}")
@@ -121,27 +122,41 @@ class OTLModelCreator:
     def create_enumerations(directory, oslo_collector, environment: str = ''):
         creator = OTLEnumerationCreator(oslo_collector)
 
-        for enumeration in oslo_collector.enumerations:
-            try:
-                model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
-                data_to_write = creator.create_block_to_write_from_enumerations(enumeration, environment=environment)
-                if data_to_write is None:
-                    logging.info(f"Could not create a class for {enumeration.name}")
-                    pass
-                if len(data_to_write) == 0:
-                    logging.info(f"Could not create a class for {enumeration.name}")
-                    pass
-                write_to_file(enumeration, 'Datatypes', data_to_write, relative_path=directory)
-                logging.info(f"Created a class for {enumeration.name}")
-            except BaseException as e:
-                logging.error(str(e))
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            results = [executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
+                                       enumeration=enumeration, environment=environment) for enumeration in
+                       oslo_collector.enumerations]
+            for f in tqdm(concurrent.futures.as_completed(results, timeout=20)):
+                pass
+        #
+        # executor = concurrent.futures.ThreadPoolExecutor()
+        # futures = [executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
+        #                            enumeration=enumeration, environment=environment)
+        #            for enumeration in tqdm(oslo_collector.enumerations)]
+        # concurrent.futures.wait(futures, timeout=20)
+
+    @staticmethod
+    def create_enumeration(creator, directory, enumeration, environment):
+        try:
+            model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
+            data_to_write = creator.create_block_to_write_from_enumerations(enumeration, environment=environment)
+            if data_to_write is None:
                 logging.error(f"Could not create a class for {enumeration.name}")
+                pass
+            if len(data_to_write) == 0:
+                logging.error(f"Could not create a class for {enumeration.name}")
+                pass
+            write_to_file(enumeration, 'Datatypes', data_to_write, relative_path=directory)
+            # logging.info(f"Created a class for {enumeration.name}")
+        except BaseException as e:
+            logging.error(str(e))
+            logging.error(f"Could not create a class for {enumeration.name}")
 
     @staticmethod
     def create_classes(directory, oslo_collector, geo_artefact_collector):
         creator = OTLClassCreator(oslo_collector, geo_artefact_collector)
 
-        for oslo_class in oslo_collector.classes:
+        for oslo_class in tqdm(oslo_collector.classes):
             try:
                 model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
                 data_to_write = creator.create_blocks_to_write_from_classes(oslo_class, model_location=model_name)
@@ -160,7 +175,6 @@ class OTLModelCreator:
                     class_directory = get_class_directory_from_ns(ns)
 
                 write_to_file(oslo_class, class_directory, data_to_write, relative_path=directory)
-                logging.info(f"Created a class for {oslo_class.name}")
             except Exception as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {oslo_class.name}")
@@ -208,7 +222,8 @@ class OTLModelCreator:
     @staticmethod
     def check_for_nested_attributes_in_classes(collector: OSLOCollector, exceptions=None):
         if exceptions is None:
-            exceptions = ['https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testComplexTypeMetKard']
+            exceptions = [
+                'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testComplexTypeMetKard']
         for cl in collector.classes:
             if cl.abstract:
                 continue
