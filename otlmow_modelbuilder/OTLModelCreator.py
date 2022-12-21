@@ -2,6 +2,7 @@ import concurrent.futures
 import logging
 import os
 import shutil
+from concurrent.futures import FIRST_COMPLETED
 from datetime import datetime
 from os import path
 from pathlib import Path
@@ -123,20 +124,23 @@ class OTLModelCreator:
         creator = OTLEnumerationCreator(oslo_collector)
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            results = [executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
-                                       enumeration=enumeration, environment=environment) for enumeration in
-                       oslo_collector.enumerations]
-            try:
-                for f in tqdm(concurrent.futures.as_completed(results, timeout=20)):
-                    pass
-            except TimeoutError as exc:
-                logging.error(exc)
-        #
-        # executor = concurrent.futures.ThreadPoolExecutor()
-        # futures = [executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
-        #                            enumeration=enumeration, environment=environment)
-        #            for enumeration in tqdm(oslo_collector.enumerations)]
-        # concurrent.futures.wait(futures, timeout=20)
+            futures = {executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
+                                       enumeration=enumeration, environment=environment): enumeration for enumeration in oslo_collector.enumerations}
+            with tqdm(total=len(futures)) as pbar:
+                while len(futures) > 0:
+                    new_futures = {}
+                    done, pending = concurrent.futures.wait(futures, return_when=FIRST_COMPLETED, timeout=60)
+                    for fut in done:
+                        if fut.exception():
+                            enumeration = futures[fut]
+                            new_futures[executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
+                                           enumeration=enumeration, environment=environment)] = job
+                        else:
+                            pbar.update()
+                    for fut in pending:
+                        job = futures[fut]
+                        new_futures[fut] = job
+                    futures = new_futures
 
     @staticmethod
     def create_enumeration(creator, directory, enumeration, environment):
