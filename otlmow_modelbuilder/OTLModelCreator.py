@@ -126,8 +126,11 @@ class OTLModelCreator:
             results = [executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
                                        enumeration=enumeration, environment=environment) for enumeration in
                        oslo_collector.enumerations]
-            for f in tqdm(concurrent.futures.as_completed(results, timeout=20)):
-                pass
+            try:
+                for f in tqdm(concurrent.futures.as_completed(results, timeout=20)):
+                    pass
+            except TimeoutError as exc:
+                logging.error(exc)
         #
         # executor = concurrent.futures.ThreadPoolExecutor()
         # futures = [executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
