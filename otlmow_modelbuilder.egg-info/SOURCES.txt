@@ -9,6 +9,7 @@ otlmow_modelbuilder/GeometrieInMemoryCreator.py
 otlmow_modelbuilder/GeometrieInheritanceProcessor.py
 otlmow_modelbuilder/GeometrieType.py
 otlmow_modelbuilder/HelperFunctions.py
+otlmow_modelbuilder/ModelBuilder.py
 otlmow_modelbuilder/NewOTLBaseClassNotImplemented.py
 otlmow_modelbuilder/OSLOInMemoryCreator.py
 otlmow_modelbuilder/OTLClassCreator.py
