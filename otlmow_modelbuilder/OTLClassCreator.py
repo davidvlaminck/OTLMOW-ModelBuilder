@@ -154,7 +154,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
             datablock.append('        super().__init__()')
             datablock.append('')
         elif len(inheritances) + len(list_of_geometry_types) > 1:
-            for inheritance in sorted(inheritances, key=lambda a: a.base_name):
+            for inheritance in inheritances:
                 datablock.append(f'        {inheritance.base_name}.__init__(self)')
             for geo_type in sorted(list_of_geometry_types):
                 datablock.append(f'        {geo_type}.__init__(self)')
