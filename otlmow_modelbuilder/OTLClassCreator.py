@@ -245,6 +245,9 @@ class OTLClassCreator(AbstractDatatypeCreator):
                 first_good_candidate = inheritance
                 break
 
+        if first_good_candidate is None:
+            return inheritances
+
         inheritances.remove(first_good_candidate)
         inheritances.insert(0, first_good_candidate)
         return inheritances
