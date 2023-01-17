@@ -171,6 +171,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
     def get_class_line_from_class_and_inheritances(self, oslo_class: OSLOClass, inheritances: [Inheritance],
                                                    geometry_types: [GeometrieType]) -> str:
+        inheritances = self.sort_inheritances_for_relation_interactor_priority(inheritances)
         if oslo_class.abstract + len(inheritances) + len(geometry_types) < 1:
             raise NotImplementedError(f"{oslo_class.objectUri} class structure not implemented")
         if oslo_class.abstract == 1 and len(inheritances) + len(geometry_types) < 1:
@@ -219,3 +220,31 @@ class OTLClassCreator(AbstractDatatypeCreator):
             datablock.append(
                 f"        self.add_valid_relation(relation='{relation.objectUri}', target='{relation.doel_uri}'{deprecated})")
         datablock.append('')
+
+    relation_interactor_uris = ['https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie',
+                                'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
+                                'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject',
+                                'http://purl.org/dc/terms/Agent']
+
+    def search_recursive_inheritance_for_relation_interactor(self, base_uri: str) -> bool:
+        inheritances = self.oslo_collector.find_inheritances_by_class_uri(base_uri)
+        for inheritance in inheritances:
+            if inheritance.base_uri in self.relation_interactor_uris:
+                return True
+            if self.search_recursive_inheritance_for_relation_interactor(inheritance.base_uri):
+                return True
+        return False
+
+    def sort_inheritances_for_relation_interactor_priority(self, inheritances):
+        first_good_candidate = None
+
+        for inheritance in inheritances:
+            if first_good_candidate is not None:
+                break
+            if self.search_recursive_inheritance_for_relation_interactor(inheritance.base_uri):
+                first_good_candidate = inheritance
+                break
+
+        inheritances.remove(first_good_candidate)
+        inheritances.insert(0, first_good_candidate)
+        return inheritances

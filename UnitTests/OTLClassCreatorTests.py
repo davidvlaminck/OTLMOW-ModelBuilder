@@ -226,6 +226,37 @@ class OTLClassCreatorTests(unittest.TestCase):
 
         self.assertEqual(inheritanceLine, dataToWrite[14])
 
+    def test_check_inheritances_RelationInteractor(self):
+        collector = OSLOCollector(mock.Mock(spec=OSLOInMemoryCreator))
+        collector.classes = [
+            OSLOClass('A', 'A', 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#A',
+                      'A (does not inherit from RelationInteractor', '', 0, ''),
+            OSLOClass('B', 'B', 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#B',
+                      'B (inherits from RelationInteractor indirectly through D', '', 0, ''),
+            OSLOClass('D', 'D', 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#D',
+                      'D (inherits from RelationInteractor through AIMObject', '', 0, ''),
+            OSLOClass('C', 'C', 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#C',
+                      'C (inherits from A and B', '', 0, ''),
+            OSLOClass('AIMObject', 'AIMObject', 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
+                      'AIMObject', '', 0, '')
+        ]
+        collector.inheritances = [
+            Inheritance('AIMObject', 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
+                        'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#D', 'D', ''),
+            Inheritance('D', 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#D',
+                        'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#B', 'B', ''),
+            Inheritance('B', 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#B',
+                        'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#C', 'C', ''),
+            Inheritance('A', 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#A',
+                        'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#C', 'C', '')
+        ]
+        collector.attributes = []
+        creator = OTLClassCreator(collector)
+        c_class = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#C')
+        inheritance_line = creator.create_blocks_to_write_from_classes(c_class)[6]
+        self.assertEqual('class C(B, A):', inheritance_line)
+
+
     @staticmethod
     def set_up_real_collector_and_creator():
         base_dir = os.path.dirname(os.path.realpath(__file__))
