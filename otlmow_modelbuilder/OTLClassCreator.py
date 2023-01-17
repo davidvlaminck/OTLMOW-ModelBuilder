@@ -132,6 +132,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
         datablock.append('')
         datablock.append('')
         datablock.append(f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit')
+
+        inheritances = self.sort_inheritances_for_relation_interactor_priority(inheritances)
         datablock.append(self.get_class_line_from_class_and_inheritances(oslo_class=oslo_class,
                                                                          inheritances=inheritances,
                                                                          geometry_types=list_of_geometry_types))
@@ -171,7 +173,6 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
     def get_class_line_from_class_and_inheritances(self, oslo_class: OSLOClass, inheritances: [Inheritance],
                                                    geometry_types: [GeometrieType]) -> str:
-        inheritances = self.sort_inheritances_for_relation_interactor_priority(inheritances)
         if oslo_class.abstract + len(inheritances) + len(geometry_types) < 1:
             raise NotImplementedError(f"{oslo_class.objectUri} class structure not implemented")
         if oslo_class.abstract == 1 and len(inheritances) + len(geometry_types) < 1:
