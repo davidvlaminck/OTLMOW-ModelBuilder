@@ -240,7 +240,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
         first_good_candidate = None
 
         for inheritance in inheritances:
-            if first_good_candidate is not None:
+            if inheritance.base_uri in self.relation_interactor_uris:
+                first_good_candidate = inheritance
                 break
             if self.search_recursive_inheritance_for_relation_interactor(inheritance.base_uri):
                 first_good_candidate = inheritance
