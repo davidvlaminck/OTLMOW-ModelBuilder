@@ -82,6 +82,10 @@ def add_attributen_to_data_block(attributen, datablock: List[str], for_class_use
         whitespace = get_white_space_equivalent(f'        self._{attribuut.name} = OTLAttribuut(')
         field_name = get_single_field_from_type_uri(attribuut.type)
 
+        if attribuut.objectUri == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Segmentcontroller.beveil?igingssleutel':
+            attribuut.objectUri = attribuut.objectUri.replace('?', '_')
+            attribuut.name = attribuut.name.replace('?', '_')
+
         datablock.append(f'        self._{attribuut.name} = OTLAttribuut(field={field_name},')
         datablock.append(f'{whitespace}naam={wrap_in_quotes(attribuut.name)},')
         datablock.append(f'{whitespace}label={wrap_in_quotes(attribuut.label)},')

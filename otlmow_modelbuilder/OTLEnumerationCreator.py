@@ -74,6 +74,12 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         datablock.append('    options = {')
 
         for waarde in sorted(keuzelijst_waardes, key=lambda w: w.invulwaarde):
+            if oslo_enumeration.objectUri == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlFiguratieCode':
+                waarde.definitie = waarde.definitie.replace('²', '^2')
+                waarde.invulwaarde = waarde.invulwaarde.replace("'", "\\'")
+                waarde.label = waarde.label.replace("'", "\\'")
+                waarde.objectUri = waarde.objectUri.replace("'", "\\'")
+
             whitespace = get_white_space_equivalent(f"        '{waarde.invulwaarde}': KeuzelijstWaarde(")
             datablock.append(f"        '{waarde.invulwaarde}': KeuzelijstWaarde(invulwaarde='{waarde.invulwaarde}',")
             datablock.append(f"{whitespace}label='{waarde.label}',")
