@@ -45,7 +45,9 @@ def get_non_single_field_from_type_uri(field_type: str):
     if '#Dte' in field_type or '#KwantWrd' in field_type:
         type_name = field_type[field_type.find("#") + 1::]
         return ['ComplexField', type_name]
-    if '#Kl' in field_type:
+    if '#Kl' in field_type or field_type in [
+            'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AntiParkeerpaalType',
+            'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KLLuidsprekerVormgeving']:
         type_name = field_type[field_type.find("#") + 1::]
         return ['KeuzelijstField', type_name]
     if '#Dtu' in field_type:
