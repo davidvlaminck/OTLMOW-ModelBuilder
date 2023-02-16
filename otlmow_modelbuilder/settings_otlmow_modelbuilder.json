@@ -10,5 +10,21 @@
             "https://schema.org/OpeningHoursSpecification" : "DtcOpeningsurenSpecificatie"
         },
         "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
+    },
+    "primitive_datatype_validation_rules" : {
+        "valid_uri_and_types" : {},
+        "valid_regexes" : [
+            "^http://www.w3.org/200.+",
+            "^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dte.+",
+            "^https://wegenenverkeer.data.vlaanderen.be/ns/.+#KwantWrd.+"]
+    },
+    "union_datatype_validation_rules" : {
+        "valid_uri_and_types" : {},
+        "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtu.+"]
+    },
+    "enumeration_validation_rules" : {
+        "valid_uri_and_types" : {},
+        "valid_regexes" : [
+            "^https://wegenenverkeer.data.vlaanderen.be/ns/.+"]
     }
 }

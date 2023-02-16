@@ -33,19 +33,25 @@ class OTLModelCreator:
         oslo_collector.query_correct_base_classes()
         OTLModelCreator.check_for_nested_attributes_in_classes(collector=oslo_collector,
                                                                known_classes_uris=settings['nested_list_class_uris'])
-        OTLModelCreator.create_primitive_datatypes(directory=directory, oslo_collector=oslo_collector)
+        OTLModelCreator.create_primitive_datatypes(
+            directory=directory, oslo_collector=oslo_collector,
+            primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules'])
         OTLModelCreator.create_complex_datatypes(
             directory=directory, oslo_collector=oslo_collector,
             complex_datatype_validation_rules=settings['complex_datatype_validation_rules'])
-        OTLModelCreator.create_union_datatypes(directory=directory, oslo_collector=oslo_collector)
-        OTLModelCreator.create_enumerations(directory=directory, environment=environment, oslo_collector=oslo_collector)
-        OTLModelCreator.create_classes(directory=directory, oslo_collector=oslo_collector,
-                                       geo_artefact_collector=geo_artefact_collector,
-                                       valid_uri_and_types=settings['complex_datatype_validation_rules']['valid_uri_and_types'])
+        OTLModelCreator.create_union_datatypes(
+            directory=directory, oslo_collector=oslo_collector,
+            union_datatype_validation_rules=settings['union_datatype_validation_rules'])
+        OTLModelCreator.create_enumerations(
+            directory=directory, environment=environment, oslo_collector=oslo_collector,
+            enumeration_validation_rules=settings['enumeration_validation_rules'])
+        OTLModelCreator.create_classes(
+            directory=directory, oslo_collector=oslo_collector, geo_artefact_collector=geo_artefact_collector,
+            valid_uri_and_types=settings['complex_datatype_validation_rules']['valid_uri_and_types'])
         logging.info(f'finished creating model in {directory} at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 
     @staticmethod
-    def create_primitive_datatypes(directory, oslo_collector):
+    def create_primitive_datatypes(directory, oslo_collector, primitive_datatype_validation_rules):
         creator = OTLPrimitiveDatatypeCreator(oslo_collector)
 
         for prim_datatype in tqdm(oslo_collector.primitive_datatypes):
@@ -64,8 +70,9 @@ class OTLModelCreator:
 
             try:
                 model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
-                data_to_write = creator.create_block_to_write_from_primitive_types(prim_datatype,
-                                                                                   model_location=model_name)
+                data_to_write = creator.create_block_to_write_from_primitive_types(
+                    prim_datatype, model_location=model_name,
+                    primitive_datatype_validation_rules=primitive_datatype_validation_rules)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {prim_datatype.name}")
                     pass
@@ -106,14 +113,15 @@ class OTLModelCreator:
                 logging.error(f"Could not create a class for {complex_datatype.name}")
 
     @staticmethod
-    def create_union_datatypes(directory, oslo_collector):
+    def create_union_datatypes(directory, oslo_collector, union_datatype_validation_rules):
         creator = OTLUnionDatatypeCreator(oslo_collector)
 
         for union_datatype in tqdm(oslo_collector.union_datatypes):
             try:
                 model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
-                data_to_write = creator.create_block_to_write_from_union_types(union_datatype,
-                                                                               model_location=model_name)
+                data_to_write = creator.create_block_to_write_from_union_types(
+                    union_datatype, model_location=model_name,
+                    union_datatype_validation_rules=union_datatype_validation_rules)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {union_datatype.name}")
                     pass
@@ -126,12 +134,14 @@ class OTLModelCreator:
                 logging.error(f"Could not create a class for {union_datatype.name}")
 
     @staticmethod
-    def create_enumerations(directory, oslo_collector, environment: str = ''):
+    def create_enumerations(directory, oslo_collector, enumeration_validation_rules, environment: str = ''):
         creator = OTLEnumerationCreator(oslo_collector)
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = {executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
-                                       enumeration=enumeration, environment=environment): enumeration for enumeration in oslo_collector.enumerations}
+                                       enumeration=enumeration, environment=environment,
+                                       enumeration_validation_rules=enumeration_validation_rules): enumeration for
+                       enumeration in oslo_collector.enumerations}
             with tqdm(total=len(futures)) as pbar:
                 while len(futures) > 0:
                     new_futures = {}
@@ -139,8 +149,10 @@ class OTLModelCreator:
                     for fut in done:
                         if fut.exception():
                             enumeration = futures[fut]
-                            new_futures[executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
-                                           enumeration=enumeration, environment=environment)] = job
+                            new_futures[executor.submit(OTLModelCreator.create_enumeration, creator=creator,
+                                                        directory=directory, enumeration=enumeration,
+                                                        environment=environment,
+                                                        enumeration_validation_rules=enumeration_validation_rules)] = job
                         else:
                             pbar.update()
                     for fut in pending:
@@ -149,10 +161,11 @@ class OTLModelCreator:
                     futures = new_futures
 
     @staticmethod
-    def create_enumeration(creator, directory, enumeration, environment):
+    def create_enumeration(creator, directory, enumeration, environment, enumeration_validation_rules):
         try:
             model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
-            data_to_write = creator.create_block_to_write_from_enumerations(enumeration, environment=environment)
+            data_to_write = creator.create_block_to_write_from_enumerations(
+                enumeration, environment=environment, enumeration_validation_rules=enumeration_validation_rules)
             if data_to_write is None:
                 logging.error(f"Could not create a class for {enumeration.name}")
                 pass

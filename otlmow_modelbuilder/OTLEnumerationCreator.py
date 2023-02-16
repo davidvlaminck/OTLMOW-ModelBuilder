@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 from os.path import abspath
 
 import rdflib
@@ -36,18 +37,33 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         logging.info("Created an instance of OTLEnumerationCreator")
         self.osloCollector = oslo_collector
 
-    def create_block_to_write_from_enumerations(self, oslo_enumeration: OSLOEnumeration, environment: str = default_environment) -> [str]:
+    def create_block_to_write_from_enumerations(self, oslo_enumeration: OSLOEnumeration, enumeration_validation_rules,
+                                                environment: str = default_environment) -> [str]:
         if not isinstance(oslo_enumeration, OSLOEnumeration):
             raise ValueError(f"Input is not a OSLOEnumeration")
-        if oslo_enumeration.objectUri == '' or not oslo_enumeration.objectUri.startswith(
-                'https://wegenenverkeer.data.vlaanderen.be/ns/'):
+
+        if oslo_enumeration.objectUri == '':
             raise ValueError(f"OSLOEnumeration.objectUri is invalid. Value = '{oslo_enumeration.objectUri}'")
+
+        if oslo_enumeration.objectUri in enumeration_validation_rules['valid_uri_and_types'].keys():
+            pass
+        else:
+            match_re = False
+            for regex in enumeration_validation_rules["valid_regexes"]:
+                match_re = re.match(pattern=regex, string=oslo_enumeration.objectUri)
+                if match_re:
+                    break
+            if not match_re:
+                raise ValueError(
+                    f"OSLOEnumeration.objectUri is invalid. Value = '{oslo_enumeration.objectUri}'")
+
         if oslo_enumeration.name == '':
             raise ValueError(f"OSLOEnumeration.name is invalid. Value = '{oslo_enumeration.name}'")
 
         return self.create_block_to_write_from_enumeration(oslo_enumeration=oslo_enumeration, environment=environment)
 
-    def create_block_to_write_from_enumeration(self, oslo_enumeration: OSLOEnumeration, environment: str = default_environment) -> [str]:
+    def create_block_to_write_from_enumeration(self, oslo_enumeration: OSLOEnumeration,
+                                               environment: str = default_environment) -> [str]:
         keuzelijst_waardes = self.get_keuzelijstwaardes_by_name(oslo_enumeration.name, env=environment)
         adm_status = self.get_adm_status_by_name(oslo_enumeration.name, env=environment)
 

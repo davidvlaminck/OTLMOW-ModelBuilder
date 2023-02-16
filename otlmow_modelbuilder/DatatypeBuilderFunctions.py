@@ -109,7 +109,7 @@ def get_fields_and_names_from_list_of_attributes(attributen, valid_uri_and_types
 
 
 def get_type_name_of_union_attribuut(type_uri: str):
-    if type_uri.startswith("https://wegenenverkeer.data.vlaanderen.be/ns/"):
-        return type_uri[type_uri.find("#") + 1::]
+    if '/ns/' in type_uri and '#' in type_uri:
+        return type_uri[type_uri.find('#') + 1::]
 
-    raise NotImplementedError(f"get_type_name_of_complex_attribuut fails to get typename from {type_uri}")
+    raise NotImplementedError(f'get_type_name_of_complex_attribuut fails to get typename from {type_uri}')

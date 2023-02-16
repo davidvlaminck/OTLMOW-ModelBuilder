@@ -3,7 +3,6 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock
 
-
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnion import OSLODatatypeUnion
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator
@@ -85,6 +84,11 @@ expectedDtu = ['# coding=utf-8',
 
 
 class OTLUnionDatatypeCreatorTests(unittest.TestCase):
+    union_datatype_validation_rules = {
+        "valid_uri_and_types": {},
+        "valid_regexes": ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtu.+"]
+    }
+
     def test_invalid_oslo_datatype_union(self):
         creator = OTLUnionDatatypeCreator(MagicMock(spec=OSLOCollector))
 
@@ -96,7 +100,8 @@ class OTLUnionDatatypeCreatorTests(unittest.TestCase):
                                                     deprecated_version='')
 
             with self.assertRaises(ValueError) as exception_bad_name:
-                creator.create_block_to_write_from_union_types(oslo_datatype_union)
+                creator.create_block_to_write_from_union_types(
+                    oslo_datatype_union, union_datatype_validation_rules=self.union_datatype_validation_rules)
             self.assertEqual(str(exception_bad_name.exception), "OSLODatatypeUnion.name is invalid. Value = ''")
 
         with self.subTest('empty uri'):
@@ -105,7 +110,8 @@ class OTLUnionDatatypeCreatorTests(unittest.TestCase):
                                                     deprecated_version='')
 
             with self.assertRaises(ValueError) as exception_bad_uri:
-                creator.create_block_to_write_from_union_types(oslo_datatype_union)
+                creator.create_block_to_write_from_union_types(
+                    oslo_datatype_union, union_datatype_validation_rules=self.union_datatype_validation_rules)
             self.assertEqual(str(exception_bad_uri.exception), "OSLODatatypeUnion.objectUri is invalid. Value = ''")
 
         with self.subTest('bad uri'):
@@ -114,12 +120,15 @@ class OTLUnionDatatypeCreatorTests(unittest.TestCase):
                                                     deprecated_version='')
 
             with self.assertRaises(ValueError) as exception_bad_uri:
-                creator.create_block_to_write_from_union_types(oslo_datatype_union)
-            self.assertEqual(str(exception_bad_uri.exception), "OSLODatatypeUnion.objectUri is invalid. Value = 'bad objectUri'")
+                creator.create_block_to_write_from_union_types(
+                    oslo_datatype_union, union_datatype_validation_rules=self.union_datatype_validation_rules)
+            self.assertEqual(str(exception_bad_uri.exception),
+                             "OSLODatatypeUnion.objectUri is invalid. Value = 'bad objectUri'")
 
         with self.subTest('invalid type'):
             with self.assertRaises(ValueError) as exception_bad_name:
-                creator.create_block_to_write_from_union_types(None)
+                creator.create_block_to_write_from_union_types(None,
+                    union_datatype_validation_rules=self.union_datatype_validation_rules)
             self.assertEqual(str(exception_bad_name.exception), "Input is not a OSLODatatypeUnion")
 
     def setUp(self) -> OSLOCollector:
@@ -136,5 +145,6 @@ class OTLUnionDatatypeCreatorTests(unittest.TestCase):
         creator = OTLUnionDatatypeCreator(collector)
         datatype_dtu_test_union_type = collector.find_union_datatype_by_uri(
             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtuTestUnionType')
-        data_to_write = creator.create_block_to_write_from_union_types(datatype_dtu_test_union_type)
+        data_to_write = creator.create_block_to_write_from_union_types(
+            datatype_dtu_test_union_type, union_datatype_validation_rules=self.union_datatype_validation_rules)
         self.assertEqual(expectedDtu, data_to_write)

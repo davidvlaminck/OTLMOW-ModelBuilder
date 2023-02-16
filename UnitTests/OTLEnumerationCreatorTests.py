@@ -65,36 +65,47 @@ expectedKeuzelijst = ['# coding=utf-8',
 
 
 class OTLEnumerationCreatorTests(unittest.TestCase):
+    enumeration_validation_rules = {
+        "valid_uri_and_types": {},
+        "valid_regexes": [
+            "^https://wegenenverkeer.data.vlaanderen.be/ns/.+"]
+    }
+
     def test_InvalidOSLOEnumerationEmptyUri(self):
         collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
         creator = OTLEnumerationCreator(collector)
-        osloEnumeration = OSLOEnumeration(name='name', objectUri='', definition='', label='', usagenote='',
-                                          deprecated_version='', codelist='')
+        oslo_enumeration = OSLOEnumeration(name='name', objectUri='', definition='', label='', usagenote='',
+                                           deprecated_version='', codelist='')
 
         with self.assertRaises(ValueError) as exception_empty_uri:
-            creator.create_block_to_write_from_enumerations(osloEnumeration)
+            creator.create_block_to_write_from_enumerations(
+                oslo_enumeration, enumeration_validation_rules=self.enumeration_validation_rules)
         self.assertEqual(str(exception_empty_uri.exception), "OSLOEnumeration.objectUri is invalid. Value = ''")
 
     def test_InvalidOSLOEnumerationBadUri(self):
         collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
         creator = OTLEnumerationCreator(collector)
-        osloEnumeration = OSLOEnumeration(name='name', objectUri='Bad objectUri', definition='', label='', usagenote='',
-                                          deprecated_version='', codelist='')
+        oslo_enumeration = OSLOEnumeration(name='name', objectUri='Bad objectUri', definition='', label='',
+                                           usagenote='',
+                                           deprecated_version='', codelist='')
 
         with self.assertRaises(ValueError) as exception_bad_uri:
-            creator.create_block_to_write_from_enumerations(osloEnumeration)
-        self.assertEqual(str(exception_bad_uri.exception), "OSLOEnumeration.objectUri is invalid. Value = 'Bad objectUri'")
+            creator.create_block_to_write_from_enumerations(
+                oslo_enumeration, enumeration_validation_rules=self.enumeration_validation_rules)
+        self.assertEqual(str(exception_bad_uri.exception),
+                         "OSLOEnumeration.objectUri is invalid. Value = 'Bad objectUri'")
 
     def test_InvalidOSLOEnumerationEmptyName(self):
         collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
         creator = OTLEnumerationCreator(collector)
-        osloEnumeration = OSLOEnumeration(name='',
-                                          objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrd',
-                                          definition='', label='', usagenote='',
-                                          deprecated_version='', codelist='')
+        oslo_enumeration = OSLOEnumeration(name='',
+                                           objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrd',
+                                           definition='', label='', usagenote='',
+                                           deprecated_version='', codelist='')
 
         with self.assertRaises(ValueError) as exception_bad_name:
-            creator.create_block_to_write_from_enumerations(osloEnumeration)
+            creator.create_block_to_write_from_enumerations(
+                oslo_enumeration, enumeration_validation_rules=self.enumeration_validation_rules)
         self.assertEqual(str(exception_bad_name.exception), "OSLOEnumeration.name is invalid. Value = ''")
 
     def test_InValidType(self):
@@ -102,7 +113,8 @@ class OTLEnumerationCreatorTests(unittest.TestCase):
         collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
         creator = OTLEnumerationCreator(collector)
         with self.assertRaises(ValueError) as exception_bad_name:
-            creator.create_block_to_write_from_enumerations(bad_primitive)
+            creator.create_block_to_write_from_enumerations(
+                bad_primitive, enumeration_validation_rules=self.enumeration_validation_rules)
         self.assertEqual(str(exception_bad_name.exception), "Input is not a OSLOEnumeration")
 
     def setUp(self) -> OSLOCollector:
@@ -119,9 +131,10 @@ class OTLEnumerationCreatorTests(unittest.TestCase):
         creator = OTLEnumerationCreator(collector)
         KlAIMToestand = collector.find_enumeration_by_uri(
             'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#KlTestKeuzelijst')
-        dataToWrite = creator.create_block_to_write_from_enumerations(KlAIMToestand)
+        data_to_write = creator.create_block_to_write_from_enumerations(
+            KlAIMToestand, enumeration_validation_rules=self.enumeration_validation_rules)
 
-        self.assertEqual(expectedKeuzelijst, dataToWrite)
+        self.assertEqual(expectedKeuzelijst, data_to_write)
 
     def test_get_keuzelijstwaardes_by_name(self):
         collector = self.setUp()
@@ -144,8 +157,8 @@ class OTLEnumerationCreatorTests(unittest.TestCase):
         file_location = f'{base_dir}/KlTestKeuzelijst.ttl'
         g = rdflib.Graph()
         g.parse(file_location, format="turtle")
-        list = OTLEnumerationCreator.get_keuzelijstwaardes_from_graph(g)
-        self.assertEqual(6, len(list))
+        list_values = OTLEnumerationCreator.get_keuzelijstwaardes_from_graph(g)
+        self.assertEqual(6, len(list_values))
 
     def test_get_adm_status_from_graph(self):
         base_dir = os.path.dirname(os.path.realpath(__file__))
@@ -160,8 +173,8 @@ class OTLEnumerationCreatorTests(unittest.TestCase):
         file_location = f'{base_dir}/new_format_ttl.ttl'
         g = rdflib.Graph()
         g.parse(file_location, format="turtle")
-        list = OTLEnumerationCreator.get_keuzelijstwaardes_from_graph(g)
-        self.assertEqual(2, len(list))
+        list_values = OTLEnumerationCreator.get_keuzelijstwaardes_from_graph(g)
+        self.assertEqual(2, len(list_values))
 
     def test_get_adms_status_for_options(self):
         collector = self.setUp()
