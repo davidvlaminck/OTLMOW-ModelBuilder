@@ -1,5 +1,6 @@
 import logging
 import re
+from typing import Dict
 
 from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block, \
     get_fields_to_import_from_list_of_attributes
@@ -27,7 +28,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
                                                 inheritances=self.oslo_collector.inheritances)
             self.geometry_types = gip.process_inheritances()
 
-    def create_blocks_to_write_from_classes(self, oslo_class: OSLOClass, model_location='') -> [str]:
+    def create_blocks_to_write_from_classes(self, oslo_class: OSLOClass, model_location='', valid_uri_and_types: Dict = None) -> [str]:
         if not isinstance(oslo_class, OSLOClass):
             raise ValueError(f"Input is not a OSLOClass")
 
@@ -42,9 +43,11 @@ class OTLClassCreator(AbstractDatatypeCreator):
         if oslo_class.name == '':
             raise ValueError(f"OSLOClass.name is invalid. Value = '{oslo_class.name}'")
 
-        return self.create_block_from_class(oslo_class, model_location)
+        return self.create_block_from_class(oslo_class, model_location, valid_uri_and_types=valid_uri_and_types)
 
-    def create_block_from_class(self, oslo_class: OSLOClass, model_location: str = '') -> [str]:
+    def create_block_from_class(self, oslo_class: OSLOClass, model_location: str = '', valid_uri_and_types: Dict = None) -> [str]:
+        if valid_uri_and_types is None:
+            valid_uri_and_types = {}
         attributen = self.oslo_collector.find_attributes_by_class(oslo_class)
         inheritances = self.oslo_collector.find_inheritances_by_class(oslo_class)
         list_of_geometry_types = self.get_geometry_types_from_uri(oslo_class.objectUri)
@@ -109,7 +112,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
             raise NotImplementedError("readonly property is assumed to be 0 on value fields")
 
         list_of_fields = get_fields_to_import_from_list_of_attributes(oslo_collector=self.oslo_collector,
-                                                                      attributen=attributen)
+                                                                      attributen=attributen,
+                                                                      valid_uri_and_types=valid_uri_and_types)
         base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
                        'IntegerField', 'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField',
                        'NonNegIntegerField', 'TimeField', 'StringField', 'UnionWaarden']
@@ -165,7 +169,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         self.add_relations_to_datablock(datablock, oslo_class.objectUri)
 
-        add_attributen_to_data_block(attributen, datablock, for_class_use=True, valid_uri_and_types={})
+        add_attributen_to_data_block(attributen, datablock, for_class_use=True, valid_uri_and_types=valid_uri_and_types)
         if len(inheritances) == 0 and len(attributen) == 0:
             datablock.append('        pass')
 

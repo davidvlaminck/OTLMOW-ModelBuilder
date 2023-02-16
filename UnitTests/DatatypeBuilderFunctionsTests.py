@@ -21,35 +21,38 @@ class DatatypeBuilderFunctionsTests(unittest.TestCase):
 
     def test_get_non_single_field_from_type_uri_ComplexField(self):
         types_list = get_non_single_field_from_type_uri(
-            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType')
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType',
+            valid_uri_and_types={})
         expected_list = ['ComplexField', 'DtcTestComplexType']
 
         self.assertEqual(expected_list, types_list)
 
     def test_get_non_single_field_from_type_uri_DteField(self):
         types_list = get_non_single_field_from_type_uri(
-            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DteTestEenvoudigType')
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DteTestEenvoudigType',
+            valid_uri_and_types={})
         expected_list = ['ComplexField', 'DteTestEenvoudigType']
 
         self.assertEqual(expected_list, types_list)
 
     def test_get_non_single_field_from_type_uri_KwantWrdField(self):
         types_list = get_non_single_field_from_type_uri(
-            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTest')
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTest', valid_uri_and_types={})
         expected_list = ['ComplexField', 'KwantWrdTest']
 
         self.assertEqual(expected_list, types_list)
 
     def test_getNonPrimitiveFieldFromTypeUri_UnionTypeField(self):
         types_list = get_non_single_field_from_type_uri(
-            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtuTestUnionType')
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtuTestUnionType', valid_uri_and_types={})
         expected_list = ['UnionTypeField', 'DtuTestUnionType']
 
         self.assertEqual(expected_list, types_list)
 
     def test_get_non_single_field_from_type_uri_Keuzelijst(self):
         types_list = get_non_single_field_from_type_uri(
-            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlTestKeuzelijst')
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlTestKeuzelijst',
+            valid_uri_and_types={})
         expected_list = ['KeuzelijstField', 'KlTestKeuzelijst']
 
         self.assertEqual(expected_list, types_list)
@@ -58,7 +61,7 @@ class DatatypeBuilderFunctionsTests(unittest.TestCase):
         collector = self.setUp()
         dtcIdentificator = collector.find_complex_datatype_attributes_by_class_uri(
             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcIdentificator')
-        type_name = get_type_name_of_complex_attribuut(dtcIdentificator[0].type)
+        type_name = get_type_name_of_complex_attribuut(dtcIdentificator[0].type, valid_uri_and_types={})
         self.assertEqual("string", type_name)
 
     def test_get_type_link_from_attribuut_Boolean(self):

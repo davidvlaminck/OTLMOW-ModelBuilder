@@ -70,6 +70,9 @@ expectedDtc = ["# coding=utf-8",
 
 
 class OTLComplexDatatypeCreatorTests(unittest.TestCase):
+    complex_datatype_validation_rules = {'valid_uri_and_types': {},
+                                         'valid_regexes': ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]}
+
     def test_InvalidOSLODatatypeComplexEmptyUri(self):
         collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
         creator = OTLComplexDatatypeCreator(collector)
@@ -77,7 +80,8 @@ class OTLComplexDatatypeCreatorTests(unittest.TestCase):
                                                   deprecated_version='')
 
         with self.assertRaises(ValueError) as exception_empty_uri:
-            creator.create_block_to_write_from_complex_types(osloDatatypeComplex)
+            creator.create_block_to_write_from_complex_types(
+                osloDatatypeComplex, complex_datatype_validation_rules=self.complex_datatype_validation_rules)
         self.assertEqual(str(exception_empty_uri.exception), "OSLODatatypeComplex.objectUri is invalid. Value = ''")
 
     def test_InvalidOSLODatatypeComplexBadUri(self):
@@ -87,7 +91,8 @@ class OTLComplexDatatypeCreatorTests(unittest.TestCase):
                                                   usagenote='', deprecated_version='')
 
         with self.assertRaises(ValueError) as exception_bad_uri:
-            creator.create_block_to_write_from_complex_types(osloDatatypeComplex)
+            creator.create_block_to_write_from_complex_types(
+                osloDatatypeComplex, complex_datatype_validation_rules=self.complex_datatype_validation_rules)
         self.assertEqual(str(exception_bad_uri.exception), "OSLODatatypeComplex.objectUri is invalid. Value = 'Bad objectUri'")
 
     def test_InvalidOSLODatatypeComplexEmptyName(self):
@@ -98,15 +103,17 @@ class OTLComplexDatatypeCreatorTests(unittest.TestCase):
                                                   definition='', label='', usagenote='', deprecated_version='')
 
         with self.assertRaises(ValueError) as exception_bad_name:
-            creator.create_block_to_write_from_complex_types(osloDatatypeComplex)
-        self.assertEqual(str(exception_bad_name.exception), "OSLODatatypeComplex.name is invalid. Value = ''")
+            creator.create_block_to_write_from_complex_types(
+                osloDatatypeComplex, complex_datatype_validation_rules=self.complex_datatype_validation_rules)
+        self.assertEqual("OSLODatatypeComplex.name is invalid. Value = ''", str(exception_bad_name.exception))
 
     def test_InValidType(self):
-        bad_Complex = True
+        bad_complex = True
         collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
         creator = OTLComplexDatatypeCreator(collector)
         with self.assertRaises(ValueError) as exception_bad_name:
-            creator.create_block_to_write_from_complex_types(bad_Complex)
+            creator.create_block_to_write_from_complex_types(
+                bad_complex, complex_datatype_validation_rules=self.complex_datatype_validation_rules)
         self.assertEqual(str(exception_bad_name.exception), "Input is not a OSLODatatypeComplex")
 
     def setUp(self) -> OSLOCollector:

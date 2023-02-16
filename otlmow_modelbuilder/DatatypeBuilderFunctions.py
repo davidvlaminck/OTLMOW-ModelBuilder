@@ -73,17 +73,11 @@ def get_attributen_by_type_field(oslo_collector, type_field, oslo_datatype):
         return oslo_collector.find_primitive_datatype_attributes_by_class_uri(oslo_datatype.objectUri)
 
 
-def get_type_name_of_complex_attribuut(type_uri: str):
-    if type_uri.startswith("https://wegenenverkeer.data.vlaanderen.be/ns/") or type_uri.startswith(
-            "http://www.w3.org/2001/XMLSchema#"):
-        return type_uri[type_uri.find("#") + 1::]
-    elif type_uri.startswith("https://schema.org/"):
-        if type_uri == "https://schema.org/ContactPoint":
-            return "DtcContactinfo"
-        if type_uri == "https://schema.org/OpeningHoursSpecification":
-            return "DtcOpeningsurenSpecificatie"
-        raise NotImplementedError(
-            f"Field of type {type_uri} is not implemented in DatatypeCreator.get_type_name_of_complex_attribuut")
+def get_type_name_of_complex_attribuut(type_uri: str, valid_uri_and_types):
+    if '/ns/' in type_uri or type_uri.startswith('http://www.w3.org/2001/XMLSchema#'):
+        return type_uri[type_uri.find('#') + 1::]
+    if type_uri in valid_uri_and_types.keys():
+        return valid_uri_and_types[type_uri]
 
     raise NotImplementedError(f"get_type_name_of_complex_attribuut fails to get typename from {type_uri}")
 

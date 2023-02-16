@@ -137,7 +137,8 @@ def add_attributen_to_data_block(attributen, datablock: List[str], valid_uri_and
     return datablock
 
 
-def get_fields_to_import_from_list_of_attributes(oslo_collector, attributen, list_to_start_from=None):
+def get_fields_to_import_from_list_of_attributes(oslo_collector, attributen, valid_uri_and_types,
+                                                 list_to_start_from=None):
     if list_to_start_from is None:
         list_to_start_from = []
     if len(attributen) == 0:
@@ -153,7 +154,8 @@ def get_fields_to_import_from_list_of_attributes(oslo_collector, attributen, lis
         elif type_link == "OSLODatatypePrimitive":
             collected_list.append(get_single_field_from_type_uri(attribuut.type))
         elif type_link == "OSLODatatypeComplex":
-            collected_list.append(get_type_name_of_complex_attribuut(attribuut.type))
+            collected_list.append(get_type_name_of_complex_attribuut(attribuut.type,
+                                                                     valid_uri_and_types=valid_uri_and_types))
         elif type_link == "OSLODatatypeUnion":
             collected_list.append(get_type_name_of_union_attribuut(attribuut.type))
         else:

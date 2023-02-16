@@ -31,7 +31,9 @@ class AbstractDatatypeCreator(ABC):
             datablock.append('from otlmow_model.BaseClasses.OTLField import OTLField')
             datablock.append('from otlmow_model.BaseClasses.WaardenObject import WaardenObject')
             list_fields_to_start_with = []
-        list_of_fields = get_fields_to_import_from_list_of_attributes(self.oslo_collector, attributen, list_fields_to_start_with)
+        list_of_fields = get_fields_to_import_from_list_of_attributes(self.oslo_collector, attributen,
+                                                                      valid_uri_and_types=valid_uri_and_types,
+                                                                      list_to_start_from=list_fields_to_start_with)
         base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
                        'IntegerField',
                        'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField', 'NonNegIntegerField',

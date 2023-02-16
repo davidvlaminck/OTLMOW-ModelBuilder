@@ -40,7 +40,8 @@ class OTLModelCreator:
         OTLModelCreator.create_union_datatypes(directory=directory, oslo_collector=oslo_collector)
         OTLModelCreator.create_enumerations(directory=directory, environment=environment, oslo_collector=oslo_collector)
         OTLModelCreator.create_classes(directory=directory, oslo_collector=oslo_collector,
-                                       geo_artefact_collector=geo_artefact_collector)
+                                       geo_artefact_collector=geo_artefact_collector,
+                                       valid_uri_and_types=settings['complex_datatype_validation_rules']['valid_uri_and_types'])
         logging.info(f'finished creating model in {directory} at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 
     @staticmethod
@@ -165,13 +166,14 @@ class OTLModelCreator:
             logging.error(f"Could not create a class for {enumeration.name}")
 
     @staticmethod
-    def create_classes(directory, oslo_collector, geo_artefact_collector):
+    def create_classes(directory, oslo_collector, geo_artefact_collector, valid_uri_and_types):
         creator = OTLClassCreator(oslo_collector, geo_artefact_collector)
 
         for oslo_class in tqdm(oslo_collector.classes):
             try:
                 model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
-                data_to_write = creator.create_blocks_to_write_from_classes(oslo_class, model_location=model_name)
+                data_to_write = creator.create_blocks_to_write_from_classes(oslo_class, model_location=model_name,
+                                                                            valid_uri_and_types=valid_uri_and_types)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {oslo_class.name}")
                     pass

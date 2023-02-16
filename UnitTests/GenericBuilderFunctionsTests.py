@@ -14,6 +14,9 @@ from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 class GenericBuilderFunctionsTests(unittest.TestCase):
+    complex_datatype_validation_rules = {'valid_uri_and_types': {},
+                                         'valid_regexes': ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]}
+
     def setUp(self) -> OSLOCollector:
         base_dir = os.path.dirname(os.path.realpath(__file__))
         file_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
@@ -27,7 +30,9 @@ class GenericBuilderFunctionsTests(unittest.TestCase):
         collector = self.setUp()
         list_of_attributes = collector.find_complex_datatype_attributes_by_class_uri('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType2')
 
-        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, list_of_attributes, ['BooleanField'])
+        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, list_of_attributes,
+                                                                      list_to_start_from=['BooleanField'],
+                                                                      valid_uri_and_types={})
 
         self.assertEqual(['BooleanField', 'KwantWrdTest', 'StringField'], list_of_fields)
 
@@ -35,7 +40,8 @@ class GenericBuilderFunctionsTests(unittest.TestCase):
         collector = self.setUp()
         list_of_attributes = collector.find_complex_datatype_attributes_by_class_uri('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType2')
 
-        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, list_of_attributes)
+        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, list_of_attributes,
+                                                                      valid_uri_and_types={})
 
         self.assertEqual(['KwantWrdTest', 'StringField'], list_of_fields)
 
@@ -45,7 +51,8 @@ class GenericBuilderFunctionsTests(unittest.TestCase):
             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType')
         complex_attributes_list = list(filter(lambda x: "Complex" in x.name, list_of_attributes))
 
-        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, complex_attributes_list)
+        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, complex_attributes_list,
+                                                                      valid_uri_and_types={})
 
         self.assertEqual(['DtcTestComplexType2'], list_of_fields)
 
@@ -55,7 +62,8 @@ class GenericBuilderFunctionsTests(unittest.TestCase):
             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType')
         complex_attributes_list = list(filter(lambda x: "String" in x.name, list_of_attributes))
 
-        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, complex_attributes_list)
+        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, complex_attributes_list,
+                                                                      valid_uri_and_types={})
 
         self.assertEqual(['StringField'], list_of_fields)
 
@@ -65,7 +73,8 @@ class GenericBuilderFunctionsTests(unittest.TestCase):
             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType')
         complex_attributes_list = list(filter(lambda x: "String" in x.name or "Boolean" in x.name, list_of_attributes))
 
-        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, complex_attributes_list)
+        list_of_fields = get_fields_to_import_from_list_of_attributes(collector, complex_attributes_list,
+                                                                      valid_uri_and_types={})
 
         self.assertEqual(['BooleanField', 'StringField'], list_of_fields)
 
@@ -106,7 +115,7 @@ class GenericBuilderFunctionsTests(unittest.TestCase):
                               '        self._huisnummer.set_waarde(value, owner=self._parent)',
                               '']
 
-        self.assertEqual(expected_datablock, add_attributen_to_data_block([attribuut], []))
+        self.assertEqual(expected_datablock, add_attributen_to_data_block([attribuut], [], valid_uri_and_types={}))
 
     def test_add_attributen_to_dataBlock_DteField(self):
         attribuut = OSLOAttribuut('toestandBuis', 'toestand buis', 'Opmerkingen van de toestand en staat van de buis.',
@@ -133,7 +142,7 @@ class GenericBuilderFunctionsTests(unittest.TestCase):
                               '        self._toestandBuis.set_waarde(value, owner=self._parent)',
                               '']
 
-        self.assertEqual(expected_datablock, add_attributen_to_data_block([attribuut], []))
+        self.assertEqual(expected_datablock, add_attributen_to_data_block([attribuut], [], valid_uri_and_types={}))
 
     def test_add_attributen_to_dataBlock_KwantWrd(self):
         attribuut = OSLOAttribuut('lengte', 'lengte',
@@ -161,7 +170,7 @@ class GenericBuilderFunctionsTests(unittest.TestCase):
                               '        self._lengte.set_waarde(value, owner=self._parent)',
                               '']
 
-        self.assertEqual(expected_datablock, add_attributen_to_data_block([attribuut], []))
+        self.assertEqual(expected_datablock, add_attributen_to_data_block([attribuut], [], valid_uri_and_types={}))
 
     def test_add_attributen_to_data_block_DtcAdres(self):
         attribuut = OSLODatatypeComplexAttribuut('adres', 'adres', 'Adres dat men kan aanschrijven of bezoeken.',
@@ -189,7 +198,7 @@ class GenericBuilderFunctionsTests(unittest.TestCase):
                               '        self._adres.set_waarde(value, owner=self._parent)',
                               '']
 
-        self.assertEqual(expected_datablock, add_attributen_to_data_block([attribuut], []))
+        self.assertEqual(expected_datablock, add_attributen_to_data_block([attribuut], [], valid_uri_and_types={}))
 
     @skip('change the write_file test') # TODO change this test
     def test_WriteToFileContainerBuis(self):

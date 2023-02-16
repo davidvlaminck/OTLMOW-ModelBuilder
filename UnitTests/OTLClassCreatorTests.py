@@ -193,7 +193,10 @@ class OTLClassCreatorTests(unittest.TestCase):
         collector, creator = self.set_up_real_collector_and_creator()
 
         agent = collector.find_class_by_uri('http://purl.org/dc/terms/Agent')
-        dataToWrite = creator.create_blocks_to_write_from_classes(agent)
+        dataToWrite = creator.create_blocks_to_write_from_classes(agent, valid_uri_and_types = {
+            "https://schema.org/ContactPoint" : "DtcContactinfo",
+            "https://schema.org/OpeningHoursSpecification" : "DtcOpeningsurenSpecificatie"
+        })
         inheritanceLine = "class Agent(OTLObject, RelationInteractor):"
 
         self.assertEqual(inheritanceLine, dataToWrite[11])
