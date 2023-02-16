@@ -34,7 +34,9 @@ class OTLModelCreator:
         OTLModelCreator.check_for_nested_attributes_in_classes(collector=oslo_collector,
                                                                known_classes_uris=settings['nested_list_class_uris'])
         OTLModelCreator.create_primitive_datatypes(directory=directory, oslo_collector=oslo_collector)
-        OTLModelCreator.create_complex_datatypes(directory=directory, oslo_collector=oslo_collector)
+        OTLModelCreator.create_complex_datatypes(
+            directory=directory, oslo_collector=oslo_collector,
+            complex_datatype_validation_rules=settings['complex_datatype_validation_rules'])
         OTLModelCreator.create_union_datatypes(directory=directory, oslo_collector=oslo_collector)
         OTLModelCreator.create_enumerations(directory=directory, environment=environment, oslo_collector=oslo_collector)
         OTLModelCreator.create_classes(directory=directory, oslo_collector=oslo_collector,
@@ -82,14 +84,15 @@ class OTLModelCreator:
             return directory.name
 
     @staticmethod
-    def create_complex_datatypes(directory, oslo_collector):
+    def create_complex_datatypes(directory, oslo_collector, complex_datatype_validation_rules):
         creator = OTLComplexDatatypeCreator(oslo_collector)
 
         for complex_datatype in tqdm(oslo_collector.complex_datatypes):
             try:
                 model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
-                data_to_write = creator.create_block_to_write_from_complex_types(complex_datatype,
-                                                                                 model_location=model_name)
+                data_to_write = creator.create_block_to_write_from_complex_types(
+                    complex_datatype, complex_datatype_validation_rules=complex_datatype_validation_rules,
+                    model_location=model_name)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {complex_datatype.name}")
                     pass

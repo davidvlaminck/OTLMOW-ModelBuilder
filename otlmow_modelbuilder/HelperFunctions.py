@@ -1,6 +1,9 @@
 def get_ns_and_name_from_uri(objectUri):
-    if 'https://wegenenverkeer.data.vlaanderen.be/ns/' not in objectUri:
-        raise ValueError(f'{objectUri} is not a valid uri to extract a namespace from')
+    if '/ns/' not in objectUri:
+        raise ValueError(f"{objectUri} is not a valid uri because it does not define a namespace ('/ns' is missing)")
+
+    if '#' not in objectUri:
+        raise ValueError(f"{objectUri} is not a valid uri because can not be split into a ns and name ('#' is missing)")
 
     short_uri = objectUri.split('/ns/')[1]
     short_uri_array = short_uri.split('#')

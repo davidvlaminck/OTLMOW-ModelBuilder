@@ -1,4 +1,5 @@
 import logging
+import re
 
 from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block, \
     get_fields_to_import_from_list_of_attributes
@@ -30,10 +31,12 @@ class OTLClassCreator(AbstractDatatypeCreator):
         if not isinstance(oslo_class, OSLOClass):
             raise ValueError(f"Input is not a OSLOClass")
 
-        if oslo_class.objectUri == '' or not (
-                oslo_class.objectUri.startswith(
-                    'https://wegenenverkeer.data.vlaanderen.be/ns/') or oslo_class.objectUri.
-                        startswith('http://purl.org/dc/terms')):
+        if oslo_class.objectUri == '':
+            raise ValueError(f"OSLOClass.objectUri is invalid. Value = '{oslo_class.objectUri}'")
+
+        if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+            pass
+        elif not re.match(pattern="^.+/ns/.+#.+", string=oslo_class.objectUri):
             raise ValueError(f"OSLOClass.objectUri is invalid. Value = '{oslo_class.objectUri}'")
 
         if oslo_class.name == '':

@@ -4,8 +4,8 @@
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene",
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure"
     ],
-    "complex_datatypes" : {
+    "complex_datatype_validation_rules" : {
         "valid_uris" : ["https://schema.org/ContactPoint" , "https://schema.org/OpeningHoursSpecification"],
-        "valid_regexes" : [""]
+        "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
     }
 }
