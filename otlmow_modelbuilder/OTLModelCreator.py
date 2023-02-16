@@ -6,6 +6,7 @@ from concurrent.futures import FIRST_COMPLETED
 from datetime import datetime
 from os import path
 from pathlib import Path
+from typing import Dict
 
 from tqdm import tqdm
 
@@ -26,11 +27,12 @@ class OTLModelCreator:
         self.geo_artefact_collector = geo_artefact_collector
 
     @staticmethod
-    def create_full_model(directory: Path, oslo_collector, geo_artefact_collector, environment: str = ''):
+    def create_full_model(directory: Path, oslo_collector, geo_artefact_collector, settings: Dict, environment: str = ''):
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         OTLModelCreator.check_and_create_subdirectories(directory)
         oslo_collector.query_correct_base_classes()
-        OTLModelCreator.check_for_nested_attributes_in_classes(collector=oslo_collector)
+        OTLModelCreator.check_for_nested_attributes_in_classes(collector=oslo_collector,
+                                                               known_classes_uris=settings['nested_list_class_uris'])
         OTLModelCreator.create_primitive_datatypes(directory=directory, oslo_collector=oslo_collector)
         OTLModelCreator.create_complex_datatypes(directory=directory, oslo_collector=oslo_collector)
         OTLModelCreator.create_union_datatypes(directory=directory, oslo_collector=oslo_collector)
@@ -227,7 +229,10 @@ class OTLModelCreator:
                 print(f'Failed to delete {subdir}. Reason: {e}')
 
     @staticmethod
-    def check_for_nested_attributes_in_classes(collector: OSLOCollector, exceptions=None):
+    def check_for_nested_attributes_in_classes(collector: OSLOCollector, exceptions=None,
+                                               known_classes_uris: [str] = None):
+        if known_classes_uris is None:
+            known_classes_uris = []
         if exceptions is None:
             exceptions = [
                 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testComplexTypeMetKard']
@@ -253,9 +258,7 @@ class OTLModelCreator:
                     try:
                         OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)
                     except NotImplementedError as exc:
-                        if cl.objectUri not in ['http://purl.org/dc/terms/Agent',
-                                                'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene',
-                                                'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure']:
+                        if cl.objectUri not in known_classes_uris:
                             raise NotImplementedError(f'found in {cl.objectUri} {attr.objectUri}') from exc
 
     @staticmethod

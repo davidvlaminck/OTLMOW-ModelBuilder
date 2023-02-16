@@ -1,0 +1,11 @@
+{
+    "nested_list_class_uris" : [
+        "http://purl.org/dc/terms/Agent",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure"
+    ],
+    "complex_datatypes" : {
+        "valid_uris" : ["https://schema.org/ContactPoint" , "https://schema.org/OpeningHoursSpecification"],
+        "valid_regexes" : [""]
+    }
+}

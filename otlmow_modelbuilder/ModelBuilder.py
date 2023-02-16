@@ -6,6 +6,7 @@ from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLModelCreator import OTLModelCreator
 from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDbReader import SQLDbReader
+from otlmow_modelbuilder.SettingsManager import load_settings
 
 
 class ModelBuilder:
@@ -13,7 +14,8 @@ class ModelBuilder:
     def build_otl_datamodel(otl_subset_location: Path,
                             directory: Path,
                             environment: str = 'prd',
-                            geometry_artefact_location: Path = None):
+                            geometry_artefact_location: Path = None,
+                            settings_path: Path = None):
         if directory is None:
             this_file_path = Path(__file__)
             directory = this_file_path.parent
@@ -31,6 +33,8 @@ class ModelBuilder:
         if geo_artefact_collector is not None:
             geo_artefact_collector.collect()
 
-        OTLModelCreator.create_full_model(directory=directory, environment=environment,
+        settings = load_settings(settings_path)
+
+        OTLModelCreator.create_full_model(directory=directory, environment=environment, settings=settings,
                                           oslo_collector=subset_collector,
                                           geo_artefact_collector=geo_artefact_collector)
