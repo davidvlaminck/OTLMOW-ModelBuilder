@@ -5,7 +5,10 @@
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure"
     ],
     "complex_datatype_validation_rules" : {
-        "valid_uris" : ["https://schema.org/ContactPoint" , "https://schema.org/OpeningHoursSpecification"],
+        "valid_uri_and_types" : {
+            "https://schema.org/ContactPoint" : "DtcContactinfo",
+            "https://schema.org/OpeningHoursSpecification" : "DtcOpeningsurenSpecificatie"
+        },
         "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
     }
 }

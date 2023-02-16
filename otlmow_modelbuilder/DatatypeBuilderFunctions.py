@@ -1,3 +1,6 @@
+from typing import Dict
+
+
 def get_single_field_from_type_uri(field_type: str):
     if field_type.startswith('https://wegenenverkeer.data.vlaanderen.be/ns/') and '#' in field_type:
         return field_type.split('#')[1]
@@ -32,16 +35,12 @@ def get_single_field_from_type_uri(field_type: str):
         raise NotImplemented('not supported field_type in get_single_field_from_type_uri()')
 
 
-def get_non_single_field_from_type_uri(field_type: str):
+def get_non_single_field_from_type_uri(field_type: str, valid_uri_and_types: Dict):
     if '#Dtc' in field_type:
         type_name = field_type[field_type.find("#") + 1::]
         return ['ComplexField', type_name]
-    if field_type.startswith("https://schema.org/"):
-        if field_type == "https://schema.org/ContactPoint":
-            return ['ComplexField', "DtcContactinfo"]
-        if field_type == "https://schema.org/OpeningHoursSpecification":
-            return ['ComplexField', "DtcOpeningsurenSpecificatie"]
-        raise NotImplementedError(f"Field of type {field_type} is not implemented in DatatypeCreator")
+    if field_type in valid_uri_and_types.keys():
+        return ['ComplexField', valid_uri_and_types[field_type]]
     if '#Dte' in field_type or '#KwantWrd' in field_type:
         type_name = field_type[field_type.find("#") + 1::]
         return ['ComplexField', type_name]
@@ -57,12 +56,12 @@ def get_non_single_field_from_type_uri(field_type: str):
     raise NotImplementedError(f'not supported field_type {field_type} in get_non_single_field_from_type_uri()')
 
 
-def get_field_name_from_type_uri(attribuut_type):
+def get_field_name_from_type_uri(attribuut_type, valid_uri_and_types):
     if attribuut_type.startswith('http://www.w3.org/2001/XMLSchema#'):
         return get_single_field_from_type_uri(attribuut_type)
     if attribuut_type.startswith("https://schema.org/"):
-        return get_non_single_field_from_type_uri(attribuut_type)[1]
-    return get_non_single_field_from_type_uri(attribuut_type)[1]
+        return get_non_single_field_from_type_uri(attribuut_type, valid_uri_and_types)[1]
+    return get_non_single_field_from_type_uri(attribuut_type, valid_uri_and_types)[1]
 
 
 def get_attributen_by_type_field(oslo_collector, type_field, oslo_datatype):
@@ -95,7 +94,7 @@ def get_type_link_from_attribuut(oslo_collector, attribuut):
         return type_link
 
 
-def get_fields_and_names_from_list_of_attributes(attributen):
+def get_fields_and_names_from_list_of_attributes(attributen, valid_uri_and_types):
     if len(attributen) == 0:
         return []
 
@@ -108,7 +107,7 @@ def get_fields_and_names_from_list_of_attributes(attributen):
         map(lambda a: (get_single_field_from_type_uri(a.type), a.name), primitive_types_list))
 
     for nonPrimitiveType in other_types_list:
-        select_types_list.append((get_field_name_from_type_uri(nonPrimitiveType.type), nonPrimitiveType.name))
+        select_types_list.append((get_field_name_from_type_uri(nonPrimitiveType.type, valid_uri_and_types), nonPrimitiveType.name))
 
     distinct_types_list = list(set(select_types_list))
     sorted_list = sorted(distinct_types_list, key=lambda t: t)

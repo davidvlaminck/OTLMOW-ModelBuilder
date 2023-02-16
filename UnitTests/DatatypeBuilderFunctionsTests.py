@@ -81,7 +81,7 @@ class DatatypeBuilderFunctionsTests(unittest.TestCase):
             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType')
         complex_attributes_list = list(filter(lambda x: x.name in ['testStringField', 'testBooleanField', 'testComplexType2'], list_of_attributes))
 
-        list_of_fields = get_fields_and_names_from_list_of_attributes(complex_attributes_list)
+        list_of_fields = get_fields_and_names_from_list_of_attributes(complex_attributes_list, valid_uri_and_types={})
         self.assertEqual([('BooleanField', 'testBooleanField'), ('DtcTestComplexType2', 'testComplexType2'), ('StringField', 'testStringField')], list_of_fields)
 
 

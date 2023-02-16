@@ -1,6 +1,6 @@
 import os
 from abc import ABC
-from typing import List
+from typing import List, Dict
 
 from otlmow_modelbuilder.DatatypeBuilderFunctions import get_attributen_by_type_field
 from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block, \
@@ -14,7 +14,9 @@ class AbstractDatatypeCreator(ABC):
         self.oslo_collector = oslo_collector
 
     def create_block_to_write_from_complex_primitive_or_union_types(self, oslo_datatype, type_field='',
-                                                                    model_location=''):
+                                                                    model_location='', valid_uri_and_types: Dict = None):
+        if valid_uri_and_types is None:
+            valid_uri_and_types = {}
         attributen = get_attributen_by_type_field(self.oslo_collector, type_field, oslo_datatype)
 
         datablock = ['# coding=utf-8',
@@ -61,7 +63,7 @@ class AbstractDatatypeCreator(ABC):
             datablock.append('    def __init__(self):')
             datablock.append('        WaardenObject.__init__(self)')
 
-        add_attributen_to_data_block(attributen=attributen, datablock=datablock, type_field=type_field)
+        add_attributen_to_data_block(attributen=attributen, datablock=datablock, type_field=type_field, valid_uri_and_types=valid_uri_and_types)
 
         if type_field == 'Primitive' or type_field == 'KwantWrd':
             type_field = 'OTL'

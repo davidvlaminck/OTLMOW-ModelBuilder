@@ -20,7 +20,7 @@ class OTLComplexDatatypeCreator(AbstractDatatypeCreator):
         if oslo_datatype_complex.objectUri == '':
             raise ValueError(f"OSLODatatypeComplex.objectUri is invalid. Value = '{oslo_datatype_complex.objectUri}'")
 
-        if oslo_datatype_complex.objectUri in complex_datatype_validation_rules['valid_uris']:
+        if oslo_datatype_complex.objectUri in complex_datatype_validation_rules['valid_uri_and_types'].keys():
             pass
         else:
             match_re = False
@@ -36,7 +36,8 @@ class OTLComplexDatatypeCreator(AbstractDatatypeCreator):
             raise ValueError(f"OSLODatatypeComplex.name is invalid. Value = '{oslo_datatype_complex.name}'")
 
         return self.create_block_to_write_from_complex_primitive_or_union_types(
-            oslo_datatype_complex, type_field='Complex', model_location=model_location)
+            oslo_datatype_complex, type_field='Complex', model_location=model_location,
+            valid_uri_and_types=complex_datatype_validation_rules['valid_uri_and_types'])
 
     @staticmethod
     def get_unit_from_constraints(constraints: str) -> str:
