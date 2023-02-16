@@ -1,6 +1,5 @@
-import os
 from abc import ABC
-from typing import List, Dict
+from typing import Dict
 
 from otlmow_modelbuilder.DatatypeBuilderFunctions import get_attributen_by_type_field
 from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block, \
@@ -58,7 +57,6 @@ class AbstractDatatypeCreator(ABC):
         if type_field == 'UnionType':
             datablock.append(f'class {oslo_datatype.name}Waarden(UnionWaarden):')
             datablock.append('    def __init__(self):')
-#            datablock.append('        AttributeInfo.__init__(self, parent)')
             datablock.append('        UnionWaarden.__init__(self)')
         else:
             datablock.append(f'class {oslo_datatype.name}Waarden(WaardenObject):')
