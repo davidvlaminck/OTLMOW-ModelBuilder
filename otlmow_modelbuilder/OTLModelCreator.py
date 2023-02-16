@@ -254,7 +254,8 @@ class OTLModelCreator:
                         OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)
                     except NotImplementedError as exc:
                         if cl.objectUri not in ['http://purl.org/dc/terms/Agent',
-                                                'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene']:
+                                                'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene',
+                                                'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure']:
                             raise NotImplementedError(f'found in {cl.objectUri} {attr.objectUri}') from exc
 
     @staticmethod
