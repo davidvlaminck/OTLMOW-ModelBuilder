@@ -1,13 +1,14 @@
 import os
-import unittest
 from pathlib import Path
 from unittest.mock import MagicMock
 
+import pytest
+
+from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
+from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatypeCreator
 from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import OSLODatatypePrimitive
-from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.SQLDataClasses.OSLOTypeLink import OSLOTypeLink
-from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatypeCreator
 from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -23,95 +24,102 @@ class PrimitiveDatatypeOSLOCollector(OSLOCollector):
             OSLOTypeLink('http://www.w3.org/2000/01/rdf-schema#Literal', "OSLODatatypePrimitive", "")]
 
 
-class OTLPrimitiveDatatypeCreatorTests(unittest.TestCase):
-    primitive_datatype_validation_rules = {
-        "valid_uri_and_types" : {},
-        "valid_regexes" : [
-            "^http://www.w3.org/200.+",
-            "^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dte.+",
-            "^https://wegenenverkeer.data.vlaanderen.be/ns/.+#KwantWrd.+"]
-    }
-    def test_InvalidOSLODatatypePrimitiveEmptyUri(self):
-        collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
-        creator = OTLPrimitiveDatatypeCreator(collector)
-        oslo_datatype_primitive = OSLODatatypePrimitive(name='name', objectUri='', definition='', label='',
-                                                        usagenote='', deprecated_version='')
+primitive_datatype_validation_rules = {
+    "valid_uri_and_types": {},
+    "valid_regexes": [
+        "^http://www.w3.org/200.+",
+        "^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dte.+",
+        "^https://wegenenverkeer.data.vlaanderen.be/ns/.+#KwantWrd.+"]
+}
 
-        with self.assertRaises(ValueError) as exception_empty_uri:
-            creator.create_block_to_write_from_primitive_types(
-                oslo_datatype_primitive, primitive_datatype_validation_rules=self.primitive_datatype_validation_rules)
-        self.assertEqual(str(exception_empty_uri.exception), "OSLODatatypePrimitive.objectUri is invalid. Value = ''")
 
-    def test_InvalidOSLODatatypePrimitiveBadUri(self):
-        collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
-        creator = OTLPrimitiveDatatypeCreator(collector)
-        oslo_datatype_primitive = OSLODatatypePrimitive(name='name', objectUri='Bad objectUri', definition='', label='',
-                                                      usagenote='',
-                                                      deprecated_version='')
+def test_InvalidOSLODatatypePrimitiveEmptyUri():
+    collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
+    creator = OTLPrimitiveDatatypeCreator(collector)
+    oslo_datatype_primitive = OSLODatatypePrimitive(name='name', objectUri='', definition='', label='',
+                                                    usagenote='', deprecated_version='')
 
-        with self.assertRaises(ValueError) as exception_bad_uri:
-            creator.create_block_to_write_from_primitive_types(
-                oslo_datatype_primitive, primitive_datatype_validation_rules=self.primitive_datatype_validation_rules)
-        self.assertEqual(str(exception_bad_uri.exception), "OSLODatatypePrimitive.objectUri is invalid. Value = 'Bad objectUri'")
+    with pytest.raises(ValueError) as exception_empty_uri:
+        creator.create_block_to_write_from_primitive_types(
+            oslo_datatype_primitive, primitive_datatype_validation_rules=primitive_datatype_validation_rules)
+    assert str(exception_empty_uri.value) == "OSLODatatypePrimitive.objectUri is invalid. Value = ''"
 
-    def test_InvalidOSLODatatypePrimitiveEmptyName(self):
-        collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
-        creator = OTLPrimitiveDatatypeCreator(collector)
-        oslo_datatype_primitive = OSLODatatypePrimitive(
-            name='', objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrd1',
-            definition='', label='', usagenote='', deprecated_version='')
 
-        with self.assertRaises(ValueError) as exception_bad_name:
-            creator.create_block_to_write_from_primitive_types(
-                oslo_datatype_primitive, primitive_datatype_validation_rules=self.primitive_datatype_validation_rules)
-        self.assertEqual(str(exception_bad_name.exception), "OSLODatatypePrimitive.name is invalid. Value = ''")
+def test_InvalidOSLODatatypePrimitiveBadUri():
+    collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
+    creator = OTLPrimitiveDatatypeCreator(collector)
+    oslo_datatype_primitive = OSLODatatypePrimitive(name='name', objectUri='Bad objectUri', definition='', label='',
+                                                    usagenote='', deprecated_version='')
 
-    def test_InValidType(self):
-        bad_primitive = True
-        collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
-        creator = OTLPrimitiveDatatypeCreator(collector)
-        with self.assertRaises(ValueError) as exception_bad_name:
-            creator.create_block_to_write_from_primitive_types(
-                bad_primitive, primitive_datatype_validation_rules=self.primitive_datatype_validation_rules)
-        self.assertEqual(str(exception_bad_name.exception), "Input is not a OSLODatatypePrimitive")
+    with pytest.raises(ValueError) as exception_bad_uri:
+        creator.create_block_to_write_from_primitive_types(
+            oslo_datatype_primitive, primitive_datatype_validation_rules=primitive_datatype_validation_rules)
+    assert str(exception_bad_uri.value) == "OSLODatatypePrimitive.objectUri is invalid. Value = 'Bad objectUri'"
 
-    def test_ValidOSLODatatypePrimitiveButNoResult(self):
-        boolean_primitive = OSLODatatypePrimitive(name="Boolean", objectUri="http://www.w3.org/2001/XMLSchema#boolean",
-                                                  definition="Beschrijft een boolean volgens http://www.w3.org/2001/XMLSchema#boolean.",
-                                                  label="Boolean", usagenote="https://www.w3.org/TR/xmlschema-2/#boolean",
-                                                  deprecated_version="")
-        collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
-        creator = OTLPrimitiveDatatypeCreator(collector)
-        block_to_write = creator.create_block_to_write_from_primitive_types(
-            boolean_primitive, primitive_datatype_validation_rules=self.primitive_datatype_validation_rules)
-        self.assertIsNone(block_to_write)
 
-    def setUp(self) -> OSLOCollector:
-        base_dir = os.path.dirname(os.path.realpath(__file__))
-        file_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
-        sql_reader = SQLDbReader(file_location)
-        oslo_creator = OSLOInMemoryCreator(sql_reader)
-        collector = OSLOCollector(oslo_creator)
-        collector.collect()
-        return collector
+def test_InvalidOSLODatatypePrimitiveEmptyName():
+    collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
+    creator = OTLPrimitiveDatatypeCreator(collector)
+    oslo_datatype_primitive = OSLODatatypePrimitive(
+        name='', objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrd1',
+        definition='', label='', usagenote='', deprecated_version='')
 
-    def test_create_block_dte(self):
-        collector = self.setUp()
-        creator = OTLPrimitiveDatatypeCreator(collector)
-        datatype_DteTestEenvoudigType = collector.find_primitive_datatype_by_uri(
-            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DteTestEenvoudigType')
-        data_to_write = creator.create_block_to_write_from_primitive_types(
-            datatype_DteTestEenvoudigType, primitive_datatype_validation_rules=self.primitive_datatype_validation_rules)
-        self.assertEqual(expectedDte, data_to_write)
+    with pytest.raises(ValueError) as exception_bad_name:
+        creator.create_block_to_write_from_primitive_types(
+            oslo_datatype_primitive, primitive_datatype_validation_rules=primitive_datatype_validation_rules)
+    assert str(exception_bad_name.value) == "OSLODatatypePrimitive.name is invalid. Value = ''"
 
-    def test_create_block_kwant_wrd(self):
-        collector = self.setUp()
-        creator = OTLPrimitiveDatatypeCreator(collector)
-        datatype_KwantWrdTest = collector.find_primitive_datatype_by_uri(
-            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTest')
-        data_to_write = creator.create_block_to_write_from_primitive_types(
-            datatype_KwantWrdTest, primitive_datatype_validation_rules=self.primitive_datatype_validation_rules)
-        self.assertEqual(expectedKwantWrd, data_to_write)
+
+def test_InValidType():
+    bad_primitive = True
+    collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
+    creator = OTLPrimitiveDatatypeCreator(collector)
+    with pytest.raises(ValueError) as exception_bad_name:
+        creator.create_block_to_write_from_primitive_types(
+            bad_primitive, primitive_datatype_validation_rules=primitive_datatype_validation_rules)
+    assert str(exception_bad_name.value) == "Input is not a OSLODatatypePrimitive"
+
+
+def test_ValidOSLODatatypePrimitiveButNoResult():
+    boolean_primitive = OSLODatatypePrimitive(name="Boolean", objectUri="http://www.w3.org/2001/XMLSchema#boolean",
+                                              definition="Beschrijft een boolean volgens http://www.w3.org/2001/XMLSchema#boolean.",
+                                              label="Boolean", usagenote="https://www.w3.org/TR/xmlschema-2/#boolean",
+                                              deprecated_version="")
+    collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
+    creator = OTLPrimitiveDatatypeCreator(collector)
+    block_to_write = creator.create_block_to_write_from_primitive_types(
+        boolean_primitive, primitive_datatype_validation_rules=primitive_datatype_validation_rules)
+    assert block_to_write is None
+
+
+def set_up() -> OSLOCollector:
+    base_dir = os.path.dirname(os.path.realpath(__file__))
+    file_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
+    sql_reader = SQLDbReader(file_location)
+    oslo_creator = OSLOInMemoryCreator(sql_reader)
+    collector = OSLOCollector(oslo_creator)
+    collector.collect()
+    return collector
+
+
+def test_create_block_dte():
+    collector = set_up()
+    creator = OTLPrimitiveDatatypeCreator(collector)
+    datatype_DteTestEenvoudigType = collector.find_primitive_datatype_by_uri(
+        'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DteTestEenvoudigType')
+    data_to_write = creator.create_block_to_write_from_primitive_types(
+        datatype_DteTestEenvoudigType, primitive_datatype_validation_rules=primitive_datatype_validation_rules)
+    assert data_to_write == expectedDte
+
+
+def test_create_block_kwant_wrd():
+    collector = set_up()
+    creator = OTLPrimitiveDatatypeCreator(collector)
+    datatype_KwantWrdTest = collector.find_primitive_datatype_by_uri(
+        'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTest')
+    data_to_write = creator.create_block_to_write_from_primitive_types(
+        datatype_KwantWrdTest, primitive_datatype_validation_rules=primitive_datatype_validation_rules)
+    assert data_to_write == expectedKwantWrd
 
 
 expectedKwantWrd = ['# coding=utf-8',
