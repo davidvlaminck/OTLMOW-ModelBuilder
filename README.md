@@ -4,7 +4,7 @@
 [![Unittests](https://github.com/davidvlaminck/OTLMOW-ModelBuilder/actions/workflows/unittest.yml/badge.svg)](https://github.com/davidvlaminck/OTLMOW-ModelBuilder/actions/workflows/unittest.yml)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/otlmow-modelbuilder)
 [![GitHub issues](https://img.shields.io/github/issues/davidvlaminck/OTLMOW-ModelBuilder)](https://github.com/davidvlaminck/OTLMOW-ModelBuilder/issues)
-[![coverage](https://github.com/davidvlaminck/OTLMOW-Model/blob/master/UnitTests/coverage.svg)](https://htmlpreview.github.io/?https://github.com/davidvlaminck/OTLMOW-Model/blob/master/UnitTests/htmlcov/index.html)
+[![coverage](https://github.com/davidvlaminck/OTLMOW-ModelBuilder/blob/master/UnitTests/coverage.svg)](https://htmlpreview.github.io/?https://github.com/davidvlaminck/OTLMOW-ModelBuilder/blob/master/UnitTests/htmlcov/index.html)
 
 ## Summary
 The main use case of otlmow-modelbuilder is to provide create the class model of otlmow_model, by reading in a OTL SQLite or subset.
