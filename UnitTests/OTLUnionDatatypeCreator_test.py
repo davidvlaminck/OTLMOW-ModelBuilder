@@ -13,7 +13,7 @@ from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 expectedDtu = ['# coding=utf-8',
-               'from otlmow_model.BaseClasses.OTLAttribuut import OTLAttribuut',
+               'from otlmow_model.BaseClasses.OTLObject import OTLAttribuut',
                'from otlmow_model.Datatypes.KwantWrdTest import KwantWrdTest, KwantWrdTestWaarden',
                'from otlmow_model.BaseClasses.StringField import StringField',
                'from otlmow_model.BaseClasses.UnionTypeField import UnionTypeField',

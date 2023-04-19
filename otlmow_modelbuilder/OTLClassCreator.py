@@ -77,7 +77,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         datablock = ['# coding=utf-8']
         if len(attributen) > 0:
-            datablock.append('from otlmow_model.BaseClasses.OTLAttribuut import OTLAttribuut')
+            datablock.append('from otlmow_model.BaseClasses.OTLObject import OTLAttribuut')
 
         if oslo_class.abstract == 1:
             if len(inheritances) + len(list_of_geometry_types) < 1:

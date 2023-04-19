@@ -19,7 +19,7 @@ class AbstractDatatypeCreator(ABC):
         attributen = get_attributen_by_type_field(self.oslo_collector, type_field, oslo_datatype)
 
         datablock = ['# coding=utf-8',
-                     'from otlmow_model.BaseClasses.OTLAttribuut import OTLAttribuut']
+                     'from otlmow_model.BaseClasses.OTLObject import OTLAttribuut']
 
         list_fields_to_start_with = [f'{type_field}Field']
         if type_field == 'UnionType':
