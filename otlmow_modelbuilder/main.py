@@ -7,8 +7,8 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(message)s')
 
     current_dir = Path(__file__).parent
-    otl_subset_path = Path(current_dir / 'InputFiles' / 'OTL 2.7.db')
-    GA_file_path = Path(current_dir / 'InputFiles' / 'Geometrie_Artefact_2.7.db')
+    otl_subset_path = Path(current_dir / 'InputFiles' / 'OTL 2.8.db')
+    GA_file_path = Path(current_dir / 'InputFiles' / 'Geometrie_Artefact_2.8.db')
     model_directory = Path(current_dir.parent.parent / 'OTLMOW-Model/otlmow_model')
     settings_path = Path(current_dir / 'settings_otlmow_modelbuilder.json')
 
