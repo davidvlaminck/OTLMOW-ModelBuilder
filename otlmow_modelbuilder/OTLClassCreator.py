@@ -157,15 +157,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
         if oslo_class.abstract == 1:
             datablock.append('    @abstractmethod')
         datablock.append('    def __init__(self):')
-        if len(inheritances) + len(list_of_geometry_types) == 1:
-            datablock.append('        super().__init__()')
-            datablock.append('')
-        elif len(inheritances) + len(list_of_geometry_types) > 1:
-            for inheritance in inheritances:
-                datablock.append(f'        {inheritance.base_name}.__init__(self)')
-            for geo_type in sorted(list_of_geometry_types):
-                datablock.append(f'        {geo_type}.__init__(self)')
-            datablock.append('')
+        datablock.append('        super().__init__()')
+        datablock.append('')
 
         self.add_relations_to_datablock(datablock, oslo_class.objectUri)
 
@@ -244,19 +237,19 @@ class OTLClassCreator(AbstractDatatypeCreator):
         return False
 
     def sort_inheritances_for_relation_interactor_priority(self, inheritances):
-        first_good_candidate = None
-
-        for inheritance in inheritances:
-            if inheritance.base_uri in self.relation_interactor_uris:
-                first_good_candidate = inheritance
-                break
-            if self.search_recursive_inheritance_for_relation_interactor(inheritance.base_uri):
-                first_good_candidate = inheritance
-                break
-
-        if first_good_candidate is None:
-            return inheritances
-
-        inheritances.remove(first_good_candidate)
-        inheritances.insert(0, first_good_candidate)
+        # first_good_candidate = None
+        #
+        # for inheritance in inheritances:
+        #     if inheritance.base_uri in self.relation_interactor_uris:
+        #         first_good_candidate = inheritance
+        #         break
+        #     if self.search_recursive_inheritance_for_relation_interactor(inheritance.base_uri):
+        #         first_good_candidate = inheritance
+        #         break
+        #
+        # if first_good_candidate is None:
+        #     return inheritances
+        #
+        # inheritances.remove(first_good_candidate)
+        # inheritances.insert(0, first_good_candidate)
         return inheritances

@@ -57,8 +57,7 @@ class ClassOSLOCollector(OSLOCollector):
                                    '    """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""',
                                    "",
                                    "    def __init__(self):",
-                                   '        Behuizing.__init__(self)',
-                                   '        VlakGeometrie.__init__(self)',
+                                   '        super().__init__()',
                                    "",
                                    "        self._grondplan = OTLAttribuut(field=DtcDocument,",
                                    "                                       naam='grondplan',",
@@ -75,11 +74,6 @@ class ClassOSLOCollector(OSLOCollector):
                                    "    @grondplan.setter",
                                    "    def grondplan(self, value):",
                                    "        self._grondplan.set_waarde(value, owner=self)"]
-
-
-class TestOTLClassCreator(OTLClassCreator):
-    def __init__(self, logger, collector):
-        super().__init__(logger, collector)
 
 
 class GeometrieArtefactCollectorDouble:
@@ -160,6 +154,8 @@ expectedDataContainerBuis = ['# coding=utf-8',
                              '',
                              '    @abstractmethod',
                              '    def __init__(self):',
+                             '        super().__init__()',
+                             '',
                              "        self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult', "
                              "target='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis', "
                              "deprecated='2.3.0')",
@@ -274,4 +270,4 @@ def test_check_inheritances_RelationInteractor():
     creator = OTLClassCreator(collector)
     c_class = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#C')
     inheritance_line = creator.create_blocks_to_write_from_classes(c_class)[6]
-    assert inheritance_line == 'class C(B, A):'
+    assert inheritance_line == 'class C(A, B):'
