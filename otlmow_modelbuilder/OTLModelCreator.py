@@ -320,19 +320,11 @@ class OTLModelCreator:
 
         problems = {k: list(v) for k, v in problems.items()}
 
-        problems.pop('basisoppervlakte')
-        problems.pop('ipadres')
-        problems.pop('risicoanalyse')
-        problems.pop('technischefiche')
-        problems.pop('opstelhoogte')
-        problems.pop('buitendiameter')
-        problems.pop('dnsnaam')
-        problems.pop('funderingsaanzetonderdebodemvandewaterweg')
-        problems.pop('binnendiameter')
-        problems.pop('netwerktype')
-        problems.pop('beschoeiingslengte')
-        problems.pop('softwareversie')
-        problems.pop('folietype')
+        # remove attributes that are known to be different
+        known_list = ['basisoppervlakte', 'ipadres', 'risicoanalyse', 'technischefiche', 'opstelhoogte', 'buitendiameter', 'dnsnaam', 'funderingsaanzetonderdebodemvandewaterweg', 'binnendiameter', 'netwerktype', 'beschoeiingslengte', 'softwareversie', 'folietype']
+        for known in known_list:
+            if known in problems:
+                del problems[known]
 
         if len(problems) > 0:
             raise NotImplementedError(f'Found attributes with different case:\n{json.dumps(problems, indent=4)}')
