@@ -1,7 +1,9 @@
 import concurrent.futures
+import json
 import logging
 import os
 import shutil
+from collections import Counter, defaultdict
 from concurrent.futures import FIRST_COMPLETED
 from datetime import datetime
 from os import path
@@ -31,6 +33,8 @@ class OTLModelCreator:
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         OTLModelCreator.check_and_create_subdirectories(directory)
         oslo_collector.query_correct_base_classes()
+
+        OTLModelCreator.check_for_attributes_with_different_case(oslo_collector)
         OTLModelCreator.check_for_nested_attributes_in_classes(collector=oslo_collector,
                                                                known_classes_uris=settings['nested_list_class_uris'])
         OTLModelCreator.create_primitive_datatypes(
@@ -297,3 +301,38 @@ class OTLModelCreator:
             if len(nested_attrs) > 1:
                 list_found = list_found or list_already_found
                 OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)
+
+    @classmethod
+    def check_for_attributes_with_different_case(cls, oslo_collector):
+        lower_case_names = [d.name.lower() for d in oslo_collector.attributes]
+        # find names that are identical when case-insensitive
+        unique_lower_case_names = set(lower_case_names)
+        problems = defaultdict(set)
+        for lower_case_name in unique_lower_case_names:
+            attrs = [d for d in oslo_collector.attributes if d.name.lower() == lower_case_name and d.deprecated_version == '']
+            if len(attrs) < 2:
+                continue
+            first_attr = attrs[0].name
+            for attr in attrs[1:]:
+                if attr.name != first_attr:
+                    problems[first_attr.lower()].add(attrs[0].objectUri)
+                    problems[first_attr.lower()].add(attr.objectUri)
+
+        problems = {k: list(v) for k, v in problems.items()}
+
+        problems.pop('basisoppervlakte')
+        problems.pop('ipadres')
+        problems.pop('risicoanalyse')
+        problems.pop('technischefiche')
+        problems.pop('opstelhoogte')
+        problems.pop('buitendiameter')
+        problems.pop('dnsnaam')
+        problems.pop('funderingsaanzetonderdebodemvandewaterweg')
+        problems.pop('binnendiameter')
+        problems.pop('netwerktype')
+        problems.pop('beschoeiingslengte')
+        problems.pop('softwareversie')
+        problems.pop('folietype')
+
+        if len(problems) > 0:
+            raise NotImplementedError(f'Found attributes with different case:\n{json.dumps(problems, indent=4)}')
