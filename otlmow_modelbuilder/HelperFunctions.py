@@ -31,6 +31,10 @@ def get_titlecase_from_ns(ns: str) -> str:
         raise ValueError()
 
 
+def escape_backslash(text: str) -> str:
+    return text.replace('\\', '\\\\')
+
+
 def wrap_in_quotes(text: str) -> str:
     if not isinstance(text, str):
         raise TypeError

@@ -4,7 +4,7 @@ from typing import Dict
 from otlmow_modelbuilder.DatatypeBuilderFunctions import get_attributen_by_type_field
 from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block, \
     get_fields_to_import_from_list_of_attributes
-from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes
+from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes, escape_backslash
 from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
 
 
@@ -77,7 +77,7 @@ class AbstractDatatypeCreator(ABC):
         datablock.append(f'    objectUri = {wrap_in_quotes(oslo_datatype.objectUri)}')
         datablock.append(f'    definition = {wrap_in_quotes(oslo_datatype.definition)}')
         if oslo_datatype.usagenote != '':
-            datablock.append(f'    usagenote = {wrap_in_quotes(oslo_datatype.usagenote)}')
+            datablock.append(f'    usagenote = {escape_backslash(wrap_in_quotes(oslo_datatype.usagenote))}')
         if oslo_datatype.deprecated_version != '':
             datablock.append(f'    deprecated_version = {wrap_in_quotes(oslo_datatype.deprecated_version)}'),
         if type_field == 'OTL':

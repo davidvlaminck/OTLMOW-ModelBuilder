@@ -1,6 +1,17 @@
 import pytest
 
-from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns, wrap_in_quotes
+from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns, wrap_in_quotes, \
+    escape_backslash
+
+
+def test_escape_backslash_empty_string():
+    result = escape_backslash('')
+    assert result == ''
+
+
+def test_escape_backslash():
+    result = escape_backslash('\\d')
+    assert result == '\\\\d'
 
 
 def test_empty_string_returns_empty_string_in_single_quotes():
