@@ -4,7 +4,7 @@ from typing import List, Dict
 from otlmow_modelbuilder.DatatypeBuilderFunctions import get_single_field_from_type_uri, get_type_link_from_attribuut, \
     get_type_name_of_complex_attribuut, get_type_name_of_union_attribuut, get_field_name_from_type_uri, \
     get_non_single_field_from_type_uri
-from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes
+from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes, escape_backslash
 
 
 def get_white_space_equivalent(string):
@@ -92,7 +92,7 @@ def add_attributen_to_data_block(attributen, datablock: List[str], valid_uri_and
         datablock.append(f'{whitespace}label={wrap_in_quotes(attribuut.label)},')
         datablock.append(f'{whitespace}objectUri={wrap_in_quotes(attribuut.objectUri)},')
         if attribuut.usagenote != '':
-            datablock.append(f'{whitespace}usagenote={wrap_in_quotes(attribuut.usagenote)},')
+            datablock.append(f'{whitespace}usagenote={escape_backslash(wrap_in_quotes(attribuut.usagenote))},')
         if attribuut.readonly == 1:
             datablock.append(f'{whitespace}readonly=True,')
         if attribuut.deprecated_version != '':
