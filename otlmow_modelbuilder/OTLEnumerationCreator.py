@@ -98,7 +98,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
 
             whitespace = get_white_space_equivalent(f"        '{waarde.invulwaarde}': KeuzelijstWaarde(")
             datablock.append(f"        '{waarde.invulwaarde}': KeuzelijstWaarde(invulwaarde='{waarde.invulwaarde}',")
-            datablock.append(f"{whitespace}label={wrap_in_quotes(waarde.label)}, ")
+            datablock.append(f"{whitespace}label={wrap_in_quotes(waarde.label)},")
             if waarde.status != '':
                 datablock.append(f"{whitespace}status='{waarde.status}',")
             if waarde.definitie != '':
