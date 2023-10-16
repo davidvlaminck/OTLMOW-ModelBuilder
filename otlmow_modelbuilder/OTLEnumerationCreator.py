@@ -98,7 +98,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
 
             whitespace = get_white_space_equivalent(f"        '{waarde.invulwaarde}': KeuzelijstWaarde(")
             datablock.append(f"        '{waarde.invulwaarde}': KeuzelijstWaarde(invulwaarde='{waarde.invulwaarde}',")
-            datablock.append(f"{whitespace}label='{waarde.label}',")
+            datablock.append(f"{whitespace}label={wrap_in_quotes(waarde.label)}, ")
             if waarde.status != '':
                 datablock.append(f"{whitespace}status='{waarde.status}',")
             if waarde.definitie != '':
@@ -175,13 +175,15 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             subject_str = str(distinct_subject)
             if subject_str.startswith('https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/'):
                 continue
-            elif env == 'tei' and subject_str.startswith('https://wegenenverkeer-test.data.vlaanderen.be/id/conceptscheme/'):
+            elif env == 'tei' and subject_str.startswith(
+                    'https://wegenenverkeer-test.data.vlaanderen.be/id/conceptscheme/'):
                 continue
             waarde = KeuzelijstWaarde()
             waarde.objectUri = subject_str
             status = g.value(subject=distinct_subject, predicate=URIRef('https://www.w3.org/ns/adms#status'))
             if status is not None:
-                waarde.status = str(status).replace('https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAdmsStatus/', '')
+                waarde.status = str(status).replace(
+                    'https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAdmsStatus/', '')
             waarde.invulwaarde = str(
                 g.value(subject=distinct_subject, predicate=URIRef('http://www.w3.org/2004/02/skos/core#notation')))
             waarde.definitie = str(
