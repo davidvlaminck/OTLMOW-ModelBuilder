@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="d_d7d2a508b89986e8_GeometrieArtefactCollector_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.3.2">coverage.py v7.3.2</a>,
-            created at 2023-10-04 06:43 +0000
+            created at 2023-10-16 10:05 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"/>
@@ -86,7 +86,7 @@
     <p class="run"><span class="n"><a id="t4" href="#t4">4</a></span><span class="t"><span class="key">from</span> <span class="nam">otlmow_modelbuilder</span><span class="op">.</span><span class="nam">DatatypeBuilderFunctions</span> <span class="key">import</span> <span class="nam">get_single_field_from_type_uri</span><span class="op">,</span> <span class="nam">get_type_link_from_attribuut</span><span class="op">,</span> <span class="xx">\</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t5" href="#t5">5</a></span><span class="t">    <span class="nam">get_type_name_of_complex_attribuut</span><span class="op">,</span> <span class="nam">get_type_name_of_union_attribuut</span><span class="op">,</span> <span class="nam">get_field_name_from_type_uri</span><span class="op">,</span> <span class="xx">\</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t">    <span class="nam">get_non_single_field_from_type_uri</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t"><span class="key">from</span> <span class="nam">otlmow_modelbuilder</span><span class="op">.</span><span class="nam">HelperFunctions</span> <span class="key">import</span> <span class="nam">wrap_in_quotes</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t"><span class="key">from</span> <span class="nam">otlmow_modelbuilder</span><span class="op">.</span><span class="nam">HelperFunctions</span> <span class="key">import</span> <span class="nam">wrap_in_quotes</span><span class="op">,</span> <span class="nam">escape_backslash</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t"><span class="key">def</span> <span class="nam">get_white_space_equivalent</span><span class="op">(</span><span class="nam">string</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -174,7 +174,7 @@
     <p class="run"><span class="n"><a id="t92" href="#t92">92</a></span><span class="t">        <span class="nam">datablock</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="str">f'{whitespace}label={wrap_in_quotes(attribuut.label)},'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t">        <span class="nam">datablock</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="str">f'{whitespace}objectUri={wrap_in_quotes(attribuut.objectUri)},'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t94" href="#t94">94</a></span><span class="t">        <span class="key">if</span> <span class="nam">attribuut</span><span class="op">.</span><span class="nam">usagenote</span> <span class="op">!=</span> <span class="str">''</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">            <span class="nam">datablock</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="str">f'{whitespace}usagenote={wrap_in_quotes(attribuut.usagenote)},'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">            <span class="nam">datablock</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="str">f'{whitespace}usagenote={escape_backslash(wrap_in_quotes(attribuut.usagenote))},'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">        <span class="key">if</span> <span class="nam">attribuut</span><span class="op">.</span><span class="nam">readonly</span> <span class="op">==</span> <span class="num">1</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t97" href="#t97">97</a></span><span class="t">            <span class="nam">datablock</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="str">f'{whitespace}readonly=True,'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">        <span class="key">if</span> <span class="nam">attribuut</span><span class="op">.</span><span class="nam">deprecated_version</span> <span class="op">!=</span> <span class="str">''</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -268,7 +268,7 @@
             <a id="nextFileLink" class="nav" href="d_d7d2a508b89986e8_GeometrieArtefactCollector_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.3.2">coverage.py v7.3.2</a>,
-            created at 2023-10-04 06:43 +0000
+            created at 2023-10-16 10:05 +0000
         </p>
     </div>
 </footer>
