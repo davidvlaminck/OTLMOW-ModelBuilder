@@ -27,8 +27,7 @@ class OSLOInMemoryCreator:
         lijst = []
         for row in data:
             c = OSLODatatypePrimitiveAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
-                                               row[9],
-                                               row[10], row[11], row[12])
+                                               row[9], row[10], row[11], row[12])
             lijst.append(c)
 
         return lijst
@@ -142,8 +141,7 @@ class OSLOInMemoryCreator:
         lijst = []
         for row in data:
             c = OSLODatatypeComplexAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
-                                             row[9],
-                                             row[10], row[11], row[12])
+                                             row[9], row[10], row[11], row[12])
             lijst.append(c)
 
         return lijst
@@ -171,8 +169,7 @@ class OSLOInMemoryCreator:
         lijst = []
         for row in data:
             c = OSLODatatypeUnionAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
-                                           row[9],
-                                           row[10], row[11], row[12])
+                                           row[9], row[10], row[11], row[12])
             lijst.append(c)
 
         return lijst
