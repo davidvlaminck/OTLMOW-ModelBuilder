@@ -133,9 +133,7 @@ def test_invalid_oslo_datatype_union(subtests):
 def set_up() -> OSLOCollector:
     base_dir = os.path.dirname(os.path.realpath(__file__))
     file_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
-    sql_reader = SQLDbReader(file_location)
-    oslo_creator = OSLOInMemoryCreator(sql_reader)
-    collector = OSLOCollector(oslo_creator)
+    collector = OSLOCollector(file_location)
     collector.collect_all()
     return collector
 

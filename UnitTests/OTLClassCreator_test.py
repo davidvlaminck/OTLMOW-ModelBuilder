@@ -90,9 +90,7 @@ class GeometrieArtefactCollectorDouble:
 def set_up_real_collector_and_creator():
     base_dir = os.path.dirname(os.path.realpath(__file__))
     file_location = Path(f'{base_dir}/OTL 2.3.db')
-    sql_reader = SQLDbReader(file_location)
-    oslo_creator = OSLOInMemoryCreator(sql_reader)
-    collector = OSLOCollector(oslo_creator)
+    collector = OSLOCollector(file_location)
     collector.collect_all()
     creator = OTLClassCreator(collector)
     return collector, creator

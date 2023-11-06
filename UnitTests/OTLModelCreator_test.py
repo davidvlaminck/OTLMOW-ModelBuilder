@@ -14,9 +14,7 @@ def test_nested_lists(subtests):
     base_dir = current_file_path.parents[0]
     subset_file_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
 
-    sql_reader = SQLDbReader(subset_file_location)
-    oslo_creator = OSLOInMemoryCreator(sql_reader)
-    collector = OSLOCollector(oslo_creator)
+    collector = OSLOCollector(subset_file_location)
     collector.collect_all()
 
     with subtests.test(msg='valid testclass, no nested lists'):

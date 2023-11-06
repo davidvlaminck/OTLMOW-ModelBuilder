@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List
 
 from otlmow_modelbuilder.NewOTLBaseClassNotImplemented import NewOTLBaseClassNotImplemented
@@ -17,8 +18,8 @@ from otlmow_modelbuilder.SQLDataClasses.OSLOTypeLink import OSLOTypeLink
 
 
 class OSLOCollector:
-    def __init__(self, oslo_in_memory_creator: OSLOInMemoryCreator):
-        self.memory_creator = oslo_in_memory_creator
+    def __init__(self, path: Path):
+        self.path = path
 
         self.inheritances: [Inheritance] = None
         self.attributes: [OSLOAttribuut] = None
@@ -34,18 +35,19 @@ class OSLOCollector:
         self.relations: [OSLORelatie] = None
 
     def collect_all(self, include_abstract: bool = False) -> None:
-        self.classes = self.memory_creator.get_all_classes()
-        self.attributes = self.memory_creator.get_all_attributes(include_abstract=include_abstract)
-        self.inheritances = self.memory_creator.get_all_inheritances()
-        self.primitive_datatypes = self.memory_creator.get_all_primitive_datatypes()
-        self.primitive_datatype_attributen = self.memory_creator.get_all_primitive_datatype_attributes()
-        self.complex_datatypes = self.memory_creator.get_all_complex_datatypes()
-        self.complex_datatype_attributen = self.memory_creator.get_all_complex_datatype_attributes()
-        self.union_datatypes = self.memory_creator.get_all_union_datatypes()
-        self.union_datatype_attributen = self.memory_creator.get_all_union_datatype_attributes()
-        self.enumerations = self.memory_creator.get_all_enumerations()
-        self.typeLinks = self.memory_creator.get_all_typelinks()
-        self.relations = self.memory_creator.get_all_relations()
+        with OSLOInMemoryCreator(self.path) as memory_creator:
+            self.classes = memory_creator.get_all_classes()
+            self.attributes = memory_creator.get_all_attributes(include_abstract=include_abstract)
+            self.inheritances = memory_creator.get_all_inheritances()
+            self.primitive_datatypes = memory_creator.get_all_primitive_datatypes()
+            self.primitive_datatype_attributen = memory_creator.get_all_primitive_datatype_attributes()
+            self.complex_datatypes = memory_creator.get_all_complex_datatypes()
+            self.complex_datatype_attributen = memory_creator.get_all_complex_datatype_attributes()
+            self.union_datatypes = memory_creator.get_all_union_datatypes()
+            self.union_datatype_attributen = memory_creator.get_all_union_datatype_attributes()
+            self.enumerations = memory_creator.get_all_enumerations()
+            self.typeLinks = memory_creator.get_all_typelinks()
+            self.relations = memory_creator.get_all_relations()
 
     def find_attributes_by_class(self, oslo_class: OSLOClass) -> [OSLOAttribuut]:
         if oslo_class is None:
@@ -136,6 +138,7 @@ class OSLOCollector:
                                             and r.doel_overerving == '', self.relations)), key=lambda r: r.objectUri)
 
     def query_correct_base_classes(self) -> None:
-        result = self.memory_creator.check_on_base_classes()
-        if result != 0:
-            raise NewOTLBaseClassNotImplemented()
+        with OSLOInMemoryCreator(self.path) as memory_creator:
+            result = memory_creator.check_on_base_classes()
+            if result != 0:
+                raise NewOTLBaseClassNotImplemented()

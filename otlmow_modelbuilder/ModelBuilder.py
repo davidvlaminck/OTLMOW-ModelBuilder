@@ -20,16 +20,15 @@ class ModelBuilder:
             this_file_path = Path(__file__)
             directory = this_file_path.parent
 
-        sql_reader = SQLDbReader(otl_subset_location)
-        oslo_creator = OSLOInMemoryCreator(sql_reader)
-        subset_collector = OSLOCollector(oslo_creator)
+        subset_collector = OSLOCollector(otl_subset_location)
+        subset_collector.collect_all()
+
         geo_artefact_collector = None
         if geometry_artefact_location is not None:
             sql_reader_ga = SQLDbReader(geometry_artefact_location)
             geo_memory_creator = GeometrieInMemoryCreator(sql_reader_ga)
             geo_artefact_collector = GeometrieArtefactCollector(geo_memory_creator)
 
-        subset_collector.collect_all()
         if geo_artefact_collector is not None:
             geo_artefact_collector.collect()
 
