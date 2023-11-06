@@ -48,12 +48,7 @@ class OSLOInMemoryCreator:
             "SELECT label_nl, name, uri, definition_nl, usagenote_nl, abstract, deprecated_version FROM OSLOClass ORDER BY uri",
             {})
 
-        lijst = []
-        for row in data:
-            c = OSLOClass(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
-            lijst.append(c)
-
-        return lijst
+        return [OSLOClass(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in data]
 
     def get_class_by_uri(self, class_uri: str) -> OSLOClass:
         data = self.sqlDbReader.perform_read_query(
@@ -61,16 +56,13 @@ class OSLOInMemoryCreator:
             "FROM OSLOClass WHERE uri=:uriclass",
             {"uriclass": class_uri})
 
-        lijst = []
-        for row in data:
-            c = OSLOClass(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
-            lijst.append(c)
+        class_results = [OSLOClass(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in data]
 
-        if len(lijst) > 1:
-            raise NotImplementedError(f'There should only be 1 class with this uri: {class_uri}')
+        if len(class_results) > 1:
+            raise ValueError(f'There should only be 1 class with this uri: {class_uri}')
 
-        if len(lijst) == 1:
-            return lijst[0]
+        if len(class_results) == 1:
+            return class_results[0]
 
     def get_attributes_by_class_uri(self, class_uri, include_abstract=False) -> [OSLOAttribuut]:
         overerving_in_query = ''
