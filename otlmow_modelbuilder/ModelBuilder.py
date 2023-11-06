@@ -25,12 +25,10 @@ class ModelBuilder:
 
         geo_artefact_collector = None
         if geometry_artefact_location is not None:
-            sql_reader_ga = SQLDbReader(geometry_artefact_location)
-            geo_memory_creator = GeometrieInMemoryCreator(sql_reader_ga)
-            geo_artefact_collector = GeometrieArtefactCollector(geo_memory_creator)
+            geo_artefact_collector = GeometrieArtefactCollector(geometry_artefact_location)
 
         if geo_artefact_collector is not None:
-            geo_artefact_collector.collect()
+            geo_artefact_collector.collect_all()
 
         settings = load_settings(settings_path)
 
