@@ -31,14 +31,16 @@ class ClassOSLOCollector(OSLOCollector):
                           'Plattegrond van het gebouw met aanduidingen van de verschillende aanwezige elementen zoals kelder, kasten met kastnummers, toegangscontrole en meer.',
                           'https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw', '1', '1',
                           'https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw.grondplan',
-                          'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcDocument', 0, '', 0, '', '')]
+                          'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcDocument', 0, '', 0, '',
+                          '')]
         self.inheritances = [
             Inheritance('Behuizing', 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Behuizing',
                         'https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw', 'Gebouw', '')
         ]
 
         self.typeLinks = [
-            OSLOTypeLink("https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcDocument", "OSLODatatypeComplex",
+            OSLOTypeLink("https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcDocument",
+                         "OSLODatatypeComplex",
                          "")
         ]
 
@@ -78,10 +80,11 @@ class ClassOSLOCollector(OSLOCollector):
 
 class GeometrieArtefactCollectorDouble:
     def __init__(self):
-        self.geometrie_types = [GeometrieType(objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw',
-                                              label_nl='Gebouw',
-                                              geen_geometrie=0, punt3D=0, lijn3D=0,
-                                              polygoon3D=1)]
+        self.geometrie_types = [
+            GeometrieType(objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw',
+                          label_nl='Gebouw',
+                          geen_geometrie=0, punt3D=0, lijn3D=0,
+                          polygoon3D=1)]
 
 
 def set_up_real_collector_and_creator():
@@ -131,12 +134,12 @@ def test_InvalidOSLODatatypeComplexEmptyName():
 
 
 def test_InValidType():
-    bad_Class = True
     collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
     creator = OTLClassCreator(collector)
     with pytest.raises(ValueError) as exception_bad_name:
-        creator.create_blocks_to_write_from_classes(bad_Class)
+        creator.create_blocks_to_write_from_classes('bad input')
     assert str(exception_bad_name.value) == 'Input is not a OSLOClass'
+
 
 expectedDataContainerBuis = ['# coding=utf-8',
                              'from typing import List',
@@ -183,13 +186,15 @@ expectedDataContainerBuis = ['# coding=utf-8',
 
 def test_ContainerBuis():
     collector, creator = set_up_real_collector_and_creator()
-    container_buis = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis')
+    container_buis = collector.find_class_by_uri(
+        'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis')
     data_to_write = creator.create_blocks_to_write_from_classes(container_buis)
     assert data_to_write == expectedDataContainerBuis
 
 
 def test_Gebouw_DtcKardMax1():
     collector = ClassOSLOCollector(mock)
+    collector.relations = []
     geo_collector = GeometrieArtefactCollectorDouble()
     creator = OTLClassCreator(collector)
     creator.geometry_types = geo_collector.geometrie_types
@@ -203,9 +208,9 @@ def test_CheckInheritances_Agent():
     collector, creator = set_up_real_collector_and_creator()
 
     agent = collector.find_class_by_uri('http://purl.org/dc/terms/Agent')
-    data_to_write = creator.create_blocks_to_write_from_classes(agent, valid_uri_and_types = {
-        "https://schema.org/ContactPoint" : "DtcContactinfo",
-        "https://schema.org/OpeningHoursSpecification" : "DtcOpeningsurenSpecificatie"
+    data_to_write = creator.create_blocks_to_write_from_classes(agent, valid_uri_and_types={
+        "https://schema.org/ContactPoint": "DtcContactinfo",
+        "https://schema.org/OpeningHoursSpecification": "DtcOpeningsurenSpecificatie"
     })
     inheritance_line = 'class Agent(OTLObject, RelationInteractor):'
 
@@ -215,11 +220,13 @@ def test_CheckInheritances_Agent():
 def test_CheckInheritances_AIMObject():
     collector, creator = set_up_real_collector_and_creator()
 
-    aim_object = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject')
+    aim_object = collector.find_class_by_uri(
+        'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject')
     data_to_write = creator.create_blocks_to_write_from_classes(aim_object)
     inheritance_line = 'class AIMObject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):'
 
     assert data_to_write[16] == inheritance_line
+
 
 def test_CheckInheritances_RelatieObject():
     collector, creator = set_up_real_collector_and_creator()
@@ -235,7 +242,8 @@ def test_CheckInheritances_RelatieObject():
 def test_CheckInheritances_DerdenObject():
     collector, creator = set_up_real_collector_and_creator()
 
-    derdenobject = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject')
+    derdenobject = collector.find_class_by_uri(
+        'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject')
     data_to_write = creator.create_blocks_to_write_from_classes(derdenobject)
     inheritance_line = 'class Derdenobject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):'
 
@@ -253,7 +261,8 @@ def test_check_inheritances_RelationInteractor():
                   'D (inherits from RelationInteractor through AIMObject', '', 0, ''),
         OSLOClass('C', 'C', 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#C',
                   'C (inherits from A and B', '', 0, ''),
-        OSLOClass('AIMObject', 'AIMObject', 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
+        OSLOClass('AIMObject', 'AIMObject',
+                  'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
                   'AIMObject', '', 0, '')
     ]
     collector.inheritances = [
@@ -267,6 +276,7 @@ def test_check_inheritances_RelationInteractor():
                     'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#C', 'C', '')
     ]
     collector.attributes = []
+    collector.relations = []
     creator = OTLClassCreator(collector)
     c_class = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#C')
     inheritance_line = creator.create_blocks_to_write_from_classes(c_class)[6]
