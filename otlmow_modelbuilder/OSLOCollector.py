@@ -18,21 +18,22 @@ from otlmow_modelbuilder.SQLDataClasses.OSLOTypeLink import OSLOTypeLink
 
 class OSLOCollector:
     def __init__(self, oslo_in_memory_creator: OSLOInMemoryCreator):
-        self.inheritances: [Inheritance] = None
         self.memory_creator = oslo_in_memory_creator
-        self.attributes: [OSLOAttribuut] = None
-        self.classes: [OSLOClass] = []
-        self.primitive_datatypes: [OSLODatatypePrimitive] = []
-        self.primitive_datatype_attributen: [OSLODatatypePrimitiveAttribuut] = []
-        self.complex_datatypes: [OSLODatatypeComplex] = []
-        self.complex_datatype_attributen: [OSLODatatypeComplexAttribuut] = []
-        self.union_datatypes: [OSLODatatypeUnion] = []
-        self.union_datatype_attributen: [OSLODatatypeUnionAttribuut] = []
-        self.enumerations: [OSLOEnumeration] = []
-        self.typeLinks: [OSLOTypeLink] = []
-        self.relations: [OSLORelatie] = []
 
-    def collect(self, include_abstract=False):
+        self.inheritances: [Inheritance] = None
+        self.attributes: [OSLOAttribuut] = None
+        self.classes: [OSLOClass] = None
+        self.primitive_datatypes: [OSLODatatypePrimitive] = None
+        self.primitive_datatype_attributen: [OSLODatatypePrimitiveAttribuut] = None
+        self.complex_datatypes: [OSLODatatypeComplex] = None
+        self.complex_datatype_attributen: [OSLODatatypeComplexAttribuut] = None
+        self.union_datatypes: [OSLODatatypeUnion] = None
+        self.union_datatype_attributen: [OSLODatatypeUnionAttribuut] = None
+        self.enumerations: [OSLOEnumeration] = None
+        self.typeLinks: [OSLOTypeLink] = None
+        self.relations: [OSLORelatie] = None
+
+    def collect_all(self, include_abstract: bool = False) -> None:
         self.classes = self.memory_creator.get_all_classes()
         self.attributes = self.memory_creator.get_all_attributes(include_abstract=include_abstract)
         self.inheritances = self.memory_creator.get_all_inheritances()
@@ -131,10 +132,10 @@ class OSLOCollector:
         return next((p for p in self.typeLinks if p.item_uri == type_uri), None)
 
     def find_outgoing_relations(self, objectUri: str) -> [OSLORelatie]:
-        return sorted(list(filter(lambda r: r.bron_uri == objectUri and r.bron_overerving == '' and
-                                            r.doel_overerving == '', self.relations)), key=lambda r: r.objectUri)
+        return sorted(list(filter(lambda r: r.bron_uri == objectUri and r.bron_overerving == ''
+                                            and r.doel_overerving == '', self.relations)), key=lambda r: r.objectUri)
 
-    def query_correct_base_classes(self):
+    def query_correct_base_classes(self) -> None:
         result = self.memory_creator.check_on_base_classes()
         if result != 0:
             raise NewOTLBaseClassNotImplemented()
