@@ -15,10 +15,10 @@ from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
 class OSLOInMemoryCreator:
     def __init__(self, sql_db_reader: SQLDbReader):
-        self.sqlDbReader = sql_db_reader
+        self.sql_db_reader = sql_db_reader
 
     def get_all_primitive_datatype_attributes(self) -> [OSLODatatypePrimitiveAttribuut]:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
             "overerving, constraints, readonly, usagenote_nl, deprecated_version "
             "FROM OSLODatatypePrimitiveAttributen "
@@ -29,7 +29,7 @@ class OSLOInMemoryCreator:
             for row in data]
 
     def get_all_primitive_datatypes(self) -> [OSLODatatypePrimitive]:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version "
             "FROM OSLODatatypePrimitive "
             "ORDER BY uri")
@@ -37,7 +37,7 @@ class OSLOInMemoryCreator:
         return [OSLODatatypePrimitive(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data]
 
     def get_all_classes(self) -> [OSLOClass]:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT label_nl, name, uri, definition_nl, usagenote_nl, abstract, deprecated_version "
             "FROM OSLOClass "
             "ORDER BY uri")
@@ -45,7 +45,7 @@ class OSLOInMemoryCreator:
         return [OSLOClass(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in data]
 
     def get_class_by_uri(self, class_uri: str) -> OSLOClass:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             query="SELECT label_nl, name, uri, definition_nl, usagenote_nl, abstract, deprecated_version "
                   "FROM OSLOClass "
                   "WHERE uri=:uriclass",
@@ -63,7 +63,7 @@ class OSLOInMemoryCreator:
         overerving_in_query = ''
         if not include_abstract:
             overerving_in_query = 'overerving = 0 AND '
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             query="SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
                   "overerving, constraints, readonly, usagenote_nl, deprecated_version "
                   f"FROM OSLOAttributen WHERE class_uri=:uriclass AND {overerving_in_query}name <> 'typeURI' "
@@ -77,7 +77,7 @@ class OSLOInMemoryCreator:
         overerving_in_query = ''
         if not include_abstract:
             overerving_in_query = 'overerving = 0 AND '
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
             "overerving, constraints, readonly, usagenote_nl, deprecated_version "
             f"FROM OSLOAttributen WHERE {overerving_in_query}name <> 'typeURI' "
@@ -87,7 +87,7 @@ class OSLOInMemoryCreator:
                               row[11], row[12]) for row in data]
 
     def get_all_inheritances(self) -> [Inheritance]:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT base_name, base_uri, class_uri, class_name, deprecated_version "
             "FROM InternalBaseClass "
             "ORDER BY base_uri, class_uri")
@@ -95,7 +95,7 @@ class OSLOInMemoryCreator:
         return [Inheritance(row[0], row[1], row[2], row[3], row[4]) for row in data]
 
     def get_all_complex_datatypes(self) -> [OSLODatatypeComplex]:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version "
             "FROM OSLODatatypeComplex "
             "ORDER BY uri")
@@ -103,7 +103,7 @@ class OSLOInMemoryCreator:
         return [OSLODatatypeComplex(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data]
 
     def get_all_complex_datatype_attributes(self) -> [OSLODatatypeComplexAttribuut]:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
             "overerving, constraints, readonly, usagenote_nl, deprecated_version "
             "FROM OSLODatatypeComplexAttributen "
@@ -113,7 +113,7 @@ class OSLOInMemoryCreator:
                                              row[9], row[10], row[11], row[12]) for row in data]
 
     def get_all_union_datatypes(self) -> [OSLODatatypeUnion]:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version "
             "FROM OSLODatatypeUnion "
             "ORDER BY uri")
@@ -121,7 +121,7 @@ class OSLOInMemoryCreator:
         return [OSLODatatypeUnion(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data]
 
     def get_all_union_datatype_attributes(self) -> [OSLODatatypeUnionAttribuut]:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
             "overerving, constraints, readonly, usagenote_nl, deprecated_version "
             "FROM OSLODatatypeUnionAttributen "
@@ -131,7 +131,7 @@ class OSLOInMemoryCreator:
                                            row[9], row[10], row[11], row[12]) for row in data]
 
     def get_all_enumerations(self) -> [OSLOEnumeration]:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT name, uri, usagenote_nl, definition_nl, label_nl, codelist, deprecated_version "
             "FROM OSLOEnumeration "
             "ORDER BY uri")
@@ -139,7 +139,7 @@ class OSLOInMemoryCreator:
         return [OSLOEnumeration(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in data]
 
     def get_all_typelinks(self) -> [OSLOTypeLink]:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT item_uri, item_tabel, deprecated_version "
             "FROM TypeLinkTabel "
             "ORDER BY item_uri")
@@ -147,7 +147,7 @@ class OSLOInMemoryCreator:
         return [OSLOTypeLink(row[0], row[1], row[2]) for row in data]
 
     def get_all_relations(self) -> [OSLORelatie]:
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             "SELECT * "
             "FROM OSLORelaties "
             "ORDER BY uri, bron_uri, doel_uri")
@@ -155,7 +155,7 @@ class OSLOInMemoryCreator:
         return [OSLORelatie(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]) for row in data]
 
     def check_on_base_classes(self):
-        data = self.sqlDbReader.perform_read_query(
+        data = self.sql_db_reader.perform_read_query(
             """WITH inh1 AS ( SELECT uri AS org_class_uri, CASE WHEN base_uri IS NULL THEN uri ELSE base_uri END AS 
             inheritsfrom FROM OSLOClass LEFT JOIN InternalBaseClass ON OSLOClass.uri = InternalBaseClass.class_uri WHERE 
             abstract = 0), inh2 AS ( SELECT org_class_uri, CASE WHEN base_uri IS NULL THEN inheritsfrom ELSE base_uri END AS 
