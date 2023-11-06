@@ -1,4 +1,5 @@
 import os
+import warnings
 from pathlib import Path
 
 import pytest
@@ -20,7 +21,8 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
 
     for path in paths_to_create_test_class:
         with subtests.test(msg=f'Creating testclasses for {path}'):
-            with pytest.warns(DeprecationWarning):  # supress deprecation warnings from tqdm
+            with warnings.catch_warnings():
+                warnings.filterwarnings("ignore", category=DeprecationWarning)  # supress deprecation warnings from tqdm
                 ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location,
                                                  geometry_artefact_location=ga_location,
                                                  directory=path)
