@@ -36,13 +36,12 @@ class OSLOInMemoryCreator:
     def __exit__(self, exc_type, exc_value, exc_traceback):
         self.connection.close()
 
-    def perform_read_query(self, query: str, params=None):
+    def perform_read_query(self, query: str, params=None) -> [tuple]:
         if params is None:
             params = {}
 
         cur = self.connection.cursor()
-        data = [row for row in cur.execute(query, params)]
-        return data
+        return [row for row in cur.execute(query, params)]
 
     def get_all_primitive_datatype_attributes(self) -> [OSLODatatypePrimitiveAttribuut]:
         data = self.perform_read_query(
