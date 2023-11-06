@@ -6,7 +6,7 @@ import pytest
 
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLComplexDatatypeCreator import OTLComplexDatatypeCreator
-from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplex import OSLODatatypeComplex
 from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
@@ -126,7 +126,7 @@ def setUp() -> OSLOCollector:
     sql_reader = SQLDbReader(file_location)
     oslo_creator = OSLOInMemoryCreator(sql_reader)
     collector = OSLOCollector(oslo_creator)
-    collector.collect()
+    collector.collect_all()
     return collector
 
 

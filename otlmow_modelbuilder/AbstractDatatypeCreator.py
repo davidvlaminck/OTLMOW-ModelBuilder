@@ -5,7 +5,7 @@ from otlmow_modelbuilder.DatatypeBuilderFunctions import get_attributen_by_type_
 from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block, \
     get_fields_to_import_from_list_of_attributes
 from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes, escape_backslash
-from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 
 
 class AbstractDatatypeCreator(ABC):

@@ -8,7 +8,7 @@ from rdflib import URIRef, Graph
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent
-from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
 from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes
 

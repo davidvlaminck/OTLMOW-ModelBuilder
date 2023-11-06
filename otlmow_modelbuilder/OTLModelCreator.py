@@ -3,7 +3,7 @@ import json
 import logging
 import os
 import shutil
-from collections import Counter, defaultdict
+from collections import defaultdict
 from concurrent.futures import FIRST_COMPLETED
 from datetime import datetime
 from os import path
@@ -20,7 +20,7 @@ from otlmow_modelbuilder.OTLComplexDatatypeCreator import OTLComplexDatatypeCrea
 from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator
 from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatypeCreator
 from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator
-from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 
 
 class OTLModelCreator:

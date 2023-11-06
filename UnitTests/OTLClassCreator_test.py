@@ -11,7 +11,7 @@ from otlmow_modelbuilder.OTLClassCreator import OTLClassCreator
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
-from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLOTypeLink import OSLOTypeLink
 from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
@@ -90,7 +90,7 @@ def set_up_real_collector_and_creator():
     sql_reader = SQLDbReader(file_location)
     oslo_creator = OSLOInMemoryCreator(sql_reader)
     collector = OSLOCollector(oslo_creator)
-    collector.collect()
+    collector.collect_all()
     creator = OTLClassCreator(collector)
     return collector, creator
 

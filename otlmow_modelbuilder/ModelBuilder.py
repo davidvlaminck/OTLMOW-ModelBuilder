@@ -4,7 +4,7 @@ from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactColl
 from otlmow_modelbuilder.GeometrieInMemoryCreator import GeometrieInMemoryCreator
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLModelCreator import OTLModelCreator
-from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 from otlmow_modelbuilder.SettingsManager import load_settings
 
@@ -29,7 +29,7 @@ class ModelBuilder:
             geo_memory_creator = GeometrieInMemoryCreator(sql_reader_ga)
             geo_artefact_collector = GeometrieArtefactCollector(geo_memory_creator)
 
-        subset_collector.collect()
+        subset_collector.collect_all()
         if geo_artefact_collector is not None:
             geo_artefact_collector.collect()
 

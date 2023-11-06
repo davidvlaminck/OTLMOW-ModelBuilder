@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 import pytest
 import rdflib
 
-from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator, KeuzelijstWaarde
@@ -123,7 +123,7 @@ def set_up() -> OSLOCollector:
     sql_reader = SQLDbReader(file_location)
     oslo_creator = OSLOInMemoryCreator(sql_reader)
     collector = OSLOCollector(oslo_creator)
-    collector.collect()
+    collector.collect_all()
     return collector
 
 

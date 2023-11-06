@@ -4,7 +4,7 @@ import pytest
 
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLModelCreator import OTLModelCreator
-from otlmow_modelbuilder.SQLDataClasses.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import OSLODatatypeComplexAttribuut
 from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
@@ -17,7 +17,7 @@ def test_nested_lists(subtests):
     sql_reader = SQLDbReader(subset_file_location)
     oslo_creator = OSLOInMemoryCreator(sql_reader)
     collector = OSLOCollector(oslo_creator)
-    collector.collect()
+    collector.collect_all()
 
     with subtests.test(msg='valid testclass, no nested lists'):
         OTLModelCreator.check_for_nested_attributes_in_classes(collector=collector)
