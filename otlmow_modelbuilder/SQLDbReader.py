@@ -16,7 +16,9 @@ class SQLDbReader:
             if not self.file_exists:
                 raise FileNotFoundError(str(self.path) + " is not a valid path. File does not exist.")
 
-    def perform_read_query(self, query: str, params: dict):
+    def perform_read_query(self, query: str, params=None):
+        if params is None:
+            params = {}
         self.file_exists = os.path.isfile(self.path)
         if not self.file_exists:
             raise FileNotFoundError(str(self.path) + " is not a valid path. File does not exist.")

@@ -19,13 +19,15 @@ class OSLOInMemoryCreator:
 
     def get_all_primitive_datatype_attributes(self) -> [OSLODatatypePrimitiveAttribuut]:
         data = self.sqlDbReader.perform_read_query(
-            "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, overerving, "
-            "constraints, readonly, usagenote_nl, deprecated_version FROM OSLODatatypePrimitiveAttributen ORDER BY uri",
-            {})
+            "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
+            "overerving, constraints, readonly, usagenote_nl, deprecated_version "
+            "FROM OSLODatatypePrimitiveAttributen "
+            "ORDER BY uri")
 
         lijst = []
         for row in data:
-            c = OSLODatatypePrimitiveAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9],
+            c = OSLODatatypePrimitiveAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
+                                               row[9],
                                                row[10], row[11], row[12])
             lijst.append(c)
 
@@ -33,8 +35,9 @@ class OSLOInMemoryCreator:
 
     def get_all_primitive_datatypes(self) -> [OSLODatatypePrimitive]:
         data = self.sqlDbReader.perform_read_query(
-            "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version FROM OSLODatatypePrimitive ORDER BY uri",
-            {})
+            "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version "
+            "FROM OSLODatatypePrimitive "
+            "ORDER BY uri")
 
         lijst = []
         for row in data:
@@ -45,16 +48,18 @@ class OSLOInMemoryCreator:
 
     def get_all_classes(self) -> [OSLOClass]:
         data = self.sqlDbReader.perform_read_query(
-            "SELECT label_nl, name, uri, definition_nl, usagenote_nl, abstract, deprecated_version FROM OSLOClass ORDER BY uri",
-            {})
+            "SELECT label_nl, name, uri, definition_nl, usagenote_nl, abstract, deprecated_version "
+            "FROM OSLOClass "
+            "ORDER BY uri")
 
         return [OSLOClass(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in data]
 
     def get_class_by_uri(self, class_uri: str) -> OSLOClass:
         data = self.sqlDbReader.perform_read_query(
-            "SELECT label_nl, name, uri, definition_nl, usagenote_nl, abstract, deprecated_version "
-            "FROM OSLOClass WHERE uri=:uriclass",
-            {"uriclass": class_uri})
+            query="SELECT label_nl, name, uri, definition_nl, usagenote_nl, abstract, deprecated_version "
+                  "FROM OSLOClass "
+                  "WHERE uri=:uriclass",
+            params={"uriclass": class_uri})
 
         class_results = [OSLOClass(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in data]
 
@@ -69,10 +74,11 @@ class OSLOInMemoryCreator:
         if not include_abstract:
             overerving_in_query = 'overerving = 0 AND '
         data = self.sqlDbReader.perform_read_query(
-            "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, overerving, constraints, readonly, usagenote_nl, deprecated_version "
-            f"FROM OSLOAttributen WHERE class_uri=:uriclass AND {overerving_in_query}name <> 'typeURI' "
-            "ORDER BY uri",
-            {"uriclass": class_uri})
+            query="SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
+                  "overerving, constraints, readonly, usagenote_nl, deprecated_version "
+                  f"FROM OSLOAttributen WHERE class_uri=:uriclass AND {overerving_in_query}name <> 'typeURI' "
+                  "ORDER BY uri",
+            params={"uriclass": class_uri})
 
         lijst = []
         for row in data:
@@ -87,9 +93,10 @@ class OSLOInMemoryCreator:
         if not include_abstract:
             overerving_in_query = 'overerving = 0 AND '
         data = self.sqlDbReader.perform_read_query(
-            "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, overerving, constraints, readonly, usagenote_nl, deprecated_version "
-            f"FROM OSLOAttributen WHERE {overerving_in_query}name <> 'typeURI' ORDER BY uri",
-            {})
+            "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
+            "overerving, constraints, readonly, usagenote_nl, deprecated_version "
+            f"FROM OSLOAttributen WHERE {overerving_in_query}name <> 'typeURI' "
+            f"ORDER BY uri")
 
         lijst = []
         for row in data:
@@ -102,8 +109,8 @@ class OSLOInMemoryCreator:
     def get_all_inheritances(self) -> [Inheritance]:
         data = self.sqlDbReader.perform_read_query(
             "SELECT base_name, base_uri, class_uri, class_name, deprecated_version "
-            "FROM InternalBaseClass ORDER BY base_uri, class_uri",
-            {})
+            "FROM InternalBaseClass "
+            "ORDER BY base_uri, class_uri")
 
         lijst = []
         for row in data:
@@ -114,8 +121,9 @@ class OSLOInMemoryCreator:
 
     def get_all_complex_datatypes(self) -> [OSLODatatypeComplex]:
         data = self.sqlDbReader.perform_read_query(
-            "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version FROM OSLODatatypeComplex ORDER BY uri",
-            {})
+            "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version "
+            "FROM OSLODatatypeComplex "
+            "ORDER BY uri")
 
         lijst = []
         for row in data:
@@ -126,13 +134,15 @@ class OSLOInMemoryCreator:
 
     def get_all_complex_datatype_attributes(self) -> [OSLODatatypeComplexAttribuut]:
         data = self.sqlDbReader.perform_read_query(
-            "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, overerving, "
-            "constraints, readonly, usagenote_nl, deprecated_version FROM OSLODatatypeComplexAttributen ORDER BY uri",
-            {})
+            "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
+            "overerving, constraints, readonly, usagenote_nl, deprecated_version "
+            "FROM OSLODatatypeComplexAttributen "
+            "ORDER BY uri")
 
         lijst = []
         for row in data:
-            c = OSLODatatypeComplexAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9],
+            c = OSLODatatypeComplexAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
+                                             row[9],
                                              row[10], row[11], row[12])
             lijst.append(c)
 
@@ -140,8 +150,9 @@ class OSLOInMemoryCreator:
 
     def get_all_union_datatypes(self) -> [OSLODatatypeUnion]:
         data = self.sqlDbReader.perform_read_query(
-            "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version FROM OSLODatatypeUnion ORDER BY uri",
-            {})
+            "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version "
+            "FROM OSLODatatypeUnion "
+            "ORDER BY uri")
 
         lijst = []
         for row in data:
@@ -152,13 +163,15 @@ class OSLOInMemoryCreator:
 
     def get_all_union_datatype_attributes(self) -> [OSLODatatypeUnionAttribuut]:
         data = self.sqlDbReader.perform_read_query(
-            "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, overerving, "
-            "constraints, readonly, usagenote_nl, deprecated_version FROM OSLODatatypeUnionAttributen ORDER BY uri",
-            {})
+            "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
+            "overerving, constraints, readonly, usagenote_nl, deprecated_version "
+            "FROM OSLODatatypeUnionAttributen "
+            "ORDER BY uri")
 
         lijst = []
         for row in data:
-            c = OSLODatatypeUnionAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9],
+            c = OSLODatatypeUnionAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
+                                           row[9],
                                            row[10], row[11], row[12])
             lijst.append(c)
 
@@ -167,8 +180,8 @@ class OSLOInMemoryCreator:
     def get_all_enumerations(self) -> [OSLOEnumeration]:
         data = self.sqlDbReader.perform_read_query(
             "SELECT name, uri, usagenote_nl, definition_nl, label_nl, codelist, deprecated_version "
-            "FROM OSLOEnumeration ORDER BY uri",
-            {})
+            "FROM OSLOEnumeration "
+            "ORDER BY uri")
 
         lijst = []
         for row in data:
@@ -179,8 +192,9 @@ class OSLOInMemoryCreator:
 
     def get_all_typelinks(self) -> [OSLOTypeLink]:
         data = self.sqlDbReader.perform_read_query(
-            "SELECT item_uri, item_tabel, deprecated_version FROM TypeLinkTabel ORDER BY item_uri",
-            {})
+            "SELECT item_uri, item_tabel, deprecated_version "
+            "FROM TypeLinkTabel "
+            "ORDER BY item_uri")
 
         lijst = []
         for row in data:
@@ -191,8 +205,9 @@ class OSLOInMemoryCreator:
 
     def get_all_relations(self) -> [OSLORelatie]:
         data = self.sqlDbReader.perform_read_query(
-            "SELECT * FROM OSLORelaties ORDER BY uri, bron_uri, doel_uri",
-            {})
+            "SELECT * "
+            "FROM OSLORelaties "
+            "ORDER BY uri, bron_uri, doel_uri")
 
         lijst = []
         for row in data:
@@ -238,7 +253,6 @@ class OSLOInMemoryCreator:
             inh_down.base_uri AND base_uri NOT IN (
             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMDBStatus', 
             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMToestand') WHERE base_uri IS NOT NULL AND 
-            base_uri NOT IN (SELECT * FROM selected_bases)) SELECT count(*) FROM check5;""",
-            {})
+            base_uri NOT IN (SELECT * FROM selected_bases)) SELECT count(*) FROM check5;""")
 
         return data[0][0]
