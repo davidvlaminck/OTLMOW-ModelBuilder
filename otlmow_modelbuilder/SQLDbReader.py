@@ -23,10 +23,7 @@ class SQLDbReader:
         if not self.file_exists:
             raise FileNotFoundError(str(self.path) + " is not a valid path. File does not exist.")
 
-        con = sqlite3.connect(self.path)
-        cur = con.cursor()
-        data = []
-        for row in cur.execute(query, params):
-            data.append(row)
-        con.close()
+        with sqlite3.connect(self.path) as con:
+            cur = con.cursor()
+            data = [row for row in cur.execute(query, params)]
         return data

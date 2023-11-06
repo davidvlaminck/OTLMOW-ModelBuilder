@@ -24,13 +24,9 @@ class OSLOInMemoryCreator:
             "FROM OSLODatatypePrimitiveAttributen "
             "ORDER BY uri")
 
-        lijst = []
-        for row in data:
-            c = OSLODatatypePrimitiveAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
-                                               row[9], row[10], row[11], row[12])
-            lijst.append(c)
-
-        return lijst
+        return [OSLODatatypePrimitiveAttribuut(
+            row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12])
+            for row in data]
 
     def get_all_primitive_datatypes(self) -> [OSLODatatypePrimitive]:
         data = self.sqlDbReader.perform_read_query(
@@ -38,12 +34,7 @@ class OSLOInMemoryCreator:
             "FROM OSLODatatypePrimitive "
             "ORDER BY uri")
 
-        lijst = []
-        for row in data:
-            c = OSLODatatypePrimitive(row[0], row[1], row[2], row[3], row[4], row[5])
-            lijst.append(c)
-
-        return lijst
+        return [OSLODatatypePrimitive(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data]
 
     def get_all_classes(self) -> [OSLOClass]:
         data = self.sqlDbReader.perform_read_query(
@@ -79,13 +70,8 @@ class OSLOInMemoryCreator:
                   "ORDER BY uri",
             params={"uriclass": class_uri})
 
-        lijst = []
-        for row in data:
-            c = OSLOAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
-                              row[11], row[12])
-            lijst.append(c)
-
-        return lijst
+        return [OSLOAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
+                              row[11], row[12]) for row in data]
 
     def get_all_attributes(self, include_abstract=False) -> [OSLOAttribuut]:
         overerving_in_query = ''
@@ -97,13 +83,8 @@ class OSLOInMemoryCreator:
             f"FROM OSLOAttributen WHERE {overerving_in_query}name <> 'typeURI' "
             f"ORDER BY uri")
 
-        lijst = []
-        for row in data:
-            c = OSLOAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
-                              row[11], row[12])
-            lijst.append(c)
-
-        return lijst
+        return [OSLOAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
+                              row[11], row[12]) for row in data]
 
     def get_all_inheritances(self) -> [Inheritance]:
         data = self.sqlDbReader.perform_read_query(
@@ -111,12 +92,7 @@ class OSLOInMemoryCreator:
             "FROM InternalBaseClass "
             "ORDER BY base_uri, class_uri")
 
-        lijst = []
-        for row in data:
-            c = Inheritance(row[0], row[1], row[2], row[3], row[4])
-            lijst.append(c)
-
-        return lijst
+        return [Inheritance(row[0], row[1], row[2], row[3], row[4]) for row in data]
 
     def get_all_complex_datatypes(self) -> [OSLODatatypeComplex]:
         data = self.sqlDbReader.perform_read_query(
@@ -124,12 +100,7 @@ class OSLOInMemoryCreator:
             "FROM OSLODatatypeComplex "
             "ORDER BY uri")
 
-        lijst = []
-        for row in data:
-            c = OSLODatatypeComplex(row[0], row[1], row[2], row[3], row[4], row[5])
-            lijst.append(c)
-
-        return lijst
+        return [OSLODatatypeComplex(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data]
 
     def get_all_complex_datatype_attributes(self) -> [OSLODatatypeComplexAttribuut]:
         data = self.sqlDbReader.perform_read_query(
@@ -138,13 +109,8 @@ class OSLOInMemoryCreator:
             "FROM OSLODatatypeComplexAttributen "
             "ORDER BY uri")
 
-        lijst = []
-        for row in data:
-            c = OSLODatatypeComplexAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
-                                             row[9], row[10], row[11], row[12])
-            lijst.append(c)
-
-        return lijst
+        return [OSLODatatypeComplexAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
+                                             row[9], row[10], row[11], row[12]) for row in data]
 
     def get_all_union_datatypes(self) -> [OSLODatatypeUnion]:
         data = self.sqlDbReader.perform_read_query(
@@ -152,12 +118,7 @@ class OSLOInMemoryCreator:
             "FROM OSLODatatypeUnion "
             "ORDER BY uri")
 
-        lijst = []
-        for row in data:
-            c = OSLODatatypeUnion(row[0], row[1], row[2], row[3], row[4], row[5])
-            lijst.append(c)
-
-        return lijst
+        return [OSLODatatypeUnion(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data]
 
     def get_all_union_datatype_attributes(self) -> [OSLODatatypeUnionAttribuut]:
         data = self.sqlDbReader.perform_read_query(
@@ -166,13 +127,8 @@ class OSLOInMemoryCreator:
             "FROM OSLODatatypeUnionAttributen "
             "ORDER BY uri")
 
-        lijst = []
-        for row in data:
-            c = OSLODatatypeUnionAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
-                                           row[9], row[10], row[11], row[12])
-            lijst.append(c)
-
-        return lijst
+        return [OSLODatatypeUnionAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
+                                           row[9], row[10], row[11], row[12]) for row in data]
 
     def get_all_enumerations(self) -> [OSLOEnumeration]:
         data = self.sqlDbReader.perform_read_query(
@@ -180,12 +136,7 @@ class OSLOInMemoryCreator:
             "FROM OSLOEnumeration "
             "ORDER BY uri")
 
-        lijst = []
-        for row in data:
-            c = OSLOEnumeration(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
-            lijst.append(c)
-
-        return lijst
+        return [OSLOEnumeration(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in data]
 
     def get_all_typelinks(self) -> [OSLOTypeLink]:
         data = self.sqlDbReader.perform_read_query(
@@ -193,12 +144,7 @@ class OSLOInMemoryCreator:
             "FROM TypeLinkTabel "
             "ORDER BY item_uri")
 
-        lijst = []
-        for row in data:
-            c = OSLOTypeLink(row[0], row[1], row[2])
-            lijst.append(c)
-
-        return lijst
+        return [OSLOTypeLink(row[0], row[1], row[2]) for row in data]
 
     def get_all_relations(self) -> [OSLORelatie]:
         data = self.sqlDbReader.perform_read_query(
@@ -206,12 +152,7 @@ class OSLOInMemoryCreator:
             "FROM OSLORelaties "
             "ORDER BY uri, bron_uri, doel_uri")
 
-        lijst = []
-        for row in data:
-            c = OSLORelatie(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
-            lijst.append(c)
-
-        return lijst
+        return [OSLORelatie(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]) for row in data]
 
     def check_on_base_classes(self):
         data = self.sqlDbReader.perform_read_query(
