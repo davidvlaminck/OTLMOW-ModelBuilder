@@ -16,8 +16,7 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
     paths_to_create_test_class = [Path(f'{base_dir}/TestClasses'),
                                   Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestClasses'),
                                   Path(f'{base_dir}/../../OTLMOW-Converter/UnitTests/TestClasses'),
-                                  Path(f'{base_dir}/../../OTLMOW-Template/UnitTests/TestClasses')
-                                  ]
+                                  Path(f'{base_dir}/../../OTLMOW-Template/UnitTests/TestClasses')]
 
     for path in paths_to_create_test_class:
         with subtests.test(msg=f'Creating testclasses for {path}'):
