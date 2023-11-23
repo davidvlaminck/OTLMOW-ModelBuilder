@@ -13,10 +13,10 @@ from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 expectedDtc = ["# coding=utf-8",
-               "from otlmow_model.BaseClasses.OTLObject import OTLAttribuut",
-               "from otlmow_model.BaseClasses.WaardenObject import WaardenObject",
-               "from otlmow_model.BaseClasses.ComplexField import ComplexField",
-               "from otlmow_model.BaseClasses.StringField import StringField",
+               "from ...BaseClasses.OTLObject import OTLAttribuut",
+               "from ...BaseClasses.WaardenObject import WaardenObject",
+               "from ...BaseClasses.ComplexField import ComplexField",
+               "from ...BaseClasses.StringField import StringField",
                "",
                "",
                "# Generated with OTLComplexDatatypeCreator. To modify: extend, do not edit",

@@ -15,8 +15,8 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 expectedKeuzelijst = ['# coding=utf-8',
                       'import random',
-                      'from otlmow_model.BaseClasses.KeuzelijstField import KeuzelijstField',
-                      'from otlmow_model.BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde',
+                      'from ...BaseClasses.KeuzelijstField import KeuzelijstField',
+                      'from ...BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde',
                       '',
                       '',
                       '# Generated with OTLEnumerationCreator. To modify: extend, do not edit',

@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import shutil
+import site
 from collections import defaultdict
 from concurrent.futures import FIRST_COMPLETED
 from datetime import datetime
@@ -38,19 +39,19 @@ class OTLModelCreator:
         OTLModelCreator.check_for_nested_attributes_in_classes(collector=oslo_collector,
                                                                known_classes_uris=settings['nested_list_class_uris'])
         OTLModelCreator.create_primitive_datatypes(
-            directory=directory, oslo_collector=oslo_collector,
+            directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules'])
         OTLModelCreator.create_complex_datatypes(
-            directory=directory, oslo_collector=oslo_collector,
+            directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             complex_datatype_validation_rules=settings['complex_datatype_validation_rules'])
         OTLModelCreator.create_union_datatypes(
-            directory=directory, oslo_collector=oslo_collector,
+            directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             union_datatype_validation_rules=settings['union_datatype_validation_rules'])
         OTLModelCreator.create_enumerations(
-            directory=directory, environment=environment, oslo_collector=oslo_collector,
+            directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
             enumeration_validation_rules=settings['enumeration_validation_rules'])
         OTLModelCreator.create_classes(
-            directory=directory, oslo_collector=oslo_collector, geo_artefact_collector=geo_artefact_collector,
+            directory=directory / 'OtlmowModel', oslo_collector=oslo_collector, geo_artefact_collector=geo_artefact_collector,
             valid_uri_and_types=settings['complex_datatype_validation_rules']['valid_uri_and_types'])
         logging.info(f'finished creating model in {directory} at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 
@@ -219,36 +220,38 @@ class OTLModelCreator:
         if not path.isdir(directory):
             raise NotADirectoryError(f'{directory} is not a directory.')
 
-        OTLModelCreator.clean_directory(directory)
+        if not path.exists(directory / 'OtlmowModel'):
+            os.mkdir(directory / 'OtlmowModel')
 
-        if not path.exists(directory / 'Classes'):
-            os.mkdir(directory / 'Classes')
-        if not path.exists(directory / 'Datatypes'):
-            os.mkdir(directory / 'Datatypes')
+        model_directory = directory / 'OtlmowModel'
 
-        if not path.exists(directory / 'Classes/Abstracten'):
-            os.mkdir(directory / 'Classes/Abstracten')
-        if not path.exists(directory / 'Classes/ImplementatieElement'):
-            os.mkdir(directory / 'Classes/ImplementatieElement')
-        if not path.exists(directory / 'Classes/Installatie'):
-            os.mkdir(directory / 'Classes/Installatie')
-        if not path.exists(directory / 'Classes/Levenscyclus'):
-            os.mkdir(directory / 'Classes/Levenscyclus')
-        if not path.exists(directory / 'Classes/Onderdeel'):
-            os.mkdir(directory / 'Classes/Onderdeel')
-        if not path.exists(directory / 'Classes/ProefEnMeting'):
-            os.mkdir(directory / 'Classes/ProefEnMeting')
+        OTLModelCreator.clean_directory(model_directory)
+        # OTLModelCreator.copy_fixed_classes_from_otlmow_model(model_directory)
+
+        if not path.exists(model_directory / 'Classes'):
+            os.mkdir(model_directory / 'Classes')
+        if not path.exists(model_directory / 'Datatypes'):
+            os.mkdir(model_directory / 'Datatypes')
+
+        if not path.exists(model_directory / 'Classes/Abstracten'):
+            os.mkdir(model_directory / 'Classes/Abstracten')
+        if not path.exists(model_directory / 'Classes/ImplementatieElement'):
+            os.mkdir(model_directory / 'Classes/ImplementatieElement')
+        if not path.exists(model_directory / 'Classes/Installatie'):
+            os.mkdir(model_directory / 'Classes/Installatie')
+        if not path.exists(model_directory / 'Classes/Levenscyclus'):
+            os.mkdir(model_directory / 'Classes/Levenscyclus')
+        if not path.exists(model_directory / 'Classes/Onderdeel'):
+            os.mkdir(model_directory / 'Classes/Onderdeel')
+        if not path.exists(model_directory / 'Classes/ProefEnMeting'):
+            os.mkdir(model_directory / 'Classes/ProefEnMeting')
 
     @staticmethod
     def clean_directory(directory):
-        for subdir in ['Classes', 'Datatypes']:
-            if not path.exists(subdir):
-                continue
-            dir_path = os.path.join(directory, subdir)
-            try:
-                shutil.rmtree(dir_path)
-            except Exception as e:
-                print(f'Failed to delete {subdir}. Reason: {e}')
+        for root, dirs, files in os.walk(directory):
+            for dir in dirs:
+                if dir not in ['BaseClasses', 'Exceptions', 'GeometrieTypes', 'Helpers', 'warnings']:
+                    shutil.rmtree(os.path.join(root, dir))
 
     @staticmethod
     def check_for_nested_attributes_in_classes(collector: OSLOCollector, exceptions=None,
@@ -328,3 +331,24 @@ class OTLModelCreator:
 
         if len(problems) > 0:
             raise NotImplementedError(f'Found attributes with different case:\n{json.dumps(problems, indent=4)}')
+
+    @classmethod
+    def copy_fixed_classes_from_otlmow_model(cls, model_directory: Path):
+        print(site.getsitepackages())
+        otlmow_model_dir = None
+        for site_package in site.getsitepackages():
+            if not path.exists(Path(site_package) / 'otlmow-model'):
+                otlmow_model_dir = Path(site_package) / 'otlmow_model'
+                if path.exists(otlmow_model_dir / 'OtlmowModel'):
+                    otlmow_model_dir = otlmow_model_dir / 'OtlmowModel'
+                print('model found!')
+                break
+
+        if otlmow_model_dir is None:
+            raise ModuleNotFoundError("Could not find otlmow-model directory")
+
+        shutil.copytree(otlmow_model_dir / 'BaseClasses', model_directory / 'BaseClasses')
+        shutil.copytree(otlmow_model_dir / 'Exceptions', model_directory / 'Exceptions')
+        shutil.copytree(otlmow_model_dir / 'GeometrieTypes', model_directory / 'GeometrieTypes')
+        shutil.copytree(otlmow_model_dir / 'Helpers', model_directory / 'Helpers')
+        shutil.copytree(otlmow_model_dir / 'warnings', model_directory / 'warnings')

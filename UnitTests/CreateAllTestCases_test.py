@@ -1,4 +1,6 @@
+import logging
 import os
+import site
 import warnings
 from pathlib import Path
 
@@ -13,10 +15,13 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
     otl_subset_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
     ga_location = Path(f'{base_dir}/GeometrieArtefact_AllCasesTestClass.db')
 
-    paths_to_create_test_class = [Path(f'{base_dir}/TestClasses'),
-                                  Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestClasses'),
-                                  Path(f'{base_dir}/../../OTLMOW-Converter/UnitTests/TestClasses'),
-                                  Path(f'{base_dir}/../../OTLMOW-Template/UnitTests/TestClasses')]
+
+
+    paths_to_create_test_class = [Path(f'{base_dir}/TestModel'),
+                                  Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestModel'),
+                                  # Path(f'{base_dir}/../../OTLMOW-Converter/UnitTests/TestModel'),
+                                  # Path(f'{base_dir}/../../OTLMOW-Template/UnitTests/TestModel')
+                                  ]
 
     for path in paths_to_create_test_class:
         with subtests.test(msg=f'Creating testclasses for {path}'):
@@ -26,7 +31,7 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                                                  geometry_artefact_location=ga_location,
                                                  directory=path)
 
-        all_cases_class_location = Path(path / 'Classes/Onderdeel/AllCasesTestClass.py')
+        all_cases_class_location = Path(path / 'OtlmowModel/Classes/Onderdeel/AllCasesTestClass.py')
         assert os.path.isfile(all_cases_class_location)
 
     assert len(caplog.records) == 0
