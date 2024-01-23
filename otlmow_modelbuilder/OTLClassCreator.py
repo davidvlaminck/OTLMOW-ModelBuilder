@@ -28,7 +28,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
                                                 inheritances=self.oslo_collector.inheritances)
             self.geometry_types = gip.process_inheritances()
 
-    def create_blocks_to_write_from_classes(self, oslo_class: OSLOClass, model_location='', valid_uri_and_types: Dict = None) -> [str]:
+    def create_blocks_to_write_from_classes(self, oslo_class: OSLOClass, model_location='',
+                                            valid_uri_and_types: Dict = None) -> [str]:
         if not isinstance(oslo_class, OSLOClass):
             raise ValueError(f"Input is not a OSLOClass")
 
@@ -45,16 +46,16 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         return self.create_block_from_class(oslo_class, model_location, valid_uri_and_types=valid_uri_and_types)
 
-    def create_block_from_class(self, oslo_class: OSLOClass, model_location: str = '', valid_uri_and_types: Dict = None) -> [str]:
+    def create_block_from_class(self, oslo_class: OSLOClass, model_location: str = '',
+                                valid_uri_and_types: Dict = None) -> [str]:
         if valid_uri_and_types is None:
             valid_uri_and_types = {}
         attributen = self.oslo_collector.find_attributes_by_class(oslo_class)
         inheritances = self.oslo_collector.find_inheritances_by_class(oslo_class)
         list_of_geometry_types = self.get_geometry_types_from_uri(oslo_class.objectUri)
 
-        if oslo_class.objectUri in ['https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
-                                    'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject',
-                                    'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie']:
+        if oslo_class.objectUri in {'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
+                                    'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject'}:
             inheritances.append(
                 Inheritance(base_name='OTLAsset', base_uri='', class_name='', class_uri='', deprecated_version=''))
             inheritances.append(
@@ -68,7 +69,10 @@ class OTLClassCreator(AbstractDatatypeCreator):
             inheritances.append(
                 Inheritance(base_name='OTLObject', base_uri='', class_name='', class_uri='', deprecated_version=''))
 
-        elif oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+        elif oslo_class.objectUri in {
+                'http://purl.org/dc/terms/Agent',
+                'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure',
+                'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie'}:
             inheritances.append(
                 Inheritance(base_name='OTLObject', base_uri='', class_name='', class_uri='', deprecated_version=''))
             inheritances.append(
@@ -112,7 +116,10 @@ class OTLClassCreator(AbstractDatatypeCreator):
                        'NonNegIntegerField', 'TimeField', 'StringField', 'UnionWaarden']
         for type_field in list_of_fields:
             if type_field not in base_fields:
-                datablock.append(f'from ...Datatypes.{type_field} import {type_field}')
+                if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+                    datablock.append(f'from ..Datatypes.{type_field} import {type_field}')
+                else:
+                    datablock.append(f'from ...Datatypes.{type_field} import {type_field}')
             else:
                 datablock.append(f'from otlmow_model.OtlmowModel.BaseClasses.{type_field} import {type_field}')
 
@@ -208,10 +215,12 @@ class OTLClassCreator(AbstractDatatypeCreator):
                 f"        self.add_valid_relation(relation='{relation.objectUri}', target='{relation.doel_uri}'{deprecated})")
         datablock.append('')
 
-    relation_interactor_uris = ['https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie',
-                                'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
-                                'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject',
-                                'http://purl.org/dc/terms/Agent']
+    relation_interactor_uris = {
+        'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie',
+        'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
+        'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject',
+        'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure',
+        'http://purl.org/dc/terms/Agent'}
 
     def search_recursive_inheritance_for_relation_interactor(self, base_uri: str) -> bool:
         inheritances = self.oslo_collector.find_inheritances_by_class_uri(base_uri)
