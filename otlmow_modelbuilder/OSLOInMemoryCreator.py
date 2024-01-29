@@ -212,6 +212,9 @@ inheritance_checks AS (
 		LEFT JOIN InternalBaseClass inh5 ON inh4.base_uri = inh5.class_uri
 		LEFT JOIN InternalBaseClass inh6 ON inh5.base_uri = inh6.class_uri
 		LEFT JOIN InternalBaseClass inh7 ON inh6.base_uri = inh7.class_uri)
-SELECT concrete_uri FROM inheritance_checks GROUP BY 1 HAVING sum(has_valid_base) = 0;""")
+SELECT concrete_uri -- concrete_uri to view the list of classes that do not have a valid base class 
+FROM inheritance_checks GROUP BY 1 HAVING sum(has_valid_base) = 0;""")
+        if len(data) == 0:
+            return []
 
         return data[0][0]
