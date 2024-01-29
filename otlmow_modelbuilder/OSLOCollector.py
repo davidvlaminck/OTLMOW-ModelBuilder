@@ -139,6 +139,6 @@ class OSLOCollector:
 
     def query_correct_base_classes(self) -> None:
         with OSLOInMemoryCreator(self.path) as memory_creator:
-            result = memory_creator.check_on_base_classes()
-            if result != 0:
+            result_uris = memory_creator.check_on_base_classes()
+            if len(result_uris) != 0:
                 raise NewOTLBaseClassNotImplemented()
