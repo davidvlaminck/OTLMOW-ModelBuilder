@@ -38,15 +38,10 @@ def escape_backslash(text: str) -> str:
 def wrap_in_quotes(text: str) -> str:
     if not isinstance(text, str):
         raise TypeError
-    if text == '':
+    if not text:
         return "''"
-    singles = sum(1 for c in text if c == "'")
-    doubles = sum(1 for c in text if c == '"')
+    singles = text.count("'")
+    doubles = text.count('"')
     if singles > doubles:
-        if doubles > 0:
-            return '"' + text.replace('"', '\\"') + '"'
-        return '"' + text + '"'
-    else:
-        if singles > 0:
-            return "'" + text.replace("'", "\\'") + "'"
-        return "'" + text + "'"
+        return '"' + text.replace('"', '\\"') + '"' if doubles > 0 else f'"{text}"'
+    return "'" + text.replace("'", "\\'") + "'" if singles > 0 else f"'{text}'"
