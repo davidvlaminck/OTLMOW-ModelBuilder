@@ -230,7 +230,7 @@ class OTLModelCreator:
         model_directory = directory / 'OtlmowModel'
 
         OTLModelCreator.clean_directory(model_directory)
-        # OTLModelCreator.copy_fixed_classes_from_otlmow_model(model_directory)
+        OTLModelCreator.copy_fixed_classes_from_otlmow_model(model_directory)
 
         if not path.exists(model_directory / 'Classes'):
             os.mkdir(model_directory / 'Classes')
@@ -254,8 +254,7 @@ class OTLModelCreator:
     def clean_directory(directory):
         for root, dirs, files in os.walk(directory):
             for dir in dirs:
-                if dir not in ['BaseClasses', 'Exceptions', 'GeometrieTypes', 'Helpers', 'warnings']:
-                    shutil.rmtree(os.path.join(root, dir))
+                shutil.rmtree(os.path.join(root, dir))
             for file in files:
                 os.remove(os.path.join(root, file))
 
@@ -350,7 +349,6 @@ class OTLModelCreator:
                 otlmow_model_dir = Path(site_package) / 'otlmow_model'
                 if path.exists(otlmow_model_dir / 'OtlmowModel'):
                     otlmow_model_dir = otlmow_model_dir / 'OtlmowModel'
-                print('model found!')
                 break
 
         if otlmow_model_dir is None:
