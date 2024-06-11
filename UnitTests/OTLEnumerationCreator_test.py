@@ -6,10 +6,9 @@ import pytest
 import rdflib
 
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
-from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator, KeuzelijstWaarde
-from otlmow_modelbuilder.SQLDbReader import SQLDbReader
+from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 

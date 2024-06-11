@@ -3,9 +3,7 @@ from pathlib import Path
 
 from otlmow_modelbuilder.DatatypeBuilderFunctions import get_non_single_field_from_type_uri, \
     get_type_name_of_complex_attribuut, get_type_link_from_attribuut, get_fields_and_names_from_list_of_attributes
-from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
-from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
 
 def set_up() -> OSLOCollector:

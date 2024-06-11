@@ -5,11 +5,9 @@ from unittest import skip
 from UnitTests.OTLClassCreator_test import set_up_real_collector_and_creator
 from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent, add_attributen_to_data_block, \
     get_fields_to_import_from_list_of_attributes, write_to_file
-from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
-from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import OSLODatatypeComplexAttribuut
-from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 

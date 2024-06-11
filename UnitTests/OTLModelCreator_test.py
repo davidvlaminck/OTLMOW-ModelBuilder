@@ -2,11 +2,9 @@ from pathlib import Path
 
 import pytest
 
-from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
-from otlmow_modelbuilder.OTLModelCreator import OTLModelCreator
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.OTLModelCreator import OTLModelCreator
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import OSLODatatypeComplexAttribuut
-from otlmow_modelbuilder.SQLDbReader import SQLDbReader
 
 
 def test_nested_lists(subtests):
