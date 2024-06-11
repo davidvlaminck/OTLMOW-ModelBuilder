@@ -43,6 +43,14 @@ class OSLOInMemoryCreator:
         cur = self.connection.cursor()
         return [row for row in cur.execute(query, params)]
 
+    def get_otl_version(self) -> str:
+        data = self.perform_read_query("SELECT Waarde FROM GeneralInfo WHERE Parameter = 'Version'")
+
+        if len(data) == 0:
+            return None
+
+        return data[0][0]
+
     def get_all_primitive_datatype_attributes(self) -> [OSLODatatypePrimitiveAttribuut]:
         data = self.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
