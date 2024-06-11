@@ -30,7 +30,8 @@ class OTLModelCreator:
         self.geo_artefact_collector = geo_artefact_collector
 
     @staticmethod
-    def create_full_model(directory: Path, oslo_collector, geo_artefact_collector, settings: Dict, environment: str = ''):
+    def create_full_model(directory: Path, oslo_collector, geo_artefact_collector, settings: Dict,
+                          environment: str = ''):
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         OTLModelCreator.check_and_create_subdirectories(directory)
         oslo_collector.query_correct_base_classes()
@@ -51,8 +52,11 @@ class OTLModelCreator:
             directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
             enumeration_validation_rules=settings['enumeration_validation_rules'])
         OTLModelCreator.create_classes(
-            directory=directory / 'OtlmowModel', oslo_collector=oslo_collector, geo_artefact_collector=geo_artefact_collector,
+            directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
+            geo_artefact_collector=geo_artefact_collector,
             valid_uri_and_types=settings['complex_datatype_validation_rules']['valid_uri_and_types'])
+        OTLModelCreator.add_generated_info(
+            directory=directory / 'OtlmowModel', oslo_collector=oslo_collector)
         logging.info(f'finished creating model in {directory} at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 
     @staticmethod
@@ -252,6 +256,8 @@ class OTLModelCreator:
             for dir in dirs:
                 if dir not in ['BaseClasses', 'Exceptions', 'GeometrieTypes', 'Helpers', 'warnings']:
                     shutil.rmtree(os.path.join(root, dir))
+            for file in files:
+                os.remove(os.path.join(root, file))
 
     @staticmethod
     def check_for_nested_attributes_in_classes(collector: OSLOCollector, exceptions=None,
@@ -312,7 +318,8 @@ class OTLModelCreator:
         unique_lower_case_names = set(lower_case_names)
         problems = defaultdict(set)
         for lower_case_name in unique_lower_case_names:
-            attrs = [d for d in oslo_collector.attributes if d.name.lower() == lower_case_name and d.deprecated_version == '']
+            attrs = [d for d in oslo_collector.attributes if
+                     d.name.lower() == lower_case_name and d.deprecated_version == '']
             if len(attrs) < 2:
                 continue
             first_attr = attrs[0].name
@@ -324,7 +331,9 @@ class OTLModelCreator:
         problems = {k: list(v) for k, v in problems.items()}
 
         # remove attributes that are known to be different
-        known_list = ['basisoppervlakte', 'ipadres', 'risicoanalyse', 'technischefiche', 'opstelhoogte', 'buitendiameter', 'dnsnaam', 'funderingsaanzetonderdebodemvandewaterweg', 'binnendiameter', 'netwerktype', 'beschoeiingslengte', 'softwareversie', 'folietype']
+        known_list = ['basisoppervlakte', 'ipadres', 'risicoanalyse', 'technischefiche', 'opstelhoogte',
+                      'buitendiameter', 'dnsnaam', 'funderingsaanzetonderdebodemvandewaterweg', 'binnendiameter',
+                      'netwerktype', 'beschoeiingslengte', 'softwareversie', 'folietype']
         for known in known_list:
             if known in problems:
                 del problems[known]
@@ -352,3 +361,15 @@ class OTLModelCreator:
         shutil.copytree(otlmow_model_dir / 'GeometrieTypes', model_directory / 'GeometrieTypes')
         shutil.copytree(otlmow_model_dir / 'Helpers', model_directory / 'Helpers')
         shutil.copytree(otlmow_model_dir / 'warnings', model_directory / 'warnings')
+
+    @classmethod
+    def add_generated_info(cls, directory: Path, oslo_collector: OSLOCollector):
+        relation_dict = {}
+        for inheritance in tqdm(oslo_collector.inheritances):
+            if inheritance.base_uri == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DirectioneleRelatie':
+                relation_dict[inheritance.class_uri] = {'directional': True}
+            elif inheritance.base_uri == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NietDirectioneleRelatie':
+                relation_dict[inheritance.class_uri] = {'directional': False}
+        with open(directory / 'generated_info.json', mode='w') as generated_info_file:
+            json.dump(relation_dict, generated_info_file, indent=4)
+
