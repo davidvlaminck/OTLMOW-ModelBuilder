@@ -21,15 +21,16 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                                   base_dir.parent.parent / 'OTLMOW-Template/UnitTests/TestModel']
 
     for path in paths_to_create_test_class:
-        if not os.path.exists(path):
-            logging.info(f'{path} does not exist, skipping this unit test because it is not applicable')
-            continue
         with subtests.test(msg=f'Creating testclasses for {path}'):
             with warnings.catch_warnings():
                 warnings.filterwarnings("ignore", category=DeprecationWarning)  # supress deprecation warnings from tqdm
-                ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location,
-                                                 geometry_artefact_location=ga_location,
-                                                 directory=path)
+                try:
+                    ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location,
+                                                     geometry_artefact_location=ga_location,
+                                                     directory=path)
+                except PermissionError:
+                    logging.info(f'PermissionError for {path}, skipping this test because it is not applicable')
+                    continue
 
         all_cases_class_location = path / 'OtlmowModel' / 'Classes' / 'Onderdeel' / 'AllCasesTestClass.py'
         assert os.path.isfile(all_cases_class_location)
@@ -39,15 +40,16 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
     paths_to_create_test_class_no_double_kard = [base_dir.parent.parent / 'OTLMOW-Template/UnitTests/TestModel']
 
     for path in paths_to_create_test_class_no_double_kard:
-        if not os.path.exists(path):
-            logging.info(f'{path} does not exist, skipping this unit test because it is not applicable')
-            continue
         with subtests.test(msg=f'Creating testclasses for {path}'):
             with warnings.catch_warnings():
                 warnings.filterwarnings("ignore", category=DeprecationWarning)  # supress deprecation warnings from tqdm
-                ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location_no_double_kard,
-                                                 geometry_artefact_location=ga_location,
-                                                 directory=path)
+                try:
+                    ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location_no_double_kard,
+                                                     geometry_artefact_location=ga_location,
+                                                     directory=path)
+                except PermissionError:
+                    logging.info(f'PermissionError for {path}, skipping this test because it is not applicable')
+                    continue
 
         all_cases_class_location = path / 'OtlmowModel' / 'Classes' / 'Onderdeel' / 'AllCasesTestClass.py'
         assert os.path.isfile(all_cases_class_location)
