@@ -330,10 +330,12 @@ class OTLModelCreator:
 
     @classmethod
     def copy_fixed_classes_from_otlmow_model(cls, model_directory: Path):
-        subprocess.call(["git", "clone", "--depth=1", "https://github.com/davidvlaminck/OTLMOW-Model/"])
+        otlmow_model_github_dir = Path(__file__).parent / 'OTLMOW-Model'
+        subprocess.call(["git", "clone", "--depth=1", "https://github.com/davidvlaminck/OTLMOW-Model/",
+                         str(otlmow_model_github_dir.absolute())])
 
-        otlmow_model_dir = Path(__file__).parent.parent / 'OTLMOW-Model' / 'otlmow_model' / 'OtlmowModel'
-        if otlmow_model_dir is None:
+        otlmow_model_dir = otlmow_model_github_dir / 'otlmow_model' / 'OtlmowModel'
+        if not otlmow_model_dir.exists():
             raise ModuleNotFoundError("Could not find otlmow-model directory")
 
         shutil.copytree(otlmow_model_dir / 'BaseClasses', model_directory / 'BaseClasses')
@@ -342,7 +344,7 @@ class OTLModelCreator:
         shutil.copytree(otlmow_model_dir / 'Helpers', model_directory / 'Helpers')
         shutil.copytree(otlmow_model_dir / 'warnings', model_directory / 'warnings')
 
-        shutil.rmtree(otlmow_model_dir.parent.parent)
+        shutil.rmtree(otlmow_model_github_dir)
 
     @classmethod
     def add_generated_info(cls, directory: Path, oslo_collector: OSLOCollector):

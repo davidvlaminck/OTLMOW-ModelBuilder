@@ -152,6 +152,8 @@ def create_relation(relation_type: Type[RelatieObject], source: Optional[Relatio
             relation_type.doelAssetId.toegekendDoor = target.assetId.toegekendDoor
             relation_id += target.assetId.identificator
 
+    relation_id += '_-_' + relation_type.__class__.__name__
+
     relation_type.assetId.identificator = relation_id
     relation_type.assetId.toegekendDoor = 'OTLMOW'
 
