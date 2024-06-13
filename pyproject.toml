@@ -21,7 +21,6 @@ requires-python = ">=3.8"
 dependencies = [
   'rdflib >= 6.0.0',
   'tqdm >= 4.66.1',
-  'otlmow-model>=2.10.4.0'
 ]
 
 [tool.setuptools.packages.find]

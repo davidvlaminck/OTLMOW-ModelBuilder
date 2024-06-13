@@ -3,7 +3,7 @@ import json
 import logging
 import os
 import shutil
-import site
+import subprocess
 from collections import defaultdict
 from concurrent.futures import FIRST_COMPLETED
 from datetime import datetime
@@ -16,12 +16,12 @@ from tqdm import tqdm
 from otlmow_modelbuilder.GenericBuilderFunctions import write_to_file
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
 from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OTLClassCreator import OTLClassCreator
 from otlmow_modelbuilder.OTLComplexDatatypeCreator import OTLComplexDatatypeCreator
 from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator
 from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatypeCreator
 from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator
-from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 
 
 class OTLModelCreator:
@@ -84,10 +84,8 @@ class OTLModelCreator:
                     primitive_datatype_validation_rules=primitive_datatype_validation_rules)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {prim_datatype.name}")
-                    pass
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {prim_datatype.name}")
-                    pass
                 write_to_file(prim_datatype, 'Datatypes', data_to_write, relative_path=directory)
             except BaseException as e:
                 logging.error(str(e))
@@ -96,7 +94,7 @@ class OTLModelCreator:
     @staticmethod
     def get_model_name_from_directory_path(directory):
         if directory.name == 'TestClasses':
-            return directory.parent.name + '.' + directory.name
+            return f'{directory.parent.name}.{directory.name}'
         else:
             return directory.name
 
@@ -112,10 +110,8 @@ class OTLModelCreator:
                     model_location=model_name)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {complex_datatype.name}")
-                    pass
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {complex_datatype.name}")
-                    pass
                 write_to_file(complex_datatype, 'Datatypes', data_to_write, relative_path=directory)
             except BaseException as e:
                 logging.error(str(e))
@@ -133,10 +129,8 @@ class OTLModelCreator:
                     union_datatype_validation_rules=union_datatype_validation_rules)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {union_datatype.name}")
-                    pass
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {union_datatype.name}")
-                    pass
                 write_to_file(union_datatype, 'Datatypes', data_to_write, relative_path=directory)
             except BaseException as e:
                 logging.error(str(e))
@@ -152,16 +146,17 @@ class OTLModelCreator:
                                        enumeration_validation_rules=enumeration_validation_rules): enumeration for
                        enumeration in oslo_collector.enumerations}
             with tqdm(total=len(futures)) as pbar:
-                while len(futures) > 0:
+                while futures:
                     new_futures = {}
                     done, pending = concurrent.futures.wait(futures, return_when=FIRST_COMPLETED, timeout=60)
                     for fut in done:
                         if fut.exception():
                             enumeration = futures[fut]
-                            new_futures[executor.submit(OTLModelCreator.create_enumeration, creator=creator,
-                                                        directory=directory, enumeration=enumeration,
-                                                        environment=environment,
-                                                        enumeration_validation_rules=enumeration_validation_rules)] = job
+                            new_futures[executor.submit(
+                                OTLModelCreator.create_enumeration, creator=creator, directory=directory,
+                                enumeration=enumeration, environment=environment,
+                                enumeration_validation_rules=enumeration_validation_rules)
+                            ] = job
                         else:
                             pbar.update()
                     for fut in pending:
@@ -172,17 +167,13 @@ class OTLModelCreator:
     @staticmethod
     def create_enumeration(creator, directory, enumeration, environment, enumeration_validation_rules):
         try:
-            model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
             data_to_write = creator.create_block_to_write_from_enumerations(
                 enumeration, environment=environment, enumeration_validation_rules=enumeration_validation_rules)
             if data_to_write is None:
                 logging.error(f"Could not create a class for {enumeration.name}")
-                pass
             if len(data_to_write) == 0:
                 logging.error(f"Could not create a class for {enumeration.name}")
-                pass
             write_to_file(enumeration, 'Datatypes', data_to_write, relative_path=directory)
-            # logging.info(f"Created a class for {enumeration.name}")
         except BaseException as e:
             logging.error(str(e))
             logging.error(f"Could not create a class for {enumeration.name}")
@@ -198,11 +189,8 @@ class OTLModelCreator:
                                                                             valid_uri_and_types=valid_uri_and_types)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {oslo_class.name}")
-                    pass
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {oslo_class.name}")
-                    pass
-
                 class_directory = 'Classes'
                 ns = None
                 if oslo_class.objectUri != 'http://purl.org/dc/terms/Agent':
@@ -253,8 +241,8 @@ class OTLModelCreator:
     @staticmethod
     def clean_directory(directory):
         for root, dirs, files in os.walk(directory):
-            for dir in dirs:
-                shutil.rmtree(os.path.join(root, dir))
+            for direc in dirs:
+                shutil.rmtree(os.path.join(root, direc))
             for file in files:
                 os.remove(os.path.join(root, file))
 
@@ -337,20 +325,14 @@ class OTLModelCreator:
             if known in problems:
                 del problems[known]
 
-        if len(problems) > 0:
+        if problems:
             raise NotImplementedError(f'Found attributes with different case:\n{json.dumps(problems, indent=4)}')
 
     @classmethod
     def copy_fixed_classes_from_otlmow_model(cls, model_directory: Path):
-        print(site.getsitepackages())
-        otlmow_model_dir = None
-        for site_package in site.getsitepackages():
-            if not path.exists(Path(site_package) / 'otlmow-model'):
-                otlmow_model_dir = Path(site_package) / 'otlmow_model'
-                if path.exists(otlmow_model_dir / 'OtlmowModel'):
-                    otlmow_model_dir = otlmow_model_dir / 'OtlmowModel'
-                break
+        subprocess.call(["git", "clone", "--depth=1", "https://github.com/davidvlaminck/OTLMOW-Model/"])
 
+        otlmow_model_dir = Path(__file__).parent.parent / 'OTLMOW-Model' / 'otlmow_model' / 'OtlmowModel'
         if otlmow_model_dir is None:
             raise ModuleNotFoundError("Could not find otlmow-model directory")
 
@@ -360,14 +342,17 @@ class OTLModelCreator:
         shutil.copytree(otlmow_model_dir / 'Helpers', model_directory / 'Helpers')
         shutil.copytree(otlmow_model_dir / 'warnings', model_directory / 'warnings')
 
+        shutil.rmtree(otlmow_model_dir.parent.parent)
+
     @classmethod
     def add_generated_info(cls, directory: Path, oslo_collector: OSLOCollector):
         relation_dict = {}
         for inheritance in tqdm(oslo_collector.inheritances):
-            if inheritance.base_uri == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DirectioneleRelatie':
+            if inheritance.base_uri == ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#'
+                                        'DirectioneleRelatie'):
                 relation_dict[inheritance.class_uri] = {'directional': True}
-            elif inheritance.base_uri == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NietDirectioneleRelatie':
+            elif inheritance.base_uri == ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#'
+                                          'NietDirectioneleRelatie'):
                 relation_dict[inheritance.class_uri] = {'directional': False}
         with open(directory / 'generated_info.json', mode='w') as generated_info_file:
             json.dump(relation_dict, generated_info_file, indent=4)
-
