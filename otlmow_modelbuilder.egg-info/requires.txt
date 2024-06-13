@@ -1,2 +1,0 @@
-rdflib>=6.2.0
-otlmow_model>=2.5.6
