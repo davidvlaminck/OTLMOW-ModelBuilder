@@ -15,10 +15,10 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
     otl_subset_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
     ga_location = Path(f'{base_dir}/GeometrieArtefact_AllCasesTestClass.db')
 
-    paths_to_create_test_class = [Path(f'{base_dir}/TestModel'),
-                                  Path(f'{base_dir}/../../OTLMOW-Model/UnitTests/TestModel'),
-                                  Path(f'{base_dir}/../../OTLMOW-Converter/UnitTests/TestModel'),
-                                  Path(f'{base_dir}/../../OTLMOW-Template/UnitTests/TestModel')]
+    paths_to_create_test_class = [base_dir / 'TestModel',
+                                  base_dir.parent.parent / 'OTLMOW-Model/UnitTests/TestModel',
+                                  base_dir.parent.parent / 'OTLMOW-Converter/UnitTests/TestModel',
+                                  base_dir.parent.parent / 'OTLMOW-Template/UnitTests/TestModel']
 
     for path in paths_to_create_test_class:
         with subtests.test(msg=f'Creating testclasses for {path}'):
