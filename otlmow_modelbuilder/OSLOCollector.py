@@ -141,4 +141,6 @@ class OSLOCollector:
         with OSLOInMemoryCreator(self.path) as memory_creator:
             result_uris = memory_creator.check_on_base_classes()
             if len(result_uris) != 0:
+                print('The following classes are not using the correct base classes:')
+                print(result_uris)
                 raise NewOTLBaseClassNotImplemented()
