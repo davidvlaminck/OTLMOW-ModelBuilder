@@ -70,8 +70,12 @@ class AbstractDatatypeCreator(ABC):
         datablock.append(f'    objectUri = {wrap_in_quotes(oslo_datatype.objectUri)}')
         datablock.append(f'    definition = {wrap_in_quotes(oslo_datatype.definition)}')
         if oslo_datatype.usagenote != '':
+            if oslo_datatype.deprecated_version != '' and 'uit gebruik sinds versie' in oslo_datatype.usagenote:
+                no_tag = oslo_datatype.deprecated_version.split('-')[0]
+                oslo_datatype.usagenote = oslo_datatype.usagenote.replace(oslo_datatype.deprecated_version, no_tag)
             datablock.append(f'    usagenote = {escape_backslash(wrap_in_quotes(oslo_datatype.usagenote))}')
         if oslo_datatype.deprecated_version != '':
+            oslo_datatype.deprecated_version = oslo_datatype.deprecated_version.split('-')[0]
             datablock.append(f'    deprecated_version = {wrap_in_quotes(oslo_datatype.deprecated_version)}'),
         if type_field == 'OTL':
             datablock.append('    waarde_shortcut_applicable = True')

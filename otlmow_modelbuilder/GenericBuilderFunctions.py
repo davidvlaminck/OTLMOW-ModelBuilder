@@ -91,11 +91,16 @@ def add_attributen_to_data_block(attributen, datablock: List[str], valid_uri_and
         datablock.append(f'{whitespace}naam={wrap_in_quotes(attribuut.name)},')
         datablock.append(f'{whitespace}label={wrap_in_quotes(attribuut.label)},')
         datablock.append(f'{whitespace}objectUri={wrap_in_quotes(attribuut.objectUri)},')
+
         if attribuut.usagenote != '':
+            if attribuut.deprecated_version != '' and 'uit gebruik sinds versie' in attribuut.usagenote:
+                no_tag = attribuut.deprecated_version.split('-')[0]
+                attribuut.usagenote = attribuut.usagenote.replace(attribuut.deprecated_version, no_tag)
             datablock.append(f'{whitespace}usagenote={escape_backslash(wrap_in_quotes(attribuut.usagenote))},')
         if attribuut.readonly == 1:
             datablock.append(f'{whitespace}readonly=True,')
         if attribuut.deprecated_version != '':
+            attribuut.deprecated_version = attribuut.deprecated_version.split('-')[0]
             datablock.append(f'{whitespace}deprecated_version={wrap_in_quotes(attribuut.deprecated_version)},')
         if attribuut.constraints != '':
             datablock.append(f'{whitespace}constraints={wrap_in_quotes(attribuut.constraints)},')

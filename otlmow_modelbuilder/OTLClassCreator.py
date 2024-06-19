@@ -143,6 +143,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
         datablock.append('    """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""')
 
         if oslo_class.deprecated_version != '':
+            oslo_class.deprecated_version = oslo_class.deprecated_version.split('-')[0]
             datablock.append('')
             datablock.append(f"    deprecated_version = '{oslo_class.deprecated_version}'")
 
@@ -210,6 +211,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
         for relation in relations:
             deprecated = ''
             if relation.deprecated_version != '':
+                relation.deprecated_version = relation.deprecated_version.split('-')[0]
                 deprecated = f", deprecated='{relation.deprecated_version}'"
             datablock.append(
                 f"        self.add_valid_relation(relation='{relation.objectUri}', target='{relation.doel_uri}'{deprecated})")

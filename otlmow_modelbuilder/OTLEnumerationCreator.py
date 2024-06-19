@@ -85,6 +85,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         if adm_status is not None and adm_status != '':
             datablock.append(f'    status = {wrap_in_quotes(adm_status)}')
         if oslo_enumeration.deprecated_version != '':
+            oslo_enumeration.deprecated_version = oslo_enumeration.deprecated_version.split('-')[0]
             datablock.append(f'    deprecated_version = {wrap_in_quotes(oslo_enumeration.deprecated_version)}')
         datablock.append(f'    codelist = {wrap_in_quotes(oslo_enumeration.codelist)}')
         datablock.append('    options = {')
