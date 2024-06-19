@@ -344,7 +344,10 @@ class OTLModelCreator:
         shutil.copytree(otlmow_model_dir / 'Helpers', model_directory / 'Helpers')
         shutil.copytree(otlmow_model_dir / 'warnings', model_directory / 'warnings')
 
-        shutil.rmtree(otlmow_model_github_dir)
+        try:
+            shutil.rmtree(otlmow_model_github_dir)
+        except PermissionError:
+            print(f"Could not remove {otlmow_model_github_dir}")
 
     @classmethod
     def add_generated_info(cls, directory: Path, oslo_collector: OSLOCollector):
