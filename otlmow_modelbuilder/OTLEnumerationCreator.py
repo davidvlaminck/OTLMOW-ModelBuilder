@@ -53,7 +53,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         self.path_zip_file = Path(__file__).parent / "all.ttl.zip"
         self.path_ttl_file = Path(__file__).parent / "all.ttl"
         if self.env != 'unittest':
-            self.download_unzip_and_parse_to_dict(env=self.env)
+            self.graph_dict[env] = self.download_unzip_and_parse_to_dict(env=self.env)
             logging.info("Downloaded, unzipped and parsed the enumerations ttl file")
         if self.include_kl_test_keuzelijst:
             self.add_kl_test_keuzelijst(env=self.env)
@@ -194,13 +194,13 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
 
         return OTLEnumerationCreator.get_graph_from_location(keuzelijstnaam=keuzelijstnaam, env=env)
 
-    def download_unzip_and_parse_to_dict(self, env: str = default_environment) -> Dict[str: Dict[str, Graph]]:
+    def download_unzip_and_parse_to_dict(self, env: str = default_environment) -> Dict[str, Graph]:
         directory_to_extract_to = self.path_zip_file.parent
         urlretrieve(f"https://github.com/Informatievlaanderen/OSLO-codelistgenerated/raw/refs/heads/wegenenverkeer-{self.oslo_github_branch_mapping[env]}/all.ttl.zip", self.path_zip_file)
         with ZipFile(self.path_zip_file, 'r') as zip_ref:
             zip_ref.extractall(directory_to_extract_to)
 
-        self.graph_dict[env] = self.parse_graph_to_dict(path_ttl_file=self.path_ttl_file)
+        return self.parse_graph_to_dict(path_ttl_file=self.path_ttl_file)
 
     @staticmethod
     def parse_graph_to_dict(path_ttl_file: Path) -> Dict[str, Graph]:
@@ -268,7 +268,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
     @classmethod
     def get_adm_status_from_graph(cls, g: Graph, uri: str, env: str = default_environment) -> str:
         if env == 'tei':
-            scheme_uri = uri.replace('wegenenverkeer', 'wegenenverkeer-test')
+            uri = uri.replace('wegenenverkeer', 'wegenenverkeer-test')
 
         status = g.value(subject=URIRef(uri), predicate=URIRef('https://www.w3.org/ns/adms#status'))
 
