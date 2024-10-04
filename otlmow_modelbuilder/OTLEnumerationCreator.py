@@ -153,46 +153,11 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         return datablock
 
     @classmethod
-    def get_graph_from_location(cls, keuzelijstnaam: str, env: str = default_environment):
-        raise NotImplementedError("This method is not implemented in the OTLEnumerationCreator class")
-        if env is None or env == '':
-            env = cls.default_environment
-
-        if env in ['prd', 'UnitTests.TestClasses']:
-            env = 'master'
-        elif env == 'tei':
-            env = 'test'
-        elif env == 'dev':
-            env = 'dev'
-        elif env == 'aim':
-            raise ValueError(f"Environment '{env}' is not supported for fetching the keuzelijst")
-
-        # create a Graph
-        g = rdflib.Graph()
-        keuzelijst_link = f"https://raw.githubusercontent.com/Informatievlaanderen/OSLOthema-wegenenverkeer/{env}/codelijsten/{keuzelijstnaam}.ttl"
-
-        # parse the turtle file hosted on github
-        try:
-            g.parse(keuzelijst_link, format="turtle")
-        except Exception as exc:
-            if 'KlTestKeuzelijst' in keuzelijstnaam:
-                base_dir = os.path.dirname(os.path.realpath(__file__))
-                keuzelijst_link = abspath(f'{base_dir}/../UnitTests/KlTestKeuzelijst.ttl')
-                g.parse(keuzelijst_link, format="turtle")
-            else:
-                logging.error(f"Could not get ttl file for {keuzelijstnaam}")
-                raise exc
-        OTLEnumerationCreator.most_recent_graph = (keuzelijstnaam, env, g)
-        return g
-
-    @classmethod
     def get_graph(cls, keuzelijstnaam: str, env: str = default_environment):
-        # check if the most_recent_graph holds the correct graph. If so, return that one, else fetch the correct one
         keuzelijst_graph = OTLEnumerationCreator.graph_dict[env].get(keuzelijstnaam)
         if keuzelijst_graph is not None:
             return keuzelijst_graph
-
-        return OTLEnumerationCreator.get_graph_from_location(keuzelijstnaam=keuzelijstnaam, env=env)
+        raise ValueError(f"Graph for {keuzelijstnaam} not found in the graph_dict")
 
     def download_unzip_and_parse_to_dict(self, env: str = default_environment) -> Dict[str, Graph]:
         directory_to_extract_to = self.path_zip_file.parent
