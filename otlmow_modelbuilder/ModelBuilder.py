@@ -12,7 +12,8 @@ class ModelBuilder:
                             directory: Path,
                             environment: str = 'prd',
                             geometry_artefact_location: Path = None,
-                            settings_path: Path = None):
+                            settings_path: Path = None,
+                            include_kl_test_keuzelijst: bool = False):
         if directory is None:
             this_file_path = Path(__file__)
             directory = this_file_path.parent
@@ -29,6 +30,6 @@ class ModelBuilder:
 
         settings = load_settings(settings_path)
 
-        OTLModelCreator.create_full_model(directory=directory, environment=environment, settings=settings,
-                                          oslo_collector=subset_collector,
-                                          geo_artefact_collector=geo_artefact_collector)
+        OTLModelCreator.create_full_model(
+            directory=directory, environment=environment, settings=settings, oslo_collector=subset_collector,
+            geo_artefact_collector=geo_artefact_collector, include_kl_test_keuzelijst=include_kl_test_keuzelijst)

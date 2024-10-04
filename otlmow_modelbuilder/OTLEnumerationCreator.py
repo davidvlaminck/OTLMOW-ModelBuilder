@@ -40,25 +40,33 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         'dev': 'dev'
     }
 
-    def __init__(self, oslo_collector: OSLOCollector, env: str = default_environment):
+    def __init__(self, oslo_collector: OSLOCollector, env: str = default_environment, 
+                 include_kl_test_keuzelijst: bool = False):
         super().__init__(oslo_collector)
         self.osloCollector = oslo_collector
         logging.info("Created an instance of OTLEnumerationCreator")
         if env != 'unittest':
             self.download_unzip_and_parse_to_dict(env=env)
             logging.info("Downloaded, unzipped and parsed the enumerations ttl file")
+        if include_kl_test_keuzelijst:
+            self.add_kl_test_keuzelijst(env=env)
+
+    def add_kl_test_keuzelijst(self, env):
+        kl_test_keuzelijst_path = Path(__file__ ).parent.parent / 'UnitTests/KlTestKeuzelijst.ttl'
+        if not kl_test_keuzelijst_path.exists():
+            url = 'https://raw.githubusercontent.com/davidvlaminck/OTLMOW-ModelBuilder/refs/heads/master/UnitTests/KlTestKeuzelijst.ttl'
+            urlretrieve(url, kl_test_keuzelijst_path)
+        self.graph_dict[env].update(self.parse_graph_to_dict(path_ttl_file=kl_test_keuzelijst_path))
 
     def create_block_to_write_from_enumerations(self, oslo_enumeration: OSLOEnumeration, enumeration_validation_rules,
                                                 environment: str = default_environment) -> [str]:
         if not isinstance(oslo_enumeration, OSLOEnumeration):
-            raise ValueError(f"Input is not a OSLOEnumeration")
+            raise ValueError("Input is not a OSLOEnumeration")
 
         if oslo_enumeration.objectUri == '':
             raise ValueError(f"OSLOEnumeration.objectUri is invalid. Value = '{oslo_enumeration.objectUri}'")
 
-        if oslo_enumeration.objectUri in enumeration_validation_rules['valid_uri_and_types'].keys():
-            pass
-        else:
+        if oslo_enumeration.objectUri not in enumeration_validation_rules['valid_uri_and_types'].keys():
             match_re = False
             for regex in enumeration_validation_rules["valid_regexes"]:
                 match_re = re.match(pattern=regex, string=oslo_enumeration.objectUri)
@@ -256,3 +264,4 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             return str(status).replace('https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAdmsStatus/', '')
         else:
             return ''
+
