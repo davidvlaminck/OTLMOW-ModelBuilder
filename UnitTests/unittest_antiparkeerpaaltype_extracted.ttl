@@ -1,5 +1,11 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
+<https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/AntiParkeerpaalType>
+    a <http://www.w3.org/2004/02/skos/core#ConceptScheme> ;
+    <http://www.w3.org/2004/02/skos/core#definition> "De vormen van een anti-parkeerpaal. "@nl ;
+    <http://www.w3.org/2004/02/skos/core#prefLabel> "Anti-parkeerpaal type"@nl ;
+    <https://www.w3.org/ns/adms#status> <https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik> .
+
 <https://wegenenverkeer.data.vlaanderen.be/id/concept/AntiParkeerpaalType/conischeTrottoirpaalAmsterdammer>
     a <http://www.w3.org/2004/02/skos/core#Concept> ;
     <http://www.w3.org/2004/02/skos/core#definition> "Conische paal met afgeronde kop en sierring."@nl ;

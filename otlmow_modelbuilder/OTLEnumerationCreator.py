@@ -186,15 +186,17 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
     def parse_graph_to_dict(path_ttl_file: Path) -> dict[str, Graph]:
         g = rdflib.Graph()
         g.parse(path_ttl_file, format="turtle")
-        print(g)
 
         keuzelijst_dict = {}
-        keuzelijst_uris = set(g.objects(predicate=URIRef('http://www.w3.org/2004/02/skos/core#inScheme')))
+        keuzelijst_uris = set(g.subjects(predicate=RDF.type, object=URIRef('http://www.w3.org/2004/02/skos/core#ConceptScheme')))
 
         for keuzelijst_uri in keuzelijst_uris:
+            keuzelijst_graph = Graph()
+            for triple in g.triples((keuzelijst_uri, None, None)):
+                keuzelijst_graph.add(triple)
+
             keuzelijst_waarde_uris = g.subjects(predicate=URIRef('http://www.w3.org/2004/02/skos/core#inScheme'),
                                                 object=keuzelijst_uri)
-            keuzelijst_graph = Graph()
             for keuzelijst_waarde_uri in keuzelijst_waarde_uris:
                 for triple in g.triples((keuzelijst_waarde_uri, None, None)):
                     keuzelijst_graph.add(triple)
@@ -241,15 +243,14 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
     @classmethod
     def get_adm_status_by_uri(cls, keuzelijst_uri: str, env: str = default_environment) -> str:
         g = OTLEnumerationCreator.get_graph(keuzelijst_uri, env=env)
-        return cls.get_adm_status_from_graph(g, name=keuzelijst_uri, env=env)
+        return cls.get_adm_status_from_graph(g, uri=keuzelijst_uri, env=env)
 
     @classmethod
-    def get_adm_status_from_graph(cls, g: Graph, name: str, env: str = default_environment) -> str:
-        scheme_uri = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/' + name
+    def get_adm_status_from_graph(cls, g: Graph, uri: str, env: str = default_environment) -> str:
         if env == 'tei':
-            scheme_uri = 'https://wegenenverkeer-test.data.vlaanderen.be/id/conceptscheme/' + name
+            scheme_uri = uri.replace('wegenenverkeer', 'wegenenverkeer-test')
 
-        status = g.value(subject=URIRef(scheme_uri), predicate=URIRef('https://www.w3.org/ns/adms#status'))
+        status = g.value(subject=URIRef(uri), predicate=URIRef('https://www.w3.org/ns/adms#status'))
 
         if status is not None:
             return str(status).replace('https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAdmsStatus/', '')

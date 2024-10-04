@@ -138,7 +138,7 @@ class OTLModelCreator:
 
     @staticmethod
     def create_enumerations(directory, oslo_collector, enumeration_validation_rules, environment: str = ''):
-        creator = OTLEnumerationCreator(oslo_collector)
+        creator = OTLEnumerationCreator(oslo_collector, env=environment)
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = {executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,

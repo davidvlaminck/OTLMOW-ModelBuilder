@@ -25,6 +25,7 @@ expectedKeuzelijst = ['# coding=utf-8',
                       "    label = 'Test keuzelijst'",
                       "    objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#KlTestKeuzelijst'",
                       "    definition = 'Keuzelijst met test waarden.'",
+                      "    status = 'ingebruik'",
                       "    codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlTestKeuzelijst'",
                       '    options = {',
                       "        'waarde-1': KeuzelijstWaarde(invulwaarde='waarde-1',",
@@ -199,7 +200,8 @@ def test_get_adm_status_from_graph():
     file_location = f'{base_dir}/KlTestKeuzelijst.ttl'
     g = rdflib.Graph()
     g.parse(file_location, format="turtle")
-    status = OTLEnumerationCreator.get_adm_status_from_graph(g, name='KlTestKeuzelijst')
+    status = OTLEnumerationCreator.get_adm_status_from_graph(
+        g, uri='https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlTestKeuzelijst')
     assert status == 'ingebruik'
 
 

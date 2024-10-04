@@ -4,6 +4,12 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
+<https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAIMToestand>
+    a <http://www.w3.org/2004/02/skos/core#ConceptScheme> ;
+    <http://www.w3.org/2004/02/skos/core#definition> "Keuzelijst met fasen uit de levenscyclus van een object om de toestand op een moment mee vast te leggen."@nl ;
+    <http://www.w3.org/2004/02/skos/core#prefLabel> "AIM toestand"@nl ;
+    <https://www.w3.org/ns/adms#status> <https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik> .
+
 <https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAIMToestand/verwijderd> a skos:Concept;
 <https://www.w3.org/ns/adms#status> <https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik>;
   skos:definition "  Het object vervult geen functie meer en is fysiek niet meer aanwezig op het terrein."@nl;
