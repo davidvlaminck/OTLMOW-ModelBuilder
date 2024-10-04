@@ -53,7 +53,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         self.path_zip_file = Path(__file__).parent / "all.ttl.zip"
         self.path_ttl_file = Path(__file__).parent / "all.ttl"
         if self.env != 'unittest':
-            self.graph_dict[env] = self.download_unzip_and_parse_to_dict(env=self.env)
+            self.graph_dict[self.env] = self.download_unzip_and_parse_to_dict(env=self.env)
             logging.info("Downloaded, unzipped and parsed the enumerations ttl file")
         if self.include_kl_test_keuzelijst:
             self.add_kl_test_keuzelijst(env=self.env)
