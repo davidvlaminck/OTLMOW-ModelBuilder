@@ -3,6 +3,7 @@ import os
 import re
 from os.path import abspath
 from pathlib import Path
+from typing import Dict
 from urllib.request import urlretrieve
 from zipfile import ZipFile
 
@@ -33,7 +34,7 @@ class KeuzelijstWaarde:
 
 class OTLEnumerationCreator(AbstractDatatypeCreator):
     default_environment = 'prd'
-    graph_dict: dict[str, dict[str, Graph]] = {'prd': {}, 'tei': {}, 'dev': {}}
+    graph_dict: Dict[str, Dict[str, Graph]] = {'prd': {}, 'tei': {}, 'dev': {}}
     oslo_github_branch_mapping = {
         'prd': 'master',
         'tei': 'test',
@@ -193,7 +194,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
 
         return OTLEnumerationCreator.get_graph_from_location(keuzelijstnaam=keuzelijstnaam, env=env)
 
-    def download_unzip_and_parse_to_dict(self, env: str = default_environment) -> dict[str:dict[str, Graph]]:
+    def download_unzip_and_parse_to_dict(self, env: str = default_environment) -> Dict[str: Dict[str, Graph]]:
         directory_to_extract_to = self.path_zip_file.parent
         urlretrieve(f"https://github.com/Informatievlaanderen/OSLO-codelistgenerated/raw/refs/heads/wegenenverkeer-{self.oslo_github_branch_mapping[env]}/all.ttl.zip", self.path_zip_file)
         with ZipFile(self.path_zip_file, 'r') as zip_ref:
@@ -202,7 +203,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         self.graph_dict[env] = self.parse_graph_to_dict(path_ttl_file=self.path_ttl_file)
 
     @staticmethod
-    def parse_graph_to_dict(path_ttl_file: Path) -> dict[str, Graph]:
+    def parse_graph_to_dict(path_ttl_file: Path) -> Dict[str, Graph]:
         g = rdflib.Graph()
         g.parse(path_ttl_file, format="turtle")
 
@@ -275,4 +276,3 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             return str(status).replace('https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAdmsStatus/', '')
         else:
             return ''
-
