@@ -140,32 +140,32 @@ class OTLModelCreator:
     @staticmethod
     def create_enumerations(directory, oslo_collector, enumeration_validation_rules, environment: str = '',
                             include_kl_test_keuzelijst: bool = False):
-        creator = OTLEnumerationCreator(oslo_collector, env=environment,
-                                        include_kl_test_keuzelijst=include_kl_test_keuzelijst)
+        with OTLEnumerationCreator(oslo_collector, env=environment,
+                                        include_kl_test_keuzelijst=include_kl_test_keuzelijst) as creator:
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = {executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
-                                       enumeration=enumeration, environment=environment,
-                                       enumeration_validation_rules=enumeration_validation_rules): enumeration for
-                       enumeration in oslo_collector.enumerations}
-            with tqdm(total=len(futures)) as pbar:
-                while futures:
-                    new_futures = {}
-                    done, pending = concurrent.futures.wait(futures, return_when=FIRST_COMPLETED, timeout=60)
-                    for fut in done:
-                        if fut.exception():
-                            enumeration = futures[fut]
-                            new_futures[executor.submit(
-                                OTLModelCreator.create_enumeration, creator=creator, directory=directory,
-                                enumeration=enumeration, environment=environment,
-                                enumeration_validation_rules=enumeration_validation_rules)
-                            ] = job
-                        else:
-                            pbar.update()
-                    for fut in pending:
-                        job = futures[fut]
-                        new_futures[fut] = job
-                    futures = new_futures
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                futures = {executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
+                                           enumeration=enumeration, environment=environment,
+                                           enumeration_validation_rules=enumeration_validation_rules): enumeration for
+                           enumeration in oslo_collector.enumerations}
+                with tqdm(total=len(futures)) as pbar:
+                    while futures:
+                        new_futures = {}
+                        done, pending = concurrent.futures.wait(futures, return_when=FIRST_COMPLETED, timeout=60)
+                        for fut in done:
+                            if fut.exception():
+                                enumeration = futures[fut]
+                                new_futures[executor.submit(
+                                    OTLModelCreator.create_enumeration, creator=creator, directory=directory,
+                                    enumeration=enumeration, environment=environment,
+                                    enumeration_validation_rules=enumeration_validation_rules)
+                                ] = job
+                            else:
+                                pbar.update()
+                        for fut in pending:
+                            job = futures[fut]
+                            new_futures[fut] = job
+                        futures = new_futures
 
     @staticmethod
     def create_enumeration(creator, directory, enumeration, environment, enumeration_validation_rules):

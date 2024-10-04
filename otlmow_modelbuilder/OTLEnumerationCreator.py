@@ -44,12 +44,25 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
                  include_kl_test_keuzelijst: bool = False):
         super().__init__(oslo_collector)
         self.osloCollector = oslo_collector
+        self.env = env
+        self.include_kl_test_keuzelijst = include_kl_test_keuzelijst
         logging.info("Created an instance of OTLEnumerationCreator")
-        if env != 'unittest':
-            self.download_unzip_and_parse_to_dict(env=env)
+
+    def __enter__(self):
+        self.path_zip_file = Path(__file__).parent / "all.ttl.zip"
+        self.path_ttl_file = Path(__file__).parent / "all.ttl"
+        if self.env != 'unittest':
+            self.download_unzip_and_parse_to_dict(env=self.env)
             logging.info("Downloaded, unzipped and parsed the enumerations ttl file")
-        if include_kl_test_keuzelijst:
-            self.add_kl_test_keuzelijst(env=env)
+        if self.include_kl_test_keuzelijst:
+            self.add_kl_test_keuzelijst(env=self.env)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.path_zip_file.exists():
+            self.path_zip_file.unlink()
+        if self.path_ttl_file.exists():
+            self.path_ttl_file.unlink()
 
     def add_kl_test_keuzelijst(self, env):
         kl_test_keuzelijst_path = Path(__file__ ).parent.parent / 'UnitTests/KlTestKeuzelijst.ttl'
@@ -181,14 +194,12 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         return OTLEnumerationCreator.get_graph_from_location(keuzelijstnaam=keuzelijstnaam, env=env)
 
     def download_unzip_and_parse_to_dict(self, env: str = default_environment) -> dict[str:dict[str, Graph]]:
-        path_zip_file = Path("all.ttl.zip")
-        path_ttl_file = Path("all.ttl")
-        directory_to_extract_to = path_zip_file.parent
-        urlretrieve(f"https://github.com/Informatievlaanderen/OSLO-codelistgenerated/raw/refs/heads/wegenenverkeer-{self.oslo_github_branch_mapping[env]}/all.ttl.zip", path_zip_file)
-        with ZipFile(path_zip_file, 'r') as zip_ref:
+        directory_to_extract_to = self.path_zip_file.parent
+        urlretrieve(f"https://github.com/Informatievlaanderen/OSLO-codelistgenerated/raw/refs/heads/wegenenverkeer-{self.oslo_github_branch_mapping[env]}/all.ttl.zip", self.path_zip_file)
+        with ZipFile(self.path_zip_file, 'r') as zip_ref:
             zip_ref.extractall(directory_to_extract_to)
 
-        self.graph_dict[env] = self.parse_graph_to_dict(path_ttl_file=path_ttl_file)
+        self.graph_dict[env] = self.parse_graph_to_dict(path_ttl_file=self.path_ttl_file)
 
     @staticmethod
     def parse_graph_to_dict(path_ttl_file: Path) -> dict[str, Graph]:
