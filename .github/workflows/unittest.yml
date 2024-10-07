@@ -23,6 +23,6 @@ jobs:
       - name: Install requirements with uv
         run: uv pip sync --system requirements.txt 
       - name: Run unittests with pytest
-        run: python -m pytest -v
+        run: uv run pytest -v
         working-directory: ./UnitTests
 
