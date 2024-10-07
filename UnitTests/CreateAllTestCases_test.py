@@ -1,10 +1,7 @@
 import logging
 import os
-import site
 import warnings
 from pathlib import Path
-
-import pytest
 
 from otlmow_modelbuilder.ModelBuilder import ModelBuilder
 
@@ -27,7 +24,7 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                 try:
                     ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location,
                                                      geometry_artefact_location=ga_location,
-                                                     directory=path)
+                                                     directory=path, include_kl_test_keuzelijst=True)
                 except PermissionError:
                     logging.info(f'PermissionError for {path}, skipping this test because it is not applicable')
                     continue
@@ -46,7 +43,7 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                 try:
                     ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location_no_double_kard,
                                                      geometry_artefact_location=ga_location,
-                                                     directory=path)
+                                                     directory=path, include_kl_test_keuzelijst=True)
                 except PermissionError:
                     logging.info(f'PermissionError for {path}, skipping this test because it is not applicable')
                     continue

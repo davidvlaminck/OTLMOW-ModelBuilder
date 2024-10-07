@@ -31,7 +31,7 @@ class OTLModelCreator:
 
     @staticmethod
     def create_full_model(directory: Path, oslo_collector, geo_artefact_collector, settings: Dict,
-                          environment: str = ''):
+                          environment: str = '', include_kl_test_keuzelijst: bool = False):
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         OTLModelCreator.check_and_create_subdirectories(directory)
         oslo_collector.query_correct_base_classes()
@@ -50,7 +50,8 @@ class OTLModelCreator:
             union_datatype_validation_rules=settings['union_datatype_validation_rules'])
         OTLModelCreator.create_enumerations(
             directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
-            enumeration_validation_rules=settings['enumeration_validation_rules'])
+            enumeration_validation_rules=settings['enumeration_validation_rules'],
+            include_kl_test_keuzelijst=include_kl_test_keuzelijst)
         OTLModelCreator.create_classes(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             geo_artefact_collector=geo_artefact_collector,
@@ -137,32 +138,34 @@ class OTLModelCreator:
                 logging.error(f"Could not create a class for {union_datatype.name}")
 
     @staticmethod
-    def create_enumerations(directory, oslo_collector, enumeration_validation_rules, environment: str = ''):
-        creator = OTLEnumerationCreator(oslo_collector)
+    def create_enumerations(directory, oslo_collector, enumeration_validation_rules, environment: str = '',
+                            include_kl_test_keuzelijst: bool = False):
+        with OTLEnumerationCreator(oslo_collector, env=environment,
+                                        include_kl_test_keuzelijst=include_kl_test_keuzelijst) as creator:
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = {executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
-                                       enumeration=enumeration, environment=environment,
-                                       enumeration_validation_rules=enumeration_validation_rules): enumeration for
-                       enumeration in oslo_collector.enumerations}
-            with tqdm(total=len(futures)) as pbar:
-                while futures:
-                    new_futures = {}
-                    done, pending = concurrent.futures.wait(futures, return_when=FIRST_COMPLETED, timeout=60)
-                    for fut in done:
-                        if fut.exception():
-                            enumeration = futures[fut]
-                            new_futures[executor.submit(
-                                OTLModelCreator.create_enumeration, creator=creator, directory=directory,
-                                enumeration=enumeration, environment=environment,
-                                enumeration_validation_rules=enumeration_validation_rules)
-                            ] = job
-                        else:
-                            pbar.update()
-                    for fut in pending:
-                        job = futures[fut]
-                        new_futures[fut] = job
-                    futures = new_futures
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                futures = {executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
+                                           enumeration=enumeration, environment=environment,
+                                           enumeration_validation_rules=enumeration_validation_rules): enumeration for
+                           enumeration in oslo_collector.enumerations}
+                with tqdm(total=len(futures)) as pbar:
+                    while futures:
+                        new_futures = {}
+                        done, pending = concurrent.futures.wait(futures, return_when=FIRST_COMPLETED, timeout=60)
+                        for fut in done:
+                            if fut.exception():
+                                enumeration = futures[fut]
+                                new_futures[executor.submit(
+                                    OTLModelCreator.create_enumeration, creator=creator, directory=directory,
+                                    enumeration=enumeration, environment=environment,
+                                    enumeration_validation_rules=enumeration_validation_rules)
+                                ] = job
+                            else:
+                                pbar.update()
+                        for fut in pending:
+                            job = futures[fut]
+                            new_futures[fut] = job
+                        futures = new_futures
 
     @staticmethod
     def create_enumeration(creator, directory, enumeration, environment, enumeration_validation_rules):

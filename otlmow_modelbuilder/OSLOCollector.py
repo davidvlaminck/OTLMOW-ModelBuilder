@@ -52,7 +52,8 @@ class OSLOCollector:
     def find_attributes_by_class(self, oslo_class: OSLOClass) -> [OSLOAttribuut]:
         if oslo_class is None:
             return []
-        return sorted(list(filter(lambda c: c.class_uri == oslo_class.objectUri, self.attributes)),
+
+        return sorted((a for a in self.attributes if a.class_uri == oslo_class.objectUri),
                       key=lambda a: a.objectUri)
 
     def find_inheritances_by_class(self, oslo_class: OSLOClass) -> [Inheritance]:
@@ -63,8 +64,9 @@ class OSLOCollector:
     def find_inheritances_by_class_uri(self, oslo_class_uri: str) -> [Inheritance]:
         if oslo_class_uri is None or oslo_class_uri == '':
             return []
-        return sorted(list(filter(lambda c: c.class_uri == oslo_class_uri, self.inheritances)),
-                      key=lambda c: c.base_uri)
+
+        return sorted((i for i in self.inheritances if i.class_uri == oslo_class_uri),
+                      key=lambda i: i.base_uri)
 
     def find_all_indirect_inheritances_by_class_uri(self, oslo_class_uri: str) -> [Inheritance]:
         if oslo_class_uri is None or oslo_class_uri == '':
@@ -85,8 +87,8 @@ class OSLOCollector:
         if oslo_class_uri is None or oslo_class_uri == '':
             return []
 
-        inheritances = list(filter(lambda i: i.base_uri == oslo_class_uri, self.inheritances))
-        return sorted(list(map(lambda c: c.class_uri, inheritances)))
+        return sorted((i.class_uri for i in self.inheritances if i.base_uri == oslo_class_uri),
+                      key=lambda i: i.class_uri)
 
     def find_indirect_superclasses_uri_by_class_uri(self, oslo_class_uri: str) -> [str]:
         if oslo_class_uri is None or oslo_class_uri == '':
@@ -110,21 +112,21 @@ class OSLOCollector:
         return next((p for p in self.primitive_datatypes if p.objectUri == uri), None)
 
     def find_primitive_datatype_attributes_by_class_uri(self, class_uri: str) -> List[OSLODatatypePrimitiveAttribuut]:
-        return sorted(list(filter(lambda p: p.class_uri == class_uri, self.primitive_datatype_attributen)),
+        return sorted((p for p in self.primitive_datatype_attributen if p.class_uri == class_uri),
                       key=lambda p: p.objectUri)
 
     def find_complex_datatype_by_uri(self, uri) -> OSLODatatypeComplex:
         return next((p for p in self.complex_datatypes if p.objectUri == uri), None)
 
     def find_complex_datatype_attributes_by_class_uri(self, class_uri: str) -> List[OSLODatatypeComplexAttribuut]:
-        return sorted(list(filter(lambda p: p.class_uri == class_uri, self.complex_datatype_attributen)),
+        return sorted((p for p in self.complex_datatype_attributen if p.class_uri == class_uri),
                       key=lambda p: p.objectUri)
 
     def find_union_datatype_by_uri(self, uri) -> OSLODatatypeUnion:
         return next((p for p in self.union_datatypes if p.objectUri == uri), None)
 
     def find_union_datatype_attributes_by_class_uri(self, class_uri: str) -> List[OSLODatatypeUnionAttribuut]:
-        return sorted(list(filter(lambda p: p.class_uri == class_uri, self.union_datatype_attributen)),
+        return sorted((p for p in self.union_datatype_attributen if p.class_uri == class_uri),
                       key=lambda p: p.objectUri)
 
     def find_enumeration_by_uri(self, uri) -> OSLOEnumeration:
@@ -134,8 +136,8 @@ class OSLOCollector:
         return next((p for p in self.typeLinks if p.item_uri == type_uri), None)
 
     def find_outgoing_relations(self, objectUri: str) -> [OSLORelatie]:
-        return sorted(list(filter(lambda r: r.bron_uri == objectUri and r.bron_overerving == ''
-                                            and r.doel_overerving == '', self.relations)), key=lambda r: r.objectUri)
+        return sorted((r for r in self.relations if r.bron_uri == objectUri and r.bron_overerving == ''
+                       and r.doel_overerving == ''), key=lambda r: r.objectUri)
 
     def query_correct_base_classes(self) -> None:
         with OSLOInMemoryCreator(self.path) as memory_creator:
