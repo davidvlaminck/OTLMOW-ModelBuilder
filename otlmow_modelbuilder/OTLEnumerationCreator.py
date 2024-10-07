@@ -44,7 +44,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
     def __init__(self, oslo_collector: OSLOCollector, env: str = default_environment, 
                  include_kl_test_keuzelijst: bool = False):
         super().__init__(oslo_collector)
-        self.osloCollector = oslo_collector
+        self.oslo_collector = oslo_collector
         self.env = env
         self.include_kl_test_keuzelijst = include_kl_test_keuzelijst
         logging.info("Created an instance of OTLEnumerationCreator")
