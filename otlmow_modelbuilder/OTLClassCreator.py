@@ -15,14 +15,14 @@ from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 
 
 class OTLClassCreator(AbstractDatatypeCreator):
-    def __init__(self, oslo_collector: OSLOCollector, geo_a_collector: GeometrieArtefactCollector = None):
+    def __init__(self, oslo_collector: OSLOCollector, geo_artefact_collector: GeometrieArtefactCollector = None):
         super().__init__(oslo_collector)
         logging.info("Created an instance of OTLClassCreator")
         self.oslo_collector = oslo_collector
-        self.geoACollector = geo_a_collector
+        self.geoACollector = geo_artefact_collector
         self.geometry_types = []
 
-        if geo_a_collector is not None:
+        if geo_artefact_collector is not None:
             gip = GeometrieInheritanceProcessor(classes=oslo_collector.classes,
                                                 geometrie_types=self.geoACollector.geometrie_types,
                                                 inheritances=self.oslo_collector.inheritances)
@@ -208,7 +208,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
         return geom_types
 
     def add_relations_to_datablock(self, datablock: [str], object_uri: str) -> None:
-        relations = self.oslo_collector.find_outgoing_relations(object_uri)
+        relations = self.oslo_collector.find_all_relations(object_uri, allow_duplicates=False)
         if len(relations) == 0:
             return
 
@@ -217,8 +217,25 @@ class OTLClassCreator(AbstractDatatypeCreator):
             if relation.deprecated_version != '':
                 relation.deprecated_version = relation.deprecated_version.split('-')[0]
                 deprecated = f", deprecated='{relation.deprecated_version}'"
+            if relation.richting == 'Unspecified':
+                direction = 'u' # u = unidirectional
+                direction_comment = '# u = unidirectional'
+                if relation.bron_uri == object_uri:
+                    target_uri = relation.doel_uri
+                else:
+                    target_uri = relation.bron_uri
+            elif relation.bron_uri == object_uri:
+                direction = 'o' # o = direction: outgoing
+                direction_comment = '# o = direction: outgoing'
+                target_uri = relation.doel_uri
+            else:
+                direction = 'i' # i = direction: incoming
+                direction_comment = '# i = direction: incoming'
+                target_uri = relation.bron_uri
+
             datablock.append(
-                f"        self.add_valid_relation(relation='{relation.objectUri}', target='{relation.doel_uri}'{deprecated})")
+                f"        self.add_valid_relation(relation='{relation.objectUri}', target='{target_uri}', "
+                f"direction='{direction}'{deprecated})  {direction_comment}")
         datablock.append('')
 
     relation_interactor_uris = {

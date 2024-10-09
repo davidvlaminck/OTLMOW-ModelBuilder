@@ -155,13 +155,14 @@ expectedDataContainerBuis = ['# coding=utf-8',
                              '    @abstractmethod',
                              '    def __init__(self):',
                              '        super().__init__()',
-                             '',
-                             "        self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult', "
+                             '','        '
+                             "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult', "
                              "target='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis', "
-                             "deprecated='2.3.0')",
-                             "        self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult', "
+                             "direction='o', deprecated='2.3.0')  # o = direction: outgoing",
+                             '        '
+                             "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult', "
                              "target='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Mantelbuis', "
-                             "deprecated='2.3.0')",
+                             "direction='o', deprecated='2.3.0')  # o = direction: outgoing",
                              '',
                              '        self._kleur = OTLAttribuut(field=StringField,',
                              "                                   naam='kleur',",
