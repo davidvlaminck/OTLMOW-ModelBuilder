@@ -220,15 +220,21 @@ class OTLClassCreator(AbstractDatatypeCreator):
             if relation.richting == 'Unspecified':
                 direction = 'u' # u = unidirectional
                 direction_comment = '# u = unidirectional'
+                if relation.bron_uri == object_uri:
+                    target_uri = relation.doel_uri
+                else:
+                    target_uri = relation.bron_uri
             elif relation.bron_uri == object_uri:
                 direction = 'o' # o = direction: outgoing
                 direction_comment = '# o = direction: outgoing'
+                target_uri = relation.doel_uri
             else:
                 direction = 'i' # i = direction: incoming
                 direction_comment = '# i = direction: incoming'
+                target_uri = relation.bron_uri
 
             datablock.append(
-                f"        self.add_valid_relation(relation='{relation.objectUri}', target='{relation.doel_uri}', "
+                f"        self.add_valid_relation(relation='{relation.objectUri}', target='{target_uri}', "
                 f"direction='{direction}'{deprecated})  {direction_comment}")
         datablock.append('')
 
