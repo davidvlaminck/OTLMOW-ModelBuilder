@@ -30,7 +30,7 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                     continue
 
         all_cases_class_location = path / 'OtlmowModel' / 'Classes' / 'Onderdeel' / 'AllCasesTestClass.py'
-        assert os.path.isfile(all_cases_class_location)
+        assert all_cases_class_location.exists()
 
 
     otl_subset_location_no_double_kard = base_dir / 'OTL_AllCasesTestClass_no_double_kard.db'
@@ -49,6 +49,6 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                     continue
 
         all_cases_class_location = path / 'OtlmowModel' / 'Classes' / 'Onderdeel' / 'AllCasesTestClass.py'
-        assert os.path.isfile(all_cases_class_location)
+        assert all_cases_class_location.exists()
 
     assert len(caplog.records) == 0

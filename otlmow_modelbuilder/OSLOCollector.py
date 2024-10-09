@@ -139,6 +139,16 @@ class OSLOCollector:
         return sorted((r for r in self.relations if r.bron_uri == objectUri and r.bron_overerving == ''
                        and r.doel_overerving == ''), key=lambda r: r.objectUri)
 
+    def find_all_relations(self, objectUri: str, allow_duplicates: bool = True) -> [OSLORelatie]:
+        all_relations = [r for r in self.relations if (r.bron_uri == objectUri or r.doel_uri == objectUri)
+                         and r.bron_overerving == '' and r.doel_overerving == '']
+        if allow_duplicates:
+            return sorted(all_relations, key=lambda r: r.objectUri)
+        else:
+            return sorted((r for r in all_relations
+                           if r.richting == 'Unspecified' and r.bron_uri == objectUri or r.richting != 'Unspecified'),
+                          key=lambda r: r.objectUri)
+
     def query_correct_base_classes(self) -> None:
         with OSLOInMemoryCreator(self.path) as memory_creator:
             result_uris = memory_creator.check_on_base_classes()

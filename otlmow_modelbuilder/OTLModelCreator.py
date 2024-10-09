@@ -30,7 +30,8 @@ class OTLModelCreator:
         self.geo_artefact_collector = geo_artefact_collector
 
     @staticmethod
-    def create_full_model(directory: Path, oslo_collector, geo_artefact_collector, settings: Dict,
+    def create_full_model(directory: Path, oslo_collector: OSLOCollector,
+                          geo_artefact_collector: GeometrieArtefactCollector, settings: Dict,
                           environment: str = '', include_kl_test_keuzelijst: bool = False):
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         OTLModelCreator.check_and_create_subdirectories(directory)
