@@ -140,6 +140,10 @@ class OSLOCollector:
                        and r.doel_overerving == ''), key=lambda r: r.objectUri)
 
     def find_all_relations(self, objectUri: str, allow_duplicates: bool = True) -> [OSLORelatie]:
+        """finds all relations, given an objectUri, where the object is either the source or the target of the relation.
+        allow_duplicates is relevant for unidirectional relations, as the relation would be included twice:
+        once where objectUri is the source and once where objectUri is the target. If allow_duplicates is False,
+        only the relation where objectUri is the source is returned."""
         all_relations = [r for r in self.relations if (r.bron_uri == objectUri or r.doel_uri == objectUri)
                          and r.bron_overerving == '' and r.doel_overerving == '']
         if allow_duplicates:
