@@ -88,7 +88,9 @@ def oslo_collector():
     # Arrange
     # Create a mock OSLOCollector with some predefined relations
     c = OSLOCollector(Path(''))
-    c.relations = [r1, r2, r3, r4, r5, r6]
+    c.inheritances = [i1, i2, i3, i4, i5, i6, i7]
+    c.relations = [r1, r11, r12, r13, r14, r15, r2, r21, r22, r23, r24, r3a, r31, r32, r3b, r33, r34, r4, r5a, r5b,
+                   r51, r52, r53, r54, r5c, r55, r56, r57, r58]
     return c
 
 
