@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
+from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
 from otlmow_modelbuilder.SQLDataClasses.OSLORelatie import OSLORelatie
 
 
@@ -81,6 +82,16 @@ r63 = OSLORelatie(bron_uri='G', doel_uri='G', bron_overerving='C', doel_overervi
 r64 = OSLORelatie(bron_uri='H', doel_uri='H', bron_overerving='C', doel_overerving='', objectUri='R5',
                   richting='Unspecified', usagenote='', deprecated_version='')
 
+c1 = OSLOClass(label='A', name='A', objectUri='A', definition='', usagenote='', abstract=1, deprecated_version='')
+c2 = OSLOClass(label='B', name='B', objectUri='B', definition='', usagenote='', abstract=1, deprecated_version='')
+c3 = OSLOClass(label='C', name='C', objectUri='C', definition='', usagenote='', abstract=1, deprecated_version='')
+c4 = OSLOClass(label='D', name='D', objectUri='D', definition='', usagenote='', abstract=0, deprecated_version='')
+c5 = OSLOClass(label='E', name='E', objectUri='E', definition='', usagenote='', abstract=0, deprecated_version='')
+c6 = OSLOClass(label='F', name='F', objectUri='F', definition='', usagenote='', abstract=0, deprecated_version='')
+c7 = OSLOClass(label='G', name='G', objectUri='G', definition='', usagenote='', abstract=0, deprecated_version='')
+c8 = OSLOClass(label='H', name='H', objectUri='H', definition='', usagenote='', abstract=0, deprecated_version='')
+c9 = OSLOClass(label='I', name='I', objectUri='I', definition='', usagenote='', abstract=0, deprecated_version='')
+
 
 @pytest.fixture
 def oslo_collector():
@@ -90,6 +101,8 @@ def oslo_collector():
     c.inheritances = [i1, i2, i3, i4, i5, i6, i7]
     c.relations = [r1, r11, r12, r13, r14, r15, r2, r21, r22, r23, r24, r3a, r31, r32, r3b, r33, r34, r4, r5a, r5b,
                    r51, r52, r53, r54, r6, r61, r62, r63, r64]
+    c.classes = [c1, c2, c3, c4, c5, c6, c7, c8, c9]
+    c.class_dict = {c.objectUri: c for c in c.classes}
     return c
 
 
@@ -121,6 +134,39 @@ def test_find_all_relations(oslo_collector, objectUri, allow_duplicates, expecte
     assert result == expected, f"Failed test case: {test_id}"
 
 
-# result = oslo_collector.find_all_relations(objectUri, allow_duplicate_unidirectional)
+@pytest.mark.parametrize('objectUri, allow_duplicates, expected, test_id', [
+    ('D', True, [r11, r21, r22, r24, r31, r51, r53 ], 'from_D_duplicates_allowed'),
+    ('D', False, [r11, r21, r22, r24, r31, r51], 'from_D_no_duplicates_allowed'),
 
-# result = oslo_collector.find_all_concrete_relations(objectUri, allow_duplicate_unidirectional, include_relations_by_inheritance)
+    ('E', True, [r12, r22, r23, r24, r32, r52, r54], 'from_E_duplicates_allowed'),
+    ('E', False, [r12, r22, r23, r24, r32, r52], 'from_E_no_duplicates_allowed'),
+
+    ('F', True, [r13, r31, r32, r33, r34], 'from_F_duplicates_allowed'),
+    ('F', False, [r13, r31, r32, r33, r34], 'from_F_no_duplicates_allowed'),
+
+    ('G', True, [r14, r33, r4, r51, r52, r53, r54, r61, r62, r63], 'from_G_duplicates_allowed'),
+    ('G', False, [r14, r33, r4, r53, r54, r61, r63], 'from_G_no_duplicates_allowed'),
+
+    ('H', True, [r15, r34, r4, r61, r62, r64], 'from_H_duplicates_allowed'),
+    ('H', False, [r15, r34, r4, r62, r64], 'from_H_no_duplicates_allowed'),
+
+    ('I', True, [r11, r12, r13, r14, r15], 'from_I_duplicates_allowed'),
+    ('I', False, [r11, r12, r13, r14, r15], 'from_I_no_duplicates_allowed'),
+])
+def test_find_all_concrete_relations(oslo_collector, objectUri, allow_duplicates, expected, test_id):
+    # Act
+    result = oslo_collector.find_all_concrete_relations(objectUri, allow_duplicates)
+
+    # Assert
+    assert result == expected, f"Failed test case: {test_id}"
+
+
+def test_find_all_concrete_relations_input_not_concrete(oslo_collector):
+    with pytest.raises(ValueError):
+        oslo_collector.find_all_concrete_relations('A')
+    with pytest.raises(ValueError):
+        oslo_collector.find_all_concrete_relations('B')
+    with pytest.raises(ValueError):
+        oslo_collector.find_all_concrete_relations('C')
+    with pytest.raises(ValueError):
+        oslo_collector.find_all_concrete_relations('Z')

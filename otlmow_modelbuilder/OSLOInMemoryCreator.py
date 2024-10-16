@@ -2,6 +2,7 @@ import os
 import sqlite3
 from pathlib import Path
 from sqlite3 import Connection
+from typing import Tuple, List, Dict, Any
 
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
@@ -77,6 +78,21 @@ class OSLOInMemoryCreator:
             "ORDER BY uri")
 
         return [OSLOClass(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in data]
+
+    def get_all_classes_and_class_dict(self) -> tuple[list[OSLOClass], dict[str, OSLOClass]]:
+        data = self.perform_read_query(
+            "SELECT label_nl, name, uri, definition_nl, usagenote_nl, abstract, deprecated_version "
+            "FROM OSLOClass "
+            "ORDER BY uri")
+
+        class_dict = {}
+        return [self._store_and_return_class_from_row(row, class_dict) for row in data], class_dict
+
+    @staticmethod
+    def _store_and_return_class_from_row(row: tuple, class_dict: dict) -> OSLOClass:
+        class_ = OSLOClass(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+        class_dict[class_.objectUri] = class_
+        return class_
 
     def get_class_by_uri(self, class_uri: str) -> OSLOClass:
         data = self.perform_read_query(

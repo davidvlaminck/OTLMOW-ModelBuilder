@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from otlmow_modelbuilder.NewOTLBaseClassNotImplemented import NewOTLBaseClassNotImplemented
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
@@ -34,9 +34,12 @@ class OSLOCollector:
         self.typeLinks: [OSLOTypeLink] = None
         self.relations: [OSLORelatie] = None
 
+        self.class_dict: Optional[dict] = None
+
     def collect_all(self, include_abstract: bool = False) -> None:
+        self.class_dict = {}
         with OSLOInMemoryCreator(self.path) as memory_creator:
-            self.classes = memory_creator.get_all_classes()
+            self.classes, self.class_dict = memory_creator.get_all_classes_and_class_dict()
             self.attributes = memory_creator.get_all_attributes(include_abstract=include_abstract)
             self.inheritances = memory_creator.get_all_inheritances()
             self.primitive_datatypes = memory_creator.get_all_primitive_datatypes()
@@ -139,7 +142,7 @@ class OSLOCollector:
         return sorted((r for r in self.relations if r.bron_uri == objectUri and r.bron_overerving == ''
                        and r.doel_overerving == ''), key=lambda r: r.objectUri)
 
-    def find_all_relations(self, objectUri: str, allow_duplicates: bool = True) -> [OSLORelatie]:
+    def find_all_relations(self, objectUri: str, allow_duplicates: bool = False) -> [OSLORelatie]:
         """finds all relations, given an objectUri, where the object is either the source or the target of the relation.
         allow_duplicates is relevant for unidirectional relations, as the relation would be included twice:
         once where objectUri is the source and once where objectUri is the target. If allow_duplicates is False,
@@ -160,3 +163,22 @@ class OSLOCollector:
                 print('The following classes are not using the correct base classes:')
                 print(result_uris)
                 raise NewOTLBaseClassNotImplemented()
+
+    def find_all_concrete_relations(self, objectUri: str, allow_duplicates: bool = False) -> [OSLORelatie]:
+        class_ = self.find_class_by_uri(objectUri)
+        if class_ is None:
+            raise ValueError(f'Class with uri {objectUri} does not exist.')
+        if class_.abstract == 1:
+            raise ValueError(f'Class with uri {objectUri} is an abstract class.')
+
+        all_relations = [r for r in self.relations if (r.bron_uri == objectUri or r.doel_uri == objectUri)
+                         and self.class_dict[r.bron_uri].abstract == 0 and self.class_dict[r.doel_uri].abstract == 0]
+
+        if allow_duplicates:
+            return sorted(all_relations, key=lambda r: r.objectUri)
+        else:
+            return sorted((r for r in all_relations
+                           if (r.richting == 'Unspecified' and
+                               (r.bron_uri == objectUri or r.bron_overerving == objectUri))
+                           or r.richting != 'Unspecified'),
+                           key=lambda r: r.objectUri)
