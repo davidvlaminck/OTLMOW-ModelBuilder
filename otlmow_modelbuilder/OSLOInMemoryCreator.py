@@ -3,6 +3,7 @@ import sqlite3
 from pathlib import Path
 from sqlite3 import Connection
 
+from otlmow_modelbuilder.SQLDataClasses.GeneralInfoRecord import GeneralInfoRecord
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
@@ -42,6 +43,10 @@ class OSLOInMemoryCreator:
 
         cur = self.connection.cursor()
         return list(cur.execute(query, params))
+
+    def get_general_info(self) -> [tuple]:
+        data = self.perform_read_query("SELECT * FROM GeneralInfo")
+        return [GeneralInfoRecord(row[0], row[1]) for row in data]
 
     def get_otl_version(self) -> str:
         data = self.perform_read_query("SELECT Waarde FROM GeneralInfo WHERE Parameter = 'Version'")

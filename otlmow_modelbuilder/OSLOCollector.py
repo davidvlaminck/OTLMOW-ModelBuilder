@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from otlmow_modelbuilder.NewOTLBaseClassNotImplemented import NewOTLBaseClassNotImplemented
+from otlmow_modelbuilder.SQLDataClasses.GeneralInfoRecord import GeneralInfoRecord
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
@@ -33,6 +34,7 @@ class OSLOCollector:
         self.enumerations: [OSLOEnumeration] = None
         self.typeLinks: [OSLOTypeLink] = None
         self.relations: [OSLORelatie] = None
+        self.general_info: [GeneralInfoRecord] = None
 
         self.class_dict: Optional[dict] = None
 
@@ -51,6 +53,7 @@ class OSLOCollector:
             self.enumerations = memory_creator.get_all_enumerations()
             self.typeLinks = memory_creator.get_all_typelinks()
             self.relations = memory_creator.get_all_relations()
+            self.general_info = memory_creator.get_general_info()
 
     def find_attributes_by_class(self, oslo_class: OSLOClass) -> [OSLOAttribuut]:
         if oslo_class is None:
