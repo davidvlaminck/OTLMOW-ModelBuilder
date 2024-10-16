@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for /home/runner/work/OTLMOW-ModelBuilder/OTLMOW-ModelBuilder/otlmow_modelbuilder/OSLOCollector.py: 74%</title>
+    <title>Coverage for /home/runner/work/OTLMOW-ModelBuilder/OTLMOW-ModelBuilder/otlmow_modelbuilder/OSLOCollector.py: 73%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
     <link rel="stylesheet" href="style_cb_8e611ae1.css" type="text/css">
     <script src="coverage_html_cb_6fb7b396.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>/home/runner/work/OTLMOW-ModelBuilder/OTLMOW-ModelBuilder/otlmow_modelbuilder/OSLOCollector.py</b>:
-            <span class="pc_cov">74%</span>
+            <span class="pc_cov">73%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -55,8 +55,8 @@
         </aside>
         <h2>
             <span class="text">115 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">85<span class="text"> run</span></button>
-            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">30<span class="text"> missing</span></button>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">84<span class="text"> run</span></button>
+            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">31<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
         <p class="text">
@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_d7d2a508b89986e8_OSLOInMemoryCreator_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.2">coverage.py v7.6.2</a>,
-            created at 2024-10-09 13:14 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.3">coverage.py v7.6.3</a>,
+            created at 2024-10-16 12:14 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -225,7 +225,7 @@
     <p class="run"><span class="n"><a id="t143" href="#t143">143</a></span><span class="t">        <span class="nam">all_relations</span> <span class="op">=</span> <span class="op">[</span><span class="nam">r</span> <span class="key">for</span> <span class="nam">r</span> <span class="key">in</span> <span class="nam">self</span><span class="op">.</span><span class="nam">relations</span> <span class="key">if</span> <span class="op">(</span><span class="nam">r</span><span class="op">.</span><span class="nam">bron_uri</span> <span class="op">==</span> <span class="nam">objectUri</span> <span class="key">or</span> <span class="nam">r</span><span class="op">.</span><span class="nam">doel_uri</span> <span class="op">==</span> <span class="nam">objectUri</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t144" href="#t144">144</a></span><span class="t">                         <span class="key">and</span> <span class="nam">r</span><span class="op">.</span><span class="nam">bron_overerving</span> <span class="op">==</span> <span class="str">''</span> <span class="key">and</span> <span class="nam">r</span><span class="op">.</span><span class="nam">doel_overerving</span> <span class="op">==</span> <span class="str">''</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t145" href="#t145">145</a></span><span class="t">        <span class="key">if</span> <span class="nam">allow_duplicates</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t146" href="#t146">146</a></span><span class="t">            <span class="key">return</span> <span class="nam">sorted</span><span class="op">(</span><span class="nam">all_relations</span><span class="op">,</span> <span class="nam">key</span><span class="op">=</span><span class="key">lambda</span> <span class="nam">r</span><span class="op">:</span> <span class="nam">r</span><span class="op">.</span><span class="nam">objectUri</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t146" href="#t146">146</a></span><span class="t">            <span class="key">return</span> <span class="nam">sorted</span><span class="op">(</span><span class="nam">all_relations</span><span class="op">,</span> <span class="nam">key</span><span class="op">=</span><span class="key">lambda</span> <span class="nam">r</span><span class="op">:</span> <span class="nam">r</span><span class="op">.</span><span class="nam">objectUri</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t147" href="#t147">147</a></span><span class="t">        <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t148" href="#t148">148</a></span><span class="t">            <span class="key">return</span> <span class="nam">sorted</span><span class="op">(</span><span class="op">(</span><span class="nam">r</span> <span class="key">for</span> <span class="nam">r</span> <span class="key">in</span> <span class="nam">all_relations</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t149" href="#t149">149</a></span><span class="t">                           <span class="key">if</span> <span class="nam">r</span><span class="op">.</span><span class="nam">richting</span> <span class="op">==</span> <span class="str">'Unspecified'</span> <span class="key">and</span> <span class="nam">r</span><span class="op">.</span><span class="nam">bron_uri</span> <span class="op">==</span> <span class="nam">objectUri</span> <span class="key">or</span> <span class="nam">r</span><span class="op">.</span><span class="nam">richting</span> <span class="op">!=</span> <span class="str">'Unspecified'</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
@@ -246,8 +246,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_d7d2a508b89986e8_OSLOInMemoryCreator_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.2">coverage.py v7.6.2</a>,
-            created at 2024-10-09 13:14 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.3">coverage.py v7.6.3</a>,
+            created at 2024-10-16 12:14 +0000
         </p>
     </div>
 </footer>
