@@ -17,7 +17,6 @@ def test_nested_lists(subtests):
 
     with subtests.test(msg='valid testclass, no nested lists'):
         OTLModelCreator.check_for_nested_attributes_in_classes(collector=collector)
-        assert True
 
     with subtests.test(msg='invalid testclass, with nested lists'):
         c = OSLODatatypeComplexAttribuut(
