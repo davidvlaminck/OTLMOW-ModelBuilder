@@ -3,6 +3,7 @@ import sqlite3
 from pathlib import Path
 from sqlite3 import Connection
 
+from otlmow_modelbuilder.SQLDataClasses.GeneralInfoRecord import GeneralInfoRecord
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
@@ -27,7 +28,7 @@ class OSLOInMemoryCreator:
             self.path = path.resolve()
             self.file_exists = os.path.isfile(self.path)
             if not self.file_exists:
-                raise FileNotFoundError(str(self.path) + " is not a valid path. File does not exist.")
+                raise FileNotFoundError(f"{self.path} is not a valid path. File does not exist.")
 
     def __enter__(self):
         self.connection = sqlite3.connect(self.path)
@@ -41,15 +42,16 @@ class OSLOInMemoryCreator:
             params = {}
 
         cur = self.connection.cursor()
-        return [row for row in cur.execute(query, params)]
+        return list(cur.execute(query, params))
+
+    def get_general_info(self) -> [tuple]:
+        data = self.perform_read_query("SELECT * FROM GeneralInfo")
+        return [GeneralInfoRecord(row[0], row[1]) for row in data]
 
     def get_otl_version(self) -> str:
         data = self.perform_read_query("SELECT Waarde FROM GeneralInfo WHERE Parameter = 'Version'")
 
-        if len(data) == 0:
-            return None
-
-        return data[0][0]
+        return None if len(data) == 0 else data[0][0]
 
     def get_all_primitive_datatype_attributes(self) -> [OSLODatatypePrimitiveAttribuut]:
         data = self.perform_read_query(
@@ -78,6 +80,21 @@ class OSLOInMemoryCreator:
 
         return [OSLOClass(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in data]
 
+    def get_all_classes_and_class_dict(self) -> tuple[list[OSLOClass], dict[str, OSLOClass]]:
+        data = self.perform_read_query(
+            "SELECT label_nl, name, uri, definition_nl, usagenote_nl, abstract, deprecated_version "
+            "FROM OSLOClass "
+            "ORDER BY uri")
+
+        class_dict = {}
+        return [self._store_and_return_class_from_row(row, class_dict) for row in data], class_dict
+
+    @staticmethod
+    def _store_and_return_class_from_row(row: tuple, class_dict: dict) -> OSLOClass:
+        class_ = OSLOClass(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+        class_dict[class_.objectUri] = class_
+        return class_
+
     def get_class_by_uri(self, class_uri: str) -> OSLOClass:
         data = self.perform_read_query(
             query="SELECT label_nl, name, uri, definition_nl, usagenote_nl, abstract, deprecated_version "
@@ -94,9 +111,7 @@ class OSLOInMemoryCreator:
             return class_results[0]
 
     def get_attributes_by_class_uri(self, class_uri, include_abstract=False) -> [OSLOAttribuut]:
-        overerving_in_query = ''
-        if not include_abstract:
-            overerving_in_query = 'overerving = 0 AND '
+        overerving_in_query = '' if include_abstract else 'overerving = 0 AND '
         data = self.perform_read_query(
             query="SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
                   "overerving, constraints, readonly, usagenote_nl, deprecated_version "
@@ -108,9 +123,7 @@ class OSLOInMemoryCreator:
                               row[11], row[12]) for row in data]
 
     def get_all_attributes(self, include_abstract=False) -> [OSLOAttribuut]:
-        overerving_in_query = ''
-        if not include_abstract:
-            overerving_in_query = 'overerving = 0 AND '
+        overerving_in_query = '' if include_abstract else 'overerving = 0 AND '
         data = self.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
             "overerving, constraints, readonly, usagenote_nl, deprecated_version "
@@ -222,7 +235,4 @@ inheritance_checks AS (
 		LEFT JOIN InternalBaseClass inh7 ON inh6.base_uri = inh7.class_uri)
 SELECT concrete_uri -- concrete_uri to view the list of classes that do not have a valid base class 
 FROM inheritance_checks GROUP BY 1 HAVING sum(has_valid_base) = 0;""")
-        if len(data) == 0:
-            return []
-
-        return data[0][0]
+        return [] if len(data) == 0 else data[0][0]
