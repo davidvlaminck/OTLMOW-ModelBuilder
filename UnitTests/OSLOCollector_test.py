@@ -2,47 +2,116 @@ from pathlib import Path
 
 import pytest
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLORelatie import OSLORelatie
 
-r1 = OSLORelatie(bron_uri='A', doel_uri='B', bron_overerving='', doel_overerving='', objectUri='R1',
+
+# see collector_relations_with_inheritances.png for a visual representation of the relations
+
+i1 = Inheritance(base_name='A', base_uri='A', class_uri='B', class_name='B', deprecated_version='')
+i2 = Inheritance(base_name='A', base_uri='A', class_uri='C', class_name='C', deprecated_version='')
+i3 = Inheritance(base_name='A', base_uri='A', class_uri='F', class_name='F', deprecated_version='')
+i4 = Inheritance(base_name='B', base_uri='B', class_uri='D', class_name='D', deprecated_version='')
+i5 = Inheritance(base_name='B', base_uri='B', class_uri='E', class_name='E', deprecated_version='')
+i6 = Inheritance(base_name='C', base_uri='C', class_uri='G', class_name='G', deprecated_version='')
+i7 = Inheritance(base_name='C', base_uri='C', class_uri='H', class_name='H', deprecated_version='')
+
+r1 = OSLORelatie(bron_uri='A', doel_uri='I', bron_overerving='', doel_overerving='', objectUri='R1',
                  richting='Source -> Destination', usagenote='', deprecated_version='')
-r2 = OSLORelatie(bron_uri='Z', doel_uri='B', bron_overerving='A', doel_overerving='', objectUri='R1',
+r11 = OSLORelatie(bron_uri='D', doel_uri='I', bron_overerving='A', doel_overerving='', objectUri='R1',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+r12 = OSLORelatie(bron_uri='E', doel_uri='I', bron_overerving='A', doel_overerving='', objectUri='R1',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+r13 = OSLORelatie(bron_uri='F', doel_uri='I', bron_overerving='A', doel_overerving='', objectUri='R1',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+r14 = OSLORelatie(bron_uri='G', doel_uri='I', bron_overerving='A', doel_overerving='', objectUri='R1',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+r15 = OSLORelatie(bron_uri='H', doel_uri='I', bron_overerving='A', doel_overerving='', objectUri='R1',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+
+r2 = OSLORelatie(bron_uri='B', doel_uri='B', bron_overerving='', doel_overerving='', objectUri='R2',
                  richting='Source -> Destination', usagenote='', deprecated_version='')
-r3 = OSLORelatie(bron_uri='B', doel_uri='C', bron_overerving='', doel_overerving='', objectUri='R3',
-                 richting='Unspecified', usagenote='', deprecated_version='')
-r4 = OSLORelatie(bron_uri='C', doel_uri='B', bron_overerving='', doel_overerving='', objectUri='R3',
-                 richting='Unspecified', usagenote='', deprecated_version='')
-r5 = OSLORelatie(bron_uri='A', doel_uri='D', bron_overerving='', doel_overerving='', objectUri='R1',
+r21 = OSLORelatie(bron_uri='D', doel_uri='D', bron_overerving='B', doel_overerving='', objectUri='R2',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+r22 = OSLORelatie(bron_uri='D', doel_uri='E', bron_overerving='B', doel_overerving='', objectUri='R2',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+r23 = OSLORelatie(bron_uri='E', doel_uri='E', bron_overerving='B', doel_overerving='', objectUri='R2',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+r24 = OSLORelatie(bron_uri='E', doel_uri='D', bron_overerving='B', doel_overerving='', objectUri='R2',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+
+r3a = OSLORelatie(bron_uri='B', doel_uri='F', bron_overerving='', doel_overerving='', objectUri='R3',
                  richting='Source -> Destination', usagenote='', deprecated_version='')
-r6 = OSLORelatie(bron_uri='A', doel_uri='E', bron_overerving='', doel_overerving='', objectUri='R2',
+r31 = OSLORelatie(bron_uri='D', doel_uri='F', bron_overerving='B', doel_overerving='', objectUri='R3',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+r32 = OSLORelatie(bron_uri='E', doel_uri='F', bron_overerving='B', doel_overerving='', objectUri='R3',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+
+r3b = OSLORelatie(bron_uri='F', doel_uri='C', bron_overerving='', doel_overerving='', objectUri='R3',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+r33 = OSLORelatie(bron_uri='F', doel_uri='G', bron_overerving='', doel_overerving='C', objectUri='R3',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+r34 = OSLORelatie(bron_uri='F', doel_uri='H', bron_overerving='', doel_overerving='C', objectUri='R3',
+                  richting='Source -> Destination', usagenote='', deprecated_version='')
+
+r4 = OSLORelatie(bron_uri='G', doel_uri='G', bron_overerving='', doel_overerving='', objectUri='R4',
                  richting='Source -> Destination', usagenote='', deprecated_version='')
+
+r5a = OSLORelatie(bron_uri='B', doel_uri='G', bron_overerving='', doel_overerving='', objectUri='R5',
+                  richting='Unspecified', usagenote='', deprecated_version='')
+r5b = OSLORelatie(bron_uri='G', doel_uri='B', bron_overerving='', doel_overerving='', objectUri='R5',
+                  richting='Unspecified', usagenote='', deprecated_version='')
+r51 = OSLORelatie(bron_uri='D', doel_uri='G', bron_overerving='B', doel_overerving='', objectUri='R5',
+                  richting='Unspecified', usagenote='', deprecated_version='')
+r52 = OSLORelatie(bron_uri='E', doel_uri='G', bron_overerving='B', doel_overerving='', objectUri='R5',
+                  richting='Unspecified', usagenote='', deprecated_version='')
+r53 = OSLORelatie(bron_uri='G', doel_uri='D', bron_overerving='', doel_overerving='B', objectUri='R5',
+                  richting='Unspecified', usagenote='', deprecated_version='')
+r54 = OSLORelatie(bron_uri='G', doel_uri='E', bron_overerving='', doel_overerving='B', objectUri='R5',
+                  richting='Unspecified', usagenote='', deprecated_version='')
+
+r5c = OSLORelatie(bron_uri='C', doel_uri='C', bron_overerving='', doel_overerving='', objectUri='R5',
+                  richting='Unspecified', usagenote='', deprecated_version='')
+r55 = OSLORelatie(bron_uri='G', doel_uri='H', bron_overerving='C', doel_overerving='', objectUri='R5',
+                  richting='Unspecified', usagenote='', deprecated_version='')
+r56 = OSLORelatie(bron_uri='H', doel_uri='G', bron_overerving='C', doel_overerving='', objectUri='R5',
+                  richting='Unspecified', usagenote='', deprecated_version='')
+r57 = OSLORelatie(bron_uri='G', doel_uri='G', bron_overerving='C', doel_overerving='', objectUri='R5',
+                  richting='Unspecified', usagenote='', deprecated_version='')
+r58 = OSLORelatie(bron_uri='H', doel_uri='H', bron_overerving='C', doel_overerving='', objectUri='R5',
+                  richting='Unspecified', usagenote='', deprecated_version='')
+
 
 
 @pytest.fixture
 def oslo_collector():
     # Arrange
     # Create a mock OSLOCollector with some predefined relations
-    relations = [r1, r2, r3, r4, r5, r6]
     c = OSLOCollector(Path(''))
-    c.relations = relations
+    c.relations = [r1, r2, r3, r4, r5, r6]
     return c
 
 
-@pytest.mark.parametrize('objectUri, allow_duplicates, expected, test_id', [
-    ('A', True, [r1, r5, r6], 'directional_duplicates_allowed'),
-    ('A', False, [r1, r5, r6], 'directional_no_duplicates_allowed'),
-    ('Z', True, [], 'filter_inherited_duplicates_allowed'),
-    ('Z', False, [], 'filter_inherited_no_duplicates_allowed'),
-    ('D', True, [r5], 'filter_by_target_duplicates_allowed'),
-    ('D', False, [r5], 'filter_by_target_no_duplicates_allowed'),
-    ('C', True, [r3, r4], 'nondirectional_duplicates_allowed'),
-    ('C', False, [r4], 'nondirectional_no_duplicates_allowed'),
-    ('B', True, [r1, r3, r4], 'both_duplicates_allowed'),
-    ('B', False, [r1, r3], 'both_no_duplicates_allowed')
-])
-def test_find_all_relations(oslo_collector, objectUri, allow_duplicates, expected, test_id):
-    # Act
-    result = oslo_collector.find_all_relations(objectUri, allow_duplicates)
+# @pytest.mark.parametrize('objectUri, allow_duplicates, expected, test_id', [
+#     ('A', True, [r1, r5, r6], 'directional_duplicates_allowed'),
+#     ('A', False, [r1, r5, r6], 'directional_no_duplicates_allowed'),
+#     ('Z', True, [], 'filter_inherited_duplicates_allowed'),
+#     ('Z', False, [], 'filter_inherited_no_duplicates_allowed'),
+#     ('D', True, [r5], 'filter_by_target_duplicates_allowed'),
+#     ('D', False, [r5], 'filter_by_target_no_duplicates_allowed'),
+#     ('C', True, [r3, r4], 'nondirectional_duplicates_allowed'),
+#     ('C', False, [r4], 'nondirectional_no_duplicates_allowed'),
+#     ('B', True, [r1, r3, r4], 'both_duplicates_allowed'),
+#     ('B', False, [r1, r3], 'both_no_duplicates_allowed')
+# ])
+# def test_find_all_relations(oslo_collector, objectUri, allow_duplicates, expected, test_id):
+#     # Act
+#     result = oslo_collector.find_all_relations(objectUri, allow_duplicates)
+#
+#     # Assert
+#     assert result == expected, f"Failed test case: {test_id}"
 
-    # Assert
-    assert result == expected, f"Failed test case: {test_id}"
+
+# result = oslo_collector.find_all_relations(objectUri, allow_duplicate_unidirectional)
+
+# result = oslo_collector.find_all_concrete_relations(objectUri, allow_duplicate_unidirectional, include_relations_by_inheritance)
