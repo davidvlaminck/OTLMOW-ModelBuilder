@@ -13,6 +13,7 @@ class OTLExtraChecker:
             lines = f.readlines()
 
         if 'import re' not in lines:
+            lines.insert(1, '\n')
             lines.insert(1, 'import re\n')
 
         namefield_line_number = lines.index("        self._naam = OTLAttribuut(field=StringField,\n")
@@ -26,10 +27,10 @@ class OTLExtraChecker:
 "    @classmethod\n",
 "    def validate(cls, value, attribuut) -> bool:\n",
 "        if StringField.validate(value, attribuut):\n",
-"            return re.match('^[a-zA-Z0-9.\-_]*$', value) is not None\n",
+"            return re.match('^[a-zA-Z0-9.\\-_]*$', value) is not None\n",
 "        else:\n",
-"            return False\n", '\n',
-                 ]
+"            return False\n", '\n']
+
         for index, line in enumerate(block):
             lines.insert(class_line_number + index, line)
 
