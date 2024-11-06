@@ -20,6 +20,7 @@ from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OTLClassCreator import OTLClassCreator
 from otlmow_modelbuilder.OTLComplexDatatypeCreator import OTLComplexDatatypeCreator
 from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator
+from otlmow_modelbuilder.OTLExtraChecker import OTLExtraChecker
 from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatypeCreator
 from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator
 
@@ -57,6 +58,7 @@ class OTLModelCreator:
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             geo_artefact_collector=geo_artefact_collector,
             valid_uri_and_types=settings['complex_datatype_validation_rules']['valid_uri_and_types'])
+        OTLExtraChecker.modify_for_extra_checks(directory=directory / 'OtlmowModel')
         OTLModelCreator.add_generated_info(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector)
         logging.info(f'finished creating model in {directory} at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
@@ -354,7 +356,7 @@ class OTLModelCreator:
             print(f"Could not remove {otlmow_model_github_dir}")
 
     @classmethod
-    def add_generated_info(cls, directory: Path, oslo_collector: OSLOCollector):
+    def add_generated_info(cls, directory: Path, oslo_collector: OSLOCollector) -> None:
         relation_dict = {}
         for inheritance in tqdm(oslo_collector.inheritances):
             if inheritance.base_uri == ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#'
@@ -365,3 +367,4 @@ class OTLModelCreator:
                 relation_dict[inheritance.class_uri] = {'directional': False}
         with open(directory / 'generated_info.json', mode='w') as generated_info_file:
             json.dump(relation_dict, generated_info_file, indent=4)
+
