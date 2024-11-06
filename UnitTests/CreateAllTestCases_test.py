@@ -3,6 +3,7 @@ import warnings
 from pathlib import Path
 
 from otlmow_modelbuilder.ModelBuilder import ModelBuilder
+from otlmow_modelbuilder.OTLExtraChecker import OTLExtraChecker
 
 
 def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
@@ -10,6 +11,8 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
     base_dir = current_file_path.parent
     otl_subset_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
     ga_location = Path(f'{base_dir}/GeometrieArtefact_AllCasesTestClass.db')
+
+    OTLExtraChecker.modify_naamfield = lambda x: None
 
     paths_to_create_test_class = [base_dir / 'TestModel',
                                   base_dir.parent.parent / 'OTLMOW-Model/UnitTests/TestModel',
