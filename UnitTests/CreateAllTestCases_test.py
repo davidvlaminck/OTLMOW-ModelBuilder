@@ -17,7 +17,9 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
     paths_to_create_test_class = [base_dir / 'TestModel',
                                   base_dir.parent.parent / 'OTLMOW-Model/UnitTests/TestModel',
                                   base_dir.parent.parent / 'OTLMOW-Converter/UnitTests/TestModel',
-                                  base_dir.parent.parent / 'OTLMOW-Template/UnitTests/TestModel']
+                                  base_dir.parent.parent / 'OTLMOW-Template/UnitTests/TestModel',
+                                  base_dir.parent.parent / 'OTLMOW-PostenMapping/UnitTests/TestModel',
+                                  base_dir.parent.parent / 'OTLMOW-GUI/UnitTests/TestModel']
 
     for path in paths_to_create_test_class:
         with subtests.test(msg=f'Creating testclasses for {path}'):
