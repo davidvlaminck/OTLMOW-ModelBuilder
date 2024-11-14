@@ -2,7 +2,8 @@
     "nested_list_class_uris" : [
         "http://purl.org/dc/terms/Agent",
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene",
-        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure"
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage"
     ],
     "complex_datatype_validation_rules" : {
         "valid_uri_and_types" : {
