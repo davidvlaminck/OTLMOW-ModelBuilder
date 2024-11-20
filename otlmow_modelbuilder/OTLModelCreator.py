@@ -15,7 +15,8 @@ from tqdm import tqdm
 
 from otlmow_modelbuilder.GenericBuilderFunctions import write_to_file
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
-from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns
+from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns, \
+    get_titlecase_from_ns
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OTLClassCreator import OTLClassCreator
 from otlmow_modelbuilder.OTLComplexDatatypeCreator import OTLComplexDatatypeCreator
@@ -90,7 +91,7 @@ class OTLModelCreator:
                     logging.info(f"Could not create a class for {prim_datatype.name}")
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {prim_datatype.name}")
-                write_to_file(prim_datatype, 'Datatypes', data_to_write, relative_path=directory)
+                write_to_file(prim_datatype.name, 'Datatypes', data_to_write, relative_path=directory)
             except BaseException as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {prim_datatype.name}")
@@ -116,7 +117,7 @@ class OTLModelCreator:
                     logging.info(f"Could not create a class for {complex_datatype.name}")
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {complex_datatype.name}")
-                write_to_file(complex_datatype, 'Datatypes', data_to_write, relative_path=directory)
+                write_to_file(complex_datatype.name, 'Datatypes', data_to_write, relative_path=directory)
             except BaseException as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {complex_datatype.name}")
@@ -135,7 +136,7 @@ class OTLModelCreator:
                     logging.info(f"Could not create a class for {union_datatype.name}")
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {union_datatype.name}")
-                write_to_file(union_datatype, 'Datatypes', data_to_write, relative_path=directory)
+                write_to_file(union_datatype.name, 'Datatypes', data_to_write, relative_path=directory)
             except BaseException as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {union_datatype.name}")
@@ -179,7 +180,7 @@ class OTLModelCreator:
                 logging.error(f"Could not create a class for {enumeration.name}")
             if len(data_to_write) == 0:
                 logging.error(f"Could not create a class for {enumeration.name}")
-            write_to_file(enumeration, 'Datatypes', data_to_write, relative_path=directory)
+            write_to_file(enumeration.name, 'Datatypes', data_to_write, relative_path=directory)
         except BaseException as e:
             logging.error(str(e))
             logging.error(f"Could not create a class for {enumeration.name}")
@@ -200,14 +201,32 @@ class OTLModelCreator:
                 class_directory = 'Classes'
                 ns = None
                 if oslo_class.objectUri != 'http://purl.org/dc/terms/Agent':
-                    ns, name = get_ns_and_name_from_uri(oslo_class.objectUri)
+                    ns, _ = get_ns_and_name_from_uri(oslo_class.objectUri)
                 if ns is not None:
                     class_directory = get_class_directory_from_ns(ns)
 
-                write_to_file(oslo_class, class_directory, data_to_write, relative_path=directory)
+                write_to_file(oslo_class.name, class_directory, data_to_write, relative_path=directory)
             except Exception as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {oslo_class.name}")
+
+        data_to_write = []
+        for oslo_class in oslo_collector.classes:
+            if oslo_class.abstract:
+                continue
+            ns = None
+            if oslo_class.objectUri != 'http://purl.org/dc/terms/Agent':
+                ns, name = get_ns_and_name_from_uri(oslo_class.objectUri)
+            else:
+                name = 'Agent'
+
+            if ns is not None:
+                data_to_write.append(f'from ..Classes.{get_titlecase_from_ns(ns)}.{name} import {name}')
+            else:
+                data_to_write.append(f'from ..Classes.{name} import {name}')
+
+        write_to_file('all_classes', 'Helpers', data_to_write, relative_path=directory)
+
 
     @staticmethod
     def check_and_create_subdirectories(directory: Path):

@@ -208,7 +208,7 @@ def test_WriteToFileContainerBuis():
     collector, creator = set_up_real_collector_and_creator()
     container_buis = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis')
     data_to_write = creator.create_blocks_to_write_from_classes(container_buis)
-    write_to_file(container_buis, 'Classes', data_to_write, '../../src/OTLMOW/')
+    write_to_file(container_buis.name, 'Classes', data_to_write, '../../src/OTLMOW/')
 
     file_location = os.path.abspath(os.path.join(os.sep, ROOT_DIR, 'src/OTLMOW/OTLModel/Classes/ContainerBuis.py'))
     assert os.path.isfile(file_location)

@@ -21,7 +21,7 @@ def test_nested_lists(subtests):
     with subtests.test(msg='invalid testclass, with nested lists'):
         c = OSLODatatypeComplexAttribuut(
             name='testKwantWrdMetKard', label='Test kwantitatieve waarde met kardinaliteit',
-            definition='Test attribuut voor Kwantitatieve waarde met kardinaliteit > 1 in een complex datatype.',
+            definition='Test attribuut voor Kwantitatieve waarde met kardinaliteit > 1 in een complex filename.',
             class_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTestComplexType2',
             kardinaliteit_min='1', kardinaliteit_max='*',
             objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTestMetKard',

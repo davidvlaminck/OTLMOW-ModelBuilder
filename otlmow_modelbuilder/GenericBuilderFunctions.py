@@ -171,13 +171,13 @@ def get_fields_to_import_from_list_of_attributes(oslo_collector, attributen, val
     return sorted_list
 
 
-def write_to_file(datatype, directory: str, data_to_write: List[str], relative_path=''):
+def write_to_file(filename, directory: str, data_to_write: List[str], relative_path=''):
     if relative_path == '':
         base_dir = os.path.dirname(os.path.realpath(__file__))
         base_dir = os.path.abspath(os.path.join(base_dir, os.pardir))
     else:
         base_dir = relative_path
-    path = f"{base_dir}/{directory}/{datatype.name}.py"
+    path = f"{base_dir}/{directory}/{filename}.py"
 
     with open(path, "w", encoding='utf-8') as file:
         for line in data_to_write:
