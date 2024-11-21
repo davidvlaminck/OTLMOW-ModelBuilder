@@ -376,14 +376,28 @@ class OTLModelCreator:
 
     @classmethod
     def add_generated_info(cls, directory: Path, oslo_collector: OSLOCollector) -> None:
+        relation_dict = cls.generate_relation_dict(oslo_collector)
+        class_dict = cls.generate_class_dict(oslo_collector)
+        with open(directory / 'generated_info.json', mode='w') as generated_info_file:
+            json.dump({'relations': relation_dict, 'classes': class_dict}, generated_info_file, indent=4)
+
+    @classmethod
+    def generate_relation_dict(cls, oslo_collector: OSLOCollector) -> dict:
         relation_dict = {}
-        for inheritance in tqdm(oslo_collector.inheritances):
+        for inheritance in oslo_collector.inheritances:
             if inheritance.base_uri == ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#'
                                         'DirectioneleRelatie'):
                 relation_dict[inheritance.class_uri] = {'directional': True}
             elif inheritance.base_uri == ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#'
                                           'NietDirectioneleRelatie'):
                 relation_dict[inheritance.class_uri] = {'directional': False}
-        with open(directory / 'generated_info.json', mode='w') as generated_info_file:
-            json.dump(relation_dict, generated_info_file, indent=4)
+        return relation_dict
 
+    @classmethod
+    def generate_class_dict(cls, oslo_collector: OSLOCollector) -> dict:
+        return {uri: {
+                "abstract": oslo_class.abstract == 1,
+                "name": oslo_class.name,
+                "label": oslo_class.label,
+                "deprecated_version": oslo_class.deprecated_version,
+            } for uri, oslo_class in oslo_collector.class_dict.items()}
