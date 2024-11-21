@@ -396,8 +396,9 @@ class OTLModelCreator:
     @classmethod
     def generate_class_dict(cls, oslo_collector: OSLOCollector) -> dict:
         return {uri: {
-                "abstract": oslo_class.abstract == 1,
-                "name": oslo_class.name,
-                "label": oslo_class.label,
-                "deprecated_version": oslo_class.deprecated_version,
+                'abstract': oslo_class.abstract == 1,
+                'name': oslo_class.name,
+                'label': oslo_class.label,
+                'deprecated_version': oslo_class.deprecated_version,
+                'direct_subclasses': list(oslo_collector.find_subclasses_uri_by_class_uri(oslo_class.objectUri))
             } for uri, oslo_class in oslo_collector.class_dict.items()}
