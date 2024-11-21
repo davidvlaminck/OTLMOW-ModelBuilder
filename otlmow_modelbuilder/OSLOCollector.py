@@ -93,8 +93,7 @@ class OSLOCollector:
         if oslo_class_uri is None or oslo_class_uri == '':
             return []
 
-        return sorted((i.class_uri for i in self.inheritances if i.base_uri == oslo_class_uri),
-                      key=lambda i: i.class_uri)
+        return sorted((i.class_uri for i in self.inheritances if i.base_uri == oslo_class_uri))
 
     def find_indirect_superclasses_uri_by_class_uri(self, oslo_class_uri: str) -> [str]:
         if oslo_class_uri is None or oslo_class_uri == '':
