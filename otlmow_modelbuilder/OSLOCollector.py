@@ -89,24 +89,24 @@ class OSLOCollector:
 
         return sorted(inheritance_list, key=lambda c: c.base_uri)
 
-    def find_superclasses_uri_by_class_uri(self, oslo_class_uri: str) -> [str]:
+    def find_subclasses_uri_by_class_uri(self, oslo_class_uri: str) -> [str]:
         if oslo_class_uri is None or oslo_class_uri == '':
             return []
 
         return sorted((i.class_uri for i in self.inheritances if i.base_uri == oslo_class_uri))
 
-    def find_indirect_superclasses_uri_by_class_uri(self, oslo_class_uri: str) -> [str]:
+    def find_indirect_subclasses_uri_by_class_uri(self, oslo_class_uri: str) -> [str]:
         if oslo_class_uri is None or oslo_class_uri == '':
             return []
 
         superclass_list = []
-        direct_superclasses = self.find_superclasses_uri_by_class_uri(oslo_class_uri)
+        direct_superclasses = self.find_subclasses_uri_by_class_uri(oslo_class_uri)
         if len(direct_superclasses) == 0:
             return superclass_list
 
         superclass_list.extend(direct_superclasses)
         for direct in direct_superclasses:
-            superclass_list.extend(self.find_indirect_superclasses_uri_by_class_uri(direct))
+            superclass_list.extend(self.find_indirect_subclasses_uri_by_class_uri(direct))
 
         return sorted(superclass_list)
 
