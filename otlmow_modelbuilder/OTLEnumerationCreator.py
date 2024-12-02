@@ -34,11 +34,12 @@ class KeuzelijstWaarde:
 
 class OTLEnumerationCreator(AbstractDatatypeCreator):
     default_environment = 'prd'
-    graph_dict: Dict[str, Dict[str, Graph]] = {'prd': {}, 'tei': {}, 'dev': {}}
+    graph_dict: Dict[str, Dict[str, Graph]] = {'prd': {}, 'tei': {}, 'dev': {}, 'aim': {}}
     oslo_github_branch_mapping = {
         'prd': 'master',
         'tei': 'test',
-        'dev': 'dev'
+        'dev': 'dev',
+        'aim': 'aim'
     }
 
     def __init__(self, oslo_collector: OSLOCollector, env: str = default_environment, 
