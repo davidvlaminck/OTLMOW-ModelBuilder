@@ -27,7 +27,7 @@ class OTLExtraChecker:
 "    @classmethod\n",
 "    def validate(cls, value, attribuut) -> bool:\n",
 "        if StringField.validate(value, attribuut):\n",
-"            return re.match('^[a-zA-Z0-9.\\-_]*$', value) is not None\n",
+"            return re.match(r'^[a-zA-Z0-9.\\-_]*$', value) is not None\n",
 "        else:\n",
 "            return False\n", '\n']
 
