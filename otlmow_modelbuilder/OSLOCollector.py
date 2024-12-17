@@ -137,6 +137,9 @@ class OSLOCollector:
     def find_enumeration_by_uri(self, uri) -> OSLOEnumeration:
         return next((p for p in self.enumerations if p.objectUri == uri), None)
 
+    def find_enumeration_by_codelist(self, uri) -> OSLOEnumeration:
+        return next((p for p in self.enumerations if p.codelist == uri), None)
+
     def find_type_link_by_uri(self, type_uri: str) -> OSLOTypeLink:
         return next((p for p in self.typeLinks if p.item_uri == type_uri), None)
 

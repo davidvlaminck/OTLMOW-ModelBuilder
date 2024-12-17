@@ -1,7 +1,6 @@
 import logging
-import os
 import re
-from os.path import abspath
+import warnings
 from pathlib import Path
 from typing import Dict
 from urllib.request import urlretrieve
@@ -12,9 +11,9 @@ from rdflib import URIRef, Graph, RDF
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent
+from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
-from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes
 
 
 class KeuzelijstWaarde:
@@ -143,8 +142,6 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         if len(keuzelijst_waardes) > 0:
             datablock[-1] = datablock[-1][:-1]
         datablock.append('    }')
-
-        # dummy values part
         datablock.append("")
         datablock.append("    @classmethod")
         datablock.append("    def create_dummy_data(cls):")
@@ -163,7 +160,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
     def download_unzip_and_parse_to_dict(self, env: str = default_environment) -> Dict[str, Graph]:
         directory_to_extract_to = self.path_zip_file.parent
         urlretrieve(f"https://github.com/Informatievlaanderen/OSLO-codelistgenerated/raw/refs/heads/wegenenverkeer-{self.oslo_github_branch_mapping[env]}/all.ttl.zip", self.path_zip_file)
-        with ZipFile(self.path_zip_file, 'r') as zip_ref:
+        with ZipFile(self.path_zip_file) as zip_ref:
             zip_ref.extractall(directory_to_extract_to)
 
         return self.parse_graph_to_dict(path_ttl_file=self.path_ttl_file)
@@ -191,16 +188,17 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         rdflib.term.URIRef('https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlTestKeuzelijst')
         return keuzelijst_dict
 
-    @classmethod
-    def get_keuzelijstwaardes_by_uri(cls, uri: str, env: str = default_environment) -> [KeuzelijstWaarde]:
-        g = cls.graph_dict[env][uri]
-        return cls.get_keuzelijstwaardes_from_graph(g, env)
+    def get_keuzelijstwaardes_by_uri(self, uri: str, env: str = default_environment) -> [KeuzelijstWaarde]:
+        if uri not in self.graph_dict[env]:
+            self.create_empty_graph(uri, env)
+        g = self.graph_dict[env][uri]
+        return self.get_keuzelijstwaardes_from_graph(g, env)
 
     @classmethod
     def get_keuzelijstwaardes_from_graph(cls, g: Graph, env: str = default_environment):
         lijst_keuze_opties = []
 
-        subjects = set(g.subjects(predicate=None, object=None))
+        subjects = set(g.subjects())
         distinct_subjects_list = sorted(subjects, key=lambda x: str(x))
 
         for distinct_subject in distinct_subjects_list:
@@ -242,3 +240,23 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             return str(status).replace('https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAdmsStatus/', '')
         else:
             return ''
+
+    def create_empty_graph(self, uri: str, env: str) -> None:
+        g = Graph()
+        oslo_enum = self.oslo_collector.find_enumeration_by_codelist(uri)
+
+        g.add((rdflib.term.URIRef(oslo_enum.codelist),
+         rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#prefLabel'),
+         rdflib.term.Literal(oslo_enum.label, lang='nl')))
+        g.add((rdflib.term.URIRef(oslo_enum.codelist),
+         rdflib.term.URIRef('https://www.w3.org/ns/adms#status'),
+         rdflib.term.URIRef('https://wegenenverkeer-test.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik')))
+        g.add((rdflib.term.URIRef(oslo_enum.codelist),
+         rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#definition'),
+         rdflib.term.Literal(oslo_enum.definition, lang='nl')))
+        g.add((rdflib.term.URIRef(oslo_enum.codelist),
+         rdflib.term.URIRef('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+         rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#ConceptScheme')))
+
+        self.graph_dict[env][uri] = g
+        warnings.warn(f'Graph was not found in the graph_dict. Created an empty graph for {uri}.', RuntimeWarning)

@@ -121,7 +121,7 @@ def create_relation(relation_type: Type[RelatieObject], source: Optional[Relatio
             raise AttributeError('In order to create a relation_type, the target needs to have a valid assetId '
                                  '(target.assetId.identificator)')
 
-    relation_id = ''
+    relation_id = relation_type.__class__.__name__ + '_-_'
     if source_is_legacy:
         relation_type.bronAssetId.identificator = source_aim_id
         relation_type.bronAssetId.toegekendDoor = 'AWV'
@@ -151,8 +151,6 @@ def create_relation(relation_type: Type[RelatieObject], source: Optional[Relatio
             relation_type.doelAssetId.identificator = target.assetId.identificator
             relation_type.doelAssetId.toegekendDoor = target.assetId.toegekendDoor
             relation_id += target.assetId.identificator
-
-    relation_id += '_-_' + relation_type.__class__.__name__
 
     relation_type.assetId.identificator = relation_id
     relation_type.assetId.toegekendDoor = 'OTLMOW'
