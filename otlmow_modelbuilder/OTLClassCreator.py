@@ -102,7 +102,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
                     if ns is not None:
                         class_directory = get_class_directory_from_ns(ns).replace('/', '.')
 
-                    if inheritance.class_name == 'Agent' and inheritance.base_name == 'AIMDBStatus':
+                    if inheritance.class_name == 'Agent' and inheritance.base_name in {'AIMDBStatus', 'AIMVersie'}:
                         datablock.append(f'from ..{class_directory}.{inheritance.base_name} '
                                          f'import {inheritance.base_name}')
                     else:
