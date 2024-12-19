@@ -10,6 +10,9 @@ class OTLExtraChecker:
     @classmethod
     def modify_naamfield(cls, directory: Path) -> None:
         naamfield_path = directory / 'Classes/ImplementatieElement/AIMNaamObject.py'
+        if not naamfield_path.exists():
+            return
+
         with open(naamfield_path, 'r') as f:
             lines = f.readlines()
 
@@ -48,6 +51,9 @@ class OTLExtraChecker:
     @classmethod
     def modify_naampad_field(cls, directory: Path) -> None:
         naampad_path = directory / 'Classes/ImplementatieElement/NaampadObject.py'
+        if not naampad_path.exists():
+            return
+
         with open(naampad_path) as f:
             lines = f.readlines()
 
