@@ -109,6 +109,8 @@ class OTLModelCreator:
 
         for complex_datatype in tqdm(oslo_collector.complex_datatypes):
             try:
+                if complex_datatype.objectUri == 'http://www.cidoc-crm.org/cidoc-crm/E54_Dimension':
+                    pass
                 model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
                 data_to_write = creator.create_block_to_write_from_complex_types(
                     complex_datatype, complex_datatype_validation_rules=complex_datatype_validation_rules,

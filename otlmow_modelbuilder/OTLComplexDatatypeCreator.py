@@ -14,6 +14,8 @@ class OTLComplexDatatypeCreator(AbstractDatatypeCreator):
 
     def create_block_to_write_from_complex_types(self, oslo_datatype_complex: OSLODatatypeComplex,
                                                  complex_datatype_validation_rules: Dict, model_location='') -> [str]:
+        if oslo_datatype_complex.objectUri == 'http://www.cidoc-crm.org/cidoc-crm/E54_Dimension':
+            pass
         if not isinstance(oslo_datatype_complex, OSLODatatypeComplex):
             raise ValueError(f"Input is not a OSLODatatypeComplex")
 

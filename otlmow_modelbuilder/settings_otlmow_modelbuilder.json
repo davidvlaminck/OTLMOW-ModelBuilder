@@ -11,7 +11,9 @@
     "complex_datatype_validation_rules" : {
         "valid_uri_and_types" : {
             "https://schema.org/ContactPoint" : "DtcContactinfo",
-            "https://schema.org/OpeningHoursSpecification" : "DtcOpeningsurenSpecificatie"
+            "https://schema.org/OpeningHoursSpecification" : "DtcOpeningsurenSpecificatie",
+            "http://www.cidoc-crm.org/cidoc-crm/E54_Dimension": "E54_Dimension",
+            "http://www.w3.org/ns/locn#Geometry": "Geometry"
         },
         "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
     },
