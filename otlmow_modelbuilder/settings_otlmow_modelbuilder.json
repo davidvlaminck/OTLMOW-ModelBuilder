@@ -13,12 +13,15 @@
             "https://schema.org/ContactPoint" : "DtcContactinfo",
             "https://schema.org/OpeningHoursSpecification" : "DtcOpeningsurenSpecificatie",
             "http://www.cidoc-crm.org/cidoc-crm/E54_Dimension": "E54_Dimension",
-            "http://www.w3.org/ns/locn#Geometry": "Geometry"
+            "http://www.w3.org/ns/locn#Geometry": "Geometry",
+            "https://w3id.org/tribont/core#Shape": "Shape"
         },
         "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
     },
     "primitive_datatype_validation_rules" : {
-        "valid_uri_and_types" : {},
+        "valid_uri_and_types" : {
+            "http://data.europa.eu/m8g/PeriodOfTime": "PeriodOfTime"
+        },
         "valid_regexes" : [
             "^http://www.w3.org/200.+",
             "^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dte.+",

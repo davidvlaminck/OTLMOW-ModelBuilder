@@ -34,6 +34,8 @@ def get_titlecase_from_ns(ns: str) -> str:
         return 'Mobiliteit'
     elif ns == 'proefenmeting':
         return 'ProefEnMeting'
+    elif ns == 'core':
+        return 'Core'
     else:
         raise ValueError(f'could not get titlecase for {ns}')
 

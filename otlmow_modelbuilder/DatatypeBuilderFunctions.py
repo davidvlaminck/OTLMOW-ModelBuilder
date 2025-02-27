@@ -9,7 +9,7 @@ def get_single_field_from_type_uri(field_type: str):
         return ''
     elif field_type == 'http://www.w3.org/2001/XMLSchema#decimal':
         return 'FloatOrDecimalField'
-    elif field_type == 'http://www.w3.org/2001/XMLSchema#string':
+    elif field_type in {'http://www.w3.org/2001/XMLSchema#string', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString'}:
         return 'StringField'
     elif field_type == 'http://www.w3.org/2001/XMLSchema#boolean':
         return 'BooleanField'

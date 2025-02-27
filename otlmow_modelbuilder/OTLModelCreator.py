@@ -77,6 +77,7 @@ class OTLModelCreator:
                                            'http://www.w3.org/2001/XMLSchema#date',
                                            'http://www.w3.org/2001/XMLSchema#nonNegativeInteger',
                                            'http://www.w3.org/2001/XMLSchema#string',
+                                           'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString',
                                            'http://www.w3.org/2001/XMLSchema#boolean',
                                            'http://www.w3.org/2001/XMLSchema#anyURI']:
                 logging.info(f"Skip creating class for {prim_datatype.name}")
