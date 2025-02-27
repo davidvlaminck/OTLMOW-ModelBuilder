@@ -1,0 +1,1038 @@
+{
+    "relations": {
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BehoortTot": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BekrachtigdBij": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bekrachtigt": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BevatOntwerp": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BevatOntwerpVoor": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BevatVerkeersteken": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Citeert": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Corrigeert": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#GecorrigeerdDoor": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftAanvullendeGeometrie": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftAanzicht": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBeheer": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBijlage": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftDeel": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftGerelateerdVerkeersteken": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftGevolg": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftMaatregelconcept": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftMobiliteitsmaatregel": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftMogelijkOnderbord": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftNetwerkProtectie": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftNetwerktoegang": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftOnderbord": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftOntwerp": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftSignalisatieplan": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftToegangsprocedure": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftTransportLinkSet": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftVerkeersteken": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftVoorwaarde": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeftOp": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HoortBij": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IngetrokkenBij": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IngevoegdBij": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsAdmOnderdeelVan": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsDeelVan": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsGebaseerdOp": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsGerelateerdAan": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsInspectieVan": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsNetwerkECC": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOnderdeelVan": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOntwerpVoor": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsSWGehostOp": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsSWOnderdeelVan": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#LigtOp": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#OpgehevenBij": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Realiseert": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#SluitAanOp": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#TrektIn": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VeranderdDoor": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verandert": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Vereist": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Vergunt": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VervangenBij": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Vervangt": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VerwijstNaar": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Voedt": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VoedtAangestuurd": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VoegtIn": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#WordtAangeduidDoor": {
+            "directional": true
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging": {
+            "directional": false
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Sturing": {
+            "directional": false
+        }
+    },
+    "classes": {
+        "http://data.vlaanderen.be/ns/besluit#AanvullendReglement": {
+            "abstract": false,
+            "name": "AanvullendReglement",
+            "label": "Aanvullend Reglement",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "http://data.vlaanderen.be/ns/besluit#Voorwaarde": {
+            "abstract": false,
+            "name": "Voorwaarde",
+            "label": "Voorwaarde",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "http://purl.org/dc/terms/Agent": {
+            "abstract": false,
+            "name": "Agent",
+            "label": "Agent",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "http://www.w3.org/2004/02/skos/core#Concept": {
+            "abstract": false,
+            "name": "Concept",
+            "label": "",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Pictogram"
+            ]
+        },
+        "http://www.w3.org/2004/02/skos/core#ConceptScheme": {
+            "abstract": false,
+            "name": "Codelijst",
+            "label": "",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/besluit#Artikel": {
+            "abstract": false,
+            "name": "Artikel",
+            "label": "Artikel",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/besluit#Besluit": {
+            "abstract": false,
+            "name": "Besluit",
+            "label": "Besluit",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "http://data.vlaanderen.be/ns/besluit#AanvullendReglement"
+            ]
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#AanvullendReglementOntwerp": {
+            "abstract": false,
+            "name": "AanvullendReglementOntwerp",
+            "label": "Aanvullend reglement ontwerp",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel": {
+            "abstract": false,
+            "name": "Mobiliteitsmaatregel",
+            "label": "Mobiliteitsmaatregel",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept": {
+            "abstract": false,
+            "name": "Mobiliteitsmaatregelconcept",
+            "label": "Mobiliteitsmaatregelconcept",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#OntwerpVerkeersteken": {
+            "abstract": false,
+            "name": "OntwerpVerkeersteken",
+            "label": "Ontwerp voor verkeersteken",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#SignalisatieOntwerp": {
+            "abstract": false,
+            "name": "SignalisatieOntwerp",
+            "label": "Signalisatie ontwerp",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#VerkeersbordVerkeersteken": {
+            "abstract": false,
+            "name": "Verkeersbord-Verkeersteken",
+            "label": "Verkeersbord-verkeersteken",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept": {
+            "abstract": false,
+            "name": "Verkeersbordconcept",
+            "label": "Verkeersbordconcept",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#VerkeerslichtVerkeersteken": {
+            "abstract": false,
+            "name": "Verkeerslicht-Verkeersteken",
+            "label": "Verkeerslicht verkeersteken",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeerslichtconcept": {
+            "abstract": false,
+            "name": "Verkeerslichtconcept",
+            "label": "Verkeerslichtconcept",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken": {
+            "abstract": false,
+            "name": "Verkeersteken",
+            "label": "Verkeersteken",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://data.vlaanderen.be/ns/mobiliteit#VerkeersbordVerkeersteken",
+                "https://data.vlaanderen.be/ns/mobiliteit#VerkeerslichtVerkeersteken",
+                "https://data.vlaanderen.be/ns/mobiliteit#WegmarkeringVerkeersteken"
+            ]
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept": {
+            "abstract": false,
+            "name": "Verkeerstekenconcept",
+            "label": "Verkeerstekenconcept",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept",
+                "https://data.vlaanderen.be/ns/mobiliteit#Verkeerslichtconcept",
+                "https://data.vlaanderen.be/ns/mobiliteit#Wegmarkeringsconcept"
+            ]
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#WegmarkeringVerkeersteken": {
+            "abstract": false,
+            "name": "Wegmarkering-Verkeersteken",
+            "label": "Wegmarkering verkeersteken",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#Wegmarkeringsconcept": {
+            "abstract": false,
+            "name": "Wegmarkeringconcept",
+            "label": "Wegmarkeringsconcept",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://data.vlaanderen.be/ns/mobiliteit#Zone": {
+            "abstract": false,
+            "name": "Zone",
+            "label": "Zone",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie": {
+            "abstract": true,
+            "name": "AbstracteAanvullendeGeometrie",
+            "label": "Abstracte aanvullende geometrie",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AanvullendeGeometrie",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bijlage"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Signalisatie": {
+            "abstract": true,
+            "name": "Signalisatie",
+            "label": "Signalisatie",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Verkeersbordopstelling"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Verkeersbord": {
+            "abstract": true,
+            "name": "Verkeersbord",
+            "label": "Verkeersbord",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMDBStatus": {
+            "abstract": true,
+            "name": "AIMDBStatus",
+            "label": "AIM databank status",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "http://purl.org/dc/terms/Agent",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMNaamObject": {
+            "abstract": true,
+            "name": "AIMNaamObject",
+            "label": "AIM naam object",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NaampadObject",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/installatie#AanzichtVerkeersbordopstelling",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject": {
+            "abstract": true,
+            "name": "AIMObject",
+            "label": "AIM object",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMNaamObject",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Verkeersbordopstelling",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMToestand": {
+            "abstract": true,
+            "name": "AIMToestand",
+            "label": "AIM Toestand",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMVersie": {
+            "abstract": true,
+            "name": "AIMVersie",
+            "label": "AIM versie",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage": {
+            "abstract": false,
+            "name": "Bijlage",
+            "label": "Bijlage",
+            "deprecated_version": "2.13.0",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject": {
+            "abstract": false,
+            "name": "Derdenobject",
+            "label": "Derdenobject",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DirectioneleRelatie": {
+            "abstract": true,
+            "name": "DirectioneleRelatie",
+            "label": "Directionele relatie",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BehoortTot",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BekrachtigdBij",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bekrachtigt",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BevatOntwerp",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BevatOntwerpVoor",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BevatVerkeersteken",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Citeert",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Corrigeert",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#GecorrigeerdDoor",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftAanvullendeGeometrie",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftAanzicht",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBeheer",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBijlage",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftDeel",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftGerelateerdVerkeersteken",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftGevolg",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftMaatregelconcept",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftMobiliteitsmaatregel",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftMogelijkOnderbord",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftNetwerkProtectie",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftNetwerktoegang",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftOnderbord",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftOntwerp",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftSignalisatieplan",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftToegangsprocedure",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftTransportLinkSet",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftVerkeersteken",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftVoorwaarde",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeftOp",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HoortBij",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IngetrokkenBij",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IngevoegdBij",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsAdmOnderdeelVan",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsDeelVan",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsGebaseerdOp",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsGerelateerdAan",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsInspectieVan",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsNetwerkECC",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOnderdeelVan",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOntwerpVoor",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsSWGehostOp",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsSWOnderdeelVan",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#LigtOp",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#OpgehevenBij",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Realiseert",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#SluitAanOp",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#TrektIn",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VeranderdDoor",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verandert",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Vereist",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Vergunt",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VervangenBij",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Vervangt",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VerwijstNaar",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Voedt",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VoedtAangestuurd",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VoegtIn",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#WordtAangeduidDoor"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NaampadObject": {
+            "abstract": true,
+            "name": "NaampadObject",
+            "label": "Naampad object",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NietDirectioneleRelatie": {
+            "abstract": true,
+            "name": "NietDirectioneleRelatie",
+            "label": "Niet-directionele relatie",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Sturing"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Pictogram": {
+            "abstract": false,
+            "name": "Pictogram",
+            "label": "",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject": {
+            "abstract": true,
+            "name": "RelatieObject",
+            "label": "Relatieobject",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DirectioneleRelatie",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NietDirectioneleRelatie"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure": {
+            "abstract": false,
+            "name": "Toegangsprocedure",
+            "label": "Toegangsprocedure",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/installatie#AanzichtVerkeersbordopstelling": {
+            "abstract": false,
+            "name": "AanzichtVerkeersbordopstelling",
+            "label": "Aanzicht verkeersbordopstelling",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Verkeersbordopstelling": {
+            "abstract": false,
+            "name": "Verkeersbordopstelling",
+            "label": "Verkeersbordopstelling",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AanvullendeGeometrie": {
+            "abstract": false,
+            "name": "AanvullendeGeometrie",
+            "label": "Aanvullende geometrie",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BehoortTot": {
+            "abstract": false,
+            "name": "BehoortTot",
+            "label": "Behoort tot",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BekrachtigdBij": {
+            "abstract": false,
+            "name": "BekrachtigdBij",
+            "label": "Bekrachtigd bij",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bekrachtigt": {
+            "abstract": false,
+            "name": "Bekrachtigt",
+            "label": "Bekrachtigt",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BevatOntwerp": {
+            "abstract": false,
+            "name": "BevatOntwerp",
+            "label": "Bevat ontwerp",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BevatOntwerpVoor": {
+            "abstract": false,
+            "name": "BevatOntwerpVoor",
+            "label": "Bevat ontwerp voor",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BevatVerkeersteken": {
+            "abstract": false,
+            "name": "BevatVerkeersteken",
+            "label": "Bevat verkeersteken",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging": {
+            "abstract": false,
+            "name": "Bevestiging",
+            "label": "Bevestiging",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bijlage": {
+            "abstract": false,
+            "name": "Bijlage",
+            "label": "Bijlage",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Citeert": {
+            "abstract": false,
+            "name": "Citeert",
+            "label": "Citeert",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Corrigeert": {
+            "abstract": false,
+            "name": "Corrigeert",
+            "label": "Corrigeert",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#GecorrigeerdDoor": {
+            "abstract": false,
+            "name": "GecorrigeerdDoor",
+            "label": "Gecorrigeerd door",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftAanvullendeGeometrie": {
+            "abstract": false,
+            "name": "HeeftAanvullendeGeometrie",
+            "label": "Heeft aanvullende geometrie",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftAanzicht": {
+            "abstract": false,
+            "name": "HeeftAanzicht",
+            "label": "Heeft aanzicht",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBeheer": {
+            "abstract": false,
+            "name": "HeeftBeheer",
+            "label": "Heeft beheer",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene": {
+            "abstract": false,
+            "name": "HeeftBetrokkene",
+            "label": "heeft betrokkene",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBijlage": {
+            "abstract": false,
+            "name": "HeeftBijlage",
+            "label": "HeeftBijlage",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftDeel": {
+            "abstract": false,
+            "name": "HeeftDeel",
+            "label": "Heeft deel",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftGerelateerdVerkeersteken": {
+            "abstract": false,
+            "name": "HeeftGerelateerdVerkeersteken",
+            "label": "Heeft gerelateerd verkeersteken",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftGevolg": {
+            "abstract": false,
+            "name": "HeeftGevolg",
+            "label": "Heeft gevolg",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftMaatregelconcept": {
+            "abstract": false,
+            "name": "HeeftMaatregelconcept",
+            "label": "Heeft maatregelconcept",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftMobiliteitsmaatregel": {
+            "abstract": false,
+            "name": "HeeftMobiliteitsmaatregel",
+            "label": "Heeft mobiliteitsmaatregel",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftMogelijkOnderbord": {
+            "abstract": false,
+            "name": "HeeftMogelijkOnderbord",
+            "label": "Heeft mogelijk onderbord",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftNetwerkProtectie": {
+            "abstract": false,
+            "name": "HeeftNetwerkProtectie",
+            "label": "Heeft netwerk protectie",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftNetwerktoegang": {
+            "abstract": false,
+            "name": "HeeftNetwerktoegang",
+            "label": "Heeft netwerktoegang",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftOnderbord": {
+            "abstract": false,
+            "name": "HeeftOnderbord",
+            "label": "Heeft onderbord",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftOntwerp": {
+            "abstract": false,
+            "name": "HeeftOntwerp",
+            "label": "Heeft ontwerp",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftSignalisatieplan": {
+            "abstract": false,
+            "name": "HeeftSignalisatieplan",
+            "label": "Heeft signalisatieplan",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftToegangsprocedure": {
+            "abstract": false,
+            "name": "HeeftToegangsprocedure",
+            "label": "Heeft toegangsprocedure",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftTransportLinkSet": {
+            "abstract": false,
+            "name": "HeeftTransportLinkSet",
+            "label": "Heeft transportlinkset",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftVerkeersteken": {
+            "abstract": false,
+            "name": "HeeftVerkeersteken",
+            "label": "Heeft verkeersteken",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftVoorwaarde": {
+            "abstract": false,
+            "name": "HeeftVoorwaarde",
+            "label": "Heeft voorwaarde",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeftOp": {
+            "abstract": false,
+            "name": "HeftOp",
+            "label": "Heft op",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HoortBij": {
+            "abstract": false,
+            "name": "HoortBij",
+            "label": "Hoort bij",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IngetrokkenBij": {
+            "abstract": false,
+            "name": "IngetrokkenBij",
+            "label": "Ingetrokken bij",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IngevoegdBij": {
+            "abstract": false,
+            "name": "IngevoegdBij",
+            "label": "Ingevoegd bij",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsAdmOnderdeelVan": {
+            "abstract": false,
+            "name": "IsAdmOnderdeelVan",
+            "label": "Is administratief onderdeel van",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsDeelVan": {
+            "abstract": false,
+            "name": "IsDeelVan",
+            "label": "Is deel van",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsGebaseerdOp": {
+            "abstract": false,
+            "name": "IsGebaseerdOp",
+            "label": "Gebaseerd op",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsGerelateerdAan": {
+            "abstract": false,
+            "name": "IsGerelateerdAan",
+            "label": "Relatie",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsInspectieVan": {
+            "abstract": false,
+            "name": "IsInspectieVan",
+            "label": "Is inspectie van",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsNetwerkECC": {
+            "abstract": false,
+            "name": "IsNetwerkECC",
+            "label": "Is netwerk ECC",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOnderdeelVan": {
+            "abstract": false,
+            "name": "IsOnderdeelVan",
+            "label": "Is onderdeel van",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOntwerpVoor": {
+            "abstract": false,
+            "name": "IsOntwerpVoor",
+            "label": "Is ontwerp voor",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsSWGehostOp": {
+            "abstract": false,
+            "name": "IsSWGehostOp",
+            "label": "Is software gehost op",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsSWOnderdeelVan": {
+            "abstract": false,
+            "name": "IsSWOnderdeelVan",
+            "label": "Is software onderdeel van",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#LigtOp": {
+            "abstract": false,
+            "name": "LigtOp",
+            "label": "Ligt op",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult": {
+            "abstract": false,
+            "name": "Omhult",
+            "label": "Omhult",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#OpgehevenBij": {
+            "abstract": false,
+            "name": "OpgehevenBij",
+            "label": "Opgeheven bij",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Realiseert": {
+            "abstract": false,
+            "name": "Realiseert",
+            "label": "Realiseert",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord": {
+            "abstract": false,
+            "name": "RetroreflecterendVerkeersbord",
+            "label": "Retroreflecterend verkeersbord",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie": {
+            "abstract": false,
+            "name": "RetroreflecterendeFolie",
+            "label": "Retroreflecterende folie",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#SluitAanOp": {
+            "abstract": false,
+            "name": "SluitAanOp",
+            "label": "Sluit aan op",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Sturing": {
+            "abstract": false,
+            "name": "Sturing",
+            "label": "Sturing",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#TrektIn": {
+            "abstract": false,
+            "name": "TrektIn",
+            "label": "Trekt in",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VeranderdDoor": {
+            "abstract": false,
+            "name": "VeranderdDoor",
+            "label": "Veranderd door",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verandert": {
+            "abstract": false,
+            "name": "Verandert",
+            "label": "Verandert",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Vereist": {
+            "abstract": false,
+            "name": "Vereist",
+            "label": "Vereist",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Vergunt": {
+            "abstract": false,
+            "name": "Vergunt",
+            "label": "Vergunt",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VervangenBij": {
+            "abstract": false,
+            "name": "VervangenBij",
+            "label": "Vervangen bij",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Vervangt": {
+            "abstract": false,
+            "name": "Vervangt",
+            "label": "Vervangt",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VerwijstNaar": {
+            "abstract": false,
+            "name": "VerwijstNaar",
+            "label": "Verwijst naar",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Voedt": {
+            "abstract": false,
+            "name": "Voedt",
+            "label": "Voedt",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VoedtAangestuurd": {
+            "abstract": false,
+            "name": "VoedtAangestuurd",
+            "label": "Voedt aangestuurd",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#VoegtIn": {
+            "abstract": false,
+            "name": "VoegtIn",
+            "label": "Voegt in",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#WordtAangeduidDoor": {
+            "abstract": false,
+            "name": "WordtAangeduidDoor",
+            "label": "Wordt aangeduid door",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        }
+    }
+}

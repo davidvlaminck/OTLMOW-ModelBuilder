@@ -1,6 +1,9 @@
 def get_ns_and_name_from_uri(objectUri):
     if '/ns/' not in objectUri:
-        raise ValueError(f"{objectUri} is not a valid uri because it does not define a namespace ('/ns' is missing)")
+        if '#' in objectUri:
+            objectUri = objectUri.split('#')[-1]
+        name = objectUri.split('/')[-1]
+        return None, name
 
     if '#' not in objectUri:
         raise ValueError(f"{objectUri} is not a valid uri because can not be split into a ns and name ('#' is missing)")
@@ -25,10 +28,14 @@ def get_titlecase_from_ns(ns: str) -> str:
         return 'Levenscyclus'
     elif ns == 'onderdeel':
         return 'Onderdeel'
+    elif ns == 'besluit':
+        return 'Besluit'
+    elif ns == 'mobiliteit':
+        return 'Mobiliteit'
     elif ns == 'proefenmeting':
         return 'ProefEnMeting'
     else:
-        raise ValueError()
+        raise ValueError(f'could not get titlecase for {ns}')
 
 
 def escape_backslash(text: str) -> str:

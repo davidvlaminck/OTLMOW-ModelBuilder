@@ -3,7 +3,10 @@
         "http://purl.org/dc/terms/Agent",
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene",
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure",
-        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage"
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage",
+        "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken"
     ],
     "complex_datatype_validation_rules" : {
         "valid_uri_and_types" : {

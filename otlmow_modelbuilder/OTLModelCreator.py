@@ -51,10 +51,10 @@ class OTLModelCreator:
         OTLModelCreator.create_union_datatypes(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             union_datatype_validation_rules=settings['union_datatype_validation_rules'])
-        OTLModelCreator.create_enumerations(
-            directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
-            enumeration_validation_rules=settings['enumeration_validation_rules'],
-            include_kl_test_keuzelijst=include_kl_test_keuzelijst)
+        # OTLModelCreator.create_enumerations(
+        #     directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
+        #     enumeration_validation_rules=settings['enumeration_validation_rules'],
+        #     include_kl_test_keuzelijst=include_kl_test_keuzelijst)
         OTLModelCreator.create_classes(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             geo_artefact_collector=geo_artefact_collector,
@@ -230,6 +230,7 @@ class OTLModelCreator:
 
     @staticmethod
     def check_and_create_subdirectories(directory: Path):
+        return
         if not path.exists(directory):
             os.makedirs(directory)
         if not path.exists(directory):
@@ -345,7 +346,7 @@ class OTLModelCreator:
         # remove attributes that are known to be different
         known_list = ['basisoppervlakte', 'ipadres', 'risicoanalyse', 'technischefiche', 'opstelhoogte',
                       'buitendiameter', 'dnsnaam', 'funderingsaanzetonderdebodemvandewaterweg', 'binnendiameter',
-                      'netwerktype', 'beschoeiingslengte', 'softwareversie', 'folietype']
+                      'netwerktype', 'beschoeiingslengte', 'softwareversie', 'folietype', 'kaartvoorstelling']
         for known in known_list:
             if known in problems:
                 del problems[known]

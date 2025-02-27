@@ -54,6 +54,28 @@ class OTLClassCreator(AbstractDatatypeCreator):
         inheritances = self.oslo_collector.find_inheritances_by_class(oslo_class)
         list_of_geometry_types = self.get_geometry_types_from_uri(oslo_class.objectUri)
 
+        if oslo_class.objectUri in {
+            'http://data.vlaanderen.be/ns/besluit#AanvullendReglement',
+            'http://data.vlaanderen.be/ns/besluit#Voorwaarde',
+            'http://www.w3.org/2004/02/skos/core#Concept',
+            'http://www.w3.org/2004/02/skos/core#ConceptScheme',
+            'https://data.vlaanderen.be/ns/besluit#Artikel',
+            'https://data.vlaanderen.be/ns/besluit#Besluit',
+            'https://data.vlaanderen.be/ns/mobiliteit#AanvullendReglementOntwerp',
+            'https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel',
+            'https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept',
+            'https://data.vlaanderen.be/ns/mobiliteit#OntwerpVerkeersteken',
+            'https://data.vlaanderen.be/ns/mobiliteit#SignalisatieOntwerp',
+            'https://data.vlaanderen.be/ns/mobiliteit#VerkeersbordVerkeersteken',
+            'https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept',
+            'https://data.vlaanderen.be/ns/mobiliteit#VerkeerslichtVerkeersteken',
+            'https://data.vlaanderen.be/ns/mobiliteit#Verkeerslichtconcept',
+            'https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken',
+            'https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept',
+            'https://data.vlaanderen.be/ns/mobiliteit#Zone'}:
+            inheritances.append(
+                Inheritance(base_name='OTLAsset', base_uri='', class_name='', class_uri='', deprecated_version=''))
+
         if oslo_class.objectUri in {'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
                                     'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject'}:
             inheritances.append(
@@ -172,7 +194,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
     def get_class_line_from_class_and_inheritances(self, oslo_class: OSLOClass, inheritances: [Inheritance],
                                                    geometry_types: [GeometrieType]) -> str:
         if oslo_class.abstract + len(inheritances) + len(geometry_types) < 1:
-            raise NotImplementedError(f"{oslo_class.objectUri} class structure not implemented")
+            raise NotImplementedError(f"{oslo_class.objectUri} class structure not implemented. Likely need to adjust inheritances")
         if oslo_class.abstract == 1 and len(inheritances) + len(geometry_types) < 1:
             return f'class {oslo_class.name}(ABC):'
         if len(inheritances) + len(geometry_types) > 0:
