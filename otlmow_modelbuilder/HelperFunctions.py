@@ -14,30 +14,18 @@ def get_ns_and_name_from_uri(objectUri):
 
 
 def get_class_directory_from_ns(ns):
-    return 'Classes/' + get_titlecase_from_ns(ns)
+    return f'Classes/{get_titlecase_from_ns(ns)}'
 
 
 def get_titlecase_from_ns(ns: str) -> str:
-    if ns == 'abstracten':
-        return 'Abstracten'
+    if ns == 'proefenmeting':
+        return 'ProefEnMeting'
     elif ns == 'implementatieelement':
         return 'ImplementatieElement'
-    elif ns == 'installatie':
-        return 'Installatie'
-    elif ns == 'levenscyclus':
-        return 'Levenscyclus'
-    elif ns == 'onderdeel':
-        return 'Onderdeel'
-    elif ns == 'besluit':
-        return 'Besluit'
-    elif ns == 'mobiliteit':
-        return 'Mobiliteit'
-    elif ns == 'proefenmeting':
-        return 'ProefEnMeting'
-    elif ns == 'core':
-        return 'Core'
-    else:
+    elif ns is None:
         raise ValueError(f'could not get titlecase for {ns}')
+    else:
+        return ns.title()
 
 
 def escape_backslash(text: str) -> str:
