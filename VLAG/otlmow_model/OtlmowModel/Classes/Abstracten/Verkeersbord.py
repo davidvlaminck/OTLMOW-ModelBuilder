@@ -30,9 +30,9 @@ class Verkeersbord(PuntGeometrie):
 
         self._kaartVoorstelling = OTLAttribuut(field=DtcDocument,
                                                naam='kaartVoorstelling',
-                                               label='',
+                                               label='kaart voorstelling',
                                                objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Verkeersbord.kaartVoorstelling',
-                                               definition='',
+                                               definition='TODO',
                                                owner=self)
 
         self._opstelhoogte = OTLAttribuut(field=KwantWrdInMeter,
@@ -44,9 +44,9 @@ class Verkeersbord(PuntGeometrie):
 
         self._soortSteun = OTLAttribuut(field=KlSoortSteun,
                                         naam='soortSteun',
-                                        label='',
+                                        label='soort steun',
                                         objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Verkeersbord.soortSteun',
-                                        definition='',
+                                        definition='Aanduiding welk type steun het verkeersbord draagt.',
                                         owner=self)
 
     @property
@@ -60,7 +60,7 @@ class Verkeersbord(PuntGeometrie):
 
     @property
     def kaartVoorstelling(self) -> DtcDocumentWaarden:
-        """"""
+        """TODO"""
         return self._kaartVoorstelling.get_waarde()
 
     @kaartVoorstelling.setter
@@ -78,7 +78,7 @@ class Verkeersbord(PuntGeometrie):
 
     @property
     def soortSteun(self) -> str:
-        """"""
+        """Aanduiding welk type steun het verkeersbord draagt."""
         return self._soortSteun.get_waarde()
 
     @soortSteun.setter

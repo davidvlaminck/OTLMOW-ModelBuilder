@@ -12,21 +12,21 @@ class DtcCodelijstWaarden(WaardenObject):
         WaardenObject.__init__(self)
         self._codelijstType = OTLAttribuut(field=KlCodelijstType,
                                            naam='codelijstType',
-                                           label='',
+                                           label='codelijst type',
                                            objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcCodelijst.codelijstType',
-                                           definition='',
+                                           definition='TODO',
                                            owner=self)
 
         self._naam = OTLAttribuut(field=StringField,
                                   naam='naam',
-                                  label='',
+                                  label='naam',
                                   objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcCodelijst.naam',
-                                  definition='',
+                                  definition='TODO',
                                   owner=self)
 
     @property
     def codelijstType(self) -> str:
-        """"""
+        """TODO"""
         return self._codelijstType.get_waarde()
 
     @codelijstType.setter
@@ -35,7 +35,7 @@ class DtcCodelijstWaarden(WaardenObject):
 
     @property
     def naam(self) -> str:
-        """"""
+        """TODO"""
         return self._naam.get_waarde()
 
     @naam.setter
@@ -45,11 +45,11 @@ class DtcCodelijstWaarden(WaardenObject):
 
 # Generated with OTLComplexDatatypeCreator. To modify: extend, do not edit
 class DtcCodelijst(ComplexField):
-    """"""
+    """TODO"""
     naam = 'DtcCodelijst'
-    label = ''
+    label = 'Codelijst'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcCodelijst'
-    definition = ''
+    definition = 'TODO'
     waardeObject = DtcCodelijstWaarden
 
     def __str__(self):

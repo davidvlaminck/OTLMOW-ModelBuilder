@@ -35,7 +35,7 @@ def cardinality_check(attribute, type_string, datablock):
 
 
 def get_type_hint_from_field(attribute, datablock, valid_uri_and_types):
-    field_name = get_single_field_from_type_uri(attribute.type)
+    field_name = get_single_field_from_type_uri(attribute.type, valid_uri_and_types=valid_uri_and_types)
     if field_name == 'StringField' or field_name == 'URIField':
         return f' -> {cardinality_check(attribute, "str", datablock)}'
     elif field_name == 'FloatOrDecimalField':
@@ -81,7 +81,7 @@ def add_attributen_to_data_block(attributen, datablock: List[str], valid_uri_and
             raise NotImplementedError(f"overerving 1 is not implemented, found in {attributen.objectUri}")
 
         whitespace = get_white_space_equivalent(f'        self._{attribuut.name} = OTLAttribuut(')
-        field_name = get_single_field_from_type_uri(attribuut.type)
+        field_name = get_single_field_from_type_uri(attribuut.type, valid_uri_and_types=valid_uri_and_types)
 
         if attribuut.objectUri == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Segmentcontroller.beveil?igingssleutel':
             attribuut.objectUri = attribuut.objectUri.replace('?', '_')

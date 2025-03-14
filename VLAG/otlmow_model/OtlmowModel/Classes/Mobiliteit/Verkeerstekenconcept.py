@@ -3,6 +3,7 @@ from typing import List
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
 from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
 from ...Datatypes.DtcDocument import DtcDocument, DtcDocumentWaarden
+from ...Datatypes.DtcTemplate import DtcTemplate, DtcTemplateWaarden
 from ...Datatypes.KlVerkeerstekenconceptStatus import KlVerkeerstekenconceptStatus
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
@@ -21,46 +22,46 @@ class Verkeerstekenconcept(OTLAsset):
 
         self._afbeelding = OTLAttribuut(field=DtcDocument,
                                         naam='afbeelding',
-                                        label='',
+                                        label='afbeelding',
                                         objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.afbeelding',
                                         kardinaliteit_min='0',
                                         kardinaliteit_max='*',
-                                        definition='',
+                                        definition='TODO',
                                         owner=self)
 
         self._betekenis = OTLAttribuut(field=StringField,
                                        naam='betekenis',
-                                       label='',
+                                       label='betekenis',
                                        objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.betekenis',
-                                       definition='',
+                                       definition='TODO',
                                        owner=self)
 
-        self._heeftInstructie = OTLAttribuut(field=StringField,
+        self._heeftInstructie = OTLAttribuut(field=DtcTemplate,
                                              naam='heeftInstructie',
                                              label='instructie',
                                              objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.heeftInstructie',
                                              kardinaliteit_min='0',
                                              kardinaliteit_max='*',
-                                             definition='',
+                                             definition='TODO',
                                              owner=self)
 
         self._status = OTLAttribuut(field=KlVerkeerstekenconceptStatus,
                                     naam='status',
-                                    label='',
+                                    label='status',
                                     objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.status',
-                                    definition='',
+                                    definition='TODO',
                                     owner=self)
 
         self._verkeersbordcode = OTLAttribuut(field=StringField,
                                               naam='verkeersbordcode',
-                                              label='',
+                                              label='verkeersbordcode',
                                               objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.verkeersbordcode',
-                                              definition='',
+                                              definition='TODO',
                                               owner=self)
 
     @property
     def afbeelding(self) -> List[DtcDocumentWaarden]:
-        """"""
+        """TODO"""
         return self._afbeelding.get_waarde()
 
     @afbeelding.setter
@@ -69,7 +70,7 @@ class Verkeerstekenconcept(OTLAsset):
 
     @property
     def betekenis(self) -> str:
-        """"""
+        """TODO"""
         return self._betekenis.get_waarde()
 
     @betekenis.setter
@@ -77,8 +78,8 @@ class Verkeerstekenconcept(OTLAsset):
         self._betekenis.set_waarde(value, owner=self)
 
     @property
-    def heeftInstructie(self) -> List[str]:
-        """"""
+    def heeftInstructie(self) -> List[DtcTemplateWaarden]:
+        """TODO"""
         return self._heeftInstructie.get_waarde()
 
     @heeftInstructie.setter
@@ -87,7 +88,7 @@ class Verkeerstekenconcept(OTLAsset):
 
     @property
     def status(self) -> str:
-        """"""
+        """TODO"""
         return self._status.get_waarde()
 
     @status.setter
@@ -96,7 +97,7 @@ class Verkeerstekenconcept(OTLAsset):
 
     @property
     def verkeersbordcode(self) -> str:
-        """"""
+        """TODO"""
         return self._verkeersbordcode.get_waarde()
 
     @verkeersbordcode.setter

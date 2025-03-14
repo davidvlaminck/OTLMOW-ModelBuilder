@@ -1,4 +1,5 @@
 # coding=utf-8
+from datetime import date
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
 from abc import abstractmethod
 from ...Classes.ImplementatieElement.AIMDBStatus import AIMDBStatus
@@ -6,6 +7,7 @@ from ...Classes.ImplementatieElement.AIMToestand import AIMToestand
 from ...Classes.ImplementatieElement.AIMVersie import AIMVersie
 from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
 from otlmow_model.OtlmowModel.BaseClasses.RelationInteractor import RelationInteractor
+from otlmow_model.OtlmowModel.BaseClasses.DateField import DateField
 from ...Datatypes.DtcIdentificator import DtcIdentificator, DtcIdentificatorWaarden
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
@@ -42,6 +44,13 @@ class AIMObject(AIMDBStatus, AIMToestand, AIMVersie, OTLAsset, RelationInteracto
                                      definition='Unieke identificatie van de asset zoals toegekend door de assetbeheerder of n.a.v. eerste aanlevering door de leverancier.',
                                      owner=self)
 
+        self._datumOprichtingObject = OTLAttribuut(field=DateField,
+                                                   naam='datumOprichtingObject',
+                                                   label='datum oprichting object',
+                                                   objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject.datumOprichtingObject',
+                                                   definition='De datum waarop het object op het terrein is beginnen bestaan, bv. de datum van aanleg.',
+                                                   owner=self)
+
         self._notitie = OTLAttribuut(field=StringField,
                                      naam='notitie',
                                      label='notitie',
@@ -57,6 +66,15 @@ class AIMObject(AIMDBStatus, AIMToestand, AIMVersie, OTLAsset, RelationInteracto
     @assetId.setter
     def assetId(self, value):
         self._assetId.set_waarde(value, owner=self)
+
+    @property
+    def datumOprichtingObject(self) -> date:
+        """De datum waarop het object op het terrein is beginnen bestaan, bv. de datum van aanleg."""
+        return self._datumOprichtingObject.get_waarde()
+
+    @datumOprichtingObject.setter
+    def datumOprichtingObject(self, value):
+        self._datumOprichtingObject.set_waarde(value, owner=self)
 
     @property
     def notitie(self) -> str:

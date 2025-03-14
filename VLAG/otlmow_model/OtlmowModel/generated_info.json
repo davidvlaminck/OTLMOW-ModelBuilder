@@ -212,7 +212,7 @@
         "http://www.w3.org/2004/02/skos/core#Concept": {
             "abstract": false,
             "name": "Concept",
-            "label": "",
+            "label": "Concept",
             "deprecated_version": "",
             "direct_subclasses": [
                 "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Pictogram"
@@ -221,7 +221,7 @@
         "http://www.w3.org/2004/02/skos/core#ConceptScheme": {
             "abstract": false,
             "name": "Codelijst",
-            "label": "",
+            "label": "Codelijst",
             "deprecated_version": "",
             "direct_subclasses": []
         },
@@ -278,7 +278,7 @@
         },
         "https://data.vlaanderen.be/ns/mobiliteit#VerkeersbordVerkeersteken": {
             "abstract": false,
-            "name": "Verkeersbord-Verkeersteken",
+            "name": "VerkeersbordVerkeersteken",
             "label": "Verkeersbord-verkeersteken",
             "deprecated_version": "",
             "direct_subclasses": []
@@ -292,7 +292,7 @@
         },
         "https://data.vlaanderen.be/ns/mobiliteit#VerkeerslichtVerkeersteken": {
             "abstract": false,
-            "name": "Verkeerslicht-Verkeersteken",
+            "name": "VerkeerslichtVerkeersteken",
             "label": "Verkeerslicht verkeersteken",
             "deprecated_version": "",
             "direct_subclasses": []
@@ -328,7 +328,7 @@
         },
         "https://data.vlaanderen.be/ns/mobiliteit#WegmarkeringVerkeersteken": {
             "abstract": false,
-            "name": "Wegmarkering-Verkeersteken",
+            "name": "WegmarkeringVerkeersteken",
             "label": "Wegmarkering verkeersteken",
             "deprecated_version": "",
             "direct_subclasses": []
@@ -537,7 +537,7 @@
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Pictogram": {
             "abstract": false,
             "name": "Pictogram",
-            "label": "",
+            "label": "Pictogram",
             "deprecated_version": "",
             "direct_subclasses": []
         },

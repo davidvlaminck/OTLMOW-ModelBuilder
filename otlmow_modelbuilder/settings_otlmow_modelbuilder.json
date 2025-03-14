@@ -1,20 +1,28 @@
 {
     "nested_list_class_uris" : [
-        "http://purl.org/dc/terms/Agent",
-        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene",
-        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure",
+        "http://purl.org/dc/terms/Agent.contactinfo",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene.specifiekeContactinfo",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure.bijlage",
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage",
-        "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel",
-        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept",
-        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken"
+        "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept.template",
+        "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel.tijdschema",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept.mogelijkeVorm",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.heeftInstructie",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.buitenwerkingtreding",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.inwerkingstijd"
     ],
     "complex_datatype_validation_rules" : {
         "valid_uri_and_types" : {
-            "https://schema.org/ContactPoint" : "DtcContactinfo",
+            "http://data.europa.eu/m8g/PeriodOfTime": "DtcPeriode",
             "https://schema.org/OpeningHoursSpecification" : "DtcOpeningsurenSpecificatie",
-            "http://www.cidoc-crm.org/cidoc-crm/E54_Dimension": "E54_Dimension",
-            "http://www.w3.org/ns/locn#Geometry": "Geometry",
-            "https://w3id.org/tribont/core#Shape": "Shape"
+            "http://www.w3.org/ns/locn#Geometry": "DtcGeometrie",
+            "http://www.cidoc-crm.org/cidoc-crm/E54_Dimension": "DtcDimensie",
+            "https://schema.org/Schedule": "DtcTijdschema",
+            "https://schema.org/ContactPoint" : "DtcContactinfo",
+            "https://w3id.org/tribont/core#Shape": "DtcVorm"
+        },
+        "invalid_uri_and_types" : {
+
         },
         "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
     },

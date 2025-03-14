@@ -1,10 +1,9 @@
 # coding=utf-8
 from ...Classes.Mobiliteit.Verkeerstekenconcept import Verkeerstekenconcept
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class Verkeerslichtconcept(Verkeerstekenconcept, OTLAsset):
+class Verkeerslichtconcept(Verkeerstekenconcept):
     """Inhoudelijke definitie van de betekenis van een verkeerslicht zoals opgenomen in de wegcode."""
 
     typeURI = 'https://data.vlaanderen.be/ns/mobiliteit#Verkeerslichtconcept'

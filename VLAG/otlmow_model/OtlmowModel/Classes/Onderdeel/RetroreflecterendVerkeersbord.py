@@ -4,7 +4,6 @@ from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
 from ...Classes.Abstracten.Verkeersbord import Verkeersbord
 from ...Classes.ImplementatieElement.AIMNaamObject import AIMNaamObject
 from otlmow_model.OtlmowModel.BaseClasses.DateField import DateField
-from ...Datatypes.DtcDocument import DtcDocument, DtcDocumentWaarden
 from ...Datatypes.KlFabricageTypeRetroreflecterendVerkeersbord import KlFabricageTypeRetroreflecterendVerkeersbord
 from ...Datatypes.KwantWrdInMillimeter import KwantWrdInMillimeter, KwantWrdInMillimeterWaarden
 
@@ -44,13 +43,6 @@ class RetroreflecterendVerkeersbord(Verkeersbord, AIMNaamObject):
                                                      definition='De verschuiving van het bord, gemeten van het midden van het bord tot de centrale as van de opstelling. Een positieve waarde duidt op een verschuiving naar rechts, een negatieve waarde op een verschuiving naar links',
                                                      owner=self)
 
-        self._kaartvoorstelling = OTLAttribuut(field=DtcDocument,
-                                               naam='kaartvoorstelling',
-                                               label='kaartvoorstelling',
-                                               objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord.kaartvoorstelling',
-                                               definition='TODO',
-                                               owner=self)
-
     @property
     def fabricageDatum(self) -> date:
         """De datum waarop het bord werd gebouwd."""
@@ -77,12 +69,3 @@ class RetroreflecterendVerkeersbord(Verkeersbord, AIMNaamObject):
     @horizontaleVerschuiving.setter
     def horizontaleVerschuiving(self, value):
         self._horizontaleVerschuiving.set_waarde(value, owner=self)
-
-    @property
-    def kaartvoorstelling(self) -> DtcDocumentWaarden:
-        """TODO"""
-        return self._kaartvoorstelling.get_waarde()
-
-    @kaartvoorstelling.setter
-    def kaartvoorstelling(self, value):
-        self._kaartvoorstelling.set_waarde(value, owner=self)

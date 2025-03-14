@@ -66,10 +66,6 @@ class OTLClassCreator(AbstractDatatypeCreator):
             'https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept',
             'https://data.vlaanderen.be/ns/mobiliteit#OntwerpVerkeersteken',
             'https://data.vlaanderen.be/ns/mobiliteit#SignalisatieOntwerp',
-            'https://data.vlaanderen.be/ns/mobiliteit#VerkeersbordVerkeersteken',
-            'https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept',
-            'https://data.vlaanderen.be/ns/mobiliteit#VerkeerslichtVerkeersteken',
-            'https://data.vlaanderen.be/ns/mobiliteit#Verkeerslichtconcept',
             'https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken',
             'https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept',
             'https://data.vlaanderen.be/ns/mobiliteit#Zone'}:
@@ -100,6 +96,9 @@ class OTLClassCreator(AbstractDatatypeCreator):
             inheritances.append(
                 Inheritance(base_name='RelationInteractor', base_uri='', class_name='', class_uri='',
                             deprecated_version=''))
+
+        if oslo_class.objectUri == 'http://data.vlaanderen.be/ns/besluit#AanvullendReglement':
+            pass
 
         datablock = ['# coding=utf-8']
         if len(attributen) > 0:
@@ -148,9 +147,6 @@ class OTLClassCreator(AbstractDatatypeCreator):
                     datablock.append(f'from ...Datatypes.{type_field} import {type_field}')
             else:
                 datablock.append(f'from otlmow_model.OtlmowModel.BaseClasses.{type_field} import {type_field}')
-
-        if 'Bevestiging' in oslo_class.objectUri:
-            pass
 
         for geometry_type in list_of_geometry_types:
             datablock.append(f'from otlmow_model.OtlmowModel.GeometrieTypes.{geometry_type} import {geometry_type}')

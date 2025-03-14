@@ -2,6 +2,7 @@
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
 from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
 from otlmow_model.OtlmowModel.BaseClasses.BooleanField import BooleanField
+from ...Datatypes.DtcTemplate import DtcTemplate, DtcTemplateWaarden
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 
@@ -20,12 +21,12 @@ class Mobiliteitsmaatregelconcept(OTLAsset):
 
         self._label = OTLAttribuut(field=StringField,
                                    naam='label',
-                                   label='',
+                                   label='label',
                                    objectUri='https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept.label',
-                                   definition='',
+                                   definition='TODO',
                                    owner=self)
 
-        self._template = OTLAttribuut(field=StringField,
+        self._template = OTLAttribuut(field=DtcTemplate,
                                       naam='template',
                                       label='template',
                                       objectUri='https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept.template',
@@ -36,12 +37,12 @@ class Mobiliteitsmaatregelconcept(OTLAsset):
                                                    naam='variabeleSignalisatie',
                                                    label='variabele signalisatie',
                                                    objectUri='https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept.variabeleSignalisatie',
-                                                   definition='',
+                                                   definition='TODO',
                                                    owner=self)
 
     @property
     def label(self) -> str:
-        """"""
+        """TODO"""
         return self._label.get_waarde()
 
     @label.setter
@@ -49,7 +50,7 @@ class Mobiliteitsmaatregelconcept(OTLAsset):
         self._label.set_waarde(value, owner=self)
 
     @property
-    def template(self) -> str:
+    def template(self) -> DtcTemplateWaarden:
         """Gestructureerd sjabloon dat als basis gebruikt kan worden voor de mobiliteitsmaatregel."""
         return self._template.get_waarde()
 
@@ -59,7 +60,7 @@ class Mobiliteitsmaatregelconcept(OTLAsset):
 
     @property
     def variabeleSignalisatie(self) -> bool:
-        """"""
+        """TODO"""
         return self._variabeleSignalisatie.get_waarde()
 
     @variabeleSignalisatie.setter

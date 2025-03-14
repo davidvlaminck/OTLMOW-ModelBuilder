@@ -23,14 +23,14 @@ class Besluit(OTLAsset):
                                           naam='beschrijving',
                                           label='beschrijving',
                                           objectUri='https://data.vlaanderen.be/ns/besluit#Besluit.beschrijving',
-                                          definition='',
+                                          definition='TODO',
                                           owner=self)
 
         self._citeeropschrift = OTLAttribuut(field=StringField,
                                              naam='citeeropschrift',
                                              label='korte titel',
                                              objectUri='https://data.vlaanderen.be/ns/besluit#Besluit.citeeropschrift',
-                                             definition='',
+                                             definition='TODO',
                                              owner=self)
 
         self._motivering = OTLAttribuut(field=StringField,
@@ -44,12 +44,12 @@ class Besluit(OTLAsset):
                                              naam='publicatiedatum',
                                              label='datum publicatie',
                                              objectUri='https://data.vlaanderen.be/ns/besluit#Besluit.publicatiedatum',
-                                             definition='',
+                                             definition='TODO',
                                              owner=self)
 
     @property
     def beschrijving(self) -> str:
-        """"""
+        """TODO"""
         return self._beschrijving.get_waarde()
 
     @beschrijving.setter
@@ -58,7 +58,7 @@ class Besluit(OTLAsset):
 
     @property
     def citeeropschrift(self) -> str:
-        """"""
+        """TODO"""
         return self._citeeropschrift.get_waarde()
 
     @citeeropschrift.setter
@@ -76,7 +76,7 @@ class Besluit(OTLAsset):
 
     @property
     def publicatiedatum(self) -> date:
-        """"""
+        """TODO"""
         return self._publicatiedatum.get_waarde()
 
     @publicatiedatum.setter

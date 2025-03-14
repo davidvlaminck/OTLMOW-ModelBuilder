@@ -13,6 +13,7 @@ class DtcGeometrieWaarden(WaardenObject):
                                  naam='gml',
                                  label='als GML',
                                  objectUri='http://www.w3.org/ns/locn#Geometry.gml',
+                                 usagenote='Gebruik http://www.opengis.net/ont/geosparql#gmlLiteral als datatype.',
                                  definition='',
                                  owner=self)
 
@@ -20,6 +21,7 @@ class DtcGeometrieWaarden(WaardenObject):
                                  naam='wkt',
                                  label='als WKT',
                                  objectUri='http://www.w3.org/ns/locn#Geometry.wkt',
+                                 usagenote='Gebruik http://www.opengis.net/ont/geosparql#wktLiteral als datatype.',
                                  definition='',
                                  owner=self)
 
@@ -44,11 +46,11 @@ class DtcGeometrieWaarden(WaardenObject):
 
 # Generated with OTLComplexDatatypeCreator. To modify: extend, do not edit
 class DtcGeometrie(ComplexField):
-    """"""
+    """Een geometry die een locatie voorstelt."""
     naam = 'DtcGeometrie'
     label = 'Geometrie'
     objectUri = 'http://www.w3.org/ns/locn#Geometry'
-    definition = ''
+    definition = 'Een geometry die een locatie voorstelt.'
     waardeObject = DtcGeometrieWaarden
 
     def __str__(self):

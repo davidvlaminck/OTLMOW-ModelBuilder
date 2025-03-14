@@ -2,6 +2,7 @@
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
 from otlmow_model.OtlmowModel.BaseClasses.WaardenObject import WaardenObject
 from otlmow_model.OtlmowModel.BaseClasses.ComplexField import ComplexField
+from ..Datatypes.KlOrganisaties import KlOrganisaties
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 
@@ -16,7 +17,7 @@ class DtcIdentificatorWaarden(WaardenObject):
                                            definition='Een groep van tekens om een AIM object te identificeren of te benoemen.',
                                            owner=self)
 
-        self._toegekendDoor = OTLAttribuut(field=StringField,
+        self._toegekendDoor = OTLAttribuut(field=KlOrganisaties,
                                            naam='toegekendDoor',
                                            label='toegekend door',
                                            objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcIdentificator.toegekendDoor',

@@ -8,7 +8,7 @@ from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
 class SignalisatieOntwerp(OTLAsset):
-    """"""
+    """TODO"""
 
     typeURI = 'https://data.vlaanderen.be/ns/mobiliteit#SignalisatieOntwerp'
     """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""
@@ -22,21 +22,21 @@ class SignalisatieOntwerp(OTLAsset):
 
         self._datum = OTLAttribuut(field=DateTimeField,
                                    naam='datum',
-                                   label='',
+                                   label='datum',
                                    objectUri='https://data.vlaanderen.be/ns/mobiliteit#SignalisatieOntwerp.datum',
-                                   definition='',
+                                   definition='TODO',
                                    owner=self)
 
         self._naam = OTLAttribuut(field=StringField,
                                   naam='naam',
-                                  label='',
+                                  label='naam',
                                   objectUri='https://data.vlaanderen.be/ns/mobiliteit#SignalisatieOntwerp.naam',
-                                  definition='',
+                                  definition='TODO',
                                   owner=self)
 
     @property
     def datum(self) -> datetime:
-        """"""
+        """TODO"""
         return self._datum.get_waarde()
 
     @datum.setter
@@ -45,7 +45,7 @@ class SignalisatieOntwerp(OTLAsset):
 
     @property
     def naam(self) -> str:
-        """"""
+        """TODO"""
         return self._naam.get_waarde()
 
     @naam.setter

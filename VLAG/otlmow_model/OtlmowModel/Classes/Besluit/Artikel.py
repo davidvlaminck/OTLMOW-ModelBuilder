@@ -22,12 +22,12 @@ class Artikel(OTLAsset):
                                     naam='nummer',
                                     label='nummer',
                                     objectUri='https://data.vlaanderen.be/ns/besluit#Artikel.nummer',
-                                    definition='',
+                                    definition='TODO',
                                     owner=self)
 
     @property
     def nummer(self) -> str:
-        """"""
+        """TODO"""
         return self._nummer.get_waarde()
 
     @nummer.setter

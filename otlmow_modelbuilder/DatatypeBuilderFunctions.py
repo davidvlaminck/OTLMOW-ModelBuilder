@@ -1,7 +1,10 @@
 from typing import Dict
 
 
-def get_single_field_from_type_uri(field_type: str):
+def get_single_field_from_type_uri(field_type: str, valid_uri_and_types: dict = {}):
+    if field_type in valid_uri_and_types:
+        return valid_uri_and_types[field_type]
+
     if field_type.startswith('https://wegenenverkeer.data.vlaanderen.be/ns/') and '#' in field_type:
         return field_type.split('#')[1]
 
@@ -29,6 +32,10 @@ def get_single_field_from_type_uri(field_type: str):
         return 'DtcOpeningsurenSpecificatie'
     elif field_type == 'https://schema.org/ContactPoint':
         return 'DtcContactinfo'
+    elif field_type == 'http://www.cidoc-crm.org/cidoc-crm/E54_Dimension':
+        return 'DtcDimensie'
+    elif field_type == 'http://www.w3.org/ns/locn#Geometry':
+        return 'DtcGeometrie'
     elif field_type == 'http://www.w3.org/2000/01/rdf-schema#Literal':
         return 'StringField'
     else:
@@ -74,10 +81,10 @@ def get_attributen_by_type_field(oslo_collector, type_field, oslo_datatype):
 
 
 def get_type_name_of_complex_attribuut(type_uri: str, valid_uri_and_types):
-    if '/ns/' in type_uri or type_uri.startswith('http://www.w3.org/2001/XMLSchema#'):
-        return type_uri[type_uri.find('#') + 1::]
     if type_uri in valid_uri_and_types.keys():
         return valid_uri_and_types[type_uri]
+    if '/ns/' in type_uri or type_uri.startswith('http://www.w3.org/2001/XMLSchema#'):
+        return type_uri[type_uri.find('#') + 1::]
 
     raise NotImplementedError(f"get_type_name_of_complex_attribuut fails to get typename from {type_uri}")
 

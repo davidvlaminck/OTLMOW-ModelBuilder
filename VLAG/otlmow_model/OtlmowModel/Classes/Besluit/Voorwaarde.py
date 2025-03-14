@@ -19,14 +19,14 @@ class Voorwaarde(OTLAsset):
 
         self._beschrijving = OTLAttribuut(field=StringField,
                                           naam='beschrijving',
-                                          label='',
+                                          label='beschrijving',
                                           objectUri='http://data.vlaanderen.be/ns/besluit#Voorwaarde.beschrijving',
-                                          definition='',
+                                          definition='TODO',
                                           owner=self)
 
     @property
     def beschrijving(self) -> str:
-        """"""
+        """TODO"""
         return self._beschrijving.get_waarde()
 
     @beschrijving.setter

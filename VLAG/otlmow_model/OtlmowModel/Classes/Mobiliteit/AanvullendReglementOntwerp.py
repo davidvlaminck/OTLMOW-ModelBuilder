@@ -6,7 +6,7 @@ from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
 class AanvullendReglementOntwerp(OTLAsset):
-    """"""
+    """TODO"""
 
     typeURI = 'https://data.vlaanderen.be/ns/mobiliteit#AanvullendReglementOntwerp'
     """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""
@@ -21,14 +21,14 @@ class AanvullendReglementOntwerp(OTLAsset):
 
         self._naam = OTLAttribuut(field=StringField,
                                   naam='naam',
-                                  label='',
+                                  label='naam',
                                   objectUri='https://data.vlaanderen.be/ns/mobiliteit#AanvullendReglementOntwerp.naam',
-                                  definition='',
+                                  definition='TODO',
                                   owner=self)
 
     @property
     def naam(self) -> str:
-        """"""
+        """TODO"""
         return self._naam.get_waarde()
 
     @naam.setter

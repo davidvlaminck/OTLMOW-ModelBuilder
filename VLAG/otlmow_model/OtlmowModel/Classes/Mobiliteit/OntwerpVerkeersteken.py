@@ -18,14 +18,14 @@ class OntwerpVerkeersteken(OTLAsset):
 
         self._status = OTLAttribuut(field=KlVerkeersbordcategorie,
                                     naam='status',
-                                    label='',
+                                    label='status',
                                     objectUri='https://data.vlaanderen.be/ns/mobiliteit#OntwerpVerkeersteken.status',
-                                    definition='',
+                                    definition='TODO',
                                     owner=self)
 
     @property
     def status(self) -> str:
-        """"""
+        """TODO"""
         return self._status.get_waarde()
 
     @status.setter
