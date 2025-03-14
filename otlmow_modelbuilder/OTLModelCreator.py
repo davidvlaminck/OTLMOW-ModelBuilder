@@ -52,14 +52,16 @@ class OTLModelCreator:
         OTLModelCreator.create_union_datatypes(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             union_datatype_validation_rules=settings['union_datatype_validation_rules'])
-        # OTLModelCreator.create_enumerations(
-        #     directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
-        #     enumeration_validation_rules=settings['enumeration_validation_rules'],
-        #     include_kl_test_keuzelijst=include_kl_test_keuzelijst)
+        OTLModelCreator.create_enumerations(
+            directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
+            enumeration_validation_rules=settings['enumeration_validation_rules'],
+            include_kl_test_keuzelijst=include_kl_test_keuzelijst)
+        class_validation_settings = settings['complex_datatype_validation_rules']['valid_uri_and_types']
+        class_validation_settings.update(settings['class_validation_rules']['valid_uri_and_types'])
         OTLModelCreator.create_classes(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             geo_artefact_collector=geo_artefact_collector,
-            valid_uri_and_types=settings['complex_datatype_validation_rules']['valid_uri_and_types'])
+            valid_uri_and_types=class_validation_settings)
         OTLExtraChecker.modify_for_extra_checks(directory=directory / 'OtlmowModel')
         OTLModelCreator.add_generated_info(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector)

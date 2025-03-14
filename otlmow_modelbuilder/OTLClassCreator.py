@@ -30,13 +30,17 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
     def create_blocks_to_write_from_classes(self, oslo_class: OSLOClass, model_location='',
                                             valid_uri_and_types: Dict = None) -> [str]:
+
+        if oslo_class.objectUri == 'http://www.w3.org/2004/02/skos/core#Concept':
+            pass
+
         if not isinstance(oslo_class, OSLOClass):
             raise ValueError(f"Input is not a OSLOClass")
 
         if oslo_class.objectUri == '':
             raise ValueError(f"OSLOClass.objectUri is invalid. Value = '{oslo_class.objectUri}'")
 
-        if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+        if oslo_class.objectUri in valid_uri_and_types.keys():
             pass
         elif not re.match(pattern="^.+/ns/.+#.+", string=oslo_class.objectUri):
             raise ValueError(f"OSLOClass.objectUri is invalid. Value = '{oslo_class.objectUri}'")
@@ -48,6 +52,10 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
     def create_block_from_class(self, oslo_class: OSLOClass, model_location: str = '',
                                 valid_uri_and_types: Dict = None) -> [str]:
+
+        if oslo_class.objectUri == 'http://www.w3.org/2004/02/skos/core#Concept':
+            pass
+
         if valid_uri_and_types is None:
             valid_uri_and_types = {}
         attributen = self.oslo_collector.find_attributes_by_class(oslo_class)
@@ -96,9 +104,6 @@ class OTLClassCreator(AbstractDatatypeCreator):
             inheritances.append(
                 Inheritance(base_name='RelationInteractor', base_uri='', class_name='', class_uri='',
                             deprecated_version=''))
-
-        if oslo_class.objectUri == 'http://data.vlaanderen.be/ns/besluit#AanvullendReglement':
-            pass
 
         datablock = ['# coding=utf-8']
         if len(attributen) > 0:

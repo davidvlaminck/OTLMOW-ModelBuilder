@@ -11,6 +11,14 @@
         "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.buitenwerkingtreding",
         "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.inwerkingstijd"
     ],
+    "class_validation_rules" : {
+        "valid_uri_and_types" : {
+            "http://purl.org/dc/terms/Agent": "Agent",
+            "http://www.w3.org/2004/02/skos/core#Concept": "Concept",
+            "http://www.w3.org/2004/02/skos/core#ConceptScheme": "Codelijst"
+        },
+        "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
+    },
     "complex_datatype_validation_rules" : {
         "valid_uri_and_types" : {
             "http://data.europa.eu/m8g/PeriodOfTime": "DtcPeriode",
@@ -20,9 +28,6 @@
             "https://schema.org/Schedule": "DtcTijdschema",
             "https://schema.org/ContactPoint" : "DtcContactinfo",
             "https://w3id.org/tribont/core#Shape": "DtcVorm"
-        },
-        "invalid_uri_and_types" : {
-
         },
         "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
     },

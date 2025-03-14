@@ -4,11 +4,11 @@ from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstField import KeuzelijstField
 
 # Generated with OTLEnumerationCreator. To modify: extend, do not edit
 class KlZonetype(KeuzelijstField):
-    """"""
+    """TODO"""
     naam = 'KlZonetype'
-    label = ''
+    label = 'Zonetype'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlZonetype'
-    definition = ''
+    definition = 'TODO'
     status = 'https://wegenenverkeer-test.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlZonetype'
     options = {
