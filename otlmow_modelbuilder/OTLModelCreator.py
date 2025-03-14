@@ -234,7 +234,6 @@ class OTLModelCreator:
 
     @staticmethod
     def check_and_create_subdirectories(directory: Path):
-        return
         if not path.exists(directory):
             os.makedirs(directory)
         if not path.exists(directory):
