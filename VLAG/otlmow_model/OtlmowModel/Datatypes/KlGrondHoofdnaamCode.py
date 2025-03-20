@@ -9,7 +9,6 @@ class KlGrondHoofdnaamCode(KeuzelijstField):
     label = 'Grond hoofdnaamcode'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlGrondHoofdnaamCode'
     definition = 'De hoofdnaamcode van de grond.Namespace :http://interpretatie.kern.schemas.dov.vlaanderen.be/GecodeerdHoofdnaamCodesEnumType.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlGrondHoofdnaamCode'
     options = {
     }

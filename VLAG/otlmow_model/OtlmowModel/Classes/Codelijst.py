@@ -14,7 +14,7 @@ class Codelijst(OTLAsset):
     def __init__(self):
         super().__init__()
 
-        self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BehoortTot', target='http://www.w3.org/2004/02/skos/core#Concept', direction='u')  # u = unidirectional
+        self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BehoortTot', target='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Concept', direction='u')  # u = unidirectional
 
         self._codelijstType = OTLAttribuut(field=StringField,
                                            naam='codelijstType',

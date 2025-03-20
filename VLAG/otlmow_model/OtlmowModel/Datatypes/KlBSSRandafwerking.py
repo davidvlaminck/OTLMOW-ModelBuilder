@@ -10,7 +10,6 @@ class KlBSSRandafwerking(KeuzelijstField):
     label = 'randafwerking'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlBSSRandafwerking'
     definition = 'De verschillende manieren van de randafwerking van de verharding.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlBSSRandafwerking'
     options = {
         'biscchopsmutsen': KeuzelijstWaarde(invulwaarde='biscchopsmutsen',

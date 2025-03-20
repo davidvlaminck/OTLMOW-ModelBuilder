@@ -10,7 +10,6 @@ class KlLEGCMateriaal(KeuzelijstField):
     label = 'Materiaal geluidswerende constructie'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlLEGCMateriaal'
     definition = 'Materialen van de geluidswerende constructie.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlLEGCMateriaal'
     options = {
         'bakstenen': KeuzelijstWaarde(invulwaarde='bakstenen',

@@ -10,7 +10,6 @@ class KlKwaliteitsklasseHout(KeuzelijstField):
     label = 'Kwaliteitsklasse van hout'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlKwaliteitsklasseHout'
     definition = 'De kwaliteitsindeling van hout met betrekking op vervormingen, scheuren en kwasten.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlKwaliteitsklasseHout'
     options = {
         'klasse-a': KeuzelijstWaarde(invulwaarde='klasse-a',
@@ -26,12 +25,12 @@ class KlKwaliteitsklasseHout(KeuzelijstField):
         'klasse-c': KeuzelijstWaarde(invulwaarde='klasse-c',
                                      label='Klasse C',
                                      status='ingebruik',
-                                     definitie='Klasse C-hout geldt als standaard en is voornamelijk afkomstig uit Noord-Europa, waar de bomen in duurzame bossen geteeld worden. Gezonde knoesten zijn toegestaan, evenals een beetje hart. Dit hout is van lagere kwaliteit dan A-hout en kan niet worden hergebruikt. Klasse C houdt ook in dat het hout geïmpregneerd is. ',
+                                     definitie='Klasse C-hout geldt als standaard en is voornamelijk afkomstig uit Noord-Europa, waar de bomen in duurzame bossen geteeld worden. Gezonde knoesten zijn toegestaan, evenals een beetje hart. Dit hout is van lagere kwaliteit dan A-hout en kan niet worden hergebruikt. Klasse C houdt ook in dat het hout geÃƒÂ¯mpregneerd is.',
                                      objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlKwaliteitsklasseHout/klasse-c'),
         'tropisch-hardhout': KeuzelijstWaarde(invulwaarde='tropisch-hardhout',
                                               label='Tropisch hardhout',
                                               status='ingebruik',
-                                              definitie='Zwaardere houtsoorten uit de tropen, zoals vb.: azobé (afkomstig uit tropische bossen in Afrika). ',
+                                              definitie='Zwaardere houtsoorten uit de tropen, zoals vb.: azobÃƒÂ© (afkomstig uit tropische bossen in Afrika).',
                                               objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlKwaliteitsklasseHout/tropisch-hardhout')
     }
 

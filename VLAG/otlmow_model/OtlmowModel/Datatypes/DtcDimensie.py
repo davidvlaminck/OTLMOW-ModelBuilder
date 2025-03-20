@@ -13,28 +13,31 @@ class DtcDimensieWaarden(WaardenObject):
         WaardenObject.__init__(self)
         self._standaardeenheid = OTLAttribuut(field=KlStandaardeenheid,
                                               naam='standaardeenheid',
-                                              label='',
-                                              objectUri='http://www.cidoc-crm.org/cidoc-crm/E54_Dimension.standaardeenheid',
-                                              definition='',
+                                              label='standaardeenheid',
+                                              objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcDimensie.standaardeenheid',
+                                              usagenote='Het is aangeraden gebruik te maken van op het web gepubliceerde eenheden, bij voorkeur deze van qudt. bv http://qudt.org/vocab/unit/M voor meten. http://www.cidoc-crm.org/cidoc-crm/P91_has_unit',
+                                              definition='Het type eenheid waarin de dimensie werd uitgedrukt.',
                                               owner=self)
 
         self._type = OTLAttribuut(field=KlTypeGrootheid,
                                   naam='type',
-                                  label='',
-                                  objectUri='http://www.cidoc-crm.org/cidoc-crm/E54_Dimension.type',
-                                  definition='',
+                                  label='type grootheid',
+                                  objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcDimensie.type',
+                                  usagenote='Het wordt aangeraden QUDT te gebruiken, bv https://qudt.org/vocab/quantitykind/Height. http://www.cidoc-crm.org/cidoc-crm/P2_has_type',
+                                  definition='Grootheid van de Dimensie. bv hoogte, lengte, breedte, diameter,...',
                                   owner=self)
 
         self._waarde = OTLAttribuut(field=FloatOrDecimalField,
                                     naam='waarde',
-                                    label='',
-                                    objectUri='http://www.cidoc-crm.org/cidoc-crm/E54_Dimension.waarde',
-                                    definition='',
+                                    label='waarde',
+                                    objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcDimensie.waarde',
+                                    usagenote='http://www.cidoc-crm.org/cidoc-crm/P90_has_value',
+                                    definition='Getal waarmee de kwantiteit van het kenmerk kan worden uitgedrukt.',
                                     owner=self)
 
     @property
     def standaardeenheid(self) -> str:
-        """"""
+        """Het type eenheid waarin de dimensie werd uitgedrukt."""
         return self._standaardeenheid.get_waarde()
 
     @standaardeenheid.setter
@@ -43,7 +46,7 @@ class DtcDimensieWaarden(WaardenObject):
 
     @property
     def type(self) -> str:
-        """"""
+        """Grootheid van de Dimensie. bv hoogte, lengte, breedte, diameter,..."""
         return self._type.get_waarde()
 
     @type.setter
@@ -52,7 +55,7 @@ class DtcDimensieWaarden(WaardenObject):
 
     @property
     def waarde(self) -> float:
-        """"""
+        """Getal waarmee de kwantiteit van het kenmerk kan worden uitgedrukt."""
         return self._waarde.get_waarde()
 
     @waarde.setter
@@ -62,11 +65,12 @@ class DtcDimensieWaarden(WaardenObject):
 
 # Generated with OTLComplexDatatypeCreator. To modify: extend, do not edit
 class DtcDimensie(ComplexField):
-    """"""
+    """TODO"""
     naam = 'DtcDimensie'
-    label = ''
-    objectUri = 'http://www.cidoc-crm.org/cidoc-crm/E54_Dimension'
-    definition = ''
+    label = 'Dimensie'
+    objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcDimensie'
+    definition = 'TODO'
+    usagenote = 'http://www.cidoc-crm.org/cidoc-crm/E54_Dimension'
     waardeObject = DtcDimensieWaarden
 
     def __str__(self):

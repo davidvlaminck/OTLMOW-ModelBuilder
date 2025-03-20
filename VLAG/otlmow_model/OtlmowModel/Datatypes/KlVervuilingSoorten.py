@@ -10,7 +10,6 @@ class KlVervuilingSoorten(KeuzelijstField):
     label = 'Vervuiling soorten'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/levenscyclus#KlVervuilingSoorten'
     definition = 'De specificatie van de vastgestelde vervuiling van de grond.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlVervuilingSoorten'
     options = {
         'pfos': KeuzelijstWaarde(invulwaarde='pfos',

@@ -10,7 +10,6 @@ class KlPlantmaatHoogte(KeuzelijstField):
     label = 'Plantmaat houtige vegetatie'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlPlantmaatHoogte'
     definition = 'Keuzelijst die de hoogte in centimeter gemeten van de stamvoet tot de top met een minimum en maximum waarde oplijst.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlPlantmaatHoogte'
     options = {
         '100-125': KeuzelijstWaarde(invulwaarde='100-125',

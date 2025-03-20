@@ -151,7 +151,7 @@ class OTLModelCreator:
         with OTLEnumerationCreator(oslo_collector, env=environment,
                                         include_kl_test_keuzelijst=include_kl_test_keuzelijst) as creator:
 
-            with concurrent.futures.ThreadPoolExecutor() as executor:
+            with concurrent.futures.ThreadPoolExecutor(1) as executor:
                 futures = {executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
                                            enumeration=enumeration, environment=environment,
                                            enumeration_validation_rules=enumeration_validation_rules): enumeration for

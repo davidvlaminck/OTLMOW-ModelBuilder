@@ -213,7 +213,7 @@ WITH valid_base_classes AS (
         ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject'),
         ('http://data.vlaanderen.be/ns/besluit#AanvullendReglement'),
         ('http://data.vlaanderen.be/ns/besluit#Voorwaarde'),
-        ('http://www.w3.org/2004/02/skos/core#Concept'),
+        ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Concept'), 
         ('http://www.w3.org/2004/02/skos/core#ConceptScheme'),
         ('https://data.vlaanderen.be/ns/besluit#Artikel'),
         ('https://data.vlaanderen.be/ns/besluit#Besluit'),

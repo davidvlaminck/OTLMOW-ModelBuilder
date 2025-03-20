@@ -9,7 +9,7 @@ class KlCode(KeuzelijstField):
     label = ''
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlCode'
     definition = ''
-    status = 'https://wegenenverkeer-test.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlCode'
     options = {
     }

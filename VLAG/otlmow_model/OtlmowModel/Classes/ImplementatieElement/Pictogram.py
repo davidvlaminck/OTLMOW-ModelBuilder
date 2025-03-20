@@ -1,6 +1,6 @@
 # coding=utf-8
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
-from ...Classes.Concept import Concept
+from ...Classes.ImplementatieElement.Concept import Concept
 from ...Datatypes.DtcDocument import DtcDocument, DtcDocumentWaarden
 
 

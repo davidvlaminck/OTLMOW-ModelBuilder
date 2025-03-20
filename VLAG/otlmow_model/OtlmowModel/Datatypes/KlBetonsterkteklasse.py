@@ -10,7 +10,6 @@ class KlBetonsterkteklasse(KeuzelijstField):
     label = 'Betonsterkteklasse'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlBetonsterkteklasse'
     definition = 'De klasse waarin de sterkte van beton wordt uitgedrukt.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlBetonsterkteklasse'
     options = {
         'c-12-15': KeuzelijstWaarde(invulwaarde='c-12-15',

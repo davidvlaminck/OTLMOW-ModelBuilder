@@ -10,7 +10,6 @@ class KlAlgProvincie(KeuzelijstField):
     label = 'Provincie'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlAlgProvincie'
     definition = 'Lijst van provincies in Vlaanderen.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAlgProvincie'
     options = {
         'antwerpen': KeuzelijstWaarde(invulwaarde='antwerpen',
@@ -21,18 +20,18 @@ class KlAlgProvincie(KeuzelijstField):
                                     label='limburg',
                                     status='ingebruik',
                                     objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAlgProvincie/limburg'),
-        'oost-Vlaanderen': KeuzelijstWaarde(invulwaarde='oost-Vlaanderen',
+        'oost-vlaanderen': KeuzelijstWaarde(invulwaarde='oost-vlaanderen',
                                             label='oost-Vlaanderen',
                                             status='ingebruik',
-                                            objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAlgProvincie/oost-Vlaanderen'),
-        'vlaams-Brabant': KeuzelijstWaarde(invulwaarde='vlaams-Brabant',
+                                            objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAlgProvincie/oost-vlaanderen'),
+        'vlaams-brabant': KeuzelijstWaarde(invulwaarde='vlaams-brabant',
                                            label='vlaams-Brabant',
                                            status='ingebruik',
-                                           objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAlgProvincie/vlaams-Brabant'),
-        'west-Vlaanderen': KeuzelijstWaarde(invulwaarde='west-Vlaanderen',
+                                           objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAlgProvincie/vlaams-brabant'),
+        'west-vlaanderen': KeuzelijstWaarde(invulwaarde='west-vlaanderen',
                                             label='west-Vlaanderen',
                                             status='ingebruik',
-                                            objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAlgProvincie/west-Vlaanderen')
+                                            objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAlgProvincie/west-vlaanderen')
     }
 
     @classmethod

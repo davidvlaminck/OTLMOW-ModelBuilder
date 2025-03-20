@@ -9,7 +9,7 @@ class KlCodelijstType(KeuzelijstField):
     label = 'Codelijst type'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlCodelijstType'
     definition = 'Mogelijke opties voor types van codelijsten.'
-    status = 'https://wegenenverkeer-test.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlCodelijstType'
     options = {
     }

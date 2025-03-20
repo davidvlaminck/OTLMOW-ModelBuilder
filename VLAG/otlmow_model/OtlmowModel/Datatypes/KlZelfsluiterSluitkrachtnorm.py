@@ -10,7 +10,6 @@ class KlZelfsluiterSluitkrachtnorm(KeuzelijstField):
     label = 'Zelfsluiter sluitkrachtnorm'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlZelfsluiterSluitkrachtnorm'
     definition = 'Codelijst met mogelijke waarden voor de sluitkracht van een zefsluiter voor deuren, poorten etc.volgens de bestaande normering.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlZelfsluiterSluitkrachtnorm'
     options = {
         'en-2': KeuzelijstWaarde(invulwaarde='en-2',

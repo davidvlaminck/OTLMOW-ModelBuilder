@@ -10,7 +10,6 @@ class KlPlantmaatOmtrek(KeuzelijstField):
     label = 'Plantmaat omtrek'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlPlantmaatOmtrek'
     definition = 'De stamomtrek in centimeter (gemeten op 1 m boven het maaiveld) met een minimum en maximum waarde.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlPlantmaatOmtrek'
     options = {
         '10-12': KeuzelijstWaarde(invulwaarde='10-12',

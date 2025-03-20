@@ -9,7 +9,6 @@ class KlTypeBadge(KeuzelijstField):
     label = 'Type badge'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlTypeBadge'
     definition = 'De verschillende badgetypes.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlTypeBadge'
     options = {
     }

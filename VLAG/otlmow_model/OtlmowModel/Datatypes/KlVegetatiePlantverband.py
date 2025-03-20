@@ -10,7 +10,6 @@ class KlVegetatiePlantverband(KeuzelijstField):
     label = 'Vegetatie plantverband'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlVegetatiePlantverband'
     definition = 'De verschillende opties voor het plantverband.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlVegetatiePlantverband'
     options = {
         'geschrankt': KeuzelijstWaarde(invulwaarde='geschrankt',

@@ -10,7 +10,6 @@ class KlCameraBeeldverwerkingstype(KeuzelijstField):
     label = 'Camera beeldverwerkingstypes'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlCameraBeeldverwerkingstype'
     definition = 'Lijst met mogelijke types van beeldverwerking eigen aan een camera (in tegenstelling tot beeldverwerking door andere assets).'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlCameraBeeldverwerkingstype'
     options = {
         'adr': KeuzelijstWaarde(invulwaarde='adr',

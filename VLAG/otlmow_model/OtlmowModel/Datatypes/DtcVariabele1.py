@@ -16,47 +16,50 @@ class DtcVariabele1Waarden(WaardenObject):
                                        naam='codelijst',
                                        label='codelijst',
                                        objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcVariabele1.codelijst',
-                                       definition='',
+                                       definition='TODO',
                                        owner=self)
 
         self._label = OTLAttribuut(field=StringField,
                                    naam='label',
-                                   label='',
+                                   label='label',
                                    objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcVariabele1.label',
-                                   definition='',
+                                   usagenote='http://purl.org/dc/terms/title',
+                                   definition='TODO',
                                    owner=self)
 
         self._standaardwaarde = OTLAttribuut(field=StringField,
                                              naam='standaardwaarde',
-                                             label='',
+                                             label='standaardwaarde',
                                              objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcVariabele1.standaardwaarde',
-                                             definition='',
+                                             definition='TODO',
                                              owner=self)
 
         self._template = OTLAttribuut(field=DtcTemplate2,
                                       naam='template',
-                                      label='',
+                                      label='template',
                                       objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcVariabele1.template',
-                                      definition='',
+                                      definition='TODO',
                                       owner=self)
 
         self._type = OTLAttribuut(field=KlVariabeleType,
                                   naam='type',
-                                  label='',
+                                  label='type',
                                   objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcVariabele1.type',
-                                  definition='',
+                                  usagenote='http://purl.org/dc/terms/type',
+                                  definition='TODO',
                                   owner=self)
 
         self._waarde = OTLAttribuut(field=StringField,
                                     naam='waarde',
-                                    label='',
+                                    label='waarde',
                                     objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcVariabele1.waarde',
-                                    definition='',
+                                    usagenote='http://www.w3.org/2000/01/rdf-schema#value',
+                                    definition='TODO',
                                     owner=self)
 
     @property
     def codelijst(self) -> DtcCodelijstWaarden:
-        """"""
+        """TODO"""
         return self._codelijst.get_waarde()
 
     @codelijst.setter
@@ -65,7 +68,7 @@ class DtcVariabele1Waarden(WaardenObject):
 
     @property
     def label(self) -> str:
-        """"""
+        """TODO"""
         return self._label.get_waarde()
 
     @label.setter
@@ -74,7 +77,7 @@ class DtcVariabele1Waarden(WaardenObject):
 
     @property
     def standaardwaarde(self) -> str:
-        """"""
+        """TODO"""
         return self._standaardwaarde.get_waarde()
 
     @standaardwaarde.setter
@@ -83,7 +86,7 @@ class DtcVariabele1Waarden(WaardenObject):
 
     @property
     def template(self) -> DtcTemplate2Waarden:
-        """"""
+        """TODO"""
         return self._template.get_waarde()
 
     @template.setter
@@ -92,7 +95,7 @@ class DtcVariabele1Waarden(WaardenObject):
 
     @property
     def type(self) -> str:
-        """"""
+        """TODO"""
         return self._type.get_waarde()
 
     @type.setter
@@ -101,7 +104,7 @@ class DtcVariabele1Waarden(WaardenObject):
 
     @property
     def waarde(self) -> str:
-        """"""
+        """TODO"""
         return self._waarde.get_waarde()
 
     @waarde.setter
@@ -113,7 +116,7 @@ class DtcVariabele1Waarden(WaardenObject):
 class DtcVariabele1(ComplexField):
     """"""
     naam = 'DtcVariabele1'
-    label = 'Variabele'
+    label = 'Variabele1'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcVariabele1'
     definition = ''
     waardeObject = DtcVariabele1Waarden

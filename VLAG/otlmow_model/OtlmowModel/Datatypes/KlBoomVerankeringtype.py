@@ -10,7 +10,6 @@ class KlBoomVerankeringtype(KeuzelijstField):
     label = 'Boom verankeringtype'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlBoomVerankeringtype'
     definition = 'De verschillende types van verankering van een boom.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlBoomVerankeringtype'
     options = {
         'biologisch-afbreekbare-grondankers': KeuzelijstWaarde(invulwaarde='biologisch-afbreekbare-grondankers',

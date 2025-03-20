@@ -10,7 +10,6 @@ class KlSignalisatieMarkeringOpvatting(KeuzelijstField):
     label = 'Signalisatie markering opvatting'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlSignalisatieMarkeringOpvatting'
     definition = 'De markeringsopvattingen van de markering.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlSignalisatieMarkeringOpvatting'
     options = {
         'middelenverbintenis': KeuzelijstWaarde(invulwaarde='middelenverbintenis',

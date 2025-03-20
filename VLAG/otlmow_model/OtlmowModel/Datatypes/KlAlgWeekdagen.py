@@ -10,7 +10,6 @@ class KlAlgWeekdagen(KeuzelijstField):
     label = 'Weekdagen'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlAlgWeekdagen'
     definition = 'Lijst van de verschillende weekdagen.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAlgWeekdagen'
     options = {
         'dinsdag': KeuzelijstWaarde(invulwaarde='dinsdag',

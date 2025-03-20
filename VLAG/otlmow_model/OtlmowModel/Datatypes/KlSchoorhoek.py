@@ -10,7 +10,6 @@ class KlSchoorhoek(KeuzelijstField):
     label = 'Schoorhoek'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlSchoorhoek'
     definition = 'De schoorhoek van het object, uitgedrukt in 1 op x (vb.: 1/4).'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlSchoorhoek'
     options = {
         '1-3': KeuzelijstWaarde(invulwaarde='1-3',
@@ -22,12 +21,7 @@ class KlSchoorhoek(KeuzelijstField):
                                 label='1/4',
                                 status='ingebruik',
                                 definitie='Een schoorhoek van 1 op 4.',
-                                objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlSchoorhoek/1-4'),
-        '1-5': KeuzelijstWaarde(invulwaarde='1-5',
-                                label='1/5',
-                                status='ingebruik',
-                                definitie='Een schoorhoek van 1 op 5.',
-                                objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlSchoorhoek/1-5')
+                                objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlSchoorhoek/1-4')
     }
 
     @classmethod

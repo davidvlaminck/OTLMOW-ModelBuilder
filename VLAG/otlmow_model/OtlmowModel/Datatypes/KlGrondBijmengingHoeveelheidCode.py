@@ -9,7 +9,6 @@ class KlGrondBijmengingHoeveelheidCode(KeuzelijstField):
     label = 'Grondbijmenging hoeveelheidscode'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlGrondBijmengingHoeveelheidCode'
     definition = 'De mogelijke waarden voor de hoeveelheid bijmenging (X staat voor de lithologie van de bijmenging).'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlGrondBijmengingHoeveelheidCode'
     options = {
     }

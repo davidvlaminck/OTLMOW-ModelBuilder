@@ -209,15 +209,6 @@
             "deprecated_version": "",
             "direct_subclasses": []
         },
-        "http://www.w3.org/2004/02/skos/core#Concept": {
-            "abstract": false,
-            "name": "Concept",
-            "label": "Concept",
-            "deprecated_version": "",
-            "direct_subclasses": [
-                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Pictogram"
-            ]
-        },
         "http://www.w3.org/2004/02/skos/core#ConceptScheme": {
             "abstract": false,
             "name": "Codelijst",
@@ -432,7 +423,8 @@
             "direct_subclasses": [
                 "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie",
                 "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject",
-                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject"
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject"
             ]
         },
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage": {
@@ -441,6 +433,15 @@
             "label": "Bijlage",
             "deprecated_version": "2.13.0",
             "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Concept": {
+            "abstract": false,
+            "name": "Concept",
+            "label": "Concept",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Pictogram"
+            ]
         },
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject": {
             "abstract": false,

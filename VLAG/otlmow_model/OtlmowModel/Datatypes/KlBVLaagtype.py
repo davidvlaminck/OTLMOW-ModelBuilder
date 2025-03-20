@@ -10,7 +10,6 @@ class KlBVLaagtype(KeuzelijstField):
     label = 'BV laagtype'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlBVLaagtype'
     definition = 'Laagtypes van de bitumineuze verharding.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlBVLaagtype'
     options = {
         'andere-toplagen': KeuzelijstWaarde(invulwaarde='andere-toplagen',

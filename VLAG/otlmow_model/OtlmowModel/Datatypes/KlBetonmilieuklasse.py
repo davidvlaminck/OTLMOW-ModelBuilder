@@ -10,7 +10,6 @@ class KlBetonmilieuklasse(KeuzelijstField):
     label = 'Betonmilieuklasse'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlBetonmilieuklasse'
     definition = 'Milieuklasse (X-klasse) waaraan het beton wordt blootgesteld.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlBetonmilieuklasse'
     options = {
         'x-0': KeuzelijstWaarde(invulwaarde='x-0',

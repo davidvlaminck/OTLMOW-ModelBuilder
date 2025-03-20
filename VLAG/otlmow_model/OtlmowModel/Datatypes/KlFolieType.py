@@ -10,7 +10,6 @@ class KlFolieType(KeuzelijstField):
     label = 'Folie type'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlFolieType'
     definition = 'Types van folie.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlFolieType'
     options = {
         'folietype-1': KeuzelijstWaarde(invulwaarde='folietype-1',

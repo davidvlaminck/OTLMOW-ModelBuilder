@@ -10,7 +10,6 @@ class KlDraagConstrBeschermlaag(KeuzelijstField):
     label = 'Draagconstructie beschermlaag'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlDraagConstrBeschermlaag'
     definition = 'De manieren van aanbrengen van een beschermlaag ter voorkoming van roestvorming.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlDraagConstrBeschermlaag'
     options = {
         'gecoat': KeuzelijstWaarde(invulwaarde='gecoat',
@@ -20,7 +19,7 @@ class KlDraagConstrBeschermlaag(KeuzelijstField):
                                    objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlDraagConstrBeschermlaag/gecoat'),
         'gegalvaniseerd': KeuzelijstWaarde(invulwaarde='gegalvaniseerd',
                                            label='gegalvaniseerd',
-                                           status='ingebruik',
+                                           status='uitgebruik',
                                            definitie='Een laag zink aangebracht om roest te voorkomen.',
                                            objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlDraagConstrBeschermlaag/gegalvaniseerd'),
         'geschilderd': KeuzelijstWaarde(invulwaarde='geschilderd',

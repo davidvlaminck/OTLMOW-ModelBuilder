@@ -14,7 +14,7 @@ def create_model():
     model_directory = Path(current_dir.parent / 'VLAG/otlmow_model')
 
     ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_path, geometry_artefact_location=GA_file_path,
-                                     directory=model_directory, environment='prd')
+                                     directory=model_directory, environment='dev')
 
 
 if __name__ == '__main__':

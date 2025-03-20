@@ -1,7 +1,6 @@
 from ..Classes.Besluit.AanvullendReglement import AanvullendReglement
 from ..Classes.Besluit.Voorwaarde import Voorwaarde
 from ..Classes.Agent import Agent
-from ..Classes.Concept import Concept
 from ..Classes.ConceptScheme import ConceptScheme
 from ..Classes.Besluit.Artikel import Artikel
 from ..Classes.Besluit.Besluit import Besluit
@@ -20,6 +19,7 @@ from ..Classes.Mobiliteit.WegmarkeringVerkeersteken import WegmarkeringVerkeerst
 from ..Classes.Mobiliteit.Wegmarkeringsconcept import Wegmarkeringsconcept
 from ..Classes.Mobiliteit.Zone import Zone
 from ..Classes.ImplementatieElement.Bijlage import Bijlage
+from ..Classes.ImplementatieElement.Concept import Concept
 from ..Classes.ImplementatieElement.Derdenobject import Derdenobject
 from ..Classes.ImplementatieElement.Pictogram import Pictogram
 from ..Classes.ImplementatieElement.Toegangsprocedure import Toegangsprocedure

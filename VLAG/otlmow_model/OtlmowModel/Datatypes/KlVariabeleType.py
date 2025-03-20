@@ -9,7 +9,7 @@ class KlVariabeleType(KeuzelijstField):
     label = 'Variabele type'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlVariabeleType'
     definition = 'TODO'
-    status = 'https://wegenenverkeer-test.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlVariabeleType'
     options = {
     }

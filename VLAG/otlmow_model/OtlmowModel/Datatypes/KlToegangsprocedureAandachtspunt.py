@@ -10,7 +10,6 @@ class KlToegangsprocedureAandachtspunt(KeuzelijstField):
     label = 'Toegangsprocedure aandachtspunt'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlToegangsprocedureAandachtspunt'
     definition = 'De soorten aandachtspunten voor toegang tot een object.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlToegangsprocedureAandachtspunt'
     options = {
         'botser-nodig': KeuzelijstWaarde(invulwaarde='botser-nodig',

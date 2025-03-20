@@ -10,7 +10,6 @@ class KlProfielsoort(KeuzelijstField):
     label = 'Profielsoort'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlProfielsoort'
     definition = 'Het type profiel (de meest genormeerde types).'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlProfielsoort'
     options = {
         'hd': KeuzelijstWaarde(invulwaarde='hd',

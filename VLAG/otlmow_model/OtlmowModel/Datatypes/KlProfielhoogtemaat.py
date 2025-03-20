@@ -10,7 +10,6 @@ class KlProfielhoogtemaat(KeuzelijstField):
     label = 'Profielhoogtemaat'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlProfielhoogtemaat'
     definition = 'Voorgedefinieerde hoogtemaat van een profiel.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlProfielhoogtemaat'
     options = {
         '100': KeuzelijstWaarde(invulwaarde='100',

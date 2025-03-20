@@ -9,7 +9,7 @@ class KlTypeGrootheid(KeuzelijstField):
     label = ''
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlTypeGrootheid'
     definition = ''
-    status = 'https://wegenenverkeer-test.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlTypeGrootheid'
     options = {
     }

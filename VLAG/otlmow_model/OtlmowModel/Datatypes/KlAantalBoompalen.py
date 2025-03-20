@@ -10,7 +10,6 @@ class KlAantalBoompalen(KeuzelijstField):
     label = 'Aantal boompalen'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlAantalBoompalen'
     definition = 'Hoeveelheid palen waaruit de constructie bestaat.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAantalBoompalen'
     options = {
         '1': KeuzelijstWaarde(invulwaarde='1',
@@ -27,7 +26,22 @@ class KlAantalBoompalen(KeuzelijstField):
                               label='3',
                               status='ingebruik',
                               definitie='De constructie bestaat uit 3 boompalen.',
-                              objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAantalBoompalen/3')
+                              objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAantalBoompalen/3'),
+        '4': KeuzelijstWaarde(invulwaarde='4',
+                              label='4',
+                              status='ingebruik',
+                              definitie='De constructie bestaat uit 4 boompalen.',
+                              objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAantalBoompalen/4'),
+        'een-waarde-met-d': KeuzelijstWaarde(invulwaarde='een-waarde-met-d',
+                                             label='een waarde',
+                                             status='ingebruik',
+                                             definitie='een waarde met',
+                                             objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAantalBoompalen/een-waarde-met-d'),
+        'het-label-zo-tonen': KeuzelijstWaarde(invulwaarde='het-label-zo-tonen',
+                                               label='Het $label_zo/tonen',
+                                               status='ingebruik',
+                                               definitie='Het $label_zo/tonen',
+                                               objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAantalBoompalen/het-label-zo-tonen')
     }
 
     @classmethod

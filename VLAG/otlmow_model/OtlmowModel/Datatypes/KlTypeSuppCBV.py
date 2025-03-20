@@ -10,7 +10,6 @@ class KlTypeSuppCBV(KeuzelijstField):
     label = 'Type supplementen CBV'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlTypeSuppCBV'
     definition = 'Keuzelijst om het type van de toegevoegde supplementen van de CBV te bepalen.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlTypeSuppCBV'
     options = {
         'figureren-betonoppervlak-in-de-massa-gekleurd': KeuzelijstWaarde(invulwaarde='figureren-betonoppervlak-in-de-massa-gekleurd',

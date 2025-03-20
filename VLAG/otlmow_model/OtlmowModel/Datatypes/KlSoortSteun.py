@@ -9,7 +9,7 @@ class KlSoortSteun(KeuzelijstField):
     label = 'Soort steun'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlSoortSteun'
     definition = 'TODO'
-    status = 'https://wegenenverkeer-test.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlSoortSteun'
     options = {
     }

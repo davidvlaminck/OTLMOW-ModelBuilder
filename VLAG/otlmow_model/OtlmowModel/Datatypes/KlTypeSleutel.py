@@ -9,7 +9,6 @@ class KlTypeSleutel(KeuzelijstField):
     label = 'Type sleutel'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlTypeSleutel'
     definition = 'De verschillende sleuteltypes.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlTypeSleutel'
     options = {
     }

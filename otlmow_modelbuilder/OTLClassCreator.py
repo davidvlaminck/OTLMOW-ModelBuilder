@@ -31,9 +31,6 @@ class OTLClassCreator(AbstractDatatypeCreator):
     def create_blocks_to_write_from_classes(self, oslo_class: OSLOClass, model_location='',
                                             valid_uri_and_types: Dict = None) -> [str]:
 
-        if oslo_class.objectUri == 'http://www.w3.org/2004/02/skos/core#Concept':
-            pass
-
         if not isinstance(oslo_class, OSLOClass):
             raise ValueError(f"Input is not a OSLOClass")
 
@@ -53,9 +50,6 @@ class OTLClassCreator(AbstractDatatypeCreator):
     def create_block_from_class(self, oslo_class: OSLOClass, model_location: str = '',
                                 valid_uri_and_types: Dict = None) -> [str]:
 
-        if oslo_class.objectUri == 'http://www.w3.org/2004/02/skos/core#Concept':
-            pass
-
         if valid_uri_and_types is None:
             valid_uri_and_types = {}
         attributen = self.oslo_collector.find_attributes_by_class(oslo_class)
@@ -65,7 +59,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
         if oslo_class.objectUri in {
             'http://data.vlaanderen.be/ns/besluit#AanvullendReglement',
             'http://data.vlaanderen.be/ns/besluit#Voorwaarde',
-            'http://www.w3.org/2004/02/skos/core#Concept',
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Concept',
             'http://www.w3.org/2004/02/skos/core#ConceptScheme',
             'https://data.vlaanderen.be/ns/besluit#Artikel',
             'https://data.vlaanderen.be/ns/besluit#Besluit',

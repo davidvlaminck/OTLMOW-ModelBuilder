@@ -9,7 +9,7 @@ class KlFabricageTypeRetroreflecterendVerkeersbord(KeuzelijstField):
     label = 'Fabricage type retroreflecterend verkeersbord'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlFabricageTypeRetroreflecterendVerkeersbord'
     definition = 'TODO'
-    status = 'https://wegenenverkeer-test.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlFabricageTypeRetroreflecterendVerkeersbord'
     options = {
     }

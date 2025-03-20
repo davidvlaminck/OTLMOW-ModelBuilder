@@ -10,7 +10,6 @@ class KlVormAanleveringHoutigeVegetatie(KeuzelijstField):
     label = 'Vorm aanlevering houtige vegetatie'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlVormAanleveringHoutigeVegetatie'
     definition = 'De wijze waarop het plantgoed wordt aangeleverd.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlVormAanleveringHoutigeVegetatie'
     options = {
         'bomen': KeuzelijstWaarde(invulwaarde='bomen',

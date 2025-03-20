@@ -10,7 +10,6 @@ class KlAlgGemeente(KeuzelijstField):
     label = 'Gemeente'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlAlgGemeente'
     definition = 'Lijst van gemeentes in Vlaanderen.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAlgGemeente'
     options = {
         'aalst': KeuzelijstWaarde(invulwaarde='aalst',

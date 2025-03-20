@@ -13,11 +13,11 @@ class DtcTemplateWaarden(WaardenObject):
         WaardenObject.__init__(self)
         self._variabele = OTLAttribuut(field=DtcVariabele,
                                        naam='variabele',
-                                       label='',
+                                       label='variabele',
                                        objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTemplate.variabele',
                                        kardinaliteit_min='0',
                                        kardinaliteit_max='*',
-                                       definition='',
+                                       definition='TODO',
                                        owner=self)
 
         self._waarde = OTLAttribuut(field=StringField,
@@ -29,7 +29,7 @@ class DtcTemplateWaarden(WaardenObject):
 
     @property
     def variabele(self) -> List[DtcVariabeleWaarden]:
-        """"""
+        """TODO"""
         return self._variabele.get_waarde()
 
     @variabele.setter
@@ -48,11 +48,11 @@ class DtcTemplateWaarden(WaardenObject):
 
 # Generated with OTLComplexDatatypeCreator. To modify: extend, do not edit
 class DtcTemplate(ComplexField):
-    """"""
+    """TODO"""
     naam = 'DtcTemplate'
     label = 'Template'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcTemplate'
-    definition = ''
+    definition = 'TODO'
     waardeObject = DtcTemplateWaarden
 
     def __str__(self):

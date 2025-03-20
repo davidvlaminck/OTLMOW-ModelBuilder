@@ -9,7 +9,7 @@ class KlVerkeerstekenconceptStatus(KeuzelijstField):
     label = 'Verkeerstekenconcept status'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlVerkeerstekenconceptStatus'
     definition = 'TODO'
-    status = 'https://wegenenverkeer-test.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlVerkeerstekenconceptStatus'
     options = {
     }

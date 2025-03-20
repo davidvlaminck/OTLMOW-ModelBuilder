@@ -153,6 +153,9 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
     @classmethod
     def get_graph(cls, keuzelijstnaam: str, env: str = default_environment):
         keuzelijst_graph = OTLEnumerationCreator.graph_dict[env].get(keuzelijstnaam)
+        if keuzelijst_graph is None:
+            test_uri = keuzelijstnaam.replace('wegenenverkeer', 'wegenenverkeer-test')
+            keuzelijst_graph = OTLEnumerationCreator.graph_dict[env].get(test_uri)
         if keuzelijst_graph is not None:
             return keuzelijst_graph
         raise ValueError(f"Graph for {keuzelijstnaam} not found in the graph_dict")
@@ -190,8 +193,14 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
 
     def get_keuzelijstwaardes_by_uri(self, uri: str, env: str = default_environment) -> [KeuzelijstWaarde]:
         if uri not in self.graph_dict[env]:
-            self.create_empty_graph(uri, env)
-        g = self.graph_dict[env][uri]
+            test_uri = uri.replace('wegenenverkeer', 'wegenenverkeer-test')
+            if test_uri in self.graph_dict[env]:
+                g = self.graph_dict[env][test_uri]
+            else:
+                self.create_empty_graph(uri, env)
+                g = self.graph_dict[env][uri]
+        else:
+            g = self.graph_dict[env][uri]
         return self.get_keuzelijstwaardes_from_graph(g, env)
 
     @classmethod
@@ -205,15 +214,15 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             subject_str = str(distinct_subject)
             if subject_str.startswith('https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/'):
                 continue
-            elif env == 'tei' and subject_str.startswith(
+            elif env != 'prd' and subject_str.startswith(
                     'https://wegenenverkeer-test.data.vlaanderen.be/id/conceptscheme/'):
                 continue
             waarde = KeuzelijstWaarde()
-            waarde.objectUri = subject_str
+            waarde.objectUri = subject_str.replace('-test.data','.data')
             status = g.value(subject=distinct_subject, predicate=URIRef('https://www.w3.org/ns/adms#status'))
             if status is not None:
-                waarde.status = str(status).replace(
-                    'https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAdmsStatus/', '')
+                waarde.status = (str(status).replace('-test.data','.data')
+                .replace('https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAdmsStatus/', ''))
             waarde.invulwaarde = str(
                 g.value(subject=distinct_subject, predicate=URIRef('http://www.w3.org/2004/02/skos/core#notation')))
             waarde.definitie = str(

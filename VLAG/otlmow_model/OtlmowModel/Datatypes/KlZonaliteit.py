@@ -9,7 +9,7 @@ class KlZonaliteit(KeuzelijstField):
     label = 'Zonaliteit'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlZonaliteit'
     definition = 'TODO'
-    status = 'https://wegenenverkeer-test.data.vlaanderen.be/id/concept/KlAdmsStatus/ingebruik'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlZonaliteit'
     options = {
     }

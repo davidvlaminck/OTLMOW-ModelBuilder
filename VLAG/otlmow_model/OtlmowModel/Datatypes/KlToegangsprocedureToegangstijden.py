@@ -9,7 +9,6 @@ class KlToegangsprocedureToegangstijden(KeuzelijstField):
     label = 'Toegangsprocedure toegangstijden'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlToegangsprocedureToegangstijden'
     definition = 'De mogelijke toegangstijden bij een toegangsprocedure.'
-    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlToegangsprocedureToegangstijden'
     options = {
     }
