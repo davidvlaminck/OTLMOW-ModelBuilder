@@ -1,7 +1,7 @@
 # coding=utf-8
 from typing import List
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
+from ...Classes.Abstracten.AIMLinkObject import AIMLinkObject
 from ...Datatypes.DtcDocument import DtcDocument, DtcDocumentWaarden
 from ...Datatypes.DtcTemplate import DtcTemplate, DtcTemplateWaarden
 from ...Datatypes.KlVerkeerstekenconceptStatus import KlVerkeerstekenconceptStatus
@@ -9,7 +9,7 @@ from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class Verkeerstekenconcept(OTLAsset):
+class Verkeerstekenconcept(AIMLinkObject):
     """Inhoudelijke definitie van de betekenis van een verkeersteken zoals opgenomen in de wegcode."""
 
     typeURI = 'https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept'

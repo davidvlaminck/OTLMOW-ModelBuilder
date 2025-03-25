@@ -1,11 +1,11 @@
 # coding=utf-8
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
+from ...Classes.Abstracten.AIMLinkObject import AIMLinkObject
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class Voorwaarde(OTLAsset):
+class Voorwaarde(AIMLinkObject):
     """Datgene waaraan moet voldaan worden om een geldig besluit te zijn."""
 
     typeURI = 'http://data.vlaanderen.be/ns/besluit#Voorwaarde'

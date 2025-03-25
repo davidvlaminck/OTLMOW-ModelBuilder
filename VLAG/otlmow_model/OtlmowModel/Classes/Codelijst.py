@@ -1,11 +1,11 @@
 # coding=utf-8
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
+from ...Classes.Abstracten.AIMLinkObject import AIMLinkObject
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class Codelijst(OTLAsset):
+class Codelijst(AIMLinkObject):
     """TODO"""
 
     typeURI = 'http://www.w3.org/2004/02/skos/core#ConceptScheme'

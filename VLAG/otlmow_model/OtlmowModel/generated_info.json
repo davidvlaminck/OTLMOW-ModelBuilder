@@ -338,6 +338,27 @@
             "deprecated_version": "",
             "direct_subclasses": []
         },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AIMLinkObject": {
+            "abstract": true,
+            "name": "AIMLinkObject",
+            "label": "AIM link object",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "http://data.vlaanderen.be/ns/besluit#Voorwaarde",
+                "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+                "https://data.vlaanderen.be/ns/besluit#Artikel",
+                "https://data.vlaanderen.be/ns/besluit#Besluit",
+                "https://data.vlaanderen.be/ns/mobiliteit#AanvullendReglementOntwerp",
+                "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel",
+                "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept",
+                "https://data.vlaanderen.be/ns/mobiliteit#OntwerpVerkeersteken",
+                "https://data.vlaanderen.be/ns/mobiliteit#SignalisatieOntwerp",
+                "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken",
+                "https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept",
+                "https://data.vlaanderen.be/ns/mobiliteit#Zone",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Concept"
+            ]
+        },
         "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie": {
             "abstract": true,
             "name": "AbstracteAanvullendeGeometrie",
@@ -398,6 +419,7 @@
             "label": "AIM object",
             "deprecated_version": "",
             "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AIMLinkObject",
                 "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMNaamObject",
                 "https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Verkeersbordopstelling",
                 "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie"

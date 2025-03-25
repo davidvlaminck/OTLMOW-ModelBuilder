@@ -1,11 +1,11 @@
 # coding=utf-8
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
+from ...Classes.Abstracten.AIMLinkObject import AIMLinkObject
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class Artikel(OTLAsset):
+class Artikel(AIMLinkObject):
     """Formeel afgebakend onderdeel van een besluit,dat een of meer van de beoogde rechtsgevolgen beschrijft."""
 
     typeURI = 'https://data.vlaanderen.be/ns/besluit#Artikel'

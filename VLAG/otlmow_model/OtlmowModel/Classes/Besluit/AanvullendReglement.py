@@ -2,12 +2,11 @@
 from typing import List
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
 from ...Classes.Besluit.Besluit import Besluit
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
 from ...Datatypes.DtcPeriode import DtcPeriode, DtcPeriodeWaarden
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class AanvullendReglement(Besluit, OTLAsset):
+class AanvullendReglement(Besluit):
     """Een aanvullend reglement op de politie van het wegverkeer is een besluit met betrekking tot de aanpassing van de algemene wegcode aan plaatselijke omstandigheden met een blijvend of periodiek karakter."""
 
     typeURI = 'http://data.vlaanderen.be/ns/besluit#AanvullendReglement'

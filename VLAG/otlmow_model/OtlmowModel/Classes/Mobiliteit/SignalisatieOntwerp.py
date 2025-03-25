@@ -1,13 +1,13 @@
 # coding=utf-8
 from datetime import datetime
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
+from ...Classes.Abstracten.AIMLinkObject import AIMLinkObject
 from otlmow_model.OtlmowModel.BaseClasses.DateTimeField import DateTimeField
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class SignalisatieOntwerp(OTLAsset):
+class SignalisatieOntwerp(AIMLinkObject):
     """TODO"""
 
     typeURI = 'https://data.vlaanderen.be/ns/mobiliteit#SignalisatieOntwerp'

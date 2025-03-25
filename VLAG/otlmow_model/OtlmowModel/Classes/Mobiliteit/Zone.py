@@ -1,12 +1,12 @@
 # coding=utf-8
 from typing import List
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
+from ...Classes.Abstracten.AIMLinkObject import AIMLinkObject
 from ...Datatypes.KlZonetype import KlZonetype
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class Zone(OTLAsset):
+class Zone(AIMLinkObject):
     """Ruimtelijk gebied"""
 
     typeURI = 'https://data.vlaanderen.be/ns/mobiliteit#Zone'

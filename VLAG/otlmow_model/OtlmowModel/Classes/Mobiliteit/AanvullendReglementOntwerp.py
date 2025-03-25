@@ -1,11 +1,11 @@
 # coding=utf-8
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
+from ...Classes.Abstracten.AIMLinkObject import AIMLinkObject
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class AanvullendReglementOntwerp(OTLAsset):
+class AanvullendReglementOntwerp(AIMLinkObject):
     """TODO"""
 
     typeURI = 'https://data.vlaanderen.be/ns/mobiliteit#AanvullendReglementOntwerp'

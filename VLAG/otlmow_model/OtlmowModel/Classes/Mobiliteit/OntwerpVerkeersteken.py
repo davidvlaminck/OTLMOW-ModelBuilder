@@ -1,11 +1,11 @@
 # coding=utf-8
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
+from ...Classes.Abstracten.AIMLinkObject import AIMLinkObject
 from ...Datatypes.KlVerkeersbordcategorie import KlVerkeersbordcategorie
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class OntwerpVerkeersteken(OTLAsset):
+class OntwerpVerkeersteken(AIMLinkObject):
     """Associatieklasse tussen het AR ontwerp en een verkeersteken."""
 
     typeURI = 'https://data.vlaanderen.be/ns/mobiliteit#OntwerpVerkeersteken'

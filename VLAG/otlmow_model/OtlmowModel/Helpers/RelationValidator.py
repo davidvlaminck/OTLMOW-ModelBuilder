@@ -79,7 +79,8 @@ def is_valid_relation(relation_type: Type[RelatieObject], source: Optional[Relat
 
     targets = source._valid_relations[relation_type.typeURI].keys()
     if target_typeURI in targets:
-        if 'i' in source._valid_relations[relation_type.typeURI][target_typeURI]:
+        if ('i' in source._valid_relations[relation_type.typeURI][target_typeURI] and
+                not 'o' in source._valid_relations[relation_type.typeURI][target_typeURI]):
             return False
         deprecated_value = list(source._valid_relations[relation_type.typeURI][target_typeURI].values())[0]
         if deprecated_value != '':
@@ -95,7 +96,8 @@ def is_valid_relation(relation_type: Type[RelatieObject], source: Optional[Relat
     for base in bases:
         base_type_uri = _get_member(base, 'typeURI')
         if base_type_uri in targets:
-            if 'i' in source._valid_relations[relation_type.typeURI][base_type_uri]:
+            if ('i' in source._valid_relations[relation_type.typeURI][base_type_uri] and
+                    not 'o' in source._valid_relations[relation_type.typeURI][base_type_uri]):
                 return False
             deprecated_value = list(source._valid_relations[relation_type.typeURI][base_type_uri].values())[0]
             if deprecated_value != '':

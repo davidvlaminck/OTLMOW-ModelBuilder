@@ -1,13 +1,13 @@
 # coding=utf-8
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
+from ...Classes.Abstracten.AIMLinkObject import AIMLinkObject
 from otlmow_model.OtlmowModel.BaseClasses.BooleanField import BooleanField
 from ...Datatypes.DtcTemplate import DtcTemplate, DtcTemplateWaarden
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class Mobiliteitsmaatregelconcept(OTLAsset):
+class Mobiliteitsmaatregelconcept(AIMLinkObject):
     """Maatregel om de beweging en verplaatsing van de weggebruiker op het openbaar domein of privé domein met openbaar karakter te organiseren."""
 
     typeURI = 'https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept'
