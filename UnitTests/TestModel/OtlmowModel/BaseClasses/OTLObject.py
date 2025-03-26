@@ -751,7 +751,7 @@ def _make_string_version_from_dict(d, level: int = 0, indent: int = 4, list_inde
         if isinstance(value, dict):
             lines.append(f'{prefix}{key} :')
             lines.extend(_make_string_version_from_dict(value, level=level + 1, indent=indent,
-                                                        prefix=prefix + ' ' * indent * level))
+                                                        prefix=prefix + ' ' * indent))
         elif isinstance(value, list):
             lines.append(f'{prefix}{key} :')
             for index, item in enumerate(value):
