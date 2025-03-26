@@ -32,3 +32,12 @@ include = ["otlmow_modelbuilder*"]
 [project.urls]
 "Homepage" = "https://github.com/davidvlaminck/OTLMOW-ModelBuilder"
 "Bug Tracker" = "https://github.com/davidvlaminck/OTLMOW-ModelBuilder/issues"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-subtests",
+    "pytest-timeout",
+    "nbmake"
+]
