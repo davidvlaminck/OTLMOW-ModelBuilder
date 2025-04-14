@@ -345,7 +345,7 @@ class OTLModelCreator:
         # remove attributes that are known to be different
         known_list = ['basisoppervlakte', 'ipadres', 'risicoanalyse', 'technischefiche', 'opstelhoogte',
                       'buitendiameter', 'dnsnaam', 'funderingsaanzetonderdebodemvandewaterweg', 'binnendiameter',
-                      'netwerktype', 'beschoeiingslengte', 'softwareversie', 'folietype']
+                      'netwerktype', 'beschoeiingslengte', 'softwareversie', 'folietype', 'lamptype']
         for known in known_list:
             if known in problems:
                 del problems[known]
