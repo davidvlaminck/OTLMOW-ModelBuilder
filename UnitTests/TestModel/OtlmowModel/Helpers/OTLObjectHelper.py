@@ -171,10 +171,8 @@ def combine_assets(asset_list: list[OTLObject], allow_attribute_overrides: bool 
     if len(asset_list) < 2:
         raise ValueError('asset_list has less than 2 assets')
 
-    grouped_list = {}
+    grouped_list = defaultdict(list)
     for asset in asset_list:
-        if asset.assetId.identificator not in grouped_list:
-            grouped_list[asset.assetId.identificator] = []
         grouped_list[asset.assetId.identificator].append(asset)
 
     combined_list = []

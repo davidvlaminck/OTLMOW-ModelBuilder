@@ -51,9 +51,15 @@ class DateTimeField(OTLField):
         if isinstance(value, str):
             try:
                 if 'T' in value:
-                    dt = datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
+                    if '.' in value:
+                        dt = datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                    else:
+                        dt = datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
                 else:
-                    dt = datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+                    if '.' in value:
+                        dt = datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S.%f")
+                    else:
+                        dt = datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
                 if log_warnings:
                     warnings.warn(category=IncorrectTypeWarning,
                                   message='Assigned a string to a datetime datatype. '
