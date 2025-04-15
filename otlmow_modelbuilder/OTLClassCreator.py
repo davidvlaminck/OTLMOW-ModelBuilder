@@ -137,7 +137,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
         datablock.append('')
         datablock.append(f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit')
 
-        inheritances = self.sort_inheritances_for_relation_interactor_priority(inheritances)
+        inheritances = self.sort_inheritances_for_naampad_naam_interaction(inheritances)
         datablock.append(self.get_class_line_from_class_and_inheritances(oslo_class=oslo_class,
                                                                          inheritances=inheritances,
                                                                          geometry_types=list_of_geometry_types))
@@ -254,20 +254,20 @@ class OTLClassCreator(AbstractDatatypeCreator):
                 return True
         return False
 
-    def sort_inheritances_for_relation_interactor_priority(self, inheritances):
-        # first_good_candidate = None
-        #
-        # for inheritance in inheritances:
-        #     if inheritance.base_uri in self.relation_interactor_uris:
-        #         first_good_candidate = inheritance
-        #         break
-        #     if self.search_recursive_inheritance_for_relation_interactor(inheritance.base_uri):
-        #         first_good_candidate = inheritance
-        #         break
-        #
-        # if first_good_candidate is None:
-        #     return inheritances
-        #
-        # inheritances.remove(first_good_candidate)
-        # inheritances.insert(0, first_good_candidate)
+    @classmethod
+    def sort_inheritances_for_naampad_naam_interaction(cls, inheritances: [Inheritance]):
+        naampad = next(
+            (i for i in inheritances 
+             if i.base_uri == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NaampadObject'), None)
+        if naampad is None:
+            return inheritances
+        naam_inh = next(
+            (i for i in inheritances
+             if i.base_uri == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMNaamObject'), None)
+        if naam_inh is None:
+            return inheritances
+        naam_index = inheritances.index(naam_inh)
+        inheritances.pop(inheritances.index(naampad))
+        inheritances.insert(naam_index, naampad)
+
         return inheritances
