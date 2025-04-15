@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from UnitTests.OSLOCollector_test import oslo_collector
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OTLModelCreator import OTLModelCreator
