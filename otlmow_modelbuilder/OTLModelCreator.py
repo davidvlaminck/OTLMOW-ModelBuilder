@@ -439,6 +439,12 @@ class OTLModelCreator:
         for lgc_type_row in tqdm(lgc_type_data):
             class_name = lgc_type_row[2]
             class_uri = lgc_type_row[0]
+
+            if class_uri in {'https://lgc.data.wegenenverkeer.be/ns/installatie#IVSBGroep',
+                             'https://lgc.data.wegenenverkeer.be/ns/installatie#Sluis',
+                             'https://lgc.data.wegenenverkeer.be/ns/installatie#Stuw'}:
+                continue
+
             oslo_class = OSLOClass(
                 objectUri=class_uri,
                 name=class_name,
