@@ -27,9 +27,8 @@ from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator
 
 
 class OTLModelCreator:
-    def __init__(self, oslo_collector: OSLOCollector, geo_artefact_collector: GeometrieArtefactCollector = None):
-        self.oslo_collector = oslo_collector
-        self.geo_artefact_collector = geo_artefact_collector
+    def __init__(self):
+        pass
 
     @staticmethod
     def create_full_model(directory: Path, oslo_collector: OSLOCollector,
