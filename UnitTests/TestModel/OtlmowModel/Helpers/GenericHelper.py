@@ -6,15 +6,25 @@ from otlmow_model.OtlmowModel.BaseClasses.URIField import URIField
 
 
 def get_shortened_uri(object_uri: str):
+    if object_uri == 'http://purl.org/dc/terms/Agent':
+        return 'purl:Agent'
     if '/ns/' not in object_uri:
         raise ValueError(f'{object_uri} is not a valid uri to extract a namespace from')
-    return object_uri.split('/ns/')[1]
+    shorter_uri = object_uri.split('/ns/')[1]
+    if object_uri.startswith('https://lgc.'):
+        return f'lgc:{shorter_uri}'
+    return shorter_uri
 
 
 def get_ns_and_name_from_uri(object_uri):
+    if object_uri == 'http://purl.org/dc/terms/Agent':
+        return 'purl', 'Agent'
     short_uri = get_shortened_uri(object_uri)
     short_uri_array = short_uri.split('#')
-    return short_uri_array[0], short_uri_array[1]
+    ns, name = short_uri_array[0], short_uri_array[1]
+    if ns.startswith('lgc:'):
+        ns = ns[4:]
+    return ns, name
 
 
 def get_class_directory_from_ns(ns):
@@ -23,7 +33,9 @@ def get_class_directory_from_ns(ns):
 
 def get_titlecase_from_ns(ns: str) -> str:
     ns = ns.lower()
-    if ns == 'abstracten':
+    if ns == 'purl':
+        return None
+    elif ns == 'abstracten':
         return 'Abstracten'
     elif ns == 'implementatieelement':
         return 'ImplementatieElement'
