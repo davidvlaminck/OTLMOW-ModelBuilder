@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for otlmow_modelbuilder/OTLClassCreator.py: 92%</title>
+    <title>Coverage for otlmow_modelbuilder/OTLClassCreator.py: 89%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
     <link rel="stylesheet" href="style_cb_8e611ae1.css" type="text/css">
     <script src="coverage_html_cb_6fb7b396.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>otlmow_modelbuilder/OTLClassCreator.py</b>:
-            <span class="pc_cov">92%</span>
+            <span class="pc_cov">89%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -54,9 +54,9 @@
             </div>
         </aside>
         <h2>
-            <span class="text">175 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">161<span class="text"> run</span></button>
-            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">14<span class="text"> missing</span></button>
+            <span class="text">185 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">164<span class="text"> run</span></button>
+            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">21<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
         <p class="text">
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="z_77a53a78a55426c2_OTLComplexDatatypeCreator_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.8.0">coverage.py v7.8.0</a>,
-            created at 2025-04-14 19:53 +0000
+            created at 2025-04-15 10:34 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -219,7 +219,7 @@
     <p class="run"><span class="n"><a id="t137" href="#t137">137</a></span><span class="t">        <span class="nam">datablock</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="str">''</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t138" href="#t138">138</a></span><span class="t">        <span class="nam">datablock</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="fst">f'</span><span class="fst"># Generated with </span><span class="op">{</span><span class="nam">self</span><span class="op">.</span><span class="nam">__class__</span><span class="op">.</span><span class="nam">__name__</span><span class="op">}</span><span class="fst">. To modify: extend, do not edit</span><span class="fst">'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t139" href="#t139">139</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t140" href="#t140">140</a></span><span class="t">        <span class="nam">inheritances</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">sort_inheritances_for_relation_interactor_priority</span><span class="op">(</span><span class="nam">inheritances</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t140" href="#t140">140</a></span><span class="t">        <span class="nam">inheritances</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">sort_inheritances_for_naampad_naam_interaction</span><span class="op">(</span><span class="nam">inheritances</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t141" href="#t141">141</a></span><span class="t">        <span class="nam">datablock</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">get_class_line_from_class_and_inheritances</span><span class="op">(</span><span class="nam">oslo_class</span><span class="op">=</span><span class="nam">oslo_class</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t142" href="#t142">142</a></span><span class="t">                                                                         <span class="nam">inheritances</span><span class="op">=</span><span class="nam">inheritances</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t143" href="#t143">143</a></span><span class="t">                                                                         <span class="nam">geometry_types</span><span class="op">=</span><span class="nam">list_of_geometry_types</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -336,23 +336,23 @@
     <p class="mis show_mis"><span class="n"><a id="t254" href="#t254">254</a></span><span class="t">                <span class="key">return</span> <span class="key">True</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t255" href="#t255">255</a></span><span class="t">        <span class="key">return</span> <span class="key">False</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t256" href="#t256">256</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t257" href="#t257">257</a></span><span class="t">    <span class="key">def</span> <span class="nam">sort_inheritances_for_relation_interactor_priority</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">inheritances</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t258" href="#t258">258</a></span><span class="t">        <span class="com"># first_good_candidate = None</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t259" href="#t259">259</a></span><span class="t">        <span class="com">#</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t260" href="#t260">260</a></span><span class="t">        <span class="com"># for inheritance in inheritances:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t261" href="#t261">261</a></span><span class="t">        <span class="com">#     if inheritance.base_uri in self.relation_interactor_uris:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t262" href="#t262">262</a></span><span class="t">        <span class="com">#         first_good_candidate = inheritance</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t263" href="#t263">263</a></span><span class="t">        <span class="com">#         break</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t264" href="#t264">264</a></span><span class="t">        <span class="com">#     if self.search_recursive_inheritance_for_relation_interactor(inheritance.base_uri):</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t265" href="#t265">265</a></span><span class="t">        <span class="com">#         first_good_candidate = inheritance</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t266" href="#t266">266</a></span><span class="t">        <span class="com">#         break</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t267" href="#t267">267</a></span><span class="t">        <span class="com">#</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t268" href="#t268">268</a></span><span class="t">        <span class="com"># if first_good_candidate is None:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t269" href="#t269">269</a></span><span class="t">        <span class="com">#     return inheritances</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t270" href="#t270">270</a></span><span class="t">        <span class="com">#</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t271" href="#t271">271</a></span><span class="t">        <span class="com"># inheritances.remove(first_good_candidate)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t272" href="#t272">272</a></span><span class="t">        <span class="com"># inheritances.insert(0, first_good_candidate)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t273" href="#t273">273</a></span><span class="t">        <span class="key">return</span> <span class="nam">inheritances</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t257" href="#t257">257</a></span><span class="t">    <span class="op">@</span><span class="nam">classmethod</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t258" href="#t258">258</a></span><span class="t">    <span class="key">def</span> <span class="nam">sort_inheritances_for_naampad_naam_interaction</span><span class="op">(</span><span class="nam">cls</span><span class="op">,</span> <span class="nam">inheritances</span><span class="op">:</span> <span class="op">[</span><span class="nam">Inheritance</span><span class="op">]</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t259" href="#t259">259</a></span><span class="t">        <span class="nam">naampad</span> <span class="op">=</span> <span class="nam">next</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t260" href="#t260">260</a></span><span class="t">            <span class="op">(</span><span class="nam">i</span> <span class="key">for</span> <span class="nam">i</span> <span class="key">in</span> <span class="nam">inheritances</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t261" href="#t261">261</a></span><span class="t">             <span class="key">if</span> <span class="nam">i</span><span class="op">.</span><span class="nam">base_uri</span> <span class="op">==</span> <span class="str">'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NaampadObject'</span><span class="op">)</span><span class="op">,</span> <span class="key">None</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t262" href="#t262">262</a></span><span class="t">        <span class="key">if</span> <span class="nam">naampad</span> <span class="key">is</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t263" href="#t263">263</a></span><span class="t">            <span class="key">return</span> <span class="nam">inheritances</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t264" href="#t264">264</a></span><span class="t">        <span class="nam">naam_inh</span> <span class="op">=</span> <span class="nam">next</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t265" href="#t265">265</a></span><span class="t">            <span class="op">(</span><span class="nam">i</span> <span class="key">for</span> <span class="nam">i</span> <span class="key">in</span> <span class="nam">inheritances</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t266" href="#t266">266</a></span><span class="t">             <span class="key">if</span> <span class="nam">i</span><span class="op">.</span><span class="nam">base_uri</span> <span class="op">==</span> <span class="str">'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMNaamObject'</span><span class="op">)</span><span class="op">,</span> <span class="key">None</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t267" href="#t267">267</a></span><span class="t">        <span class="key">if</span> <span class="nam">naam_inh</span> <span class="key">is</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t268" href="#t268">268</a></span><span class="t">            <span class="key">return</span> <span class="nam">inheritances</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t269" href="#t269">269</a></span><span class="t">        <span class="nam">naam_index</span> <span class="op">=</span> <span class="nam">inheritances</span><span class="op">.</span><span class="nam">index</span><span class="op">(</span><span class="nam">naam_inh</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t270" href="#t270">270</a></span><span class="t">        <span class="nam">inheritances</span><span class="op">.</span><span class="nam">pop</span><span class="op">(</span><span class="nam">inheritances</span><span class="op">.</span><span class="nam">index</span><span class="op">(</span><span class="nam">naampad</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t271" href="#t271">271</a></span><span class="t">        <span class="nam">inheritances</span><span class="op">.</span><span class="nam">insert</span><span class="op">(</span><span class="nam">naam_index</span><span class="op">,</span> <span class="nam">naampad</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t272" href="#t272">272</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t273" href="#t273">273</a></span><span class="t">        <span class="key">return</span> <span class="nam">inheritances</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -362,7 +362,7 @@
             <a class="nav" href="z_77a53a78a55426c2_OTLComplexDatatypeCreator_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.8.0">coverage.py v7.8.0</a>,
-            created at 2025-04-14 19:53 +0000
+            created at 2025-04-15 10:34 +0000
         </p>
     </div>
 </footer>
