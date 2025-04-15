@@ -27,7 +27,7 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                 warnings.filterwarnings("ignore", category=DeprecationWarning)  # supress deprecation warnings from tqdm
                 try:
                     ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location,
-                                                     geometry_artefact_location=ga_location,
+                                                     geometry_artefact_location=ga_location, include_legacy=False,
                                                      directory=path, include_kl_test_keuzelijst=True)
                 except PermissionError:
                     logging.info(f'PermissionError for {path}, skipping this test because it is not applicable')
@@ -48,7 +48,7 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                 warnings.filterwarnings("ignore", category=DeprecationWarning)  # supress deprecation warnings from tqdm
                 try:
                     ModelBuilder.build_otl_datamodel(otl_subset_location=otl_subset_location_no_double_kard,
-                                                     geometry_artefact_location=ga_location,
+                                                     geometry_artefact_location=ga_location, include_legacy=False,
                                                      directory=path, include_kl_test_keuzelijst=True)
                 except PermissionError:
                     logging.info(f'PermissionError for {path}, skipping this test because it is not applicable')

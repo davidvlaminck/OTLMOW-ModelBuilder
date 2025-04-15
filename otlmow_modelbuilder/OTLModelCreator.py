@@ -1,4 +1,5 @@
 import concurrent.futures
+import csv
 import json
 import logging
 import os
@@ -17,6 +18,7 @@ from otlmow_modelbuilder.GenericBuilderFunctions import write_to_file
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
 from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns, \
     get_titlecase_from_ns
+from otlmow_modelbuilder.LegacyClassCreator import LegacyClassCreator
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OTLClassCreator import OTLClassCreator
 from otlmow_modelbuilder.OTLComplexDatatypeCreator import OTLComplexDatatypeCreator
@@ -24,6 +26,8 @@ from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator
 from otlmow_modelbuilder.OTLExtraChecker import OTLExtraChecker
 from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatypeCreator
 from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator
+from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
+from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
 
 
 class OTLModelCreator:
@@ -32,7 +36,7 @@ class OTLModelCreator:
 
     @staticmethod
     def create_full_model(directory: Path, oslo_collector: OSLOCollector,
-                          geo_artefact_collector: GeometrieArtefactCollector, settings: Dict,
+                          geo_artefact_collector: GeometrieArtefactCollector, settings: Dict, include_legacy: bool,
                           environment: str = '', include_kl_test_keuzelijst: bool = False):
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         OTLModelCreator.check_and_create_subdirectories(directory)
@@ -58,6 +62,9 @@ class OTLModelCreator:
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             geo_artefact_collector=geo_artefact_collector,
             valid_uri_and_types=settings['complex_datatype_validation_rules']['valid_uri_and_types'])
+        if include_legacy:
+            OTLModelCreator.create_legacy_classes(oslo_collector=oslo_collector,
+                directory=directory / 'OtlmowModel', legacy_types_path=Path(__file__).parent / 'legacy_types.csv')
         OTLExtraChecker.modify_for_extra_checks(directory=directory / 'OtlmowModel')
         OTLModelCreator.add_generated_info(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector)
@@ -401,3 +408,70 @@ class OTLModelCreator:
                 'deprecated_version': oslo_class.deprecated_version,
                 'direct_subclasses': list(oslo_collector.find_subclasses_uri_by_class_uri(oslo_class.objectUri))
             } for uri, oslo_class in oslo_collector.class_dict.items()}
+
+    @classmethod
+    def create_legacy_classes(cls, oslo_collector: OSLOCollector, directory: Path, legacy_types_path: Path):
+        creator = LegacyClassCreator()
+
+        lgc_type_data = []
+        with open(legacy_types_path) as legacy_types_file:
+            lgc_type_data.extend(iter(csv.reader(legacy_types_file, delimiter='\t')))
+
+        oslo_collector.inheritances.append(Inheritance(
+            base_name='AIMDBStatus',
+            base_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMDBStatus',
+            class_name='LegacyObject',
+            class_uri='https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'
+        ))
+        oslo_collector.inheritances.append(Inheritance(
+            base_name='AIMToestand',
+            base_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMToestand',
+            class_name='LegacyObject',
+            class_uri='https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'
+        ))
+        oslo_collector.inheritances.append(Inheritance(
+            base_name='AIMVersie',
+            base_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMVersie',
+            class_name='LegacyObject',
+            class_uri='https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'
+        ))
+
+        for lgc_type_row in tqdm(lgc_type_data):
+            class_name = lgc_type_row[2]
+            class_uri = lgc_type_row[0]
+            oslo_class = OSLOClass(
+                objectUri=class_uri,
+                name=class_name,
+                label=lgc_type_row[1],
+                deprecated_version='',
+                abstract=False)
+            oslo_collector.classes.append(oslo_class)
+            oslo_collector.inheritances.append(Inheritance(
+                base_name='LegacyObject',
+                base_uri='https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject',
+                class_name=class_name,
+                class_uri=class_uri
+            ))
+            oslo_collector.class_dict[class_uri] = oslo_class
+            try:
+                model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
+                data_to_write = creator.create_blocks_to_write_from_rows(lgc_type_row=lgc_type_row, model_location=model_name)
+                if data_to_write is None:
+                    logging.info(f"Could not create a class for {class_name}")
+                if len(data_to_write) == 0:
+                    logging.info(f"Could not create a class for {class_name}")
+                class_directory = 'Classes/Installatie'
+
+                write_to_file(class_name, class_directory, data_to_write, relative_path=directory)
+            except Exception as e:
+                logging.error(str(e))
+                logging.error(f"Could not create a class for {class_name}")
+
+        data_to_write = []
+        for lgc_type_row in lgc_type_data:
+            uri = lgc_type_row[0]
+            ns, name = get_ns_and_name_from_uri(uri)
+            data_to_write.append(f'from ..Classes.{get_titlecase_from_ns(ns)}.{name} import {name}')
+
+        write_to_file('all_classes', 'Helpers', data_to_write, relative_path=directory, write_mode='a')
+
