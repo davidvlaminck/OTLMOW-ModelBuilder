@@ -1,0 +1,259 @@
+https://lgc.data.wegenenverkeer.be/ns/installatie#IRVerlichter	IRVerlichter (Legacy)	IRVerlichter	Infrarood verlichter bij een camera, bv. Tattile
+https://lgc.data.wegenenverkeer.be/ns/installatie#Voedingskeuzeschakelaar	Voedingskeuzeschakelaar (Legacy)	VKS	Voedingskeuzeschakelaar
+https://lgc.data.wegenenverkeer.be/ns/installatie#Z30Controller	Zone30 controller (Legacy)	Z30Controller	Controller aan Zone30 borden
+https://lgc.data.wegenenverkeer.be/ns/installatie#CaDoGroep	CalamiteitendoorsteekGroep (Legacy)	CaDoGroep	Groep voor Calamiteitendoorsteek assets
+https://lgc.data.wegenenverkeer.be/ns/installatie#LWP	Lekwaterpomp (Legacy)	LWP	Pomp om lekwater weg te pompen
+https://lgc.data.wegenenverkeer.be/ns/installatie#HY.CI	Hydraulische cilinder (Legacy)	HY.CI	Cilinder voor het bewegen van sluisdeur of stuwklep
+https://lgc.data.wegenenverkeer.be/ns/installatie#HY.GR	Hydraulische groep (Legacy)	HY.GR	groep die hydraulische olie verpompt naar cilinder
+https://lgc.data.wegenenverkeer.be/ns/installatie#Poortbedieningen	PoortGroep (Legacy)	Poortbedieningen	Poortbedieningen
+https://lgc.data.wegenenverkeer.be/ns/installatie#MotorLegacy	Motor (Legacy)	MotorLegacy	Aanstuurbare motor
+https://lgc.data.wegenenverkeer.be/ns/onderdeel#StuurklepLeiding	Stuurklep Leiding	StuurklepLeiding	Bestuurbare (lokaal of vanop afstand) klep om het vloeistofniveau te regelen.
+https://lgc.data.wegenenverkeer.be/ns/onderdeel#FlexibeleBuis	Flexibel	FlexibeleBuis	Flexibele buis voor het verpompen van vloeistoffen
+https://lgc.data.wegenenverkeer.be/ns/installatie#ZoutBijlaadPlaats	ZBP (Legacy)	ZoutBijlaadPlaats	Bewaakt terrein om zout en pekel te stockeren en te laden.
+https://lgc.data.wegenenverkeer.be/ns/installatie#ITSApp-RIS	ITSApp-RIS (Legacy)	ITSApp.RIS	Legacy type voor OTL types ITSApp en RIS (iVRI componenten)
+https://lgc.data.wegenenverkeer.be/ns/installatie#Zoutsilo	ZOUTSILO (Legacy)	Zoutsilo	Zoutsilo
+https://lgc.data.wegenenverkeer.be/ns/installatie#Pekeltank	PEKELTANK (Legacy)	Pekeltank	Pekeltank
+https://lgc.data.wegenenverkeer.be/ns/installatie#BelInstallatie	BelInstallatie (Legacy)	BelInstallatie	Een bel
+https://lgc.data.wegenenverkeer.be/ns/installatie#RIOOL	Riool (Legacy)	RIOOL	Legacy type RIOOL voor Akela
+https://lgc.data.wegenenverkeer.be/ns/installatie#LokaalLegacy	Lokaal (Legacy)	LokaalLegacy	Lokaal
+https://lgc.data.wegenenverkeer.be/ns/installatie#Dienstdeur	Dienstdeur (Legacy)	Dienstdeur	Toegang van een technische ruimte of gebouw
+https://lgc.data.wegenenverkeer.be/ns/installatie#FietsTelDisplayLegacy	Fietsteldisplay (Legacy)	FietsTelDisplayLegacy	FietstelDisplay
+https://lgc.data.wegenenverkeer.be/ns/installatie#FietsTelSysteemLegacy	Fietstelsysteem (Legacy)	FietsTelSysteemLegacy	Fietstelsysteem
+https://lgc.data.wegenenverkeer.be/ns/installatie#DPBS	Dynamisch parkeerbeheersysteem (Legacy)	DPBS	DynamischParkeerbeheerSysteem
+https://lgc.data.wegenenverkeer.be/ns/installatie#DPBSOnd	DPBS onderdeel (Legacy)	DPBSOnd	DPBSOnderdeel
+https://lgc.data.wegenenverkeer.be/ns/installatie#WegDetectorLegacy	Weggebonden detector (Legacy)	WegDetectorLegacy	WeggebondenDetector
+https://lgc.data.wegenenverkeer.be/ns/installatie#SegC	Segment controller (Legacy)	SegC	Controller die zorgt voor de bewaking en bediening van verlichtingssegmenten per paal en aldus zorgt voor de communicatie tussen de cabine en de armatuurcontrollers.
+https://lgc.data.wegenenverkeer.be/ns/installatie#Netwerktoegang	NetwerktoegangLegacy	Netwerktoegang	Netwerktoegang
+https://lgc.data.wegenenverkeer.be/ns/installatie#Turbine	Pompturbine (Legacy)	Turbine	Pompturbine
+https://lgc.data.wegenenverkeer.be/ns/installatie#WeegsensorLegacy	Weegsensor (Legacy)	WeegsensorLegacy	Weegsensor
+https://lgc.data.wegenenverkeer.be/ns/installatie#WeegsensorGroep	Weegsensor groep (Legacy)	WeegsensorGroep	Groepering van weegsensoren
+https://lgc.data.wegenenverkeer.be/ns/installatie#Luchtkwaliteitssensor	Luchtkwaliteitssensor (Legacy)	Luchtkwaliteitssensor	luchtkwaliteitssensor
+https://lgc.data.wegenenverkeer.be/ns/installatie#Beacon	Beacon (Legacy)	Beacon	Beacon
+https://lgc.data.wegenenverkeer.be/ns/installatie#Leidingkoker	Leidingkoker (Legacy)	Leidingkoker	Koker voor leidingen
+https://lgc.data.wegenenverkeer.be/ns/installatie#SeinBak	Bakensein (Legacy)	SeinBak	Bakensein
+https://lgc.data.wegenenverkeer.be/ns/installatie#SeinSpui	Spuisein (Legacy)	SeinSpui	Spuisein
+https://lgc.data.wegenenverkeer.be/ns/installatie#RLCGUI	BedieningRLC	RLCGUI	bedieningspaneel van federale politie
+https://lgc.data.wegenenverkeer.be/ns/installatie#SlbGroep	Slagboom groep (Legacy)	SlbGroep	Slagboomgroep
+https://lgc.data.wegenenverkeer.be/ns/installatie#Calam	Calamiteit wegen (Legacy)	Calam	Specifiek meldingstype wegen : calamiteitsmelding, vraag interventie district of aannemer district
+https://lgc.data.wegenenverkeer.be/ns/installatie#Glad	Gladheidsmelding (Legacy)	Glad	Specifiek meldingstype wegen winterdienst : gladheidsmelding, vraag strooiactie
+https://lgc.data.wegenenverkeer.be/ns/installatie#Ijking	Ijking (Legacy)	Ijking	Specifiek opdrachttype : Ijking van een installatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#VOTLus	Voertuig telpost lus (Legacy)	VOTLus	voertuigtelpostlus
+https://lgc.data.wegenenverkeer.be/ns/installatie#VVOPGroep	VVOP groep (Legacy)	VVOPGroep	Verlichte Voetgangersoversteekplaats Groep
+https://lgc.data.wegenenverkeer.be/ns/installatie#Brandvoorz	Brandvoorziening (Legacy)	Brandvoorz	Voorzieningen om branden te kunnen blussen, bv. brandhaspelkasten
+https://lgc.data.wegenenverkeer.be/ns/installatie#RRGroep	Rekening rijden groep (Legacy)	RRGroep	Verzameling van onderdelen voor Rekening rijden
+https://lgc.data.wegenenverkeer.be/ns/installatie#AntenneI2V	Antenne I2V (Legacy)	AntenneI2V	Road side unit (RSU) voor ITS-G5 broadcasting. Deze antenne faciliteert in Infrastructuur-naar-Voertuig (I2V) communicatie.
+https://lgc.data.wegenenverkeer.be/ns/installatie#Monitor	Monitor (Legacy)	Monitor	Monitor (bekijken camerabeelden)
+https://lgc.data.wegenenverkeer.be/ns/installatie#LuiLegacy	Luidspreker (Legacy)	LuiLegacy	Luidspreker
+https://lgc.data.wegenenverkeer.be/ns/installatie#NIC	Noodintercom (Legacy)	NIC	Noodintercom
+https://lgc.data.wegenenverkeer.be/ns/installatie#Winter	Winter (Legacy)	Winter	Specifiek meldingstype wegen winterdienst : aangepaste voorspelling meteo - DRINGENDE INFO WINTERDIENST VOORSPELLING METEO
+https://lgc.data.wegenenverkeer.be/ns/installatie#Z30Paal	Zone30 paal (Legacy)	Z30Paal	Dynamische borden : individueel zone30 bord met bijhorende paal, subonderdeel van zone30-installatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#Z30	Zone30 (Legacy)	Z30	Dynamische borden : automatische zone 30 installatie (omvat alle infrastructuur horend bij 1 sturingskast met inbegrip van één of meerdere borden)
+https://lgc.data.wegenenverkeer.be/ns/installatie#Pluvio	Neerslagmeetinstallatie (Legacy)	Pluvio	Water : Neerslagmeetinstallatie (omvat één of meerdere pluviometers en alle locaal opgestelde apparatuur mee te onderhouden door aannemer neerslagmeetinstallatie)
+https://lgc.data.wegenenverkeer.be/ns/installatie#ARS	Uitleesapparatuur camera (Legacy)	ARS	VHS flitspalen : Set uitleesapparatuur  (viewer, scherm, printer, bedieningspaneel, voedingen en kabels) in gebruik bij lokale politie voor uitlezen beelden oudere generatie onbemande verkeerscameras (niet digitale)
+https://lgc.data.wegenenverkeer.be/ns/installatie#RHZ	Radioheruitzendingsinstallatie (Legacy)	RHZ	Tunneluitrusting : radioheruitzendingsinstallatie in tunnel.  Omvat stralende kabel en actieve componenten
+https://lgc.data.wegenenverkeer.be/ns/installatie#Picto	Vluchtpictogram (Legacy)	Picto	Tunneluitrusting : vluchtpictogram tunnel
+https://lgc.data.wegenenverkeer.be/ns/installatie#Nooddeur	Nooddeur (Legacy)	Nooddeur	Tunneluitrusting : deurcontact - contourverlichting - pictogram Nood-evacuatiedeur tunnel
+https://lgc.data.wegenenverkeer.be/ns/installatie#KeuringLegacy	Keuring (Legacy)	KeuringLegacy	Specifiek opdrachttype : KEURING van de installatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#Deb	Debietmeetinstallaties (Legacy)	Deb	Water : Debietmeetinstallatie (omvat één of meerdere debietmeters en alle locaal opgestelde apparatuur mee te onderhouden door aannemer debietmeetinstallatie)
+https://lgc.data.wegenenverkeer.be/ns/installatie#MON	MonitorMeetstationVMM	MON	VMM lucht : monitor luchtkwaliteit meetstation VMM
+https://lgc.data.wegenenverkeer.be/ns/installatie#Kwik	Kwikmonitoren VMM (Legacy)	Kwik	VMM lucht : Hg-monitoren
+https://lgc.data.wegenenverkeer.be/ns/installatie#Div	DiverseMeetstation VMM (Legacy)	Div	VMM lucht : diverse (randapparatuur) meetstation luchtkwaliteit VMM
+https://lgc.data.wegenenverkeer.be/ns/installatie#Peil	Peilmeetinstallatie (Legacy)	Peil	Water : Peilmeetinstallatie (omvat één of meerdere peilmeters en alle locaal opgestelde apparatuur mee te onderhouden door aannemer peilmeetinstallatie)
+https://lgc.data.wegenenverkeer.be/ns/installatie#Lev	LeveringenMeetstation VMM (Legacy)	Lev	VMM lucht : leveringen meetstation
+https://lgc.data.wegenenverkeer.be/ns/installatie#Cal	Calibrator (Legacy)	Cal	VMM lucht : calibrator meettoestel
+https://lgc.data.wegenenverkeer.be/ns/installatie#Sensor	Sensor (Legacy)	Sensor	sensor  CO, NO2, explosieve, temp, luchtsnelheid, zicht, ....
+https://lgc.data.wegenenverkeer.be/ns/installatie#GebUitr	Gebouwuitrusting (Legacy)	GebUitr	Gebouwuitrusting : verlichting, stopcontacten, verwarming, koeling, ...
+https://lgc.data.wegenenverkeer.be/ns/installatie#GebouwLegacy	Gebouw (Legacy)	GebouwLegacy	Dienstgebouw - districtsgebouw
+https://lgc.data.wegenenverkeer.be/ns/installatie#ServerGrp	Server groep (Legacy)	ServerGrp	Bundeling van logische & fysische servers die samenhoren
+https://lgc.data.wegenenverkeer.be/ns/installatie#Server	Server (Legacy)	Server	Server
+https://lgc.data.wegenenverkeer.be/ns/installatie#IVSBGroep	IVSB groep (Legacy)	IVSBGroep	GROEP INWENDIG VERLICHTE SIGNALISATIEBORDEN
+https://lgc.data.wegenenverkeer.be/ns/installatie#SeinbrugIVS	Seinbrug IVSB (Legacy)	SeinbrugIVS	Seinbrug met inwendig verlichte signalisatie borden
+https://lgc.data.wegenenverkeer.be/ns/installatie#MDeC	Macrodetector (Legacy)	MDeC	Macrodetector
+https://lgc.data.wegenenverkeer.be/ns/installatie#Kast	Kast (Legacy)	Kast	Installatiekast of Voetpadkast - fysieke behuizing
+https://lgc.data.wegenenverkeer.be/ns/installatie#Wilddet	Wilddetectiesysteem (Legacy)	Wilddet	Een wilddetectiesysteem zal de weggebruikers waarschuwen bij de aanwezigheid van eventueel overstekend wild
+https://lgc.data.wegenenverkeer.be/ns/installatie#Terrein	Terrein (Legacy)	Terrein	Infrastructuur in de directe omgeving
+https://lgc.data.wegenenverkeer.be/ns/installatie#Druk	Verschil drukmeting (Legacy)	Druk	verschildrukmeting
+https://lgc.data.wegenenverkeer.be/ns/installatie#Wind	Windmeter (Legacy)	Wind	windmeter - richting en snelheid
+https://lgc.data.wegenenverkeer.be/ns/installatie#VPBevestig	Bevestiging voor verlichting (Legacy)	VPBevestig	bevestiging voor verlichting
+https://lgc.data.wegenenverkeer.be/ns/installatie#VPConsole	Console wegverlichting (Legacy)	VPConsole	console wegverlichting
+https://lgc.data.wegenenverkeer.be/ns/installatie#KAR	Korte afstand radio (Legacy)	KAR	Draadloze beïnvloeding van verkeerslichten via korteafstandsradio
+https://lgc.data.wegenenverkeer.be/ns/installatie#RRB	RRB bord (Legacy)	RRB	RRB Bord
+https://lgc.data.wegenenverkeer.be/ns/installatie#RIS	Beveiligingsinstallatie RIS (Legacy)	RISLegacy	BIB-,BRAND-,INBRAAK- TOEGANGS-,INSTALLATIEBEVEILIGING (deel waarvoor het RIS dient tussen te komen)
+https://lgc.data.wegenenverkeer.be/ns/installatie#Tekstkar	Tekstkar (Legacy)	Tekstkar	Tekstkar
+https://lgc.data.wegenenverkeer.be/ns/installatie#SoftwareLegacy	Software (Legacy)	SoftwareLegacy	SOFTWARE
+https://lgc.data.wegenenverkeer.be/ns/installatie#MobADR	Mobiele ADR detectie (Legacy)	MobADR	MOBIELE ADR DETECTIE
+https://lgc.data.wegenenverkeer.be/ns/installatie#IP	IP-netwerkapparatuur (Legacy)	IP	IP-netwerkapparatuur
+https://lgc.data.wegenenverkeer.be/ns/installatie#TWeg	Toeristische weg (Legacy)	TWeg	Wegen : T-weg - Toeristische of recreatieve weg
+https://lgc.data.wegenenverkeer.be/ns/installatie#VSB	Veranderlijke signalisatie borden (Legacy)	VSB	Dynamische borden : Soort van restgroep van allerlei dynamische borden die niet onder een meer specifiek type vallen. Exacte verschil met VGL is me niet duidelijk
+https://lgc.data.wegenenverkeer.be/ns/installatie#AWeg	Autosnelweg (Legacy)	AWeg	Wegen : A-weg
+https://lgc.data.wegenenverkeer.be/ns/installatie#NWeg	Gewestweg (Legacy)	NWeg	Wegen : N-weg
+https://lgc.data.wegenenverkeer.be/ns/installatie#BWeg	Verbindingsweg (Legacy)	BWeg	Wegen : aansluitings- of verbindingsweg
+https://lgc.data.wegenenverkeer.be/ns/installatie#RWeg	Ringweg (Legacy)	RWeg	Wegen : Ringweg
+https://lgc.data.wegenenverkeer.be/ns/installatie#VOT	Voertuigtelpost (Legacy)	VOT	Voertuigtelpost
+https://lgc.data.wegenenverkeer.be/ns/installatie#Instal	Installatie (Legacy)	Instal	Generiek onderdeeltype voor top van de installatieboom, niet gebruiken voor subonderdelen
+https://lgc.data.wegenenverkeer.be/ns/installatie#RTU	Remote terminal unit VMM (Legacy)	RTU	VMM lucht : remote terminal unit meetstation luchtkwaliteit
+https://lgc.data.wegenenverkeer.be/ns/installatie#Kan	Meetkanaal meetstation VMM (Legacy)	Kan	VMM lucht : meetkanaal meetstation
+https://lgc.data.wegenenverkeer.be/ns/installatie#Com	Communicatie meetstation VMM (Legacy)	Com	VMM lucht : infrastructuur ivm communicatie meetstation luchtkwaliteit VMM
+https://lgc.data.wegenenverkeer.be/ns/installatie#TTN3	TTN3 (Legacy)	TTN3	TTN3
+https://lgc.data.wegenenverkeer.be/ns/installatie#TTN2	TTN2 (Legacy)	TTN2	TTN2
+https://lgc.data.wegenenverkeer.be/ns/installatie#TTN1	TTN1 (Legacy)	TTN1	TTN1
+https://lgc.data.wegenenverkeer.be/ns/installatie#Dummy	Dummy (Legacy)	Dummy	DUMMY Installatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#TraCoLegacy	Trajectcontrole (Legacy)	TraCoLegacy	Trajectcontrole (meet gemiddelde snelheid van voertuigen over een bepaald traject)
+https://lgc.data.wegenenverkeer.be/ns/installatie#WIM	Weigh-In-Motion (Legacy)	WIM	Weigh-In-Motion installatie (meet en detecteert rijdende vrachtwagens die overladen zijn)
+https://lgc.data.wegenenverkeer.be/ns/installatie#CBBS	Centrale bediening bewakingssysteem (Legacy)	CBBS	Centraal Bedienings- en Bewakingssysteem (voor Kunstwerken)
+https://lgc.data.wegenenverkeer.be/ns/installatie#VWS	Vrachtwagensluis (Legacy)	VWS	Vrachtwagensluis (detektie doorgaand vrachtverkeer in dorpskom)
+https://lgc.data.wegenenverkeer.be/ns/installatie#TGB	Toegangscontrole toezichter (Legacy)	TGB	Toegangscontrole (gedeelte waarvoor de toezichter dient tussen te komen)
+https://lgc.data.wegenenverkeer.be/ns/installatie#WKD	Waterkeringsdeur (Legacy)	WKD	Waterkeringsdeur, Vloeddeur
+https://lgc.data.wegenenverkeer.be/ns/installatie#BAf	Bochtafbakening (Legacy)	BAf	BOCHTAFBAKENING (>>panelen,..)
+https://lgc.data.wegenenverkeer.be/ns/installatie#MVE	Monumentale verlichting (Legacy)	MVE	Monumentale-, architecturale verlichting
+https://lgc.data.wegenenverkeer.be/ns/installatie#ICU	Interface communication unit (Legacy)	ICU	Draadloze interface communication unit (calamiteitenborden)
+https://lgc.data.wegenenverkeer.be/ns/installatie#VDP	Verdwijnpaal (Legacy)	VDP	VERDWIJNPAAL
+https://lgc.data.wegenenverkeer.be/ns/installatie#Veer	Veer (Legacy)	Veer	Uitrusting aanlegsteiger veer
+https://lgc.data.wegenenverkeer.be/ns/installatie#WV	Wegverlichtingsinstallatie (Legacy)	WV	Wegverlichtingsinstallatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#WDM	Wave division multiplexing (Legacy)	WDM	Wave Division Multiplexing
+https://lgc.data.wegenenverkeer.be/ns/installatie#WBr	Weegbrug (Legacy)	WBr	Weegbrug
+https://lgc.data.wegenenverkeer.be/ns/installatie#VVOP	Verlichte voetgangersoversteekplaats (Legacy)	VVOP	Verlichte voetgangersoversteekplaats
+https://lgc.data.wegenenverkeer.be/ns/installatie#VRLegacy	Verkeersregelaar (Legacy)	VRLegacy	VERKEERSREGELAAR
+https://lgc.data.wegenenverkeer.be/ns/installatie#VL	Verkeerslichten (Legacy)	VL	VERKEERSLICHTEN
+https://lgc.data.wegenenverkeer.be/ns/installatie#VGL	Verkeersgeleidingssysteem (Legacy)	VGL	VERKEERSGELEIDINGSSYSTEEM
+https://lgc.data.wegenenverkeer.be/ns/installatie#UPSLegacy	UPS (Legacy)	UPSLegacy	NO-BREAK INSTALLATIE / UPS
+https://lgc.data.wegenenverkeer.be/ns/installatie#TuV	Tunnelverlichting (legacy)	TuV	Tunnelverlichting
+https://lgc.data.wegenenverkeer.be/ns/installatie#Tu	Tunnelinstallaties (Legacy)	Tu	Tunnelinstallaties
+https://lgc.data.wegenenverkeer.be/ns/installatie#TTN	Kabelkop (Legacy)	TTN	Kabelkop
+https://lgc.data.wegenenverkeer.be/ns/installatie#TT	Teletransmissieverbinding (Legacy)	TT	Teletransmissieverbinding - trunk
+https://lgc.data.wegenenverkeer.be/ns/installatie#TGC	Toegangscontrole aannemer (Legacy)	TGC	Toegangscontrole (gedeelte waarvoor de onderhoudsaannemer dient tussen te komen)
+https://lgc.data.wegenenverkeer.be/ns/installatie#Tel	Telefooninstallatie (Legacy)	Tel	Telefooninstallatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#TCC	Koppelvlak Verkeerscentrum (Legacy)	TCC	KOPPELVLAK VERKEERSCENTRUM
+https://lgc.data.wegenenverkeer.be/ns/installatie#Str	Stroomafnamekast schipper (Legacy)	Str	Stroomafnamekasten voor schippers
+https://lgc.data.wegenenverkeer.be/ns/installatie#Stuw	Stuw (Legacy)	Stuw	Stuw
+https://lgc.data.wegenenverkeer.be/ns/installatie#Ssig	Scheepvaartsignalisatie (Legacy)	Ssig	Scheepvaartsignalisatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#Sluis	Sluis of sluizencomplex (Legacy)	Sluis	Sluis of sluizencomplex
+https://lgc.data.wegenenverkeer.be/ns/installatie#SDH	SDH-knoop (Legacy)	SDH	SDH-knoop
+https://lgc.data.wegenenverkeer.be/ns/installatie#Schuiven	Schuiven (Legacy)	Schuiven	Schuiven
+https://lgc.data.wegenenverkeer.be/ns/installatie#Rooster	Rooster krooshekken (Legacy)	Rooster	Rooster - krooshekken
+https://lgc.data.wegenenverkeer.be/ns/installatie#Ramp	Verkeerssignalisatie rampenplan (Legacy)	Ramp	VERKEERSSIGNALISATIE RAMPENPLAN
+https://lgc.data.wegenenverkeer.be/ns/installatie#Radio	Radio communicatie (Legacy)	Radio	Radio- en GSM-communicatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#PTK	Portieken wegverlichting (Legacy)	PTK	Portieken en masten wegverlichting
+https://lgc.data.wegenenverkeer.be/ns/installatie#PP	Praatpaal	PP	Praatpaal
+https://lgc.data.wegenenverkeer.be/ns/installatie#PoS	Pompstation (Legacy)	PoS	Pompstation
+https://lgc.data.wegenenverkeer.be/ns/installatie#NSG	Noodstroomgenerator (Legacy)	NSG	NOODSTROOMGENERATOR
+https://lgc.data.wegenenverkeer.be/ns/installatie#ModRck	Modembeheerinstallatie (Legacy)	ModRck	Modembeheerinstallatie (modemracks)
+https://lgc.data.wegenenverkeer.be/ns/installatie#Modem	Modem (Legacy)	Modem	MODEM
+https://lgc.data.wegenenverkeer.be/ns/installatie#MobDet	Mobiele filedetectie (Legacy)	MobDet	MOBIELE/TIJDELIJK FILE DETECTIE- EN WAARSCHUWING
+https://lgc.data.wegenenverkeer.be/ns/installatie#Meteo	Meteostation (Legacy)	Meteo	METEOSTATION
+https://lgc.data.wegenenverkeer.be/ns/installatie#LS	Laagspanningsaansluiting (Legacy)	LS	Laagspanningsaansluiting. Deze zit meestal in een Kast of Cabine (behuizing) en voedt meestal een LSDeel.
+https://lgc.data.wegenenverkeer.be/ns/installatie#Lift	Lift (Legacy)	Lift	LIFT / SCHEEPSLIFT
+https://lgc.data.wegenenverkeer.be/ns/installatie#KlimaLegacy	Klimatisatie (Legacy)	KlimaLegacy	KLIMATISATIE
+https://lgc.data.wegenenverkeer.be/ns/installatie#Roltrap	Automatische roltrap (Legacy)	Roltrap	Automatische roltrap
+https://lgc.data.wegenenverkeer.be/ns/installatie#Vent	Ventilatie (Legacy)	Vent	Ventilatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#KL	Knipperlicht (Legacy)	KL	KNIPPERLICHT
+https://lgc.data.wegenenverkeer.be/ns/installatie#IVSB	Inwendig verlichte signalisatieborden (Legacy)	IVSB	INWENDIG VERLICHTE SIGNALISATIEBORDEN
+https://lgc.data.wegenenverkeer.be/ns/installatie#Int	Interfonie (Legacy)	Int	Interfonie, videofonie, parlofonie- installatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#HS	Hoogspanning (Legacy)	HS	HOOGSPANNINGS-VOEDINGSCABINE/-AANSLUITING
+https://lgc.data.wegenenverkeer.be/ns/installatie#HHW	Hijs- en hefwerktuigen (Legacy)	HHW	HIJS- en HEFWERKTUIGEN (takels, rolbruggen, mono rail,..)
+https://lgc.data.wegenenverkeer.be/ns/installatie#FCel	Fotocellen wegverlichting (Legacy)	FCel	FOTOCELLEN WEGVERLICHTING
+https://lgc.data.wegenenverkeer.be/ns/installatie#Elc	Elektrische uitrusting (Legacy)	Elc	Elektrische uitrusting DTN-cabine, gebouw,
+https://lgc.data.wegenenverkeer.be/ns/installatie#Det	Hoogtedetectie niveaudetectie (Legacy)	Det	Hoogte-, niveau detectie
+https://lgc.data.wegenenverkeer.be/ns/installatie#CVL	Coördinatiesysteem verkeerslichten (Legacy)	CVL	COORDINATIESYSTEEM VERKEERSLICHTEN
+https://lgc.data.wegenenverkeer.be/ns/installatie#Slb	Slagboom (Legacy)	Slb	SLAGBOOM
+https://lgc.data.wegenenverkeer.be/ns/installatie#CC	Centrale computer (Legacy)	CC	CENTRALE COMPUTER
+https://lgc.data.wegenenverkeer.be/ns/installatie#BVE	Buitenverlichting (Legacy)	BVE	Buitenverlichting
+https://lgc.data.wegenenverkeer.be/ns/installatie#Bus	Beïnvloeding openbaar vervoer (Legacy)	Bus	BEINVLOEDING DOOR OPENBAAR VERVOER
+https://lgc.data.wegenenverkeer.be/ns/installatie#Brug	Beweegbare brug (Legacy)	BeweegbareBrug	Beweegbare brug
+https://lgc.data.wegenenverkeer.be/ns/installatie#BiF	Bi-flashinstallatie (Legacy)	BiF	BI-FLASH INSTALLATIE
+https://lgc.data.wegenenverkeer.be/ns/installatie#BIB	brand- en inbraakbeveiliging (Legacy)	BIB	brand- en inbraakbeveiliging
+https://lgc.data.wegenenverkeer.be/ns/installatie#BDV	BrugdekVerwarming	BDV	BRUGDEKVERWARMING
+https://lgc.data.wegenenverkeer.be/ns/installatie#BBT	Basketbaltorens	BBT	BASKETBALTORENS
+https://lgc.data.wegenenverkeer.be/ns/installatie#ATOS	ATOS-knoop (Legacy)	ATOS	ATOS-KNOOP
+https://lgc.data.wegenenverkeer.be/ns/installatie#Asw	Asweger (Legacy)	Asw	ASWEGER
+https://lgc.data.wegenenverkeer.be/ns/installatie#Audio	Oproepinstallatie (Legacy)	Audio	Public Address systeem (oproepinstallatie)
+https://lgc.data.wegenenverkeer.be/ns/installatie#AfGroep	Afbakening groep (Legacy)	AfGroep	Groep voor verlichte afbakening (lichtzuilen,...)
+https://lgc.data.wegenenverkeer.be/ns/installatie#Af	Afbakening (Legacy)	Af	Verlichte afbakening (lichtzuilen,...)
+https://lgc.data.wegenenverkeer.be/ns/installatie#AB	Afstandsbewaking (Legacy)	AB	Afstandsbewaking
+https://lgc.data.wegenenverkeer.be/ns/installatie#COD	CO-detectie (Legacy)	COD	CO detectie
+https://lgc.data.wegenenverkeer.be/ns/installatie#PLCLegacy	Programmeerbare automaat (Legacy)	PLCLegacy	Programmeerbare automaat
+https://lgc.data.wegenenverkeer.be/ns/installatie#Bareel	Automatische bareel (Legacy)	Bareel	Automatische bareel
+https://lgc.data.wegenenverkeer.be/ns/installatie#BAFG	Bochtafbakening led grondspots (Legacy)	BAFG	BOCHTAFBAKENING MET LED GRONDSPOTS
+https://lgc.data.wegenenverkeer.be/ns/installatie#Poortbediening	ADP (Legacy)	Poortbediening	AUTOMATISCHE DEUREN EN POORTEN
+https://lgc.data.wegenenverkeer.be/ns/installatie#VPLMast	Lichtmast wegverlichting (Legacy)	VPLMast	lichtmast wegverlichting
+https://lgc.data.wegenenverkeer.be/ns/installatie#Mpt	MIV meetpunt (Legacy)	Mpt	Meetpunt op snelwegen
+https://lgc.data.wegenenverkeer.be/ns/installatie#HPGroep	Hulppost groep (Legacy)	HPGroep	Groepering van hulpposten
+https://lgc.data.wegenenverkeer.be/ns/installatie#CaDoLegacy	Calamiteitendoorsteek (Legacy)	CaDoLegacy	Calamiteitendoorsteek
+https://lgc.data.wegenenverkeer.be/ns/installatie#Buitendeur	Buitendeur (Legacy)	Buitendeur	Deur die naar buiten leidt
+https://lgc.data.wegenenverkeer.be/ns/installatie#Brandmelder	Brandmelder (Legacy)	Brandmelder	Brandmelder
+https://lgc.data.wegenenverkeer.be/ns/installatie#ADRBuffer	ADR buffer (Legacy)	ADRBuffer	ADR buffer
+https://lgc.data.wegenenverkeer.be/ns/installatie#VerbindD	Verbindingsdeur (Legacy)	VerbindD	Deur die 2 tunnelkokers verbindt
+https://lgc.data.wegenenverkeer.be/ns/installatie#BBLegacy	Brandblusser (Legacy)	BBLegacy	Brandblusser
+https://lgc.data.wegenenverkeer.be/ns/installatie#HulppostLegacy	Hulppost (Legacy)	HulppostLegacy	Hulppost
+https://lgc.data.wegenenverkeer.be/ns/installatie#Rookmelder	Rookmelder (Legacy)	Rookmelder	Rookmelder
+https://lgc.data.wegenenverkeer.be/ns/installatie#Astrid	Astrid site (Legacy)	Astrid	astrid site voor radioheruitzending in tunnels
+https://lgc.data.wegenenverkeer.be/ns/installatie#BevRelais	Beveiligingsrelais (Legacy)	BevRelais	Beveiligingsrelais
+https://lgc.data.wegenenverkeer.be/ns/installatie#DiffRelais	Differentieelrelais (Legacy)	DiffRelais	relais die al dan niet schakelt indien er een lekstroom optreed
+https://lgc.data.wegenenverkeer.be/ns/installatie#HSMelder	Hoogspanningsmelder (Legacy)	HSMelder	Hoogspanningsmelder
+https://lgc.data.wegenenverkeer.be/ns/installatie#OvRelais	Overstroomrelais (Legacy)	OvRelais	Overstroomrelais
+https://lgc.data.wegenenverkeer.be/ns/installatie#LVS	Laagspanningsvermogenschakelaar (Legacy)	LVS	Laagspanningsvermogenschakelaar
+https://lgc.data.wegenenverkeer.be/ns/installatie#LSBordLegacy	Laagspanningsbord (Legacy)	LSBordLegacy	Laagspanningsbord. Enkel voor gebruik in tunnels
+https://lgc.data.wegenenverkeer.be/ns/installatie#NDVL	Noodverlichting ontsnappingskoker (Legacy)	NDVL	Noodverlichting ontsnappingskoker
+https://lgc.data.wegenenverkeer.be/ns/installatie#PompLegacy	Pomp (Legacy)	PompLegacy	Pomp
+https://lgc.data.wegenenverkeer.be/ns/installatie#Sstart	Softstarter (Legacy)	Sstart	SOFTSTARTER
+https://lgc.data.wegenenverkeer.be/ns/installatie#Vlot	Vlotter (Legacy)	Vlot	Vlotter
+https://lgc.data.wegenenverkeer.be/ns/installatie#SNCPaal	Snelheidscamerapaal (Legacy)	SNCPaal	VHS flitspalen : paal van een Snelheidscamera-installatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#RLCPaal	Roodlichtcamerapaal (Legacy)	RLCPaal	VHS flitspalen : paal van een Roodlichtcamera-installatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#Deurcontact	Deurcontact (Legacy)	Deurcontact	DEURCONTACT
+https://lgc.data.wegenenverkeer.be/ns/installatie#ContourVLLegacy	Contourverlichting (Legacy)	ContourVLLegacy	CONTOURVERLICHTING
+https://lgc.data.wegenenverkeer.be/ns/installatie#Beton	Betonstructuur (Legacy)	Beton	Dit is voor als een techniek aan een tunnel, een tunnelwand of en brug gemonteerd is
+https://lgc.data.wegenenverkeer.be/ns/installatie#HSDeel	Hoogspanningsgedeelte (Legacy)	HSDeel	subonderdeel van HS-installatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#LSDeel	Laagspanningsgedeelte (Legacy)	LSDeel	Alle laagspanningscomponenten van één behuizing, uitgezonderd de aansluiting
+https://lgc.data.wegenenverkeer.be/ns/installatie#HSCabineLegacy	Hoogspanningscabine (Legacy)	HSCabineLegacy	subonderdeel van HS-installatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#OTN	Optical transport network (Legacy)	OTN	Optical Transport Network
+https://lgc.data.wegenenverkeer.be/ns/installatie#CEN	CE netwerk (Legacy)	CEN	CE Netwerk
+https://lgc.data.wegenenverkeer.be/ns/installatie#Rijstrook	Rijstrook (Legacy)	Rijstrook	Rijstrook
+https://lgc.data.wegenenverkeer.be/ns/installatie#Noodstroom	Noodstroom (Legacy)	Noodstroom	Noodstroom
+https://lgc.data.wegenenverkeer.be/ns/installatie#Beheersys	Beheersysteem (Legacy)	Beheersys	Beheersysteem
+https://lgc.data.wegenenverkeer.be/ns/installatie#VC	VC (Legacy)	VC	VC
+https://lgc.data.wegenenverkeer.be/ns/installatie#ADW	Afstandsbewaking hydrologische installatie (Legacy)	ADW	Afstandsbewaking hydrologische installatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#SeinBaan	Baansein (Legacy)	SeinBaan	Baansein
+https://lgc.data.wegenenverkeer.be/ns/installatie#SeinRiv	Riviersein (Legacy)	SeinRiv	Riviersein
+https://lgc.data.wegenenverkeer.be/ns/installatie#SeinOnd	Onderdoorvaartsein (Legacy)	SeinOnd	Onderdoorvaartsein
+https://lgc.data.wegenenverkeer.be/ns/installatie#SeinRicht	Richtingsein (Legacy)	SeinRicht	Richtingsein
+https://lgc.data.wegenenverkeer.be/ns/installatie#SeinSch	Scheepvaartsein (Legacy)	SeinSch	Scheepvaartsein
+https://lgc.data.wegenenverkeer.be/ns/installatie#SeinbrugRRB	Seinbrug RRB (Legacy)	SeinbrugRRB	Seinbrug met RRB
+https://lgc.data.wegenenverkeer.be/ns/installatie#OmvormerLegacy	Omvormer camerabeelden (Legacy)	OmvormerLegacy	Camera-uitrusting : aansluiting om COAX te kunnen blijven gebruiken
+https://lgc.data.wegenenverkeer.be/ns/installatie#Decoder	Decoder camerabeelden (Legacy)	Decoder	Camera-uitrusting : Het betreft hier een video-decoder. Deze vormt eendigitale datastroom om tot een analoog videosignaal
+https://lgc.data.wegenenverkeer.be/ns/installatie#ADR	ADR camera (Legacy)	ADR	ADR Camera
+https://lgc.data.wegenenverkeer.be/ns/installatie#Fietstel	Fietstelinstallatie (Legacy)	FietstelLegacy	Fietstelinstallatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#MIVLVE	MIVLVE (Legacy)	MIVLVE	Meetpunten op snelwegen LVE
+https://lgc.data.wegenenverkeer.be/ns/installatie#CCTVPaal	CCTV paal (Legacy)	CCTVPaal	paal van een CCTV camera
+https://lgc.data.wegenenverkeer.be/ns/installatie#TH	Tijmeterhut (Legacy)	TH	Tijmeterhut
+https://lgc.data.wegenenverkeer.be/ns/installatie#Relais	Relais (Legacy)	Relais	Relais, kontactor
+https://lgc.data.wegenenverkeer.be/ns/installatie#MS	Middenspanning (Legacy)	MS	MIDDENSPANNINGS-VOEDINGSCABINE/-AANSLUITING
+https://lgc.data.wegenenverkeer.be/ns/installatie#Thermo	Magneto thermische veiligheid (Legacy)	Thermo	Magneto thermische veiligheid
+https://lgc.data.wegenenverkeer.be/ns/installatie#TransfoLegacy	Transformator (Legacy)	TransfoLegacy	transformator die hoogspanning tranformeert in laagspanning
+https://lgc.data.wegenenverkeer.be/ns/installatie#HVS	Hoogspanningsvermogenschakelaar (Legacy)	HVS	Hoogspanningsvermogenschakelaar
+https://lgc.data.wegenenverkeer.be/ns/installatie#Paal	Algemeen type paal (Legacy)	Paal	algemeen type paal
+https://lgc.data.wegenenverkeer.be/ns/installatie#SeinbrugRR	Seinbrug rekeningrijden (Legacy)	SeinbrugRR	Seinbrug Rekening Rijden
+https://lgc.data.wegenenverkeer.be/ns/installatie#PKGroep	Pijl-kruis groep (Legacy)	PKGroep	Groep van Pijl-Kruis borden
+https://lgc.data.wegenenverkeer.be/ns/installatie#PK	Pijl-kruis bord (Legacy)	PK	Dynamische borden : Pijl-kruis bord (def. SB 270 hfdst 50)
+https://lgc.data.wegenenverkeer.be/ns/installatie#RSSGroep	RSS groep (Legacy)	RSSGroep	RSS groep : groep van RSS variabele rijstrooksignalisatieborden
+https://lgc.data.wegenenverkeer.be/ns/installatie#VMSGroep	VMS groep (Legacy)	VMSGroep	Groep van VMS-borden (variabele tekstuele borden)
+https://lgc.data.wegenenverkeer.be/ns/installatie#RVMSGroep	RVMS groep (Legacy)	RVMSGroep	Groep van RVMS-borden (rijwegvariabele geografische route-informatiepanelen)
+https://lgc.data.wegenenverkeer.be/ns/installatie#RSSBord	RSS bord (Legacy)	RSSBord	Dynamische borden : variabel rijstrooksignalisatiebord (def. SB 270 hfdst 50)
+https://lgc.data.wegenenverkeer.be/ns/installatie#RVMS	RVMS bord (Legacy)	RVMS	Dynamische borden : rijwegvariabel geografisch route informatiepaneel (def. zie SB 270 hfdst 50)
+https://lgc.data.wegenenverkeer.be/ns/installatie#RRBGroep	RRB groep (Legacy)	RRBGroep	RRB groep
+https://lgc.data.wegenenverkeer.be/ns/installatie#WegPunt	Wegpunt (Legacy)	WegPunt	Punt langs de weg
+https://lgc.data.wegenenverkeer.be/ns/installatie#HPicto	Hulppost pictogram (Legacy)	HPicto	Tunneluitrusting : hulppostpictogram tunnel
+https://lgc.data.wegenenverkeer.be/ns/installatie#Switch	Switch (Legacy)	Switch	Netwerkswitch
+https://lgc.data.wegenenverkeer.be/ns/installatie#CamGroep	Camera groep (Legacy)	CamGroep	Groepsniveau cameras
+https://lgc.data.wegenenverkeer.be/ns/installatie#SeinbrugDVM	Seinbrug DVM (Legacy)	SeinbrugDVM	Mechanische contructie DVM installatie
+https://lgc.data.wegenenverkeer.be/ns/installatie#MIVSat	MIV satelliet (Legacy)	MIVSat	Meetpunten op snelwegen SAT
+https://lgc.data.wegenenverkeer.be/ns/installatie#PTZ	PTZ camera (Legacy)	PTZ	Pan Tilt Zoom camera (beweegbaar)
+https://lgc.data.wegenenverkeer.be/ns/installatie#ANPR	ANPR (Legacy)	ANPR	AUTOMATISCHE NUMMERPLAAT HERKENNING
+https://lgc.data.wegenenverkeer.be/ns/installatie#CCTV	CCTV camera (Legacy)	CCTV	GESLOTEN TV-CIRCUIT
+https://lgc.data.wegenenverkeer.be/ns/installatie#AID	Automatische incidentendetectie (Legacy)	AID	Automatische incidentendetectie
+https://lgc.data.wegenenverkeer.be/ns/installatie#Encoder	Encoder (Legacy)	Encoder	Camera-uitrusting : Het betreft hier een video-encoder. Deze vormt een analoog videosignaal om tot een digitale datastroom
+https://lgc.data.wegenenverkeer.be/ns/installatie#DIZV	Detectie inbreuken zwaar verkeer (Legacy)	DIZV	VHS handhaving : Deze installaties meten de tussenafstand van vrachtwagens en verzamelen opnames en gegevens voor politie die eventueel een vaststelling kan opmaken.
+https://lgc.data.wegenenverkeer.be/ns/installatie#CameraLegacy	Camera (Legacy)	CameraLegacy	VHS flitspalen : CA-installatie betreft de (uitwisselbare) onbemande verkeerscamera toestellen
+https://lgc.data.wegenenverkeer.be/ns/installatie#RLC	Roodlichtcamera installatie (Legacy)	RLC	VHS flitspalen : Installatie Roodlichtcamera - Dit type flitspaal registreert zowel roodlichtnegaties als snelheidsovertredingen. Zij worden opgesteld op kruispunten met verkeerslichten.
+https://lgc.data.wegenenverkeer.be/ns/installatie#ANPRPaal	ANPR paal (Legacy)	ANPRPaal	ANPRPAAL
+https://lgc.data.wegenenverkeer.be/ns/installatie#SNC	Snelheidscamera installatie (Legacy)	SNC	VHS flitspalen : Installatie snelheidscamera's : dit type flitspaal registreert snelheidsovertredingen, wordt opgesteld langs de weg
+https://lgc.data.wegenenverkeer.be/ns/installatie#VMS	VMS bord (Legacy)	VMS	Dynamische borden : Variabel tekstueel bord (definitie zie SB 270, hfdst 50)
