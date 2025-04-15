@@ -37,7 +37,7 @@ class OTLModelCreator:
 
     @staticmethod
     def create_full_model(directory: Path, oslo_collector: OSLOCollector,
-                          geo_artefact_collector: GeometrieArtefactCollector, settings: Dict,
+                          geo_artefact_collector: GeometrieArtefactCollector, settings: Dict, include_legacy: bool,
                           environment: str = '', include_kl_test_keuzelijst: bool = False):
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         OTLModelCreator.check_and_create_subdirectories(directory)
@@ -63,8 +63,9 @@ class OTLModelCreator:
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             geo_artefact_collector=geo_artefact_collector,
             valid_uri_and_types=settings['complex_datatype_validation_rules']['valid_uri_and_types'])
-        OTLModelCreator.create_legacy_classes(oslo_collector=oslo_collector,
-            directory=directory / 'OtlmowModel', legacy_types_path=Path(__file__).parent / 'legacy_types.csv')
+        if include_legacy:
+            OTLModelCreator.create_legacy_classes(oslo_collector=oslo_collector,
+                directory=directory / 'OtlmowModel', legacy_types_path=Path(__file__).parent / 'legacy_types.csv')
         OTLExtraChecker.modify_for_extra_checks(directory=directory / 'OtlmowModel')
         OTLModelCreator.add_generated_info(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector)
