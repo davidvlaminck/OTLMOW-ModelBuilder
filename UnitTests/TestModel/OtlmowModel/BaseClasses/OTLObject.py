@@ -880,7 +880,7 @@ def dynamic_create_type_from_ns_and_name(namespace: str, class_name: str, model_
         current_file_path = Path(__file__)
         model_directory = current_file_path.parent.parent.parent
 
-    namespace = '' if namespace is None else f'{get_titlecase_from_ns(namespace)}.'
+    namespace = '' if namespace == 'purl' else f'{get_titlecase_from_ns(namespace)}.'
     sys.path.insert(1, str(model_directory))
     try:
         mod = importlib.import_module(f'OtlmowModel.Classes.{namespace}{class_name}')
@@ -908,7 +908,7 @@ def dynamic_create_instance_from_ns_and_name(namespace: str, class_name: str, mo
         current_file_path = Path(__file__)
         model_directory = current_file_path.parent.parent.parent
 
-    namespace = '' if namespace is None else f'{get_titlecase_from_ns(namespace)}.'
+    namespace = '' if namespace == 'purl' else f'{get_titlecase_from_ns(namespace)}.'
     sys.path.insert(1, str(model_directory))
     try:
         mod = importlib.import_module(f'OtlmowModel.Classes.{namespace}{class_name}')
@@ -926,10 +926,7 @@ def dynamic_create_instance_from_uri(class_uri: str, model_directory: Path = Non
         current_file_path = Path(__file__)
         model_directory = current_file_path.parent.parent.parent
 
-    if class_uri == 'http://purl.org/dc/terms/Agent':
-        ns, name = None, 'Agent'
-    else:
-        ns, name = get_ns_and_name_from_uri(class_uri)
+    ns, name = get_ns_and_name_from_uri(class_uri)
     return dynamic_create_instance_from_ns_and_name(ns, name, model_directory=model_directory)
 
 
@@ -938,8 +935,5 @@ def dynamic_create_type_from_uri(class_uri: str, model_directory: Path = None) -
         current_file_path = Path(__file__)
         model_directory = current_file_path.parent.parent.parent
 
-    if class_uri == 'http://purl.org/dc/terms/Agent':
-        ns, name = None, 'Agent'
-    else:
-        ns, name = get_ns_and_name_from_uri(class_uri)
+    ns, name = get_ns_and_name_from_uri(class_uri)
     return dynamic_create_type_from_ns_and_name(ns, name, model_directory=model_directory)
