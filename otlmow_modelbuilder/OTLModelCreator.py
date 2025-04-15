@@ -262,6 +262,8 @@ class OTLModelCreator:
             os.mkdir(model_directory / 'Classes/ImplementatieElement')
         if not path.exists(model_directory / 'Classes/Installatie'):
             os.mkdir(model_directory / 'Classes/Installatie')
+        if not path.exists(model_directory / 'Classes/Legacy'):
+            os.mkdir(model_directory / 'Classes/Legacy')
         if not path.exists(model_directory / 'Classes/Levenscyclus'):
             os.mkdir(model_directory / 'Classes/Levenscyclus')
         if not path.exists(model_directory / 'Classes/Onderdeel'):
@@ -439,11 +441,18 @@ class OTLModelCreator:
         for lgc_type_row in tqdm(lgc_type_data):
             class_name = lgc_type_row[2]
             class_uri = lgc_type_row[0]
-
-            if class_uri in {'https://lgc.data.wegenenverkeer.be/ns/installatie#IVSBGroep',
-                             'https://lgc.data.wegenenverkeer.be/ns/installatie#Sluis',
-                             'https://lgc.data.wegenenverkeer.be/ns/installatie#Stuw'}:
-                continue
+            if '.' in class_name:
+                class_name = class_name.replace('.', '_')
+            if '-' in class_name:
+                class_name = class_name.replace('-', '_')
+            if class_name == "RIS":
+                class_name = "RISLegacy"
+            elif class_name == 'Fietstel':
+                class_name = 'FietstelLegacy'
+            elif class_name == 'Brug':
+                class_name = 'BeweegbareBrug'
+            elif class_name == 'Voedingskeuzeschakelaar':
+                class_name = 'VKS'
 
             oslo_class = OSLOClass(
                 objectUri=class_uri,
@@ -466,7 +475,7 @@ class OTLModelCreator:
                     logging.info(f"Could not create a class for {class_name}")
                 if len(data_to_write) == 0:
                     logging.info(f"Could not create a class for {class_name}")
-                class_directory = 'Classes/Installatie'
+                class_directory = 'Classes/Legacy'
 
                 write_to_file(class_name, class_directory, data_to_write, relative_path=directory)
             except Exception as e:

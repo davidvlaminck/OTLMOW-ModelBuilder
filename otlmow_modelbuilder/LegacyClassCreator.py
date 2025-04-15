@@ -18,6 +18,19 @@ class LegacyClassCreator(AbstractDatatypeCreator):
             logging.error(f"Error in create_blocks_to_write_from_rows: {e}")
             raise e
 
+        if '.' in legacy_name:
+            legacy_name = legacy_name.replace('.', '_')
+        if '-' in legacy_name:
+            legacy_name = legacy_name.replace('-', '_')
+        if legacy_name == "RIS":
+            legacy_name = "RISLegacy"
+        elif legacy_name == 'Fietstel':
+            legacy_name = 'FietstelLegacy'
+        elif legacy_name == 'Brug':
+            legacy_name = 'BeweegbareBrug'
+        elif legacy_name == 'Voedingskeuzeschakelaar':
+            legacy_name = 'VKS'
+
         if legacy_uri == '':
             raise ValueError(f"OSLOClass.objectUri is invalid. Value = '{legacy_uri}'")
 
