@@ -63,7 +63,7 @@ class OTLModelCreator:
             geo_artefact_collector=geo_artefact_collector,
             valid_uri_and_types=settings['complex_datatype_validation_rules']['valid_uri_and_types'])
         if include_legacy:
-            OTLModelCreator.create_legacy_classes(oslo_collector=oslo_collector,
+            oslo_collector = OTLModelCreator.create_legacy_classes(oslo_collector=oslo_collector,
                 directory=directory / 'OtlmowModel', legacy_types_path=Path(__file__).parent / 'legacy_types.csv')
         OTLExtraChecker.modify_for_extra_checks(directory=directory / 'OtlmowModel')
         OTLModelCreator.add_generated_info(
@@ -438,6 +438,18 @@ class OTLModelCreator:
             class_uri='https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'
         ))
 
+        lgc_class = OSLOClass(
+            label='Legacy Object',
+            name='LegacyObject',
+            objectUri='https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject',
+            deprecated_version='',
+            definition='Abstracte voor een Legacy object',
+            abstract=1
+        )
+        oslo_collector.classes.append(lgc_class)
+        oslo_collector.class_dict['https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'] = lgc_class
+
+
         for lgc_type_row in tqdm(lgc_type_data):
             class_name = lgc_type_row[2]
             class_uri = lgc_type_row[0]
@@ -489,4 +501,6 @@ class OTLModelCreator:
             data_to_write.append(f'from ..Classes.{get_titlecase_from_ns(ns)}.{name} import {name}')
 
         write_to_file('all_classes', 'Helpers', data_to_write, relative_path=directory, write_mode='a')
+
+        return oslo_collector
 
