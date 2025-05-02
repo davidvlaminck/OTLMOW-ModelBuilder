@@ -241,10 +241,10 @@ class OTLAttribuut:
                     self.set_waarde('POLYGON Z ((200000 200000 0, 200001 200001 1, 200002 200002 2, 200000 200000 0))')
             else:
                 data = self.field.create_dummy_data()
-                if self.kardinaliteit_max != '1':
-                    self.set_waarde([data])
-                else:
+                if data is None or self.kardinaliteit_max == '1':
                     self.set_waarde(data)
+                else:
+                    self.set_waarde([data])
             return
         new_value_object = self.field.waardeObject()
         new_value_object._parent = self
@@ -891,34 +891,47 @@ def dynamic_create_type_from_ns_and_name(namespace: str, class_name: str, model_
                                   f'located in.')
 
 
-def dynamic_create_instance_from_ns_and_name(namespace: str, class_name: str, model_directory: Path = None
-                                             ) -> OTLObject:
-    """Loads the OTL class module and attempts to instantiate the class using the name and namespace of the class
+_imported_modules = {}
+
+def dynamic_create_instance_from_ns_and_name(namespace: str, class_name: str, model_directory: Path = None) -> OTLObject:
+    """Loads the OTL class module and attempts to instantiate the class using the name and namespace of the class.
+    Caches imported modules for performance improvement.
 
     :param namespace: namespace of the class
     :type: str
     :param class_name: class name to instantiate
     :type: str
     :param model_directory: directory where the model is located, defaults to otlmow_model's own model
-    :type: str
+    :type: Path
     :return: returns an instance of class_name in the given namespace, located from directory, that inherits from AIMObject or RelatieObject
     :rtype: AIMObject, RelatieObject or None
     """
-    if model_directory is None:
-        current_file_path = Path(__file__)
-        model_directory = current_file_path.parent.parent.parent
+    global _imported_modules
+    module_key = (namespace, class_name)
 
-    namespace = '' if namespace == 'purl' else f'{get_titlecase_from_ns(namespace)}.'
-    sys.path.insert(1, str(model_directory))
-    try:
-        mod = importlib.import_module(f'OtlmowModel.Classes.{namespace}{class_name}')
-        class_ = getattr(mod, class_name)
-        return class_()
-    except ModuleNotFoundError as e:
-        raise ModuleNotFoundError(
-            f'When dynamically creating an object of class {class_name}, the import failed. '
-            f'Make sure you are directing to the (parent) directory where OtlmowModel is located in.'
-        ) from e
+    if module_key in _imported_modules:
+        mod = _imported_modules[module_key]
+    else:
+        if model_directory is None:
+            current_file_path = Path(__file__)
+            model_directory = current_file_path.parent.parent.parent
+
+        namespace_path = '' if namespace == 'purl' else f'{get_titlecase_from_ns(namespace)}.'
+        module_path = f'OtlmowModel.Classes.{namespace_path}{class_name}'
+
+        try:
+            if str(model_directory) not in sys.path:
+                sys.path.insert(1, str(model_directory))
+            mod = importlib.import_module(module_path)
+            _imported_modules[module_key] = mod
+        except ModuleNotFoundError as e:
+            raise ModuleNotFoundError(
+                f'When dynamically creating an object of class {class_name}, the import failed. '
+                f'Make sure you are directing to the (parent) directory where OtlmowModel is located in.'
+            ) from e
+
+    class_ = getattr(mod, class_name)
+    return class_()
 
 
 def dynamic_create_instance_from_uri(class_uri: str, model_directory: Path = None) -> OTLObject:
