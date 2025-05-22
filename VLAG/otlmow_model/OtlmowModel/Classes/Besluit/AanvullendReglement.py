@@ -9,7 +9,7 @@ from ...Datatypes.DtcPeriode import DtcPeriode, DtcPeriodeWaarden
 class AanvullendReglement(Besluit):
     """Een aanvullend reglement op de politie van het wegverkeer is een besluit met betrekking tot de aanpassing van de algemene wegcode aan plaatselijke omstandigheden met een blijvend of periodiek karakter."""
 
-    typeURI = 'http://data.vlaanderen.be/ns/besluit#AanvullendReglement'
+    typeURI = 'https://data.vlaanderen.be/ns/besluit#AanvullendReglement'
     """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""
 
     def __init__(self):
@@ -20,7 +20,7 @@ class AanvullendReglement(Besluit):
         self._tijdsinterval = OTLAttribuut(field=DtcPeriode,
                                            naam='tijdsinterval',
                                            label='tijdsinterval',
-                                           objectUri='http://data.vlaanderen.be/ns/besluit#AanvullendReglement.tijdsinterval',
+                                           objectUri='https://data.vlaanderen.be/ns/mobiliteit#periode',
                                            kardinaliteit_min='0',
                                            kardinaliteit_max='*',
                                            definition='TODO',

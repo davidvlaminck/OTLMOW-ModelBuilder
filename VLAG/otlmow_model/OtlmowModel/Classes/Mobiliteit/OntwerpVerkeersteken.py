@@ -19,7 +19,7 @@ class OntwerpVerkeersteken(AIMLinkObject):
         self._status = OTLAttribuut(field=KlVerkeersbordcategorie,
                                     naam='status',
                                     label='status',
-                                    objectUri='https://data.vlaanderen.be/ns/mobiliteit#OntwerpVerkeersteken.status',
+                                    objectUri='http://www.w3.org/ns/adms#status',
                                     definition='TODO',
                                     owner=self)
 

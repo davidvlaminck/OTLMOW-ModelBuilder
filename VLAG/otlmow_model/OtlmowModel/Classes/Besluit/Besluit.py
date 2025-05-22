@@ -16,20 +16,20 @@ class Besluit(AIMLinkObject):
     def __init__(self):
         super().__init__()
 
-        self.add_valid_relation(relation='https://data.vlaanderen.be/ns/besluit#heeftVoorwaarde', target='http://data.vlaanderen.be/ns/besluit#Voorwaarde', direction='o')  # o = direction: outgoing
+        self.add_valid_relation(relation='https://data.vlaanderen.be/ns/besluit#heeftVoorwaarde', target='https://data.vlaanderen.be/ns/besluit#Voorwaarde', direction='o')  # o = direction: outgoing
         self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOnderdeelVan', target='https://data.vlaanderen.be/ns/besluit#Artikel', direction='i')  # i = direction: incoming
 
         self._beschrijving = OTLAttribuut(field=StringField,
                                           naam='beschrijving',
                                           label='beschrijving',
-                                          objectUri='https://data.vlaanderen.be/ns/besluit#Besluit.beschrijving',
+                                          objectUri='http://data.europa.eu/eli/ontology#description',
                                           definition='TODO',
                                           owner=self)
 
         self._citeeropschrift = OTLAttribuut(field=StringField,
                                              naam='citeeropschrift',
                                              label='korte titel',
-                                             objectUri='https://data.vlaanderen.be/ns/besluit#Besluit.citeeropschrift',
+                                             objectUri='http://data.europa.eu/eli/ontology#title_short',
                                              definition='TODO',
                                              owner=self)
 
@@ -43,7 +43,7 @@ class Besluit(AIMLinkObject):
         self._publicatiedatum = OTLAttribuut(field=DateField,
                                              naam='publicatiedatum',
                                              label='datum publicatie',
-                                             objectUri='https://data.vlaanderen.be/ns/besluit#Besluit.publicatiedatum',
+                                             objectUri='http://data.europa.eu/eli/ontology#date_publication',
                                              definition='TODO',
                                              owner=self)
 

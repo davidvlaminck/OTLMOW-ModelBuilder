@@ -22,7 +22,7 @@ class Mobiliteitsmaatregelconcept(AIMLinkObject):
         self._label = OTLAttribuut(field=StringField,
                                    naam='label',
                                    label='label',
-                                   objectUri='https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept.label',
+                                   objectUri='http://www.w3.org/2004/02/skos/core#prefLabel',
                                    definition='TODO',
                                    owner=self)
 

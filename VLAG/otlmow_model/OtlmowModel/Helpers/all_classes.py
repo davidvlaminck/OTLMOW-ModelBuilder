@@ -1,9 +1,8 @@
-from ..Classes.Besluit.AanvullendReglement import AanvullendReglement
-from ..Classes.Besluit.Voorwaarde import Voorwaarde
 from ..Classes.Agent import Agent
-from ..Classes.ConceptScheme import ConceptScheme
+from ..Classes.Besluit.AanvullendReglement import AanvullendReglement
 from ..Classes.Besluit.Artikel import Artikel
 from ..Classes.Besluit.Besluit import Besluit
+from ..Classes.Besluit.Voorwaarde import Voorwaarde
 from ..Classes.Mobiliteit.AanvullendReglementOntwerp import AanvullendReglementOntwerp
 from ..Classes.Mobiliteit.Mobiliteitsmaatregel import Mobiliteitsmaatregel
 from ..Classes.Mobiliteit.Mobiliteitsmaatregelconcept import Mobiliteitsmaatregelconcept
@@ -91,3 +90,4 @@ from ..Classes.Onderdeel.Voedt import Voedt
 from ..Classes.Onderdeel.VoedtAangestuurd import VoedtAangestuurd
 from ..Classes.Onderdeel.VoegtIn import VoegtIn
 from ..Classes.Onderdeel.WordtAangeduidDoor import WordtAangeduidDoor
+from ..Classes.ConceptScheme import ConceptScheme

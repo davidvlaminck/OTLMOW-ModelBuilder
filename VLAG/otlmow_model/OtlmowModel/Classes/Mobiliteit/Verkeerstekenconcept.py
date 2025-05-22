@@ -23,7 +23,7 @@ class Verkeerstekenconcept(AIMLinkObject):
         self._afbeelding = OTLAttribuut(field=DtcDocument,
                                         naam='afbeelding',
                                         label='afbeelding',
-                                        objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.afbeelding',
+                                        objectUri='https://data.vlaanderen.be/ns/mobiliteit#grafischeWeergave',
                                         kardinaliteit_min='0',
                                         kardinaliteit_max='*',
                                         definition='TODO',
@@ -32,7 +32,7 @@ class Verkeerstekenconcept(AIMLinkObject):
         self._betekenis = OTLAttribuut(field=StringField,
                                        naam='betekenis',
                                        label='betekenis',
-                                       objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.betekenis',
+                                       objectUri='http://www.w3.org/2004/02/skos/core#scopeNote',
                                        definition='TODO',
                                        owner=self)
 
@@ -48,14 +48,14 @@ class Verkeerstekenconcept(AIMLinkObject):
         self._status = OTLAttribuut(field=KlVerkeerstekenconceptStatus,
                                     naam='status',
                                     label='status',
-                                    objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.status',
+                                    objectUri='http://www.w3.org/2003/06/sw-vocab-status/ns#term_status',
                                     definition='TODO',
                                     owner=self)
 
         self._verkeersbordcode = OTLAttribuut(field=StringField,
                                               naam='verkeersbordcode',
                                               label='verkeersbordcode',
-                                              objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.verkeersbordcode',
+                                              objectUri='http://www.w3.org/2004/02/skos/core#prefLabel',
                                               definition='TODO',
                                               owner=self)
 

@@ -1,10 +1,10 @@
 # coding=utf-8
 from abc import abstractmethod
-from ...Classes.ImplementatieElement.AIMObject import AIMObject
+from ...Classes.ImplementatieElement.VLAGAIMObject import VLAGAIMObject
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class AIMLinkObject(AIMObject):
+class AIMLinkObject(VLAGAIMObject):
     """Abstracte voor de relaties met AIMObject te linken."""
 
     typeURI = 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AIMLinkObject'

@@ -9,13 +9,16 @@
         "https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept.mogelijkeVorm",
         "https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.heeftInstructie",
         "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.buitenwerkingtreding",
-        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.inwerkingstijd"
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.inwerkingstijd",
+        "http://schema.org/eventSchedule",
+        "https://w3id.org/isCharacterisedBy#isCharacterisedBy",
+        "https://data.vlaanderen.be/ns/mobiliteit#inwerkingstijd"
     ],
     "class_validation_rules" : {
         "valid_uri_and_types" : {
             "http://purl.org/dc/terms/Agent": "Agent",
             "http://www.w3.org/2004/02/skos/core#Concept": "Concept",
-            "http://www.w3.org/2004/02/skos/core#ConceptScheme": "Codelijst"
+            "https://www.w3.org/2004/02/skos/core#ConceptScheme": "Codelijst"
         },
         "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
     },

@@ -30,7 +30,7 @@ class SignalisatieOntwerp(AIMLinkObject):
         self._naam = OTLAttribuut(field=StringField,
                                   naam='naam',
                                   label='naam',
-                                  objectUri='https://data.vlaanderen.be/ns/mobiliteit#SignalisatieOntwerp.naam',
+                                  objectUri='http://purl.org/dc/terms/title',
                                   definition='TODO',
                                   owner=self)
 

@@ -24,22 +24,23 @@ class KeuzelijstField(OTLField):
 
     @classmethod
     def validate(cls, value: Any, attribuut) -> bool:
-        if value is not None:
-            if not isinstance(value, str):
-                raise TypeError(f'{value} is not the correct type. Expecting a string')
-            if value not in attribuut.field.options.keys():
-                raise ValueError(
-                    f'{value} is not a valid option for {attribuut.naam}, '
-                    f'find the valid options using print(meta_info(<object>, attribute="{attribuut.naam}"))')
+        if value is None or value == '-':
+            return True
+        if not isinstance(value, str):
+            raise TypeError(f'{value} is not the correct type. Expecting a string')
+        if value not in attribuut.field.options.keys():
+            raise ValueError(
+                f'{value} is not a valid option for {attribuut.naam}, '
+                f'find the valid options using print(meta_info(<object>, attribute="{attribuut.naam}"))')
 
-            option_value = attribuut.field.options[value]
-            if option_value.status == 'uitgebruik':
-                warnings.warn(message=f'{value} is a deprecated value for {attribuut.naam}, '
-                                      f'please refrain from using this value.',
-                              category=AttributeDeprecationWarning)
-            elif option_value.status == 'verwijderd':
-                logging.error(f'{value} is no longer a valid value for {attribuut.naam}.')
-                raise RemovedOptionError(f'{value} is no longer a valid value for {attribuut.naam}.')
+        option_value = attribuut.field.options[value]
+        if option_value.status == 'uitgebruik':
+            warnings.warn(message=f'{value} is a deprecated value for {attribuut.naam}, '
+                                  f'please refrain from using this value.',
+                          category=AttributeDeprecationWarning)
+        elif option_value.status == 'verwijderd':
+            logging.error(f'{value} is no longer a valid value for {attribuut.naam}.')
+            raise RemovedOptionError(f'{value} is no longer a valid value for {attribuut.naam}.')
         return True
 
     def __str__(self) -> str:
@@ -58,6 +59,8 @@ deprecated_version: {self.deprecated_version}"""
     def convert_to_invulwaarde(value: str, field) -> Optional[str]:
         if value is None or value == '':
             return value
+        if value == '-':
+            return None
 
         if value in field.options.keys():
             return value

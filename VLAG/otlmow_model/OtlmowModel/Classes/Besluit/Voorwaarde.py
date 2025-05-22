@@ -8,7 +8,7 @@ from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 class Voorwaarde(AIMLinkObject):
     """Datgene waaraan moet voldaan worden om een geldig besluit te zijn."""
 
-    typeURI = 'http://data.vlaanderen.be/ns/besluit#Voorwaarde'
+    typeURI = 'https://data.vlaanderen.be/ns/besluit#Voorwaarde'
     """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""
 
     def __init__(self):
@@ -20,7 +20,7 @@ class Voorwaarde(AIMLinkObject):
         self._beschrijving = OTLAttribuut(field=StringField,
                                           naam='beschrijving',
                                           label='beschrijving',
-                                          objectUri='http://data.vlaanderen.be/ns/besluit#Voorwaarde.beschrijving',
+                                          objectUri='http://purl.org/dc/terms/description',
                                           definition='TODO',
                                           owner=self)
 

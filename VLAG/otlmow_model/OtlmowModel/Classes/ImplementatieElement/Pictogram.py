@@ -17,7 +17,7 @@ class Pictogram(Concept):
         self._afbeelding = OTLAttribuut(field=DtcDocument,
                                         naam='afbeelding',
                                         label='afbeelding',
-                                        objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Pictogram.afbeelding',
+                                        objectUri='http://www.w3.org/2004/02/skos/core#prefSymbol',
                                         definition='TODO',
                                         owner=self)
 

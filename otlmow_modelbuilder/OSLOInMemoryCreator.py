@@ -211,24 +211,8 @@ WITH valid_base_classes AS (
         ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure'),
         ('https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie'),
         ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject'),
-        ('http://data.vlaanderen.be/ns/besluit#AanvullendReglement'),
-        ('http://data.vlaanderen.be/ns/besluit#Voorwaarde'),
-        ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Concept'), 
-        ('http://www.w3.org/2004/02/skos/core#ConceptScheme'),
-        ('https://data.vlaanderen.be/ns/besluit#Artikel'),
-        ('https://data.vlaanderen.be/ns/besluit#Besluit'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#AanvullendReglementOntwerp'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#OntwerpVerkeersteken'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#SignalisatieOntwerp'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#VerkeersbordVerkeersteken'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#VerkeerslichtVerkeersteken'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#Verkeerslichtconcept'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept'),
-        ('https://data.vlaanderen.be/ns/mobiliteit#Zone')),    
+        ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject')
+        ),    
 concrete_classes AS (
 	SELECT uri AS concrete_uri
 	FROM OSLOClass o

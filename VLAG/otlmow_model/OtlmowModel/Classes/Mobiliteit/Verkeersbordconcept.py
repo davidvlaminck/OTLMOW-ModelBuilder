@@ -23,14 +23,14 @@ class Verkeersbordconcept(Verkeerstekenconcept):
         self._classificatie = OTLAttribuut(field=KlVerkeersbordcategorie,
                                            naam='classificatie',
                                            label='classificatie',
-                                           objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept.classificatie',
+                                           objectUri='http://purl.org/dc/terms/type',
                                            definition='TODO',
                                            owner=self)
 
         self._mogelijkeVorm = OTLAttribuut(field=DtcVorm,
                                            naam='mogelijkeVorm',
                                            label='mogelijke vorm',
-                                           objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept.mogelijkeVorm',
+                                           objectUri='https://w3id.org/isCharacterisedBy#isCharacterisedBy',
                                            kardinaliteit_min='0',
                                            kardinaliteit_max='*',
                                            definition='TODO',

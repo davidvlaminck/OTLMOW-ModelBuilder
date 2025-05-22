@@ -8,7 +8,7 @@ from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 class Codelijst(AIMLinkObject):
     """TODO"""
 
-    typeURI = 'http://www.w3.org/2004/02/skos/core#ConceptScheme'
+    typeURI = 'https://www.w3.org/2004/02/skos/core#ConceptScheme'
     """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""
 
     def __init__(self):
@@ -19,14 +19,14 @@ class Codelijst(AIMLinkObject):
         self._codelijstType = OTLAttribuut(field=StringField,
                                            naam='codelijstType',
                                            label='codelijstType',
-                                           objectUri='http://www.w3.org/2004/02/skos/core#ConceptScheme.codelijstType',
+                                           objectUri='http://purl.org/dc/terms/type',
                                            definition='TODO',
                                            owner=self)
 
         self._naam = OTLAttribuut(field=StringField,
                                   naam='naam',
                                   label='naam',
-                                  objectUri='http://www.w3.org/2004/02/skos/core#ConceptScheme.naam',
+                                  objectUri='http://www.w3.org/2004/02/skos/core#label ',
                                   definition='TODO',
                                   owner=self)
 

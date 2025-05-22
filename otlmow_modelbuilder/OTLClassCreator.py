@@ -57,7 +57,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
         list_of_geometry_types = self.get_geometry_types_from_uri(oslo_class.objectUri)
 
         if oslo_class.objectUri in {'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
-                                    'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject'}:
+                                    'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject',
+                                    'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject'}:
             inheritances.append(
                 Inheritance(base_name='OTLAsset', base_uri='', class_name='', class_uri='', deprecated_version=''))
             inheritances.append(
