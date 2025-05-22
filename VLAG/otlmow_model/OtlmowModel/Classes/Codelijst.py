@@ -26,7 +26,7 @@ class Codelijst(AIMLinkObject):
         self._naam = OTLAttribuut(field=StringField,
                                   naam='naam',
                                   label='naam',
-                                  objectUri='http://www.w3.org/2004/02/skos/core#label ',
+                                  objectUri='http://www.w3.org/2004/02/skos/core#label',
                                   definition='TODO',
                                   owner=self)
 
