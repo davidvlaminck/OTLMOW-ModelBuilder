@@ -498,7 +498,8 @@ class OTLModelCreator:
         for lgc_type_row in lgc_type_data:
             uri = lgc_type_row[0]
             ns, name = get_ns_and_name_from_uri(uri)
-            data_to_write.append(f'from ..Classes.{get_titlecase_from_ns(ns)}.{name} import {name}')
+            name = name.replace('.', '_').replace('-', '_')
+            data_to_write.append(f'from ..Classes.Legacy.{name} import {name}')
 
         write_to_file('all_classes', 'Helpers', data_to_write, relative_path=directory, write_mode='a')
 
