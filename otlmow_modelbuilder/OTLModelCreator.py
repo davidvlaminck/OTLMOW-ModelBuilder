@@ -453,18 +453,7 @@ class OTLModelCreator:
         for lgc_type_row in tqdm(lgc_type_data):
             class_name = lgc_type_row[2]
             class_uri = lgc_type_row[0]
-            if '.' in class_name:
-                class_name = class_name.replace('.', '_')
-            if '-' in class_name:
-                class_name = class_name.replace('-', '_')
-            if class_name == "RIS":
-                class_name = "RISLegacy"
-            elif class_name == 'Fietstel':
-                class_name = 'FietstelLegacy'
-            elif class_name == 'Brug':
-                class_name = 'BeweegbareBrug'
-            elif class_name == 'Voedingskeuzeschakelaar':
-                class_name = 'VKS'
+            class_name = cls.alter_legacy_class_name(class_name)
 
             oslo_class = OSLOClass(
                 objectUri=class_uri,
@@ -498,10 +487,26 @@ class OTLModelCreator:
         for lgc_type_row in lgc_type_data:
             uri = lgc_type_row[0]
             ns, name = get_ns_and_name_from_uri(uri)
-            name = name.replace('.', '_').replace('-', '_')
+            name = cls.alter_legacy_class_name(name)
             data_to_write.append(f'from ..Classes.Legacy.{name} import {name}')
 
         write_to_file('all_classes', 'Helpers', data_to_write, relative_path=directory, write_mode='a')
 
         return oslo_collector
+
+    @classmethod
+    def alter_legacy_class_name(cls, class_name):
+        if '.' in class_name:
+            class_name = class_name.replace('.', '_')
+        if '-' in class_name:
+            class_name = class_name.replace('-', '_')
+        if class_name == "RIS":
+            class_name = "RISLegacy"
+        elif class_name == 'Fietstel':
+            class_name = 'FietstelLegacy'
+        elif class_name == 'Brug':
+            class_name = 'BeweegbareBrug'
+        elif class_name == 'Voedingskeuzeschakelaar':
+            class_name = 'VKS'
+        return class_name
 
