@@ -558,10 +558,10 @@ def _recursive_create_dict_from_asset(
                                 d[attr.naam] = date.strftime(attr.waarde, "%Y-%m-%d")
                         elif attr.field == DateTimeField:
                             if isinstance(attr.waarde, list):
-                                d[attr.naam] = [datetime.strftime(list_item, "%Y-%m-%d %H:%M:%S")
+                                d[attr.naam] = [DateTimeField.value_default(list_item)
                                                 for list_item in attr.waarde]
                             else:
-                                d[attr.naam] = datetime.strftime(attr.waarde, "%Y-%m-%d %H:%M:%S")
+                                d[attr.naam] = DateTimeField.value_default(attr.waarde)
                         else:
                             d[attr.naam] = attr.waarde
                     else:
