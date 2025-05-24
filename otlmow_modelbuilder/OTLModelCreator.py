@@ -405,6 +405,7 @@ class OTLModelCreator:
     def generate_class_dict(cls, oslo_collector: OSLOCollector) -> dict:
         return {uri: {
                 'abstract': oslo_class.abstract == 1,
+                'ns': get_ns_and_name_from_uri(oslo_class.objectUri)[0],
                 'name': oslo_class.name,
                 'label': oslo_class.label,
                 'deprecated_version': oslo_class.deprecated_version,

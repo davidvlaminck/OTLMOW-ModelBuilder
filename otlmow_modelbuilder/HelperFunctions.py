@@ -1,17 +1,40 @@
-def get_ns_and_name_from_uri(objectUri):
-    if '/ns/' not in objectUri:
-        raise ValueError(f"{objectUri} is not a valid uri because it does not define a namespace ('/ns' is missing)")
+def get_shortened_uri(object_uri: str) -> str:
+    if object_uri == 'http://purl.org/dc/terms/Agent':
+        return 'purl:Agent'
+    if '/ns/' not in object_uri:
+        raise ValueError(f'{object_uri} is not a valid uri to extract a namespace from')
+    shorter_uri = object_uri.split('/ns/')[1]
+    if object_uri.startswith('https://lgc.'):
+        return f'lgc:{shorter_uri}'
+    return shorter_uri
 
-    if '#' not in objectUri:
-        raise ValueError(f"{objectUri} is not a valid uri because can not be split into a ns and name ('#' is missing)")
 
-    short_uri = objectUri.split('/ns/')[1]
+def get_ns_and_name_from_uri(object_uri) -> tuple[str, str]:
+    if object_uri == 'http://purl.org/dc/terms/Agent':
+        return '', 'Agent'
+    short_uri = get_shortened_uri(object_uri)
     short_uri_array = short_uri.split('#')
-    return short_uri_array[0], short_uri_array[1]
+    ns, name = short_uri_array[0], short_uri_array[1]
+    if ns.startswith('lgc:'):
+        if '.' in name:
+            name = name.replace('.', '_')
+        if '-' in name:
+            name = name.replace('-', '_')
+        if name == "RIS":
+            name = "RISLegacy"
+        elif name == 'Fietstel':
+            name = 'FietstelLegacy'
+        elif name == 'Brug':
+            name = 'BeweegbareBrug'
+        elif name == 'Voedingskeuzeschakelaar':
+            name = 'VKS'
+        return 'legacy', name
+    return ns, name
 
 
-def get_class_directory_from_ns(ns):
-    return 'Classes/' + get_titlecase_from_ns(ns)
+
+def get_class_directory_from_ns(ns) -> str:
+    return f'Classes/{get_titlecase_from_ns(ns)}'
 
 
 def get_titlecase_from_ns(ns: str) -> str:
