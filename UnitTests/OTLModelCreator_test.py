@@ -70,8 +70,11 @@ def test_generate_class_dict():
              'direct_subclasses': [
                  'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
                  'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject'],
-             'label': 'AIM databank status',
-             'name': 'AIMDBStatus'},
+             'label': 'AIM '
+                      'databank '
+                      'status',
+             'name': 'AIMDBStatus',
+             'ns': 'implementatieelement'},
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject':
             {'abstract': True,
              'deprecated_version': '',
@@ -79,29 +82,37 @@ def test_generate_class_dict():
                  'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass',
                  'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AnotherTestClass',
                  'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#DeprecatedTestClass'],
-             'label': 'AIM object',
-             'name': 'AIMObject'},
+             'label': 'AIM '
+                      'object',
+             'name': 'AIMObject',
+             'ns': 'implementatieelement'},
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMToestand':
             {'abstract': True,
              'deprecated_version': '',
              'direct_subclasses': [
                  'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject'],
-             'label': 'AIM Toestand',
-             'name': 'AIMToestand'},
+             'label': 'AIM '
+                      'Toestand',
+             'name': 'AIMToestand',
+             'ns': 'implementatieelement'},
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DirectioneleRelatie':
             {'abstract': True,
              'deprecated_version': '',
              'direct_subclasses': [
                  'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Voedt'],
-             'label': 'Directionele relatie',
-             'name': 'DirectioneleRelatie'},
+             'label': 'Directionele '
+                      'relatie',
+             'name': 'DirectioneleRelatie',
+             'ns': 'implementatieelement'},
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NietDirectioneleRelatie':
             {'abstract': True,
              'deprecated_version': '',
              'direct_subclasses': [
                  'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging'],
-             'label': 'Niet-directionele relatie',
-             'name': 'NietDirectioneleRelatie'},
+             'label': 'Niet-directionele '
+                      'relatie',
+             'name': 'NietDirectioneleRelatie',
+             'ns': 'implementatieelement'},
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject':
             {'abstract': True,
              'deprecated_version': '',
@@ -109,36 +120,46 @@ def test_generate_class_dict():
                  'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DirectioneleRelatie',
                  'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NietDirectioneleRelatie'],
              'label': 'Relatieobject',
-             'name': 'RelatieObject'},
+             'name': 'RelatieObject',
+             'ns': 'implementatieelement'},
         'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass':
             {'abstract': False,
              'deprecated_version': '',
              'direct_subclasses': [],
-             'label': 'All Cases TestClass',
-             'name': 'AllCasesTestClass'},
+             'label': 'All '
+                      'Cases '
+                      'TestClass',
+             'name': 'AllCasesTestClass',
+             'ns': 'onderdeel'},
         'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AnotherTestClass':
             {'abstract': False,
              'deprecated_version': '',
              'direct_subclasses': [],
-             'label': 'Another TestClass',
-             'name': 'AnotherTestClass'},
+             'label': 'Another '
+                      'TestClass',
+             'name': 'AnotherTestClass',
+             'ns': 'onderdeel'},
         'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging':
             {'abstract': False,
              'deprecated_version': '',
              'direct_subclasses': [],
              'label': 'Bevestiging',
-             'name': 'Bevestiging'},
+             'name': 'Bevestiging',
+             'ns': 'onderdeel'},
         'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#DeprecatedTestClass':
             {'abstract': False,
              'deprecated_version': '2.0.0',
              'direct_subclasses': [],
-             'label': 'Deprecated TestClass',
-             'name': 'DeprecatedTestClass'},
+             'label': 'Deprecated '
+                      'TestClass',
+             'name': 'DeprecatedTestClass',
+             'ns': 'onderdeel'},
         'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Voedt':
             {'abstract': False,
              'deprecated_version': '',
              'direct_subclasses': [],
              'label': 'Voedt',
-             'name': 'Voedt'}}
+             'name': 'Voedt',
+             'ns': 'onderdeel'}}
 
     assert class_dict == expected_class_dict

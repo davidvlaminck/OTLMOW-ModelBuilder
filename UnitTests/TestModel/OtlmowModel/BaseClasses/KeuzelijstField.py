@@ -5,6 +5,7 @@ import random
 from typing import Dict, Optional, Any
 
 from otlmow_model.OtlmowModel.Exceptions.AttributeDeprecationWarning import AttributeDeprecationWarning
+from otlmow_model.OtlmowModel.Exceptions.InvalidOptionError import InvalidOptionError
 from otlmow_model.OtlmowModel.Exceptions.RemovedOptionError import RemovedOptionError
 from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField
 from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde
@@ -29,9 +30,17 @@ class KeuzelijstField(OTLField):
         if not isinstance(value, str):
             raise TypeError(f'{value} is not the correct type. Expecting a string')
         if value not in attribuut.field.options.keys():
-            raise ValueError(
+            # Find the closest matches within the options
+            from difflib import get_close_matches
+            closest_matches = get_close_matches(value, attribuut.field.options.keys(), n=5, cutoff=0.9)
+            closest_matches_string = '", "'.join(closest_matches)
+
+            error = InvalidOptionError(
                 f'{value} is not a valid option for {attribuut.naam}, '
-                f'find the valid options using print(meta_info(<object>, attribute="{attribuut.naam}"))')
+                f'find the valid options using print(meta_info(<object>, attribute="{attribuut.naam}"))\n'
+                f'Did you mean one of these? "{closest_matches_string}"')
+            error.closest_matches = closest_matches
+            raise error
 
         option_value = attribuut.field.options[value]
         if option_value.status == 'uitgebruik':
