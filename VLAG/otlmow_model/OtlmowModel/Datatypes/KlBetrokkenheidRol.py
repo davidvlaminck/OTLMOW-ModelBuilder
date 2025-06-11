@@ -10,12 +10,12 @@ class KlBetrokkenheidRol(KeuzelijstField):
     label = 'Betrokkenheid rol'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlBetrokkenheidRol'
     definition = 'Keuzelijst met mogelijke waarden voor de rol waarmee een agent betrokken is bij een object.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlBetrokkenheidRol'
     options = {
         'beheerder': KeuzelijstWaarde(invulwaarde='beheerder',
                                       label='beheerder',
                                       status='ingebruik',
-                                      definitie='test omschrijving voor beheerder',
                                       objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlBetrokkenheidRol/beheerder'),
         'berekende-beheerder': KeuzelijstWaarde(invulwaarde='berekende-beheerder',
                                                 label='berekende beheerder',
@@ -26,9 +26,9 @@ class KlBetrokkenheidRol(KeuzelijstField):
                                      status='ingebruik',
                                      objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlBetrokkenheidRol/eigenaar'),
         'installatieverantwoordelijke': KeuzelijstWaarde(invulwaarde='installatieverantwoordelijke',
-                                                         label='installatieverantwoordelijke',
+                                                         label='Installatieverantwoordelijke',
                                                          status='ingebruik',
-                                                         definitie='installatieverantwoordelijke',
+                                                         definitie='De installatieverantwoordelijke is de persoon, aangeduid door de werkgever, om de verantwoordelijkheid voor de exploitatie van de elektrische installatie op zich te nemen. Indien nodig kan hij die verantwoordelijkheid wel gedeeltelijk op andere personen overdragen. Concreet is hij op de hoogte van de eventuele afwijkende situaties en gaat, in overleg met de werkverantwoordelijke, na of de nodige maatregelen genomen worden om op een veilige manier te werken met een dergelijke installatie.',
                                                          objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlBetrokkenheidRol/installatieverantwoordelijke'),
         'keuringsinstantie': KeuzelijstWaarde(invulwaarde='keuringsinstantie',
                                               label='keuringsinstantie',

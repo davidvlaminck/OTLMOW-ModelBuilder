@@ -10,6 +10,7 @@ class KlToeslagmiddelBeton(KeuzelijstField):
     label = 'Toeslagmiddel beton'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlToeslagmiddelBeton'
     definition = 'Materiaal dat aan het beton kan worden toegevoegd.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlToeslagmiddelBeton'
     options = {
         'fijn-toeslagmateriaal': KeuzelijstWaarde(invulwaarde='fijn-toeslagmateriaal',

@@ -10,8 +10,14 @@ class KlPositieSoort(KeuzelijstField):
     label = 'Positie soort'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlPositieSoort'
     definition = 'Posities van het wegdek.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlPositieSoort'
     options = {
+        'boven': KeuzelijstWaarde(invulwaarde='boven',
+                                  label='boven',
+                                  status='ingebruik',
+                                  definitie='boven',
+                                  objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlPositieSoort/boven'),
         'linkerrand': KeuzelijstWaarde(invulwaarde='linkerrand',
                                        label='linkerrand',
                                        status='ingebruik',

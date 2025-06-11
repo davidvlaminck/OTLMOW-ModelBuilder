@@ -10,6 +10,7 @@ class KlGebruiksdomein(KeuzelijstField):
     label = 'Gebruiksdomein'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlGebruiksdomein'
     definition = 'De omstandigheden waarin het beton gebruikt zal worden.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlGebruiksdomein'
     options = {
         'gb-gewapend': KeuzelijstWaarde(invulwaarde='gb-gewapend',
@@ -17,6 +18,11 @@ class KlGebruiksdomein(KeuzelijstField):
                                         status='ingebruik',
                                         definitie='Gewapend beton.',
                                         objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlGebruiksdomein/gb-gewapend'),
+        'gzb-gewapend-zichtbeton': KeuzelijstWaarde(invulwaarde='gzb-gewapend-zichtbeton',
+                                                    label='GZB (gewapend zichtbeton) ',
+                                                    status='ingebruik',
+                                                    definitie='Gewapend zichtbeton.',
+                                                    objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlGebruiksdomein/gzb-gewapend-zichtbeton'),
         'ob-ongewapend': KeuzelijstWaarde(invulwaarde='ob-ongewapend',
                                           label='OB (ongewapend)',
                                           status='ingebruik',

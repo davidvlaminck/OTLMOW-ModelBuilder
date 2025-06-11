@@ -21,7 +21,7 @@ class Artikel(AIMLinkObject):
         self._nummer = OTLAttribuut(field=StringField,
                                     naam='nummer',
                                     label='nummer',
-                                    objectUri='http://data.europa.eu/eli/ontology#number',
+                                    objectUri='https://data.vlaanderen.be/ns/besluit#Artikel.nummer',
                                     definition='TODO',
                                     owner=self)
 

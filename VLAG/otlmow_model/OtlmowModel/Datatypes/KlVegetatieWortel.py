@@ -10,6 +10,7 @@ class KlVegetatieWortel(KeuzelijstField):
     label = 'Vegetatie wortel'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlVegetatieWortel'
     definition = 'De verschillende opties van hoe de wortel was bij aanplanting.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlVegetatieWortel'
     options = {
         'container': KeuzelijstWaarde(invulwaarde='container',

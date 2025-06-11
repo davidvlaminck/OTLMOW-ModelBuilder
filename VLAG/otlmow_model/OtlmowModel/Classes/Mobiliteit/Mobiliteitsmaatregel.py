@@ -30,7 +30,7 @@ class Mobiliteitsmaatregel(AIMLinkObject):
         self._adresVoorstelling = OTLAttribuut(field=DtcAdres,
                                                naam='adresVoorstelling',
                                                label='adresvoorstelling',
-                                               objectUri='http://www.w3.org/ns/locn#address',
+                                               objectUri='https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel.adresVoorstelling',
                                                kardinaliteit_min='0',
                                                kardinaliteit_max='*',
                                                definition='TODO',
@@ -39,7 +39,7 @@ class Mobiliteitsmaatregel(AIMLinkObject):
         self._beschrijving = OTLAttribuut(field=StringField,
                                           naam='beschrijving',
                                           label='beschrijving',
-                                          objectUri='http://purl.org/dc/terms/description',
+                                          objectUri='https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel.beschrijving',
                                           definition='TODO',
                                           owner=self)
 
@@ -56,7 +56,7 @@ class Mobiliteitsmaatregel(AIMLinkObject):
         self._identificator = OTLAttribuut(field=DtcIdentificator,
                                            naam='identificator',
                                            label='identificator',
-                                           objectUri='http://www.w3.org/ns/adms#identifier',
+                                           objectUri='https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel.identificator',
                                            kardinaliteit_min='0',
                                            definition='TODO',
                                            owner=self)
@@ -64,7 +64,7 @@ class Mobiliteitsmaatregel(AIMLinkObject):
         self._periode = OTLAttribuut(field=DtcPeriode,
                                      naam='periode',
                                      label='periode',
-                                     objectUri='https://data.vlaanderen.be/ns/mobiliteit#periode',
+                                     objectUri='https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel.periode',
                                      kardinaliteit_max='*',
                                      definition='TODO',
                                      owner=self)
@@ -72,14 +72,14 @@ class Mobiliteitsmaatregel(AIMLinkObject):
         self._plaatsbepaling = OTLAttribuut(field=StringField,
                                             naam='plaatsbepaling',
                                             label='plaatsbepaling',
-                                            objectUri='https://data.vlaanderen.be/ns/mobiliteit#plaatsbepaling',
+                                            objectUri='https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel.plaatsbepaling',
                                             definition='TODO',
                                             owner=self)
 
         self._tijdschema = OTLAttribuut(field=DtcTijdschema,
                                         naam='tijdschema',
                                         label='tijdschema',
-                                        objectUri='http://schema.org/eventSchedule',
+                                        objectUri='https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel.tijdschema',
                                         kardinaliteit_min='0',
                                         kardinaliteit_max='*',
                                         definition='Wanneer de mobiliteitsmaatregel plaatsvindt volgens een tijdschema.',
@@ -96,7 +96,7 @@ class Mobiliteitsmaatregel(AIMLinkObject):
         self._zone = OTLAttribuut(field=DtcZone,
                                   naam='zone',
                                   label='zone',
-                                  objectUri='https://data.vlaanderen.be/ns/mobiliteit#zone',
+                                  objectUri='https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel.zone',
                                   kardinaliteit_max='*',
                                   definition='TODO',
                                   owner=self)

@@ -18,6 +18,7 @@ class Verkeersbordopstelling(Signalisatie, AIMObject):
         super().__init__()
 
         self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftAanzicht', target='https://wegenenverkeer.data.vlaanderen.be/ns/installatie#AanzichtVerkeersbordopstelling', direction='o')  # o = direction: outgoing
+        self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOntwerpVan', target='https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Verkeersbordopstelling', direction='o')  # o = direction: outgoing
 
         self._positieTovRijweg = OTLAttribuut(field=KlPositieSoort,
                                               naam='positieTovRijweg',

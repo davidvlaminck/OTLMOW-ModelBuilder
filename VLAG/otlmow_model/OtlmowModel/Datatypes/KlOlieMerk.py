@@ -9,6 +9,7 @@ class KlOlieMerk(KeuzelijstField):
     label = 'Olie merk'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlOlieMerk'
     definition = 'Keuzelijst voor het merk van de olie.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlOlieMerk'
     options = {
     }

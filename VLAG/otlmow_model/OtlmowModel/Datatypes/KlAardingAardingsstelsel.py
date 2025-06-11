@@ -10,12 +10,13 @@ class KlAardingAardingsstelsel(KeuzelijstField):
     label = 'Aardingsinstallatie aardingsstelsel'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/installatie#KlAardingAardingsstelsel'
     definition = 'Lijst van mogelijke aardinggsstelsels.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAardingAardingsstelsel'
     options = {
         'gemeenschappelijk': KeuzelijstWaarde(invulwaarde='gemeenschappelijk',
                                               label='gemeenschappelijk',
                                               status='ingebruik',
-                                              definitie='gemeenschappelijk',
+                                              definitie='Een aardingsstelsel waarin de aardingen (LS, N, HS) met elkaar verbonden zijn. Indien de distributienetbeheerder met een attest garandeerd dat de aardingen verbonden zijn met andere aardingsinstallaties is er sprake van een gemeenschappelijk globaal stelsel en moet die optie gekozen worden.',
                                               objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAardingAardingsstelsel/gemeenschappelijk'),
         'gemeenschappelijk---globaal': KeuzelijstWaarde(invulwaarde='gemeenschappelijk---globaal',
                                                         label='gemeenschappelijk + globaal',
@@ -30,7 +31,7 @@ class KlAardingAardingsstelsel(KeuzelijstField):
         'gescheiden': KeuzelijstWaarde(invulwaarde='gescheiden',
                                        label='gescheiden',
                                        status='ingebruik',
-                                       definitie='gescheiden',
+                                       definitie='Een aardingsstelsel waarin de aardingen (LS, N, HS) niet met elkaar verbonden zijn.',
                                        objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAardingAardingsstelsel/gescheiden')
     }
 

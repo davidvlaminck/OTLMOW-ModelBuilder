@@ -10,6 +10,7 @@ class KlSierbeplPlantmaat(KeuzelijstField):
     label = 'Sierbepl plantmaat'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlSierbeplPlantmaat'
     definition = 'De plantmaten van de sierplant.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlSierbeplPlantmaat'
     options = {
         '20-30': KeuzelijstWaarde(invulwaarde='20-30',

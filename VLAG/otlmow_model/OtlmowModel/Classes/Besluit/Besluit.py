@@ -22,14 +22,14 @@ class Besluit(AIMLinkObject):
         self._beschrijving = OTLAttribuut(field=StringField,
                                           naam='beschrijving',
                                           label='beschrijving',
-                                          objectUri='http://data.europa.eu/eli/ontology#description',
+                                          objectUri='https://data.vlaanderen.be/ns/besluit#Besluit.beschrijving',
                                           definition='TODO',
                                           owner=self)
 
         self._citeeropschrift = OTLAttribuut(field=StringField,
                                              naam='citeeropschrift',
                                              label='korte titel',
-                                             objectUri='http://data.europa.eu/eli/ontology#title_short',
+                                             objectUri='https://data.vlaanderen.be/ns/besluit#Besluit.citeeropschrift',
                                              definition='TODO',
                                              owner=self)
 
@@ -43,7 +43,7 @@ class Besluit(AIMLinkObject):
         self._publicatiedatum = OTLAttribuut(field=DateField,
                                              naam='publicatiedatum',
                                              label='datum publicatie',
-                                             objectUri='http://data.europa.eu/eli/ontology#date_publication',
+                                             objectUri='https://data.vlaanderen.be/ns/besluit#Besluit.publicatiedatum',
                                              definition='TODO',
                                              owner=self)
 

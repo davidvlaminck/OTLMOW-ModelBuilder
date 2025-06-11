@@ -20,7 +20,7 @@ class Voorwaarde(AIMLinkObject):
         self._beschrijving = OTLAttribuut(field=StringField,
                                           naam='beschrijving',
                                           label='beschrijving',
-                                          objectUri='http://purl.org/dc/terms/description',
+                                          objectUri='https://data.vlaanderen.be/ns/besluit#Voorwaarde.beschrijving',
                                           definition='TODO',
                                           owner=self)
 

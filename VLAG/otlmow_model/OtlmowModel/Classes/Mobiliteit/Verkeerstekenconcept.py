@@ -2,8 +2,10 @@
 from typing import List
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
 from ...Classes.Abstracten.AIMLinkObject import AIMLinkObject
+from otlmow_model.OtlmowModel.BaseClasses.BooleanField import BooleanField
 from ...Datatypes.DtcDocument import DtcDocument, DtcDocumentWaarden
 from ...Datatypes.DtcTemplate import DtcTemplate, DtcTemplateWaarden
+from ...Datatypes.DtcVariabele import DtcVariabele, DtcVariabeleWaarden
 from ...Datatypes.KlVerkeerstekenconceptStatus import KlVerkeerstekenconceptStatus
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
@@ -23,7 +25,7 @@ class Verkeerstekenconcept(AIMLinkObject):
         self._afbeelding = OTLAttribuut(field=DtcDocument,
                                         naam='afbeelding',
                                         label='afbeelding',
-                                        objectUri='https://data.vlaanderen.be/ns/mobiliteit#grafischeWeergave',
+                                        objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.afbeelding',
                                         kardinaliteit_min='0',
                                         kardinaliteit_max='*',
                                         definition='TODO',
@@ -32,7 +34,7 @@ class Verkeerstekenconcept(AIMLinkObject):
         self._betekenis = OTLAttribuut(field=StringField,
                                        naam='betekenis',
                                        label='betekenis',
-                                       objectUri='http://www.w3.org/2004/02/skos/core#scopeNote',
+                                       objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.betekenis',
                                        definition='TODO',
                                        owner=self)
 
@@ -45,17 +47,33 @@ class Verkeerstekenconcept(AIMLinkObject):
                                              definition='TODO',
                                              owner=self)
 
+        self._isARPlichtig = OTLAttribuut(field=BooleanField,
+                                          naam='isARPlichtig',
+                                          label='is AR plichtig',
+                                          objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.isARPlichtig',
+                                          definition='Geeft aan of een aanvullend reglement dient opgesteld en goedgekeurd te worden om een vekeersteken te plaatsen dat gebaseerd is op dit concept.',
+                                          owner=self)
+
         self._status = OTLAttribuut(field=KlVerkeerstekenconceptStatus,
                                     naam='status',
                                     label='status',
-                                    objectUri='http://www.w3.org/2003/06/sw-vocab-status/ns#term_status',
+                                    objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.status',
                                     definition='TODO',
                                     owner=self)
+
+        self._variabele = OTLAttribuut(field=DtcVariabele,
+                                       naam='variabele',
+                                       label='variabele',
+                                       objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.variabele',
+                                       kardinaliteit_min='0',
+                                       kardinaliteit_max='*',
+                                       definition='TODO',
+                                       owner=self)
 
         self._verkeersbordcode = OTLAttribuut(field=StringField,
                                               naam='verkeersbordcode',
                                               label='verkeersbordcode',
-                                              objectUri='http://www.w3.org/2004/02/skos/core#prefLabel',
+                                              objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.verkeersbordcode',
                                               definition='TODO',
                                               owner=self)
 
@@ -87,6 +105,15 @@ class Verkeerstekenconcept(AIMLinkObject):
         self._heeftInstructie.set_waarde(value, owner=self)
 
     @property
+    def isARPlichtig(self) -> bool:
+        """Geeft aan of een aanvullend reglement dient opgesteld en goedgekeurd te worden om een vekeersteken te plaatsen dat gebaseerd is op dit concept."""
+        return self._isARPlichtig.get_waarde()
+
+    @isARPlichtig.setter
+    def isARPlichtig(self, value):
+        self._isARPlichtig.set_waarde(value, owner=self)
+
+    @property
     def status(self) -> str:
         """TODO"""
         return self._status.get_waarde()
@@ -94,6 +121,15 @@ class Verkeerstekenconcept(AIMLinkObject):
     @status.setter
     def status(self, value):
         self._status.set_waarde(value, owner=self)
+
+    @property
+    def variabele(self) -> List[DtcVariabeleWaarden]:
+        """TODO"""
+        return self._variabele.get_waarde()
+
+    @variabele.setter
+    def variabele(self, value):
+        self._variabele.set_waarde(value, owner=self)
 
     @property
     def verkeersbordcode(self) -> str:

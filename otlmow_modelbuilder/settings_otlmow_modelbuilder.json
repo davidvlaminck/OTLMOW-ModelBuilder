@@ -12,7 +12,9 @@
         "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.inwerkingstijd",
         "http://schema.org/eventSchedule",
         "https://w3id.org/isCharacterisedBy#isCharacterisedBy",
-        "https://data.vlaanderen.be/ns/mobiliteit#inwerkingstijd"
+        "https://data.vlaanderen.be/ns/mobiliteit#inwerkingstijd",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.variabele",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.variabele"
     ],
     "class_validation_rules" : {
         "valid_uri_and_types" : {

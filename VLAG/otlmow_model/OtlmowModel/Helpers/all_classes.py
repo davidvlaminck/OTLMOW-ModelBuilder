@@ -67,6 +67,7 @@ from ..Classes.Onderdeel.IsGerelateerdAan import IsGerelateerdAan
 from ..Classes.Onderdeel.IsInspectieVan import IsInspectieVan
 from ..Classes.Onderdeel.IsNetwerkECC import IsNetwerkECC
 from ..Classes.Onderdeel.IsOnderdeelVan import IsOnderdeelVan
+from ..Classes.Onderdeel.IsOntwerpVan import IsOntwerpVan
 from ..Classes.Onderdeel.IsOntwerpVoor import IsOntwerpVoor
 from ..Classes.Onderdeel.IsSWGehostOp import IsSWGehostOp
 from ..Classes.Onderdeel.IsSWOnderdeelVan import IsSWOnderdeelVan

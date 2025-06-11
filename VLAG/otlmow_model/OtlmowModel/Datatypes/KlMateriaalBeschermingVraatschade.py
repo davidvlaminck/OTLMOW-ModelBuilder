@@ -10,6 +10,7 @@ class KlMateriaalBeschermingVraatschade(KeuzelijstField):
     label = 'Materiaal bescherming vraatschade'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlMateriaalBeschermingVraatschade'
     definition = 'De middelen als bescherming tegen vraatschade.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlMateriaalBeschermingVraatschade'
     options = {
         'juteband': KeuzelijstWaarde(invulwaarde='juteband',

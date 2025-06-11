@@ -35,6 +35,13 @@ class DtuAfmetingVerkeersbordWaarden(UnionWaarden):
                                   definition='De afmeting voor een rond verkeersbord (diameter in millimeter).',
                                   owner=self)
 
+        self._ruit = OTLAttribuut(field=DtcAfmetingZijdeInMm,
+                                  naam='ruit',
+                                  label='ruit',
+                                  objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#DtuAfmetingVerkeersbord.ruit',
+                                  definition='De afmeting voor een ruitvormig verkeersbord (zijde in millimeter).',
+                                  owner=self)
+
         self._vierhoekig = OTLAttribuut(field=DtcAfmetingBxhInMm,
                                         naam='vierhoekig',
                                         label='vierhoekig',
@@ -83,6 +90,17 @@ class DtuAfmetingVerkeersbordWaarden(UnionWaarden):
         self._rond.set_waarde(value, owner=self._parent)
         if value is not None:
             self.clear_other_props('_rond')
+
+    @property
+    def ruit(self) -> DtcAfmetingZijdeInMmWaarden:
+        """De afmeting voor een ruitvormig verkeersbord (zijde in millimeter)."""
+        return self._ruit.get_waarde()
+
+    @ruit.setter
+    def ruit(self, value):
+        self._ruit.set_waarde(value, owner=self._parent)
+        if value is not None:
+            self.clear_other_props('_ruit')
 
     @property
     def vierhoekig(self) -> DtcAfmetingBxhInMmWaarden:

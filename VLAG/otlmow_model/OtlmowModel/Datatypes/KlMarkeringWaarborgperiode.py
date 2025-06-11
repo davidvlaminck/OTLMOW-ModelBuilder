@@ -10,6 +10,7 @@ class KlMarkeringWaarborgperiode(KeuzelijstField):
     label = 'markeringswaarborgperiode'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlMarkeringWaarborgperiode'
     definition = 'Opties om de waarborgperiode aan te duiden.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlMarkeringWaarborgperiode'
     options = {
         '1-jaar': KeuzelijstWaarde(invulwaarde='1-jaar',

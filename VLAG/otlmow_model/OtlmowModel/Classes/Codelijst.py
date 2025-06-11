@@ -19,14 +19,14 @@ class Codelijst(AIMLinkObject):
         self._codelijstType = OTLAttribuut(field=StringField,
                                            naam='codelijstType',
                                            label='codelijstType',
-                                           objectUri='http://purl.org/dc/terms/type',
+                                           objectUri='https://www.w3.org/2004/02/skos/core#ConceptScheme.codelijstType',
                                            definition='TODO',
                                            owner=self)
 
         self._naam = OTLAttribuut(field=StringField,
                                   naam='naam',
                                   label='naam',
-                                  objectUri='http://www.w3.org/2004/02/skos/core#label',
+                                  objectUri='https://www.w3.org/2004/02/skos/core#ConceptScheme.naam',
                                   definition='TODO',
                                   owner=self)
 

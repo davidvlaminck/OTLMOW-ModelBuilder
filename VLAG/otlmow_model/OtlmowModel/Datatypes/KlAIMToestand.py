@@ -10,6 +10,7 @@ class KlAIMToestand(KeuzelijstField):
     label = 'AIM toestand'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KlAIMToestand'
     definition = 'Keuzelijst met fasen uit de levenscyclus van een object om de toestand op een moment mee vast te leggen.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAIMToestand'
     options = {
         'geannuleerd': KeuzelijstWaarde(invulwaarde='geannuleerd',

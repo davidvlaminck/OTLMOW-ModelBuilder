@@ -9,6 +9,7 @@ class KlVoorzetconstructieBevestigingsmateriaalDiameter(KeuzelijstField):
     label = 'Voorzetconstructie bevestigingsmateriaal diameter'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlVoorzetconstructieBevestigingsmateriaalDiameter'
     definition = 'De mogelijke diameters van het bevestigingsmateriaal gebruikt bij een voorzetconstructie.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlVoorzetconstructieBevestigingsmateriaalDiameter'
     options = {
     }

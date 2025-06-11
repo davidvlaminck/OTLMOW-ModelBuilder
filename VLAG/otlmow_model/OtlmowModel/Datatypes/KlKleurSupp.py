@@ -10,6 +10,7 @@ class KlKleurSupp(KeuzelijstField):
     label = 'Kleur supplementen'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlKleurSupp'
     definition = 'Keuzelijst om de kleur van de toegevoegde supplementen van de verharding te bepalen.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlKleurSupp'
     options = {
         'beige': KeuzelijstWaarde(invulwaarde='beige',

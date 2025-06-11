@@ -120,6 +120,9 @@
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOnderdeelVan": {
             "directional": true
         },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOntwerpVan": {
+            "directional": true
+        },
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOntwerpVoor": {
             "directional": true
         },
@@ -427,8 +430,7 @@
                 "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie",
                 "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject",
                 "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject",
-                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure",
-                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject"
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure"
             ]
         },
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMVersie": {
@@ -513,6 +515,7 @@
                 "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsInspectieVan",
                 "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsNetwerkECC",
                 "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOnderdeelVan",
+                "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOntwerpVan",
                 "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOntwerpVoor",
                 "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsSWGehostOp",
                 "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsSWOnderdeelVan",
@@ -583,6 +586,15 @@
             "deprecated_version": "",
             "direct_subclasses": [
                 "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AIMLinkObject"
+            ]
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMToestand": {
+            "abstract": true,
+            "name": "VLAGAIMToestand",
+            "label": "AIM Toestand",
+            "deprecated_version": "",
+            "direct_subclasses": [
+                "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject"
             ]
         },
         "https://wegenenverkeer.data.vlaanderen.be/ns/installatie#AanzichtVerkeersbordopstelling": {
@@ -897,6 +909,13 @@
             "abstract": false,
             "name": "IsOnderdeelVan",
             "label": "Is onderdeel van",
+            "deprecated_version": "",
+            "direct_subclasses": []
+        },
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IsOntwerpVan": {
+            "abstract": false,
+            "name": "IsOntwerpVan",
+            "label": "Is ontwerp van",
             "deprecated_version": "",
             "direct_subclasses": []
         },

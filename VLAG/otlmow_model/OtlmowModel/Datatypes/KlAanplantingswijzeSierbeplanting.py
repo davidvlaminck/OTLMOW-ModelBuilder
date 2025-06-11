@@ -10,6 +10,7 @@ class KlAanplantingswijzeSierbeplanting(KeuzelijstField):
     label = 'aanplantingswijze sierbeplanting'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlAanplantingswijzeSierbeplanting'
     definition = 'De mogelijke manieren van aanplanten van sierbeplanting.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAanplantingswijzeSierbeplanting'
     options = {
         'aanplanting-bol--en-knolgewassen': KeuzelijstWaarde(invulwaarde='aanplanting-bol--en-knolgewassen',
@@ -29,8 +30,8 @@ class KlAanplantingswijzeSierbeplanting(KeuzelijstField):
                                              objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAanplantingswijzeSierbeplanting/aanplanting-test'),
         'aanplanting-zonder-helm': KeuzelijstWaarde(invulwaarde='aanplanting-zonder-helm',
                                                     label='aanplanting zonder helm',
-                                                    status='uitgebruik',
-                                                    definitie='Aanplanting zonder helmtest',
+                                                    status='ingebruik',
+                                                    definitie='Aanplanting zonder helm',
                                                     objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAanplantingswijzeSierbeplanting/aanplanting-zonder-helm'),
         'application-pdf': KeuzelijstWaarde(invulwaarde='application-pdf',
                                             label='application/pdf',

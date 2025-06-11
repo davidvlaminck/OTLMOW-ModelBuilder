@@ -10,6 +10,7 @@ class KlLEGCGeluidskarakteristiek(KeuzelijstField):
     label = 'Geluidskarakteristiek'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlLEGCGeluidskarakteristiek'
     definition = 'De geluidskarakteristieken van de geluidswerende constructie.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlLEGCGeluidskarakteristiek'
     options = {
         'absorberend': KeuzelijstWaarde(invulwaarde='absorberend',

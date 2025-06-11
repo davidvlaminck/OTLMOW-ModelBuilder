@@ -15,11 +15,12 @@ class OntwerpVerkeersteken(AIMLinkObject):
         super().__init__()
 
         self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#BevatVerkeersteken', target='https://data.vlaanderen.be/ns/mobiliteit#SignalisatieOntwerp', direction='i')  # i = direction: incoming
+        self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftOntwerp', target='https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken', direction='i')  # i = direction: incoming
 
         self._status = OTLAttribuut(field=KlVerkeersbordcategorie,
                                     naam='status',
                                     label='status',
-                                    objectUri='http://www.w3.org/ns/adms#status',
+                                    objectUri='https://data.vlaanderen.be/ns/mobiliteit#OntwerpVerkeersteken.status',
                                     definition='TODO',
                                     owner=self)
 

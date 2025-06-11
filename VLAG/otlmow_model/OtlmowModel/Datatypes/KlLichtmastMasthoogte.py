@@ -10,6 +10,7 @@ class KlLichtmastMasthoogte(KeuzelijstField):
     label = 'Wv masthoogte'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlLichtmastMasthoogte'
     definition = 'De standaard masthoogten.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlLichtmastMasthoogte'
     options = {
         '10.00': KeuzelijstWaarde(invulwaarde='10.00',

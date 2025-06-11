@@ -10,6 +10,7 @@ class KlGrondbestemming(KeuzelijstField):
     label = 'Grondbestemming'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlGrondbestemming'
     definition = 'De bestemmingen of doelen van de grond.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlGrondbestemming'
     options = {
         'buiten-werfzone-of-top': KeuzelijstWaarde(invulwaarde='buiten-werfzone-of-top',

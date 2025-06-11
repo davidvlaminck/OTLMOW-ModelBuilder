@@ -3,8 +3,8 @@ from datetime import date
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut
 from abc import abstractmethod
 from ...Classes.ImplementatieElement.AIMDBStatus import AIMDBStatus
-from ...Classes.ImplementatieElement.AIMToestand import AIMToestand
 from ...Classes.ImplementatieElement.AIMVersie import AIMVersie
+from ...Classes.ImplementatieElement.VLAGAIMToestand import VLAGAIMToestand
 from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
 from otlmow_model.OtlmowModel.BaseClasses.RelationInteractor import RelationInteractor
 from otlmow_model.OtlmowModel.BaseClasses.DateField import DateField
@@ -13,7 +13,7 @@ from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
 
 # Generated with OTLClassCreator. To modify: extend, do not edit
-class VLAGAIMObject(AIMDBStatus, AIMToestand, AIMVersie, OTLAsset, RelationInteractor):
+class VLAGAIMObject(AIMDBStatus, AIMVersie, VLAGAIMToestand, OTLAsset, RelationInteractor):
     """Abstracte als de basisklasse voor alle uniek geïdentificeerde OTL objecten met de basiseigenschappen die elk OTL object minstens heeft."""
 
     typeURI = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject'
@@ -29,21 +29,21 @@ class VLAGAIMObject(AIMDBStatus, AIMToestand, AIMVersie, OTLAsset, RelationInter
         self._assetId = OTLAttribuut(field=DtcIdentificator,
                                      naam='assetId',
                                      label='asset-id',
-                                     objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject.assetId',
+                                     objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject.assetId',
                                      definition='Unieke identificatie van de asset zoals toegekend door de assetbeheerder of n.a.v. eerste aanlevering door de leverancier.',
                                      owner=self)
 
         self._datumOprichtingObject = OTLAttribuut(field=DateField,
                                                    naam='datumOprichtingObject',
                                                    label='datum oprichting object',
-                                                   objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject.datumOprichtingObject',
+                                                   objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject.datumOprichtingObject',
                                                    definition='De datum waarop het object op het terrein is beginnen bestaan, bv. de datum van aanleg.',
                                                    owner=self)
 
         self._notitie = OTLAttribuut(field=StringField,
                                      naam='notitie',
                                      label='notitie',
-                                     objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject.notitie',
+                                     objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject.notitie',
                                      definition='Extra notitie voor het object.',
                                      owner=self)
 

@@ -1,5 +1,6 @@
 # coding=utf-8
 from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstField import KeuzelijstField
+from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde
 
 
 # Generated with OTLEnumerationCreator. To modify: extend, do not edit
@@ -12,6 +13,11 @@ class KlFabricageTypeRetroreflecterendVerkeersbord(KeuzelijstField):
     status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlFabricageTypeRetroreflecterendVerkeersbord'
     options = {
+        'testreferentie-rrvkb-type': KeuzelijstWaarde(invulwaarde='testreferentie-rrvkb-type',
+                                                      label='testreferentie RRVKB type',
+                                                      status='ingebruik',
+                                                      definitie='testreferentie RRVKB type',
+                                                      objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlFabricageTypeRetroreflecterendVerkeersbord/testreferentie-rrvkb-type')
     }
 
     @classmethod

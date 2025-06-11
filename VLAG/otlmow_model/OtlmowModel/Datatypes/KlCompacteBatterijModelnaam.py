@@ -9,6 +9,7 @@ class KlCompacteBatterijModelnaam(KeuzelijstField):
     label = 'Compacte batterij modelnaam'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlCompacteBatterijModelnaam'
     definition = 'De modelnaam van de compacte batterij.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlCompacteBatterijModelnaam'
     options = {
     }

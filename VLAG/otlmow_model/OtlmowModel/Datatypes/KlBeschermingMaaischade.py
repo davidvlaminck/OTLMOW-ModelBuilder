@@ -10,6 +10,7 @@ class KlBeschermingMaaischade(KeuzelijstField):
     label = 'Bescherming maaischade'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlBeschermingMaaischade'
     definition = 'De middelen als bescherming tegen maaischade.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlBeschermingMaaischade'
     options = {
         'houten-paal': KeuzelijstWaarde(invulwaarde='houten-paal',

@@ -10,6 +10,7 @@ class KlLEGCMateriaal(KeuzelijstField):
     label = 'Materiaal geluidswerende constructie'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlLEGCMateriaal'
     definition = 'Materialen van de geluidswerende constructie.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlLEGCMateriaal'
     options = {
         'bakstenen': KeuzelijstWaarde(invulwaarde='bakstenen',
@@ -67,6 +68,16 @@ class KlLEGCMateriaal(KeuzelijstField):
                                             status='ingebruik',
                                             definitie='kunststof - PVC',
                                             objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlLEGCMateriaal/kunststof---PVC'),
+        'kunststof---pmma': KeuzelijstWaarde(invulwaarde='kunststof---pmma',
+                                             label='kunststof - PMMA',
+                                             status='ingebruik',
+                                             definitie='Kunststof - PMMA',
+                                             objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlLEGCMateriaal/kunststof---pmma'),
+        'kunststof---pvc': KeuzelijstWaarde(invulwaarde='kunststof---pvc',
+                                            label='kunststof - PVC',
+                                            status='ingebruik',
+                                            definitie='kunststof - PVC',
+                                            objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlLEGCMateriaal/kunststof---pvc'),
         'metaal---aluminium': KeuzelijstWaarde(invulwaarde='metaal---aluminium',
                                                label='metaal - aluminium',
                                                status='ingebruik',

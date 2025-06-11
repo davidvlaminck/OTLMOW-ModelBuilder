@@ -10,6 +10,7 @@ class KlBoomVerankering(KeuzelijstField):
     label = 'Boom verankering'
     objectUri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlBoomVerankering'
     definition = 'De verschillende manieren van verankering van een boom.'
+    status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlBoomVerankering'
     options = {
         'bovengronds': KeuzelijstWaarde(invulwaarde='bovengronds',

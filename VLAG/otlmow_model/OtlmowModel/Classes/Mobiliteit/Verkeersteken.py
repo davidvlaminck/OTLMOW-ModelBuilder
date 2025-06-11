@@ -5,6 +5,7 @@ from ...Classes.Abstracten.AIMLinkObject import AIMLinkObject
 from ...Datatypes.DtcAdres import DtcAdres, DtcAdresWaarden
 from ...Datatypes.DtcDocument import DtcDocument, DtcDocumentWaarden
 from ...Datatypes.DtcTijdschema import DtcTijdschema, DtcTijdschemaWaarden
+from ...Datatypes.DtcVariabele import DtcVariabele, DtcVariabeleWaarden
 from ...Datatypes.KlVerkeerstekenWettelijkeStatus import KlVerkeerstekenWettelijkeStatus
 from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField
 
@@ -23,6 +24,7 @@ class Verkeersteken(AIMLinkObject):
         self.add_valid_relation(relation='https://data.vlaanderen.be/ns/mobiliteit#heeftGerelateerdVerkeersteken', target='https://data.vlaanderen.be/ns/mobiliteit#VerkeerslichtVerkeersteken', direction='o')  # o = direction: outgoing
         self.add_valid_relation(relation='https://data.vlaanderen.be/ns/mobiliteit#heeftGerelateerdVerkeersteken', target='https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken', direction='o')  # o = direction: outgoing
         self.add_valid_relation(relation='https://data.vlaanderen.be/ns/mobiliteit#heeftGerelateerdVerkeersteken', target='https://data.vlaanderen.be/ns/mobiliteit#WegmarkeringVerkeersteken', direction='o')  # o = direction: outgoing
+        self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftOntwerp', target='https://data.vlaanderen.be/ns/mobiliteit#OntwerpVerkeersteken', direction='o')  # o = direction: outgoing
         self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftVerkeersteken', target='https://data.vlaanderen.be/ns/mobiliteit#AanvullendReglementOntwerp', direction='i')  # i = direction: incoming
         self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Realiseert', target='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Verkeersbord', direction='o')  # o = direction: outgoing
         self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Realiseert', target='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord', direction='o')  # o = direction: outgoing
@@ -40,7 +42,7 @@ class Verkeersteken(AIMLinkObject):
         self._afbeelding = OTLAttribuut(field=DtcDocument,
                                         naam='afbeelding',
                                         label='afbeelding',
-                                        objectUri='https://data.vlaanderen.be/ns/mobiliteit#grafischeWeergave',
+                                        objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.afbeelding',
                                         kardinaliteit_min='0',
                                         kardinaliteit_max='*',
                                         definition='TODO',
@@ -58,7 +60,7 @@ class Verkeersteken(AIMLinkObject):
         self._inwerkingstijd = OTLAttribuut(field=DtcTijdschema,
                                             naam='inwerkingstijd',
                                             label='inwerkingtreding',
-                                            objectUri='https://data.vlaanderen.be/ns/mobiliteit#inwerkingstijd',
+                                            objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.inwerkingstijd',
                                             kardinaliteit_min='0',
                                             kardinaliteit_max='*',
                                             definition='TODO',
@@ -67,19 +69,19 @@ class Verkeersteken(AIMLinkObject):
         self._locatie = OTLAttribuut(field=StringField,
                                      naam='locatie',
                                      label='locatie',
-                                     objectUri='http://www.w3.org/ns/locn#geometry',
+                                     objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.locatie',
                                      definition='TODO',
                                      owner=self)
 
         self._plaatsbepaling = OTLAttribuut(field=StringField,
                                             naam='plaatsbepaling',
                                             label='plaatsbepaling',
-                                            objectUri='https://data.vlaanderen.be/ns/mobiliteit#plaatsbepaling',
+                                            objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.plaatsbepaling',
                                             kardinaliteit_min='0',
                                             definition='TODO',
                                             owner=self)
 
-        self._variabele = OTLAttribuut(field=StringField,
+        self._variabele = OTLAttribuut(field=DtcVariabele,
                                        naam='variabele',
                                        label='variabele',
                                        objectUri='https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.variabele',
@@ -150,7 +152,7 @@ class Verkeersteken(AIMLinkObject):
         self._plaatsbepaling.set_waarde(value, owner=self)
 
     @property
-    def variabele(self) -> List[str]:
+    def variabele(self) -> List[DtcVariabeleWaarden]:
         """TODO"""
         return self._variabele.get_waarde()
 
