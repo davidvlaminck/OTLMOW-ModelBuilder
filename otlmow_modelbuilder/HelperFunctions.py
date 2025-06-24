@@ -1,36 +1,16 @@
-def get_shortened_uri(object_uri: str) -> str:
-    if object_uri == 'http://purl.org/dc/terms/Agent':
-        return 'purl:Agent'
-    if '/ns/' not in object_uri:
-        raise ValueError(f'{object_uri} is not a valid uri to extract a namespace from')
-    shorter_uri = object_uri.split('/ns/')[1]
-    if object_uri.startswith('https://lgc.'):
-        return f'lgc:{shorter_uri}'
-    return shorter_uri
-
-
 def get_ns_and_name_from_uri(object_uri) -> tuple[str, str]:
-    if object_uri == 'http://purl.org/dc/terms/Agent':
-        return '', 'Agent'
-    short_uri = get_shortened_uri(object_uri)
-    short_uri_array = short_uri.split('#')
-    ns, name = short_uri_array[0], short_uri_array[1]
-    if ns.startswith('lgc:'):
-        if '.' in name:
-            name = name.replace('.', '_')
-        if '-' in name:
-            name = name.replace('-', '_')
-        if name == "RIS":
-            name = "RISLegacy"
-        elif name == 'Fietstel':
-            name = 'FietstelLegacy'
-        elif name == 'Brug':
-            name = 'BeweegbareBrug'
-        elif name == 'Voedingskeuzeschakelaar':
-            name = 'VKS'
-        return 'legacy', name
-    return ns, name
+    if '/ns/' not in object_uri:
+        if '#' in object_uri:
+            object_uri = object_uri.split('#')[-1]
+        name = object_uri.split('/')[-1]
+        return '', name
 
+    if '#' not in object_uri:
+        raise ValueError(f"{object_uri} is not a valid uri because can not be split into a ns and name ('#' is missing)")
+
+    short_uri = object_uri.split('/ns/')[1]
+    short_uri_array = short_uri.split('#')
+    return short_uri_array[0], short_uri_array[1]
 
 
 def get_class_directory_from_ns(ns) -> str:
@@ -38,20 +18,14 @@ def get_class_directory_from_ns(ns) -> str:
 
 
 def get_titlecase_from_ns(ns: str) -> str:
-    if ns == 'abstracten':
-        return 'Abstracten'
+    if ns == 'proefenmeting':
+        return 'ProefEnMeting'
     elif ns == 'implementatieelement':
         return 'ImplementatieElement'
-    elif ns == 'installatie':
-        return 'Installatie'
-    elif ns == 'levenscyclus':
-        return 'Levenscyclus'
-    elif ns == 'onderdeel':
-        return 'Onderdeel'
-    elif ns == 'proefenmeting':
-        return 'ProefEnMeting'
+    elif ns is None:
+        raise ValueError(f'could not get titlecase for {ns}')
     else:
-        raise ValueError()
+        return ns.title()
 
 
 def escape_backslash(text: str) -> str:

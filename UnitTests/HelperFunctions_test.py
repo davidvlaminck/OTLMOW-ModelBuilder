@@ -153,7 +153,8 @@ def test_get_class_directory_from_ns(subtests):
         'installatie': 'Classes/Installatie',
         'levenscyclus': 'Classes/Levenscyclus',
         'onderdeel': 'Classes/Onderdeel',
-        'proefenmeting': 'Classes/ProefEnMeting'
+        'proefenmeting': 'Classes/ProefEnMeting',
+        'besluit': 'Classes/Besluit'
     }
 
     for ns, class_dir in testset.items():
@@ -161,6 +162,6 @@ def test_get_class_directory_from_ns(subtests):
             result_class_dir = get_class_directory_from_ns(ns)
             assert result_class_dir == class_dir
 
-    with subtests.test(msg='bad value'):
+    with subtests.test(msg='None'):
         with pytest.raises(ValueError):
-            get_class_directory_from_ns('bad_value')
+            get_class_directory_from_ns(None)
