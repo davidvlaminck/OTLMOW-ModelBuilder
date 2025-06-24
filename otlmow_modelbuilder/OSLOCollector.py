@@ -55,48 +55,58 @@ class OSLOCollector:
             self.relations = memory_creator.get_all_relations()
             self.general_info = memory_creator.get_general_info()
 
-    def find_attributes_by_class(self, oslo_class: OSLOClass) -> [OSLOAttribuut]:
+    def find_attributes_by_class(self, oslo_class: OSLOClass, sort_by_uri: bool = True) -> [OSLOAttribuut]:
         if oslo_class is None:
             return []
+        
+        if sort_by_uri:
+            return sorted((a for a in self.attributes if a.class_uri == oslo_class.objectUri),
+                          key=lambda a: a.objectUri)
+        return [a for a in self.attributes if a.class_uri == oslo_class.objectUri]
 
-        return sorted((a for a in self.attributes if a.class_uri == oslo_class.objectUri),
-                      key=lambda a: a.objectUri)
-
-    def find_inheritances_by_class(self, oslo_class: OSLOClass) -> [Inheritance]:
+    def find_inheritances_by_class(self, oslo_class: OSLOClass, sort_by_uri: bool = True) -> [Inheritance]:
         if oslo_class is None:
             return []
-        return self.find_inheritances_by_class_uri(oslo_class.objectUri)
+        return self.find_inheritances_by_class_uri(oslo_class.objectUri, sort_by_uri=sort_by_uri)
 
-    def find_inheritances_by_class_uri(self, oslo_class_uri: str) -> [Inheritance]:
-        if oslo_class_uri is None or oslo_class_uri == '':
+    def find_inheritances_by_class_uri(self, oslo_class_uri: str, sort_by_uri: bool = True) -> [Inheritance]:
+        if oslo_class_uri is None or not oslo_class_uri:
             return []
 
-        return sorted((i for i in self.inheritances if i.class_uri == oslo_class_uri),
+        if sort_by_uri:
+            return sorted((i for i in self.inheritances if i.class_uri == oslo_class_uri),
                       key=lambda i: i.base_uri)
+        return [i for i in self.inheritances if i.class_uri == oslo_class_uri]
 
-    def find_all_indirect_inheritances_by_class_uri(self, oslo_class_uri: str) -> [Inheritance]:
-        if oslo_class_uri is None or oslo_class_uri == '':
+    def find_all_indirect_inheritances_by_class_uri(self, oslo_class_uri: str, sort_by_uri: bool = True) -> [Inheritance]:
+        if oslo_class_uri is None or not oslo_class_uri:
+            return []
+
+        direct_inheritances = self.find_inheritances_by_class_uri(oslo_class_uri)
+        if len(direct_inheritances) == 0:
             return []
 
         inheritance_list = []
-        direct_inheritances = self.find_inheritances_by_class_uri(oslo_class_uri)
-        if len(direct_inheritances) == 0:
-            return inheritance_list
-
         inheritance_list.extend(direct_inheritances)
         for direct in direct_inheritances:
             inheritance_list.extend(self.find_all_indirect_inheritances_by_class_uri(direct.class_uri))
+        
+        if sort_by_uri:
+            return sorted(inheritance_list, key=lambda c: c.base_uri)
+        return inheritance_list
 
-        return sorted(inheritance_list, key=lambda c: c.base_uri)
-
-    def find_subclasses_uri_by_class_uri(self, oslo_class_uri: str) -> [str]:
-        if oslo_class_uri is None or oslo_class_uri == '':
+    def find_subclasses_uri_by_class_uri(self, oslo_class_uri: str, sort_by_uri: bool = True) -> [str]:
+        if oslo_class_uri is None or not oslo_class_uri:
             return []
 
-        return sorted((i.class_uri for i in self.inheritances if i.base_uri == oslo_class_uri))
+        if sort_by_uri:
+            return sorted((i.class_uri for i in self.inheritances if i.base_uri == oslo_class_uri),
+                          key=lambda uri: uri)
 
-    def find_indirect_subclasses_uri_by_class_uri(self, oslo_class_uri: str) -> [str]:
-        if oslo_class_uri is None or oslo_class_uri == '':
+        return [i.class_uri for i in self.inheritances if i.base_uri == oslo_class_uri]
+
+    def find_indirect_subclasses_uri_by_class_uri(self, oslo_class_uri: str, sort_by_uri: bool = True) -> [str]:
+        if oslo_class_uri is None or not oslo_class_uri:
             return []
 
         superclass_list = []
@@ -108,7 +118,7 @@ class OSLOCollector:
         for direct in direct_superclasses:
             superclass_list.extend(self.find_indirect_subclasses_uri_by_class_uri(direct))
 
-        return sorted(superclass_list)
+        return sorted(superclass_list) if sort_by_uri else superclass_list
 
     def find_class_by_uri(self, uri: str) -> OSLOClass:
         return next((p for p in self.classes if p.objectUri == uri), None)
@@ -116,23 +126,32 @@ class OSLOCollector:
     def find_primitive_datatype_by_uri(self, uri: str) -> OSLODatatypePrimitive:
         return next((p for p in self.primitive_datatypes if p.objectUri == uri), None)
 
-    def find_primitive_datatype_attributes_by_class_uri(self, class_uri: str) -> List[OSLODatatypePrimitiveAttribuut]:
-        return sorted((p for p in self.primitive_datatype_attributen if p.class_uri == class_uri),
-                      key=lambda p: p.objectUri)
+    def find_primitive_datatype_attributes_by_class_uri(self, class_uri: str, sort_by_uri: bool = True
+                                                        ) -> List[OSLODatatypePrimitiveAttribuut]:
+        if sort_by_uri:
+            return sorted((p for p in self.primitive_datatype_attributen if p.class_uri == class_uri),
+                          key=lambda p: p.objectUri)
+        return [p for p in self.primitive_datatype_attributen if p.class_uri == class_uri]
 
     def find_complex_datatype_by_uri(self, uri) -> OSLODatatypeComplex:
         return next((p for p in self.complex_datatypes if p.objectUri == uri), None)
 
-    def find_complex_datatype_attributes_by_class_uri(self, class_uri: str) -> List[OSLODatatypeComplexAttribuut]:
-        return sorted((p for p in self.complex_datatype_attributen if p.class_uri == class_uri),
-                      key=lambda p: p.objectUri)
+    def find_complex_datatype_attributes_by_class_uri(self, class_uri: str, sort_by_uri: bool = True
+                                                      ) -> List[OSLODatatypeComplexAttribuut]:
+        if sort_by_uri:
+            return sorted((p for p in self.complex_datatype_attributen if p.class_uri == class_uri),
+                          key=lambda p: p.objectUri)
+        return [p for p in self.complex_datatype_attributen if p.class_uri == class_uri]
 
     def find_union_datatype_by_uri(self, uri) -> OSLODatatypeUnion:
         return next((p for p in self.union_datatypes if p.objectUri == uri), None)
 
-    def find_union_datatype_attributes_by_class_uri(self, class_uri: str) -> List[OSLODatatypeUnionAttribuut]:
-        return sorted((p for p in self.union_datatype_attributen if p.class_uri == class_uri),
-                      key=lambda p: p.objectUri)
+    def find_union_datatype_attributes_by_class_uri(self, class_uri: str, sort_by_uri: bool = True
+                                                    ) -> List[OSLODatatypeUnionAttribuut]:
+        if sort_by_uri:
+            return sorted((p for p in self.union_datatype_attributen if p.class_uri == class_uri),
+                          key=lambda p: p.objectUri)
+        return [p for p in self.union_datatype_attributen if p.class_uri == class_uri]
 
     def find_enumeration_by_uri(self, uri) -> OSLOEnumeration:
         return next((p for p in self.enumerations if p.objectUri == uri), None)
@@ -143,11 +162,15 @@ class OSLOCollector:
     def find_type_link_by_uri(self, type_uri: str) -> OSLOTypeLink:
         return next((p for p in self.typeLinks if p.item_uri == type_uri), None)
 
-    def find_outgoing_relations(self, objectUri: str) -> [OSLORelatie]:
-        return sorted((r for r in self.relations if r.bron_uri == objectUri and r.bron_overerving == ''
-                       and r.doel_overerving == ''), key=lambda r: r.objectUri)
+    def find_outgoing_relations(self, objectUri: str, sort_by_uri: bool = True) -> [OSLORelatie]:
+        if sort_by_uri:
+            return sorted((r for r in self.relations if r.bron_uri == objectUri and r.bron_overerving == ''
+                           and r.doel_overerving == ''), key=lambda r: r.objectUri)
+        return [r for r in self.relations if r.bron_uri == objectUri and r.bron_overerving == ''
+                and r.doel_overerving == '']
 
-    def find_all_relations(self, objectUri: str, allow_duplicates: bool = False) -> [OSLORelatie]:
+    def find_all_relations(self, objectUri: str, allow_duplicates: bool = False, sort_by_uri: bool = True
+                           ) -> [OSLORelatie]:
         """finds all relations, given an objectUri, where the object is either the source or the target of the relation.
         allow_duplicates is relevant for unidirectional relations, as the relation would be included twice:
         once where objectUri is the source and once where objectUri is the target. If allow_duplicates is False,
@@ -155,11 +178,12 @@ class OSLOCollector:
         all_relations = [r for r in self.relations if (r.bron_uri == objectUri or r.doel_uri == objectUri)
                          and r.bron_overerving == '' and r.doel_overerving == '']
         if allow_duplicates:
-            return sorted(all_relations, key=lambda r: r.objectUri)
-        else:
-            return sorted((r for r in all_relations
-                           if r.richting == 'Unspecified' and r.bron_uri == objectUri or r.richting != 'Unspecified'),
-                          key=lambda r: r.objectUri)
+            return sorted(all_relations, key=lambda r: r.objectUri) if sort_by_uri else all_relations
+        filtered = [
+            r for r in all_relations
+            if (r.richting == 'Unspecified' and r.bron_uri == objectUri) or r.richting != 'Unspecified'
+        ]
+        return sorted(filtered, key=lambda r: r.objectUri) if sort_by_uri else filtered
 
     def query_correct_base_classes(self) -> None:
         with OSLOInMemoryCreator(self.path) as memory_creator:
@@ -169,7 +193,8 @@ class OSLOCollector:
                 print(result_uris)
                 raise NewOTLBaseClassNotImplemented()
 
-    def find_all_concrete_relations(self, objectUri: str, allow_duplicates: bool = False) -> [OSLORelatie]:
+    def find_all_concrete_relations(self, objectUri: str, allow_duplicates: bool = False, sort_by_uri: bool = True
+                                    ) -> [OSLORelatie]:
         class_ = self.find_class_by_uri(objectUri)
         if class_ is None:
             raise ValueError(f'Class with uri {objectUri} does not exist.')
@@ -180,10 +205,10 @@ class OSLOCollector:
                          and self.class_dict[r.bron_uri].abstract == 0 and self.class_dict[r.doel_uri].abstract == 0]
 
         if allow_duplicates:
-            return sorted(all_relations, key=lambda r: r.objectUri)
-        else:
-            return sorted((r for r in all_relations
-                           if (r.richting == 'Unspecified' and
-                               (r.bron_uri == objectUri or r.bron_overerving == objectUri))
-                           or r.richting != 'Unspecified'),
-                           key=lambda r: r.objectUri)
+            return sorted(all_relations, key=lambda r: r.objectUri) if sort_by_uri else all_relations
+        filtered = [
+            r for r in all_relations
+            if (r.richting == 'Unspecified' and (r.bron_uri == objectUri or r.bron_overerving == objectUri))
+            or r.richting != 'Unspecified'
+        ]
+        return sorted(filtered, key=lambda r: r.objectUri) if sort_by_uri else filtered
