@@ -201,16 +201,12 @@ class OSLOInMemoryCreator:
 
         return [OSLORelatie(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]) for row in data]
 
-    def check_on_base_classes(self):
-        data = self.perform_read_query(
-            """
+    def check_on_base_classes(self, valid_base_class_uris: list[str]) -> list[str]:
+
+        base_class_list_str = '),('.join([f"'{uri}'" for uri in valid_base_class_uris])
+        query = f"""
 WITH valid_base_classes AS (
-	VALUES ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject'),
-		('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject'),
-        ('http://purl.org/dc/terms/Agent'),
-        ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure'),
-        ('https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie'),
-        ('https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject')),    
+	VALUES ({base_class_list_str})),    
 concrete_classes AS (
 	SELECT uri AS concrete_uri
 	FROM OSLOClass o
@@ -234,5 +230,6 @@ inheritance_checks AS (
 		LEFT JOIN InternalBaseClass inh6 ON inh5.base_uri = inh6.class_uri
 		LEFT JOIN InternalBaseClass inh7 ON inh6.base_uri = inh7.class_uri)
 SELECT concrete_uri -- concrete_uri to view the list of classes that do not have a valid base class 
-FROM inheritance_checks GROUP BY 1 HAVING sum(has_valid_base) = 0;""")
+FROM inheritance_checks GROUP BY 1 HAVING sum(has_valid_base) = 0;"""
+        data = self.perform_read_query(query)
         return [] if len(data) == 0 else data[0][0]

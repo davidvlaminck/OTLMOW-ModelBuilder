@@ -40,7 +40,7 @@ class OTLModelCreator:
                           environment: str = '', include_kl_test_keuzelijst: bool = False):
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         OTLModelCreator.check_and_create_subdirectories(directory)
-        oslo_collector.query_correct_base_classes()
+        oslo_collector.query_correct_base_classes(valid_base_class_uris=settings['valid_base_class_uris'])
 
         OTLModelCreator.check_for_attributes_with_different_case(oslo_collector)
         OTLModelCreator.check_for_nested_attributes_in_classes(collector=oslo_collector,

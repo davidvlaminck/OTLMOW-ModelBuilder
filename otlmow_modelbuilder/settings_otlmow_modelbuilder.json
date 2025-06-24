@@ -5,6 +5,15 @@
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure",
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage"
     ],
+    "valid_base_class_uris" : [
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject",
+		"https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject",
+        "http://purl.org/dc/terms/Agent",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject"
+    ],
     "complex_datatype_validation_rules" : {
         "valid_uri_and_types" : {
             "https://schema.org/ContactPoint" : "DtcContactinfo",

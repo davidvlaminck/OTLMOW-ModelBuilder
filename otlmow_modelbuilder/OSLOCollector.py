@@ -185,9 +185,11 @@ class OSLOCollector:
         ]
         return sorted(filtered, key=lambda r: r.objectUri) if sort_by_uri else filtered
 
-    def query_correct_base_classes(self) -> None:
+    def query_correct_base_classes(self, valid_base_class_uris: [str] = None) -> None:
+        if valid_base_class_uris is None:
+            valid_base_class_uris = []
         with OSLOInMemoryCreator(self.path) as memory_creator:
-            result_uris = memory_creator.check_on_base_classes()
+            result_uris = memory_creator.check_on_base_classes(valid_base_class_uris=valid_base_class_uris)
             if len(result_uris) != 0:
                 print('The following classes are not using the correct base classes:')
                 print(result_uris)
