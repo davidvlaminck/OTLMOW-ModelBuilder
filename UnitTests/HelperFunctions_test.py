@@ -122,10 +122,9 @@ def test_wrap_in_quotes_error_cases(input_value, expected_exception):
         wrap_in_quotes(input_value)
 
 
-def test_get_ns_and_name_from_uri_invalid_uris():
+def test_get_ns_and_name_from_uri_Agent():
     agent_uri = 'http://purl.org/dc/terms/Agent'
-    with pytest.raises(ValueError):
-        get_ns_and_name_from_uri(agent_uri)
+    assert get_ns_and_name_from_uri(agent_uri) == ('', 'Agent')
 
 
 def test_get_ns_and_name_from_uri_valid_uris(subtests):
