@@ -202,7 +202,6 @@ class OSLOInMemoryCreator:
         return [OSLORelatie(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]) for row in data]
 
     def check_on_base_classes(self, valid_base_class_uris: list[str]) -> list[str]:
-
         base_class_list_str = '),('.join([f"'{uri}'" for uri in valid_base_class_uris])
         query = f"""
 WITH valid_base_classes AS (
