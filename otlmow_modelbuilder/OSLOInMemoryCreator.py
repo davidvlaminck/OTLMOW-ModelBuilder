@@ -127,7 +127,7 @@ class OSLOInMemoryCreator:
         data = self.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
             "overerving, constraints, readonly, usagenote_nl, deprecated_version "
-            f"FROM OSLOAttributen WHERE {overerving_in_query}name <> 'typeURI' "
+            f"FROM OSLOAttributen WHERE {overerving_in_query}name <> 'typeURI' AND uri NOT LIKE '%?%' "
             f"ORDER BY uri")
 
         return [OSLOAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
