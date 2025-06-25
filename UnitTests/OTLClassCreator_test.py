@@ -92,6 +92,31 @@ def set_up_real_collector_and_creator():
     collector = OSLOCollector(file_location)
     collector.collect_all()
     creator = OTLClassCreator(collector)
+
+    collector.inheritances.append(
+        Inheritance(base_name='OTLAsset', base_uri='', class_name='', class_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject', deprecated_version=''))
+    collector.inheritances.append(
+        Inheritance(base_name='RelationInteractor', base_uri='', class_name='', class_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
+                    deprecated_version=''))
+
+    collector.inheritances.append(
+        Inheritance(base_name='OTLAsset', base_uri='', class_name='', class_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject', deprecated_version=''))
+    collector.inheritances.append(
+        Inheritance(base_name='RelationInteractor', base_uri='', class_name='', class_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject',
+                    deprecated_version=''))
+
+    collector.inheritances.append(
+        Inheritance(base_name='DavieRelatieAttributes', base_uri='', class_name='', class_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject',
+                    deprecated_version=''))
+    collector.inheritances.append(
+        Inheritance(base_name='OTLObject', base_uri='', class_name='', class_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject', deprecated_version=''))
+
+    collector.inheritances.append(
+        Inheritance(base_name='RelationInteractor', base_uri='', class_name='', class_uri='http://purl.org/dc/terms/Agent',
+                    deprecated_version=''))
+    collector.inheritances.append(
+        Inheritance(base_name='OTLObject', base_uri='', class_name='', class_uri='http://purl.org/dc/terms/Agent', deprecated_version=''))
+
     return collector, creator
 
 
@@ -208,10 +233,9 @@ def test_CheckInheritances_Agent():
     agent = collector.find_class_by_uri('http://purl.org/dc/terms/Agent')
     data_to_write = creator.create_blocks_to_write_from_classes(agent, valid_uri_and_types={
         "http://purl.org/dc/terms/Agent": "Agent",
-        "https://schema.org/ContactPoint": "DtcContactinfo",
-        "https://schema.org/OpeningHoursSpecification": "DtcOpeningsurenSpecificatie"
+        "https://schema.org/ContactPoint" : "DtcContactinfo",
     })
-    inheritance_line = 'class Agent(OTLObject, RelationInteractor):'
+    inheritance_line = 'class Agent(RelationInteractor, OTLObject):'
 
     assert data_to_write[11] == inheritance_line
 
@@ -222,7 +246,7 @@ def test_CheckInheritances_AIMObject():
     aim_object = collector.find_class_by_uri(
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject')
     data_to_write = creator.create_blocks_to_write_from_classes(aim_object)
-    inheritance_line = 'class AIMObject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):'
+    inheritance_line = 'class AIMObject(OTLAsset, RelationInteractor, AIMDBStatus, AIMToestand):'
 
     assert data_to_write[16] == inheritance_line
 
@@ -233,7 +257,7 @@ def test_CheckInheritances_RelatieObject():
     relatie_object = collector.find_class_by_uri(
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject')
     data_to_write = creator.create_blocks_to_write_from_classes(relatie_object)
-    inheritance_line = 'class RelatieObject(AIMDBStatus, DavieRelatieAttributes, OTLObject):'
+    inheritance_line = 'class RelatieObject(DavieRelatieAttributes, OTLObject, AIMDBStatus):'
 
     assert data_to_write[10] == inheritance_line
 
@@ -244,7 +268,7 @@ def test_CheckInheritances_DerdenObject():
     derdenobject = collector.find_class_by_uri(
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject')
     data_to_write = creator.create_blocks_to_write_from_classes(derdenobject)
-    inheritance_line = 'class Derdenobject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):'
+    inheritance_line = 'class Derdenobject(OTLAsset, RelationInteractor, AIMDBStatus, AIMToestand):'
 
     assert data_to_write[14] == inheritance_line
 

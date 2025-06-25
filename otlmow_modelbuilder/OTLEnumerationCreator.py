@@ -34,43 +34,69 @@ class KeuzelijstWaarde:
 class OTLEnumerationCreator(AbstractDatatypeCreator):
     default_environment = 'prd'
     graph_dict: Dict[str, Dict[str, Graph]] = {'prd': {}, 'tei': {}, 'dev': {}, 'aim': {}}
-    oslo_github_branch_mapping = {
-        'prd': 'master',
-        'tei': 'test',
-        'dev': 'dev',
-        'aim': 'aim'
-    }
 
-    def __init__(self, oslo_collector: OSLOCollector, env: str = default_environment, 
-                 include_kl_test_keuzelijst: bool = False):
+    def __init__(self, oslo_collector: OSLOCollector, enumeration_locations_by_environment: Dict[str, list[str]],
+                 env: str = default_environment, include_kl_test_keuzelijst: bool = False):
         super().__init__(oslo_collector)
         self.oslo_collector = oslo_collector
         self.env = env
         self.include_kl_test_keuzelijst = include_kl_test_keuzelijst
+        self.enumeration_locations_by_environment = enumeration_locations_by_environment
+        self.temp_dir = Path(__file__).parent / 'temp'
         logging.info("Created an instance of OTLEnumerationCreator")
 
     def __enter__(self):
-        self.path_zip_file = Path(__file__).parent / "all.ttl.zip"
-        self.path_ttl_file = Path(__file__).parent / "all.ttl"
+        if self.temp_dir.exists():
+            for file in self.temp_dir.iterdir():
+                file.unlink()
+            self.temp_dir.rmdir()
+        if not self.temp_dir.exists():
+            self.temp_dir.mkdir(parents=True, exist_ok=True)
+
+        self.download_and_unzip_files()
+        logging.info("Downloaded and unzipped the enumerations ttl files")
+
         if self.env != 'unittest':
-            self.graph_dict[self.env] = self.download_unzip_and_parse_to_dict(env=self.env)
-            logging.info("Downloaded, unzipped and parsed the enumerations ttl file")
+            graph = self.parse_files_in_dir_to_graph(directory=self.temp_dir)
+            self.graph_dict[self.env] = self.parse_graph_to_dict(graph=graph)
+            logging.info("parsed the enumerations ttl file")
         if self.include_kl_test_keuzelijst:
             self.add_kl_test_keuzelijst(env=self.env)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.path_zip_file.exists():
-            self.path_zip_file.unlink()
-        if self.path_ttl_file.exists():
-            self.path_ttl_file.unlink()
+        if self.temp_dir.exists():
+            for file in self.temp_dir.iterdir():
+                file.unlink()
+            self.temp_dir.rmdir()
+
+    def download_and_unzip_files(self):
+        download_locations = self.enumeration_locations_by_environment.get(self.env, [])
+        download_locations.extend(self.enumeration_locations_by_environment.get('all', []))
+        for index, location in enumerate(download_locations):
+            if not location.endswith('.zip') and not location.endswith('.ttl'):
+                raise ValueError(f"Invalid enumeration location: {location}. Expected a .zip or .ttl file.")
+
+            zip_file = False
+            if location.endswith('.ttl'):
+                location_local_path = self.temp_dir / f'enumerations_{index}.ttl'
+            else:
+                zip_file = True
+                location_local_path = self.temp_dir / f'enumerations_{index}.zip'
+
+            urlretrieve(location, location_local_path)
+            if zip_file:
+                with ZipFile(location_local_path) as zip_ref:
+                    zip_ref.extractall(self.temp_dir)
 
     def add_kl_test_keuzelijst(self, env):
-        kl_test_keuzelijst_path = Path(__file__ ).parent.parent / 'UnitTests/KlTestKeuzelijst.ttl'
+        kl_test_keuzelijst_path = Path(__file__ ).parent.parent / 'UnitTests/kl_testkeuzelijst/KlTestKeuzelijst.ttl'
         if not kl_test_keuzelijst_path.exists():
-            url = 'https://raw.githubusercontent.com/davidvlaminck/OTLMOW-ModelBuilder/refs/heads/master/UnitTests/KlTestKeuzelijst.ttl'
+            url = ('https://raw.githubusercontent.com/davidvlaminck/OTLMOW-ModelBuilder/refs/heads/master/UnitTests'
+                   '/kl_testkeuzelijst/KlTestKeuzelijst.ttl')
             urlretrieve(url, kl_test_keuzelijst_path)
-        self.graph_dict[env].update(self.parse_graph_to_dict(path_ttl_file=kl_test_keuzelijst_path))
+        graph = self.parse_files_in_dir_to_graph(directory=kl_test_keuzelijst_path.parent)
+        self.graph_dict[env].update(self.parse_graph_to_dict(graph=graph))
 
     def create_block_to_write_from_enumerations(self, oslo_enumeration: OSLOEnumeration, enumeration_validation_rules,
                                                 environment: str = default_environment) -> [str]:
@@ -160,31 +186,29 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             return keuzelijst_graph
         raise ValueError(f"Graph for {keuzelijstnaam} not found in the graph_dict")
 
-    def download_unzip_and_parse_to_dict(self, env: str = default_environment) -> Dict[str, Graph]:
-        directory_to_extract_to = self.path_zip_file.parent
-        urlretrieve(f"https://github.com/Informatievlaanderen/OSLO-codelistgenerated/raw/refs/heads/wegenenverkeer-{self.oslo_github_branch_mapping[env]}/all.ttl.zip", self.path_zip_file)
-        with ZipFile(self.path_zip_file) as zip_ref:
-            zip_ref.extractall(directory_to_extract_to)
-
-        return self.parse_graph_to_dict(path_ttl_file=self.path_ttl_file)
+    @staticmethod
+    def parse_files_in_dir_to_graph(directory: Path) -> Graph:
+        g = Graph()
+        for file in directory.glob('**/*.ttl'):
+            if file.is_file():
+                g.parse(file, format='turtle')
+        return g
 
     @staticmethod
-    def parse_graph_to_dict(path_ttl_file: Path) -> Dict[str, Graph]:
-        g = rdflib.Graph()
-        g.parse(path_ttl_file, format="turtle")
-
+    def parse_graph_to_dict(graph: Graph) -> Dict[str, Graph]:
         keuzelijst_dict = {}
-        keuzelijst_uris = set(g.subjects(predicate=RDF.type, object=URIRef('http://www.w3.org/2004/02/skos/core#ConceptScheme')))
+        keuzelijst_uris = set(graph.subjects(predicate=RDF.type, object=URIRef(
+            'http://www.w3.org/2004/02/skos/core#ConceptScheme')))
 
         for keuzelijst_uri in keuzelijst_uris:
             keuzelijst_graph = Graph()
-            for triple in g.triples((keuzelijst_uri, None, None)):
+            for triple in graph.triples((keuzelijst_uri, None, None)):
                 keuzelijst_graph.add(triple)
 
-            keuzelijst_waarde_uris = g.subjects(predicate=URIRef('http://www.w3.org/2004/02/skos/core#inScheme'),
+            keuzelijst_waarde_uris = graph.subjects(predicate=URIRef('http://www.w3.org/2004/02/skos/core#inScheme'),
                                                 object=keuzelijst_uri)
             for keuzelijst_waarde_uri in keuzelijst_waarde_uris:
-                for triple in g.triples((keuzelijst_waarde_uri, None, None)):
+                for triple in graph.triples((keuzelijst_waarde_uri, None, None)):
                     keuzelijst_graph.add(triple)
 
             keuzelijst_dict[str(keuzelijst_uri)] = keuzelijst_graph
@@ -268,4 +292,5 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
          rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#ConceptScheme')))
 
         self.graph_dict[env][uri] = g
-        warnings.warn(f'Graph was not found in the graph_dict. Created an empty graph for {uri}.', RuntimeWarning)
+        warnings.warn(f'Graph was not found in the graph_dict. Created an empty graph for {uri}.',
+                      category=RuntimeWarning)

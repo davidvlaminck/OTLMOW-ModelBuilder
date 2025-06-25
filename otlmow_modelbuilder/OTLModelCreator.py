@@ -62,6 +62,7 @@ class OTLModelCreator:
         OTLModelCreator.create_enumerations(
             directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
             enumeration_validation_rules=settings['enumeration_validation_rules'],
+            enumeration_locations_by_environment=settings['enumeration_locations_by_environment'],
             include_kl_test_keuzelijst=include_kl_test_keuzelijst)
         class_validation_settings = settings['complex_datatype_validation_rules']['valid_uri_and_types']
         class_validation_settings.update(settings['class_validation_rules']['valid_uri_and_types'])
@@ -156,11 +157,12 @@ class OTLModelCreator:
                 logging.error(f"Could not create a class for {union_datatype.name}")
 
     @staticmethod
-    def create_enumerations(directory, oslo_collector, enumeration_validation_rules, environment: str = '',
-                            include_kl_test_keuzelijst: bool = False):
+    def create_enumerations(directory, oslo_collector, enumeration_validation_rules,
+                            enumeration_locations_by_environment: Dict[str, list[str]],
+                            include_kl_test_keuzelijst: bool = False, environment: str = 'prd'):
         with OTLEnumerationCreator(oslo_collector, env=environment,
-                                        include_kl_test_keuzelijst=include_kl_test_keuzelijst) as creator:
-
+                                   enumeration_locations_by_environment=enumeration_locations_by_environment,
+                                   include_kl_test_keuzelijst=include_kl_test_keuzelijst) as creator:
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 futures = {executor.submit(OTLModelCreator.create_enumeration, creator=creator, directory=directory,
                                            enumeration=enumeration, environment=environment,

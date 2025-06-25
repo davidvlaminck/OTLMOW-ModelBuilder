@@ -38,9 +38,7 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
 
 
     otl_subset_location_no_double_kard = base_dir / 'OTL_AllCasesTestClass_no_double_kard.db'
-    paths_to_create_test_class_no_double_kard = [
-
-    ]
+    paths_to_create_test_class_no_double_kard = []
 
     for path in paths_to_create_test_class_no_double_kard:
         with subtests.test(msg=f'Creating testclasses for {path}'):

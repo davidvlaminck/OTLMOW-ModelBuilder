@@ -83,9 +83,10 @@ def create_test_enumeration_creator() -> OTLEnumerationCreator:
 
 
 def test_parse_graph_to_dict_all_test_ttl():
+    all_test_dir = Path(__file__).parent / 'all_test'
     current_dir = Path(__file__).parent
-    file_location = Path(current_dir) / 'all_test.ttl'
-    graph_dict = OTLEnumerationCreator.parse_graph_to_dict(file_location)
+    test_graph = OTLEnumerationCreator.parse_files_in_dir_to_graph(directory=all_test_dir)
+    graph_dict = OTLEnumerationCreator.parse_graph_to_dict(test_graph)
 
     assert len(graph_dict) == 2
     assert 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAIMToestand' in graph_dict
@@ -106,7 +107,7 @@ def test_parse_graph_to_dict_all_test_ttl():
 
 def test_InvalidOSLOEnumerationEmptyUri():
     collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
-    with OTLEnumerationCreator(collector, env='unittest') as creator:
+    with OTLEnumerationCreator(collector, env='unittest', enumeration_locations_by_environment={}) as creator:
         oslo_enumeration = OSLOEnumeration(name='name', objectUri='', definition='', label='', usagenote='',
                                            deprecated_version='', codelist='')
 
@@ -118,7 +119,7 @@ def test_InvalidOSLOEnumerationEmptyUri():
 
 def test_InvalidOSLOEnumerationBadUri():
     collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
-    with OTLEnumerationCreator(collector, env='unittest') as creator:
+    with OTLEnumerationCreator(collector, env='unittest', enumeration_locations_by_environment={}) as creator:
         oslo_enumeration = OSLOEnumeration(name='name', objectUri='Bad objectUri', definition='', label='',
                                            usagenote='', deprecated_version='', codelist='')
 
@@ -130,7 +131,7 @@ def test_InvalidOSLOEnumerationBadUri():
 
 def test_InvalidOSLOEnumerationEmptyName():
     collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
-    with OTLEnumerationCreator(collector, env='unittest') as creator:
+    with OTLEnumerationCreator(collector, env='unittest', enumeration_locations_by_environment={}) as creator:
         oslo_enumeration = OSLOEnumeration(
             name='', definition='', label='', usagenote='', deprecated_version='', codelist='',
             objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrd')
@@ -144,7 +145,7 @@ def test_InvalidOSLOEnumerationEmptyName():
 def test_InValidType():
     bad_primitive = True
     collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
-    with OTLEnumerationCreator(collector, env='unittest') as creator:
+    with OTLEnumerationCreator(collector, env='unittest', enumeration_locations_by_environment={}) as creator:
         with pytest.raises(ValueError) as exception_bad_name:
             creator.create_block_to_write_from_enumerations(
                 bad_primitive, enumeration_validation_rules=enumeration_validation_rules)
@@ -161,8 +162,9 @@ def set_up() -> OSLOCollector:
 
 def test_KlTestKeuzelijst():
     collector = set_up()
-    with OTLEnumerationCreator(collector, env='unittest') as creator:
-        creator.graph_dict['prd'] = creator.parse_graph_to_dict(Path(__file__).parent / 'KlTestKeuzelijst.ttl')
+    with OTLEnumerationCreator(collector, env='unittest', enumeration_locations_by_environment={}) as creator:
+        test_graph = creator.parse_files_in_dir_to_graph(directory=Path(__file__).parent)
+        creator.graph_dict['prd'] = creator.parse_graph_to_dict(test_graph)
 
         kl_test_keuzelijst = collector.find_enumeration_by_uri(
             'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#KlTestKeuzelijst')
@@ -174,8 +176,9 @@ def test_KlTestKeuzelijst():
 
 def test_get_keuzelijstwaardes_by_name():
     collector = set_up()
-    with OTLEnumerationCreator(collector, env='unittest') as creator:
-        creator.graph_dict['prd'] = creator.parse_graph_to_dict(Path(__file__).parent / 'KlTestKeuzelijst.ttl')
+    with OTLEnumerationCreator(collector, env='unittest', enumeration_locations_by_environment={}) as creator:
+        test_graph = creator.parse_files_in_dir_to_graph(directory=Path(__file__).parent)
+        creator.graph_dict['prd'] = creator.parse_graph_to_dict(test_graph)
         keuzelijst = collector.find_enumeration_by_uri(
             'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#KlTestKeuzelijst')
         keuzelijst_waarden = creator.get_keuzelijstwaardes_by_uri(keuzelijst.codelist)
@@ -219,8 +222,9 @@ def test_get_keuzelijstwaardes_from_graph_new_format():
 
 def test_get_adms_status_for_options():
     collector = set_up()
-    with OTLEnumerationCreator(collector, env='unittest') as creator:
-        creator.graph_dict['prd'] = creator.parse_graph_to_dict(Path(__file__).parent / 'KlTestKeuzelijst.ttl')
+    with OTLEnumerationCreator(collector, env='unittest', enumeration_locations_by_environment={}) as creator:
+        test_graph = creator.parse_files_in_dir_to_graph(directory=Path(__file__).parent)
+        creator.graph_dict['prd'] = creator.parse_graph_to_dict(test_graph)
         keuzelijst = collector.find_enumeration_by_uri(
             'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#KlTestKeuzelijst')
         keuzelijst_waarden = creator.get_keuzelijstwaardes_by_uri(keuzelijst.codelist)
