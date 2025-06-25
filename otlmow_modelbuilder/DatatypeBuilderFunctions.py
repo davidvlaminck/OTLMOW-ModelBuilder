@@ -9,7 +9,7 @@ def get_single_field_from_type_uri(field_type: str):
         return ''
     elif field_type == 'http://www.w3.org/2001/XMLSchema#decimal':
         return 'FloatOrDecimalField'
-    elif field_type == 'http://www.w3.org/2001/XMLSchema#string':
+    elif field_type in {'http://www.w3.org/2001/XMLSchema#string', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString'}:
         return 'StringField'
     elif field_type == 'http://www.w3.org/2001/XMLSchema#boolean':
         return 'BooleanField'
@@ -74,10 +74,10 @@ def get_attributen_by_type_field(oslo_collector, type_field, oslo_datatype):
 
 
 def get_type_name_of_complex_attribuut(type_uri: str, valid_uri_and_types):
-    if '/ns/' in type_uri or type_uri.startswith('http://www.w3.org/2001/XMLSchema#'):
-        return type_uri[type_uri.find('#') + 1::]
     if type_uri in valid_uri_and_types.keys():
         return valid_uri_and_types[type_uri]
+    if '/ns/' in type_uri or type_uri.startswith('http://www.w3.org/2001/XMLSchema#'):
+        return type_uri[type_uri.find('#') + 1::]
 
     raise NotImplementedError(f"get_type_name_of_complex_attribuut fails to get typename from {type_uri}")
 

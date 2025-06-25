@@ -178,6 +178,9 @@ def write_to_file(filename, directory: str, data_to_write: List[str], relative_p
     else:
         base_dir = relative_path
     path = f"{base_dir}/{directory}/{filename}.py"
+    dir_path = f"{base_dir}/{directory}"
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
 
     with open(path, write_mode, encoding='utf-8') as file:
         for line in data_to_write:
