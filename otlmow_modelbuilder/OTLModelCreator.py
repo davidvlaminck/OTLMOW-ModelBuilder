@@ -43,6 +43,9 @@ class OTLModelCreator:
         OTLModelCreator.check_and_create_subdirectories(directory)
         oslo_collector.query_correct_base_classes(valid_base_class_uris=settings['valid_base_class_uris'])
 
+        OTLModelCreator.add_inheritances(oslo_collector=oslo_collector,
+                                         additional_inheritances=settings['additional_inheritances'])
+
         OTLModelCreator.check_for_attributes_with_different_case(
             oslo_collector, attributes_with_different_cases_uris=settings['attributes_with_different_cases_uris'])
         OTLModelCreator.check_for_nested_attributes_in_classes(
@@ -517,3 +520,9 @@ class OTLModelCreator:
             class_name = 'VKS'
         return class_name
 
+    @classmethod
+    def add_inheritances(cls, oslo_collector: OSLOCollector, additional_inheritances: [dict]):
+        for inh in additional_inheritances:
+            oslo_collector.inheritances.append(
+                Inheritance(base_name=inh['base_name'], base_uri=inh['base_uri'], class_name=inh['class_name'],
+                            class_uri=inh['class_uri'], deprecated_version=''))

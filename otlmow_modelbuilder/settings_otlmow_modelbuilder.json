@@ -127,5 +127,79 @@
         "valid_uri_and_types" : {},
         "valid_regexes" : [
             "^https://wegenenverkeer.data.vlaanderen.be/ns/.+"]
-    }
+    },
+    "additional_inheritances": [
+        {
+            "base_name": "RelationInteractor",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelationInteractor",
+            "class_name": "AIMObject",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject"
+        },
+        {
+            "base_name": "OTLAsset",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#OTLAsset",
+            "class_name": "AIMObject",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject"
+        },
+        {
+            "base_name": "RelationInteractor",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelationInteractor",
+            "class_name": "Derdenobject",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject"
+        },
+        {
+            "base_name": "OTLAsset",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#OTLAsset",
+            "class_name": "Derdenobject",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject"
+        },
+        {
+            "base_name": "DavieRelatieAttributes",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DavieRelatieAttributes",
+            "class_name": "RelatieObject",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject"
+        },
+        {
+            "base_name": "OTLObject",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#OTLObject",
+            "class_name": "RelatieObject",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject"
+        },
+        {
+            "base_name": "RelationInteractor",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelationInteractor",
+            "class_name": "Toegangsprocedure",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure"
+        },
+        {
+            "base_name": "OTLObject",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#OTLObject",
+            "class_name": "Toegangsprocedure",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure"
+        },
+        {
+            "base_name": "RelationInteractor",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelationInteractor",
+            "class_name": "AbstracteAanvullendeGeometrie",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie"
+        },
+        {
+            "base_name": "OTLObject",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#OTLObject",
+            "class_name": "AbstracteAanvullendeGeometrie",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie"
+        },
+        {
+            "base_name": "RelationInteractor",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelationInteractor",
+            "class_name": "Agent",
+            "class_uri": "http://purl.org/dc/terms/Agent"
+        },
+        {
+            "base_name": "OTLObject",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#OTLObject",
+            "class_name": "Agent",
+            "class_uri": "http://purl.org/dc/terms/Agent"
+        }
+    ]
 }

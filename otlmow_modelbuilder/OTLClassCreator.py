@@ -57,31 +57,6 @@ class OTLClassCreator(AbstractDatatypeCreator):
         inheritances = self.oslo_collector.find_inheritances_by_class(oslo_class)
         list_of_geometry_types = self.get_geometry_types_from_uri(oslo_class.objectUri)
 
-        if oslo_class.objectUri in {'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
-                                    'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject'}:
-            inheritances.append(
-                Inheritance(base_name='OTLAsset', base_uri='', class_name='', class_uri='', deprecated_version=''))
-            inheritances.append(
-                Inheritance(base_name='RelationInteractor', base_uri='', class_name='', class_uri='',
-                            deprecated_version=''))
-
-        elif oslo_class.objectUri == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject':
-            inheritances.append(
-                Inheritance(base_name='DavieRelatieAttributes', base_uri='', class_name='', class_uri='',
-                            deprecated_version=''))
-            inheritances.append(
-                Inheritance(base_name='OTLObject', base_uri='', class_name='', class_uri='', deprecated_version=''))
-
-        elif oslo_class.objectUri in {
-                'http://purl.org/dc/terms/Agent',
-                'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure',
-                'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie'}:
-            inheritances.append(
-                Inheritance(base_name='OTLObject', base_uri='', class_name='', class_uri='', deprecated_version=''))
-            inheritances.append(
-                Inheritance(base_name='RelationInteractor', base_uri='', class_name='', class_uri='',
-                            deprecated_version=''))
-
         datablock = ['# coding=utf-8']
         if len(attributen) > 0:
             datablock.append('from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut')
