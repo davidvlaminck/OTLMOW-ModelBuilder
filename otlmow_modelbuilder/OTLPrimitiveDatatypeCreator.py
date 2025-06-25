@@ -15,14 +15,12 @@ class OTLPrimitiveDatatypeCreator(AbstractDatatypeCreator):
                                                    primitive_datatype_validation_rules,
                                                    model_location: str = '') -> [str]:
         if not isinstance(oslo_datatype_primitive, OSLODatatypePrimitive):
-            raise ValueError(f"Input is not a OSLODatatypePrimitive")
+            raise ValueError("Input is not a OSLODatatypePrimitive")
 
         if oslo_datatype_primitive.objectUri == '':
             raise ValueError(f"OSLODatatypePrimitive.objectUri is invalid. Value = '{oslo_datatype_primitive.objectUri}'")
 
-        if oslo_datatype_primitive.objectUri in primitive_datatype_validation_rules['valid_uri_and_types'].keys():
-            pass
-        else:
+        if oslo_datatype_primitive.objectUri not in primitive_datatype_validation_rules['valid_uri_and_types'].keys():
             match_re = False
             for regex in primitive_datatype_validation_rules["valid_regexes"]:
                 match_re = re.match(pattern=regex, string=oslo_datatype_primitive.objectUri)
@@ -40,7 +38,7 @@ class OTLPrimitiveDatatypeCreator(AbstractDatatypeCreator):
                 oslo_datatype=oslo_datatype_primitive,
                 type_field='KwantWrd',
                 model_location=model_location)
-        if '#Dte' in oslo_datatype_primitive.objectUri:
+        else:
             return self.create_block_to_write_from_complex_primitive_or_union_types(
                 oslo_datatype=oslo_datatype_primitive,
                 type_field='Primitive',

@@ -36,7 +36,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
         if oslo_class.objectUri == '':
             raise ValueError(f"OSLOClass.objectUri is invalid. Value = '{oslo_class.objectUri}'")
 
-        if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+        if oslo_class.objectUri in valid_uri_and_types.keys():
             pass
         elif not re.match(pattern="^.+/ns/.+#.+", string=oslo_class.objectUri):
             raise ValueError(f"OSLOClass.objectUri is invalid. Value = '{oslo_class.objectUri}'")

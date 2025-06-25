@@ -59,10 +59,12 @@ class OTLModelCreator:
             directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
             enumeration_validation_rules=settings['enumeration_validation_rules'],
             include_kl_test_keuzelijst=include_kl_test_keuzelijst)
+        class_validation_settings = settings['complex_datatype_validation_rules']['valid_uri_and_types']
+        class_validation_settings.update(settings['class_validation_rules']['valid_uri_and_types'])
         OTLModelCreator.create_classes(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             geo_artefact_collector=geo_artefact_collector,
-            valid_uri_and_types=settings['complex_datatype_validation_rules']['valid_uri_and_types'])
+            valid_uri_and_types=class_validation_settings)
         if include_legacy:
             oslo_collector = OTLModelCreator.create_legacy_classes(oslo_collector=oslo_collector,
                 directory=directory / 'OtlmowModel', legacy_types_path=Path(__file__).parent / 'legacy_types.csv')
@@ -84,6 +86,7 @@ class OTLModelCreator:
                                            'http://www.w3.org/2001/XMLSchema#date',
                                            'http://www.w3.org/2001/XMLSchema#nonNegativeInteger',
                                            'http://www.w3.org/2001/XMLSchema#string',
+                                           'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString',
                                            'http://www.w3.org/2001/XMLSchema#boolean',
                                            'http://www.w3.org/2001/XMLSchema#anyURI']:
                 logging.info(f"Skip creating class for {prim_datatype.name}")
@@ -354,7 +357,7 @@ class OTLModelCreator:
         # remove attributes that are known to be different
         known_list = ['basisoppervlakte', 'ipadres', 'risicoanalyse', 'technischefiche', 'opstelhoogte',
                       'buitendiameter', 'dnsnaam', 'funderingsaanzetonderdebodemvandewaterweg', 'binnendiameter',
-                      'netwerktype', 'beschoeiingslengte', 'softwareversie', 'folietype', 'lamptype']
+                      'netwerktype', 'beschoeiingslengte', 'softwareversie', 'folietype', 'kaartvoorstelling']
         for known in known_list:
             if known in problems:
                 del problems[known]

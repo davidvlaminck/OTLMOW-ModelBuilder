@@ -34,10 +34,8 @@ class AbstractDatatypeCreator(ABC):
                                                                       valid_uri_and_types=valid_uri_and_types,
                                                                       list_to_start_from=list_fields_to_start_with)
         base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
-                       'IntegerField',
-                       'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField', 'NonNegIntegerField',
-                       'TimeField',
-                       'StringField', 'UnionWaarden']
+                       'IntegerField', 'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField', 
+                       'NonNegIntegerField', 'TimeField', 'StringField', 'UnionWaarden']
         for module in list_of_fields:
             if module not in base_fields:
                 datablock.append(f'from ..Datatypes.{module} import {module}')

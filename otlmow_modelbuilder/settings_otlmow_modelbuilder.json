@@ -25,15 +25,30 @@
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject",
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject"
     ],
+    "class_validation_rules" : {
+        "valid_uri_and_types" : {
+            "http://purl.org/dc/terms/Agent": "Agent",
+            "http://www.w3.org/2004/02/skos/core#Concept": "Concept",
+            "https://www.w3.org/2004/02/skos/core#ConceptScheme": "Codelijst"
+        },
+        "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
+    },
     "complex_datatype_validation_rules" : {
         "valid_uri_and_types" : {
+            "http://data.europa.eu/m8g/PeriodOfTime": "DtcPeriode",
+            "https://schema.org/OpeningHoursSpecification" : "DtcOpeningsurenSpecificatie",
+            "http://www.w3.org/ns/locn#Geometry": "DtcGeometrie",
+            "http://www.cidoc-crm.org/cidoc-crm/E54_Dimension": "DtcDimensie",
+            "https://schema.org/Schedule": "DtcTijdschema",
             "https://schema.org/ContactPoint" : "DtcContactinfo",
-            "https://schema.org/OpeningHoursSpecification" : "DtcOpeningsurenSpecificatie"
+            "https://w3id.org/tribont/core#Shape": "DtcVorm"
         },
         "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
     },
     "primitive_datatype_validation_rules" : {
-        "valid_uri_and_types" : {},
+        "valid_uri_and_types" : {
+            "http://data.europa.eu/m8g/PeriodOfTime": "PeriodOfTime"
+        },
         "valid_regexes" : [
             "^http://www.w3.org/200.+",
             "^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dte.+",
