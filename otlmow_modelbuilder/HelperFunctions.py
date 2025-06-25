@@ -10,7 +10,23 @@ def get_ns_and_name_from_uri(object_uri) -> tuple[str, str]:
 
     short_uri = object_uri.split('/ns/')[1]
     short_uri_array = short_uri.split('#')
-    return short_uri_array[0], short_uri_array[1]
+    ns, name = short_uri_array[0], short_uri_array[1]
+    if object_uri.startswith('https://lgc'):
+        if '.' in name:
+            name = name.replace('.', '_')
+        if '-' in name:
+            name = name.replace('-', '_')
+        if name == "RIS":
+            name = "RISLegacy"
+        elif name == 'Fietstel':
+            name = 'FietstelLegacy'
+        elif name == 'Brug':
+            name = 'BeweegbareBrug'
+        elif name == 'Voedingskeuzeschakelaar':
+            name = 'VKS'
+        return 'legacy', name
+    return ns, name
+
 
 
 def get_class_directory_from_ns(ns) -> str:

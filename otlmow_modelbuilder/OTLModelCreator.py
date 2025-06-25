@@ -43,7 +43,8 @@ class OTLModelCreator:
         OTLModelCreator.check_and_create_subdirectories(directory)
         oslo_collector.query_correct_base_classes(valid_base_class_uris=settings['valid_base_class_uris'])
 
-        OTLModelCreator.check_for_attributes_with_different_case(oslo_collector)
+        OTLModelCreator.check_for_attributes_with_different_case(
+            oslo_collector, attributes_with_different_cases_uris=settings['attributes_with_different_cases_uris'])
         OTLModelCreator.check_for_nested_attributes_in_classes(
             collector=oslo_collector, known_attribute_uris=settings['nested_list_attribute_uris'])
         OTLModelCreator.create_primitive_datatypes(
@@ -336,7 +337,7 @@ class OTLModelCreator:
                 OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)
 
     @classmethod
-    def check_for_attributes_with_different_case(cls, oslo_collector):
+    def check_for_attributes_with_different_case(cls, oslo_collector, attributes_with_different_cases_uris: [str]):
         lower_case_names = [d.name.lower() for d in oslo_collector.attributes]
         # find names that are identical when case-insensitive
         unique_lower_case_names = set(lower_case_names)
@@ -354,13 +355,14 @@ class OTLModelCreator:
 
         problems = {k: list(v) for k, v in problems.items()}
 
-        # remove attributes that are known to be different
-        known_list = ['basisoppervlakte', 'ipadres', 'risicoanalyse', 'technischefiche', 'opstelhoogte',
-                      'buitendiameter', 'dnsnaam', 'funderingsaanzetonderdebodemvandewaterweg', 'binnendiameter',
-                      'netwerktype', 'beschoeiingslengte', 'softwareversie', 'folietype', 'kaartvoorstelling']
-        for known in known_list:
-            if known in problems:
-                del problems[known]
+        for k, uri_list in problems.items():
+            for uri in tuple(uri_list):
+                if uri in attributes_with_different_cases_uris:
+                    problems[k].remove(uri)
+
+        for k in list(problems.keys()):
+            if len(problems[k]) == 0:
+                del problems[k]
 
         if problems:
             raise NotImplementedError(f'Found attributes with different case:\n{json.dumps(problems, indent=4)}')
