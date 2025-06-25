@@ -207,6 +207,7 @@ def test_CheckInheritances_Agent():
 
     agent = collector.find_class_by_uri('http://purl.org/dc/terms/Agent')
     data_to_write = creator.create_blocks_to_write_from_classes(agent, valid_uri_and_types={
+        "http://purl.org/dc/terms/Agent": "Agent",
         "https://schema.org/ContactPoint": "DtcContactinfo",
         "https://schema.org/OpeningHoursSpecification": "DtcOpeningsurenSpecificatie"
     })

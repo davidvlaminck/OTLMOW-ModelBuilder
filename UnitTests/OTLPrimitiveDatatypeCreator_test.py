@@ -79,16 +79,43 @@ def test_InValidType():
     assert str(exception_bad_name.value) == "Input is not a OSLODatatypePrimitive"
 
 
-def test_ValidOSLODatatypePrimitiveButNoResult():
+def test_ValidOSLODatatypePrimitive():
     boolean_primitive = OSLODatatypePrimitive(name="Boolean", objectUri="http://www.w3.org/2001/XMLSchema#boolean",
                                               definition="Beschrijft een boolean volgens http://www.w3.org/2001/XMLSchema#boolean.",
                                               label="Boolean", usagenote="https://www.w3.org/TR/xmlschema-2/#boolean",
                                               deprecated_version="")
     collector = OSLOCollector(MagicMock(spec=OSLOInMemoryCreator))
+    collector.primitive_datatype_attributen = []
     creator = OTLPrimitiveDatatypeCreator(collector)
     block_to_write = creator.create_block_to_write_from_primitive_types(
         boolean_primitive, primitive_datatype_validation_rules=primitive_datatype_validation_rules)
-    assert block_to_write is None
+    assert (block_to_write ==
+            ['# coding=utf-8', 'from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut',
+             'from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField',
+             'from otlmow_model.OtlmowModel.BaseClasses.WaardenObject import WaardenObject',
+             '',
+             '',
+             '# Generated with OTLPrimitiveDatatypeCreator. To modify: extend, do not edit',
+             'class BooleanWaarden(WaardenObject):',
+             '    def __init__(self):',
+             '        WaardenObject.__init__(self)',
+             '',
+             '# Generated with OTLPrimitiveDatatypeCreator. To modify: extend, do not edit',
+             'class Boolean(OTLField):',
+             '    """Beschrijft een boolean volgens '
+             'http://www.w3.org/2001/XMLSchema#boolean."""',
+             "    naam = 'Boolean'",
+             "    label = 'Boolean'",
+             "    objectUri = 'http://www.w3.org/2001/XMLSchema#boolean'",
+             "    definition = 'Beschrijft een boolean volgens "
+             "http://www.w3.org/2001/XMLSchema#boolean.'",
+             "    usagenote = 'https://www.w3.org/TR/xmlschema-2/#boolean'",
+             '    waarde_shortcut_applicable = True',
+             '    waardeObject = BooleanWaarden',
+             '',
+             '    def __str__(self):',
+             '        return OTLField.__str__(self)',
+             ''])
 
 
 def set_up() -> OSLOCollector:

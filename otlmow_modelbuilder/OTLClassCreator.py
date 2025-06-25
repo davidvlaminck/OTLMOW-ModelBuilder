@@ -31,10 +31,13 @@ class OTLClassCreator(AbstractDatatypeCreator):
     def create_blocks_to_write_from_classes(self, oslo_class: OSLOClass, model_location='',
                                             valid_uri_and_types: Dict = None) -> [str]:
         if not isinstance(oslo_class, OSLOClass):
-            raise ValueError(f"Input is not a OSLOClass")
+            raise ValueError("Input is not a OSLOClass")
 
         if oslo_class.objectUri == '':
             raise ValueError(f"OSLOClass.objectUri is invalid. Value = '{oslo_class.objectUri}'")
+
+        if valid_uri_and_types is None:
+            valid_uri_and_types = {}
 
         if oslo_class.objectUri in valid_uri_and_types.keys():
             pass
