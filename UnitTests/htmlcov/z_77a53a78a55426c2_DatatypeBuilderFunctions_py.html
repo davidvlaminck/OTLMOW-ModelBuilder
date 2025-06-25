@@ -62,10 +62,10 @@
         <p class="text">
             <a id="prevFileLink" class="nav" href="z_77a53a78a55426c2_AbstractDatatypeCreator_py.html">&#xab; prev</a> &nbsp; &nbsp;
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
-            <a id="nextFileLink" class="nav" href="z_77a53a78a55426c2_GenericBuilderFunctions_py.html">&#xbb; next</a>
+            <a id="nextFileLink" class="nav" href="z_8c279f833f2ae37f_NestedListAttributeError_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.9.1">coverage.py v7.9.1</a>,
-            created at 2025-06-24 20:46 +0000
+            created at 2025-06-25 20:45 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -91,7 +91,7 @@
     <p class="mis show_mis"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t">        <span class="key">return</span> <span class="str">''</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t">    <span class="key">elif</span> <span class="nam">field_type</span> <span class="op">==</span> <span class="str">'http://www.w3.org/2001/XMLSchema#decimal'</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t">        <span class="key">return</span> <span class="str">'FloatOrDecimalField'</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t">    <span class="key">elif</span> <span class="nam">field_type</span> <span class="op">==</span> <span class="str">'http://www.w3.org/2001/XMLSchema#string'</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t">    <span class="key">elif</span> <span class="nam">field_type</span> <span class="key">in</span> <span class="op">{</span><span class="str">'http://www.w3.org/2001/XMLSchema#string'</span><span class="op">,</span> <span class="str">'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString'</span><span class="op">}</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t13" href="#t13">13</a></span><span class="t">        <span class="key">return</span> <span class="str">'StringField'</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t14" href="#t14">14</a></span><span class="t">    <span class="key">elif</span> <span class="nam">field_type</span> <span class="op">==</span> <span class="str">'http://www.w3.org/2001/XMLSchema#boolean'</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t15" href="#t15">15</a></span><span class="t">        <span class="key">return</span> <span class="str">'BooleanField'</span>&nbsp;</span><span class="r"></span></p>
@@ -156,10 +156,10 @@
     <p class="pln"><span class="n"><a id="t74" href="#t74">74</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t75" href="#t75">75</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t76" href="#t76">76</a></span><span class="t"><span class="key">def</span> <span class="nam">get_type_name_of_complex_attribuut</span><span class="op">(</span><span class="nam">type_uri</span><span class="op">:</span> <span class="nam">str</span><span class="op">,</span> <span class="nam">valid_uri_and_types</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t77" href="#t77">77</a></span><span class="t">    <span class="key">if</span> <span class="str">'/ns/'</span> <span class="key">in</span> <span class="nam">type_uri</span> <span class="key">or</span> <span class="nam">type_uri</span><span class="op">.</span><span class="nam">startswith</span><span class="op">(</span><span class="str">'http://www.w3.org/2001/XMLSchema#'</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t78" href="#t78">78</a></span><span class="t">        <span class="key">return</span> <span class="nam">type_uri</span><span class="op">[</span><span class="nam">type_uri</span><span class="op">.</span><span class="nam">find</span><span class="op">(</span><span class="str">'#'</span><span class="op">)</span> <span class="op">+</span> <span class="num">1</span><span class="op">:</span><span class="op">:</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t79" href="#t79">79</a></span><span class="t">    <span class="key">if</span> <span class="nam">type_uri</span> <span class="key">in</span> <span class="nam">valid_uri_and_types</span><span class="op">.</span><span class="nam">keys</span><span class="op">(</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t80" href="#t80">80</a></span><span class="t">        <span class="key">return</span> <span class="nam">valid_uri_and_types</span><span class="op">[</span><span class="nam">type_uri</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t77" href="#t77">77</a></span><span class="t">    <span class="key">if</span> <span class="nam">type_uri</span> <span class="key">in</span> <span class="nam">valid_uri_and_types</span><span class="op">.</span><span class="nam">keys</span><span class="op">(</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t78" href="#t78">78</a></span><span class="t">        <span class="key">return</span> <span class="nam">valid_uri_and_types</span><span class="op">[</span><span class="nam">type_uri</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t79" href="#t79">79</a></span><span class="t">    <span class="key">if</span> <span class="str">'/ns/'</span> <span class="key">in</span> <span class="nam">type_uri</span> <span class="key">or</span> <span class="nam">type_uri</span><span class="op">.</span><span class="nam">startswith</span><span class="op">(</span><span class="str">'http://www.w3.org/2001/XMLSchema#'</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t80" href="#t80">80</a></span><span class="t">        <span class="key">return</span> <span class="nam">type_uri</span><span class="op">[</span><span class="nam">type_uri</span><span class="op">.</span><span class="nam">find</span><span class="op">(</span><span class="str">'#'</span><span class="op">)</span> <span class="op">+</span> <span class="num">1</span><span class="op">:</span><span class="op">:</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t81" href="#t81">81</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t82" href="#t82">82</a></span><span class="t">    <span class="key">raise</span> <span class="nam">NotImplementedError</span><span class="op">(</span><span class="fst">f"</span><span class="fst">get_type_name_of_complex_attribuut fails to get typename from </span><span class="op">{</span><span class="nam">type_uri</span><span class="op">}</span><span class="fst">"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t83" href="#t83">83</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -201,10 +201,10 @@
         <p>
             <a class="nav" href="z_77a53a78a55426c2_AbstractDatatypeCreator_py.html">&#xab; prev</a> &nbsp; &nbsp;
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
-            <a class="nav" href="z_77a53a78a55426c2_GenericBuilderFunctions_py.html">&#xbb; next</a>
+            <a class="nav" href="z_8c279f833f2ae37f_NestedListAttributeError_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.9.1">coverage.py v7.9.1</a>,
-            created at 2025-06-24 20:46 +0000
+            created at 2025-06-25 20:45 +0000
         </p>
     </div>
 </footer>
