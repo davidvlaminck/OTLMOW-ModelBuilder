@@ -1,17 +1,18 @@
-import os
 from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
 import rdflib
-from rdflib import Graph, compare, URIRef
+from rdflib import Graph
 
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator, KeuzelijstWaarde
 from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
 
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+CURRENT_DIR = Path(__file__).parent
+ROOT_DIR = CURRENT_DIR.parent.parent
+
 
 expectedKeuzelijst = ['# coding=utf-8',
                       'from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstField import KeuzelijstField',
@@ -83,8 +84,7 @@ def create_test_enumeration_creator() -> OTLEnumerationCreator:
 
 
 def test_parse_graph_to_dict_all_test_ttl():
-    all_test_dir = Path(__file__).parent / 'all_test'
-    current_dir = Path(__file__).parent
+    all_test_dir = CURRENT_DIR / 'all_test'
     test_graph = OTLEnumerationCreator.parse_files_in_dir_to_graph(directory=all_test_dir)
     graph_dict = OTLEnumerationCreator.parse_graph_to_dict(test_graph)
 
@@ -93,13 +93,13 @@ def test_parse_graph_to_dict_all_test_ttl():
     assert 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/AntiParkeerpaalType' in graph_dict
 
     expected_graph_1 = Graph()
-    expected_graph_1.parse(Path(current_dir) / 'unittest_antiparkeerpaaltype_extracted.ttl', format="turtle")
+    expected_graph_1.parse(CURRENT_DIR / 'unittest_antiparkeerpaaltype_extracted.ttl', format="turtle")
     actual_graph_1 = graph_dict['https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/AntiParkeerpaalType']
 
     assert set(sorted(actual_graph_1)) == set(sorted(expected_graph_1))
 
     epxected_graph_2 = Graph()
-    epxected_graph_2.parse(Path(current_dir) / 'unittest_toestand_extracted.ttl', format="turtle")
+    epxected_graph_2.parse(CURRENT_DIR / 'unittest_toestand_extracted.ttl', format="turtle")
     actual_graph_2 = graph_dict['https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAIMToestand']
 
     assert set(sorted(actual_graph_2)) == set(sorted(epxected_graph_2))
@@ -153,8 +153,7 @@ def test_InValidType():
 
 
 def set_up() -> OSLOCollector:
-    base_dir = os.path.dirname(os.path.realpath(__file__))
-    file_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
+    file_location = CURRENT_DIR / 'OTL_AllCasesTestClass.db'
     collector = OSLOCollector(file_location)
     collector.collect_all()
     return collector
@@ -193,8 +192,7 @@ def test_get_keuzelijstwaardes_by_name():
 
 
 def test_get_keuzelijstwaardes_from_graph():
-    base_dir = os.path.dirname(os.path.realpath(__file__))
-    file_location = f'{base_dir}/KlTestKeuzelijst.ttl'
+    file_location = CURRENT_DIR / 'kl_testkeuzelijst' / 'KlTestKeuzelijst.ttl'
     g = rdflib.Graph()
     g.parse(file_location, format="turtle")
     list_values = OTLEnumerationCreator.get_keuzelijstwaardes_from_graph(g)
@@ -202,8 +200,7 @@ def test_get_keuzelijstwaardes_from_graph():
 
 
 def test_get_adm_status_from_graph():
-    base_dir = os.path.dirname(os.path.realpath(__file__))
-    file_location = f'{base_dir}/KlTestKeuzelijst.ttl'
+    file_location = CURRENT_DIR / 'kl_testkeuzelijst' / 'KlTestKeuzelijst.ttl'
     g = rdflib.Graph()
     g.parse(file_location, format="turtle")
     status = OTLEnumerationCreator.get_adm_status_from_graph(
@@ -212,8 +209,7 @@ def test_get_adm_status_from_graph():
 
 
 def test_get_keuzelijstwaardes_from_graph_new_format():
-    base_dir = os.path.dirname(os.path.realpath(__file__))
-    file_location = f'{base_dir}/new_format_ttl.ttl'
+    file_location = CURRENT_DIR / 'new_format_ttl.ttl'
     g = rdflib.Graph()
     g.parse(file_location, format="turtle")
     list_values = OTLEnumerationCreator.get_keuzelijstwaardes_from_graph(g)
