@@ -1,9 +1,20 @@
 {
-    "nested_list_class_uris" : [
-        "http://purl.org/dc/terms/Agent",
-        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene",
-        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure",
-        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage"
+    "nested_list_attribute_uris" : [
+        "http://purl.org/dc/terms/Agent.contactinfo",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#HeeftBetrokkene.specifiekeContactinfo",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure.bijlage",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage",
+        "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregelconcept.template",
+        "https://data.vlaanderen.be/ns/mobiliteit#Mobiliteitsmaatregel.tijdschema",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersbordconcept.mogelijkeVorm",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.heeftInstructie",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.buitenwerkingtreding",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.inwerkingstijd",
+        "http://schema.org/eventSchedule",
+        "https://w3id.org/isCharacterisedBy#isCharacterisedBy",
+        "https://data.vlaanderen.be/ns/mobiliteit#inwerkingstijd",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.variabele",
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.variabele"
     ],
     "valid_base_class_uris" : [
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject",

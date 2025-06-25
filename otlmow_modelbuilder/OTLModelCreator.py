@@ -14,6 +14,7 @@ from typing import Dict
 
 from tqdm import tqdm
 
+from otlmow_modelbuilder.Exceptions.NestedListAttributeError import NestedListAttributeError
 from otlmow_modelbuilder.GenericBuilderFunctions import write_to_file
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
 from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns, \
@@ -43,8 +44,8 @@ class OTLModelCreator:
         oslo_collector.query_correct_base_classes(valid_base_class_uris=settings['valid_base_class_uris'])
 
         OTLModelCreator.check_for_attributes_with_different_case(oslo_collector)
-        OTLModelCreator.check_for_nested_attributes_in_classes(collector=oslo_collector,
-                                                               known_classes_uris=settings['nested_list_class_uris'])
+        OTLModelCreator.check_for_nested_attributes_in_classes(
+            collector=oslo_collector, known_attribute_uris=settings['nested_list_attribute_uris'])
         OTLModelCreator.create_primitive_datatypes(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules'])
@@ -281,9 +282,9 @@ class OTLModelCreator:
 
     @staticmethod
     def check_for_nested_attributes_in_classes(collector: OSLOCollector, exceptions=None,
-                                               known_classes_uris: [str] = None):
-        if known_classes_uris is None:
-            known_classes_uris = []
+                                               known_attribute_uris: [str] = None):
+        if known_attribute_uris is None:
+            known_attribute_uris = []
         if exceptions is None:
             exceptions = [
                 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testComplexTypeMetKard']
@@ -308,9 +309,9 @@ class OTLModelCreator:
                 if len(nested_attrs) > 1:
                     try:
                         OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)
-                    except NotImplementedError as exc:
-                        if cl.objectUri not in known_classes_uris:
-                            raise NotImplementedError(f'found in {cl.objectUri} {attr.objectUri}') from exc
+                    except NestedListAttributeError as exc:
+                        if attr.objectUri not in known_attribute_uris:
+                            raise NestedListAttributeError(f'found in {cl.objectUri} {attr.objectUri}') from exc
 
     @staticmethod
     def check_for_nested_attributes_in_attributes(list_already_found, attributes, collector):
@@ -320,7 +321,7 @@ class OTLModelCreator:
                 list_found = True
 
             if list_found and list_already_found:
-                raise NotImplementedError(f'Found nested list attributes: {attr.objectUri}')
+                raise NestedListAttributeError(f'Found nested list attributes: {attr.objectUri}')
             nested_attrs = collector.find_complex_datatype_attributes_by_class_uri(attr.type)
             if len(nested_attrs) == 0:
                 nested_attrs = collector.find_primitive_datatype_attributes_by_class_uri(attr.type)
