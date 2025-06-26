@@ -32,7 +32,7 @@ def get_single_field_from_type_uri(field_type: str):
     elif field_type == 'http://www.w3.org/2000/01/rdf-schema#Literal':
         return 'StringField'
     else:
-        raise NotImplemented('not supported field_type in get_single_field_from_type_uri()')
+        raise NotImplementedError(f'not supported field_type in get_single_field_from_type_uri() for {field_type}')
 
 
 def get_non_single_field_from_type_uri(field_type: str, valid_uri_and_types: Dict):
