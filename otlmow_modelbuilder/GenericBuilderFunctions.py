@@ -5,6 +5,7 @@ from otlmow_modelbuilder.DatatypeBuilderFunctions import get_single_field_from_t
     get_type_name_of_complex_attribuut, get_type_name_of_union_attribuut, get_field_name_from_type_uri, \
     get_non_single_field_from_type_uri
 from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes, escape_backslash
+from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 
 
 def get_white_space_equivalent(string):
@@ -73,7 +74,7 @@ def get_type_hint_from_field(attribute, datablock, valid_uri_and_types):
     return ''
 
 
-def add_attributen_to_data_block(attributen, datablock: List[str], valid_uri_and_types: Dict, for_class_use=False,
+def add_attributen_to_data_block(attributen: [OSLOAttribuut], datablock: List[str], valid_uri_and_types: Dict, for_class_use=False,
                                  type_field=''):
     prop_datablock = []
     for attribuut in sorted(attributen, key=lambda a: a.name):
