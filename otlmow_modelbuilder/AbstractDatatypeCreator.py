@@ -54,7 +54,8 @@ class AbstractDatatypeCreator(ABC):
             datablock.append('    def __init__(self):')
             datablock.append('        WaardenObject.__init__(self)')
 
-        add_attributen_to_data_block(attributen=attributen, datablock=datablock, type_field=type_field, valid_uri_and_types=valid_uri_and_types)
+        add_attributen_to_data_block(oslo_collector=self.oslo_collector, attributen=attributen, datablock=datablock,
+                                     type_field=type_field, valid_uri_and_types=valid_uri_and_types)
 
         if type_field == 'Primitive' or type_field == 'KwantWrd':
             type_field = 'OTL'

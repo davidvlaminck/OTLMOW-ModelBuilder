@@ -143,6 +143,18 @@
         {
             "base_name": "RelationInteractor",
             "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelationInteractor",
+            "class_name": "VLAGAIMObject",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject"
+        },
+        {
+            "base_name": "OTLAsset",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#OTLAsset",
+            "class_name": "VLAGAIMObject",
+            "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject"
+        },
+        {
+            "base_name": "RelationInteractor",
+            "base_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelationInteractor",
             "class_name": "AIMObject",
             "class_uri": "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject"
         },

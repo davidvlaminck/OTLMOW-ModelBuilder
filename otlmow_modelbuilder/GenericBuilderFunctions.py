@@ -3,8 +3,9 @@ from typing import List, Dict
 
 from otlmow_modelbuilder.DatatypeBuilderFunctions import get_single_field_from_type_uri, get_type_link_from_attribuut, \
     get_type_name_of_complex_attribuut, get_type_name_of_union_attribuut, get_field_name_from_type_uri, \
-    get_non_single_field_from_type_uri
+    get_non_single_field_from_type_uri, get_field_name_by_type_uri
 from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes, escape_backslash
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 
 
@@ -35,8 +36,8 @@ def cardinality_check(attribute, type_string, datablock):
         return type_string
 
 
-def get_type_hint_from_field(attribute, datablock, valid_uri_and_types):
-    field_name = get_single_field_from_type_uri(attribute.type)
+def get_type_hint_from_field(oslo_collector, attribute, datablock, valid_uri_and_types):
+    field_name = get_field_name_by_type_uri(oslo_collector, attribute.type)
     if field_name == 'StringField' or field_name == 'URIField':
         return f' -> {cardinality_check(attribute, "str", datablock)}'
     elif field_name == 'FloatOrDecimalField':
@@ -74,15 +75,15 @@ def get_type_hint_from_field(attribute, datablock, valid_uri_and_types):
     return ''
 
 
-def add_attributen_to_data_block(attributen: [OSLOAttribuut], datablock: List[str], valid_uri_and_types: Dict, for_class_use=False,
-                                 type_field=''):
+def add_attributen_to_data_block(oslo_collector: OSLOCollector, attributen: [OSLOAttribuut], datablock: List[str],
+                                 valid_uri_and_types: Dict, for_class_use=False, type_field=''):
     prop_datablock = []
     for attribuut in sorted(attributen, key=lambda a: a.name):
         if attribuut.overerving == 1:
             raise NotImplementedError(f"overerving 1 is not implemented, found in {attributen.objectUri}")
 
         whitespace = get_white_space_equivalent(f'        self._{attribuut.name} = OTLAttribuut(')
-        field_name = get_single_field_from_type_uri(attribuut.type)
+        field_name = get_field_name_by_type_uri(oslo_collector, attribuut.type)
 
         if attribuut.objectUri == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Segmentcontroller.beveil?igingssleutel':
             attribuut.objectUri = attribuut.objectUri.replace('?', '_')
@@ -118,7 +119,7 @@ def add_attributen_to_data_block(attributen: [OSLOAttribuut], datablock: List[st
         if not for_class_use:
             owner_self += '._parent'
 
-        type_hint = get_type_hint_from_field(attribuut, datablock, valid_uri_and_types)
+        type_hint = get_type_hint_from_field(oslo_collector, attribuut, datablock, valid_uri_and_types)
 
         prop_datablock.append(f'    @property'),
         prop_datablock.append(f'    def {attribuut.name}(self){type_hint}:'),
