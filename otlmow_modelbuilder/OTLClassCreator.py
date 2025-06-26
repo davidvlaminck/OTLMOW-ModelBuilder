@@ -138,7 +138,8 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         self.add_relations_to_datablock(datablock, oslo_class.objectUri)
 
-        add_attributen_to_data_block(attributen, datablock, for_class_use=True, valid_uri_and_types=valid_uri_and_types)
+        add_attributen_to_data_block(oslo_collector=self.oslo_collector, attributen=attributen, datablock=datablock,
+                                     for_class_use=True, valid_uri_and_types=valid_uri_and_types)
         if len(inheritances) == 0 and len(attributen) == 0:
             datablock.append('        pass')
 

@@ -1,5 +1,22 @@
 from typing import Dict
 
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
+
+
+def get_field_name_by_type_uri(oslo_collector: OSLOCollector, type_uri: str):
+    type_link = get_type_link_from_type_uri(oslo_collector, type_uri).item_tabel
+    if type_link == "OSLOEnumeration":
+        enum = oslo_collector.find_enumeration_by_uri(type_uri)
+        return enum.name
+    elif type_link == "OSLODatatypePrimitive":
+        prim_attribute = oslo_collector.find_primitive_datatype_by_uri(type_uri)
+        return get_single_field_from_type_uri(prim_attribute.objectUri)
+    elif type_link == "OSLODatatypeComplex":
+        complex_attribuut = oslo_collector.find_complex_datatype_by_uri(type_uri)
+        return complex_attribuut.name
+    elif type_link == "OSLODatatypeUnion":
+        union_attribuut = oslo_collector.find_union_datatype_by_uri(type_uri)
+        return union_attribuut.name
 
 def get_single_field_from_type_uri(field_type: str):
     if field_type.startswith('https://wegenenverkeer.data.vlaanderen.be/ns/') and '#' in field_type:
@@ -64,7 +81,7 @@ def get_field_name_from_type_uri(attribuut_type, valid_uri_and_types):
     return get_non_single_field_from_type_uri(attribuut_type, valid_uri_and_types)[1]
 
 
-def get_attributen_by_type_field(oslo_collector, type_field, oslo_datatype):
+def get_attributen_by_type_field(oslo_collector: OSLOCollector, type_field, oslo_datatype):
     if type_field == 'Complex':
         return oslo_collector.find_complex_datatype_attributes_by_class_uri(oslo_datatype.objectUri)
     elif type_field == 'UnionType':
@@ -84,6 +101,12 @@ def get_type_name_of_complex_attribuut(type_uri: str, valid_uri_and_types):
 
 def get_type_link_from_attribuut(oslo_collector, attribuut):
     type_link = oslo_collector.find_type_link_by_uri(attribuut.type)
+    if type_link is not None:
+        return type_link
+
+
+def get_type_link_from_type_uri(oslo_collector, type_uri: str):
+    type_link = oslo_collector.find_type_link_by_uri(type_uri)
     if type_link is not None:
         return type_link
 

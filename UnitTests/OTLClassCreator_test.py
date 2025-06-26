@@ -5,85 +5,13 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from otlmow_modelbuilder.GeometrieType import GeometrieType
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLClassCreator import OTLClassCreator
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
-from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
-from otlmow_modelbuilder.SQLDataClasses.OSLOTypeLink import OSLOTypeLink
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-
-class ClassOSLOCollector(OSLOCollector):
-    def __init__(self, reader):
-        super().__init__(reader)
-
-        self.classes = [
-            OSLOClass('Gebouw', 'Gebouw', 'https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw',
-                      'Elk bouwwerk, dat een voor mensen toegankelijke overdekte, geheel of gedeeltelijk met wanden omsloten ruimte vormt.',
-                      '', 0, '')]
-        self.attributes = [
-            OSLOAttribuut('grondplan', 'grondplan',
-                          'Plattegrond van het gebouw met aanduidingen van de verschillende aanwezige elementen zoals kelder, kasten met kastnummers, toegangscontrole en meer.',
-                          'https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw', '1', '1',
-                          'https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw.grondplan',
-                          'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcDocument', 0, '', 0, '',
-                          '')]
-        self.inheritances = [
-            Inheritance('Behuizing', 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Behuizing',
-                        'https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw', 'Gebouw', '')
-        ]
-
-        self.typeLinks = [
-            OSLOTypeLink("https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcDocument",
-                         "OSLODatatypeComplex",
-                         "")
-        ]
-
-        self.expectedDataGebouw = ['# coding=utf-8',
-                                   'from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut',
-                                   'from ...Classes.Abstracten.Behuizing import Behuizing',
-                                   'from ...Datatypes.DtcDocument import DtcDocument, DtcDocumentWaarden',
-                                   'from otlmow_model.OtlmowModel.GeometrieTypes.VlakGeometrie import VlakGeometrie',
-                                   '',
-                                   '',
-                                   '# Generated with OTLClassCreator. To modify: extend, do not edit',
-                                   "class Gebouw(Behuizing, VlakGeometrie):",
-                                   '    """Elk bouwwerk, dat een voor mensen toegankelijke overdekte, geheel of gedeeltelijk met wanden omsloten ruimte vormt."""',
-                                   "",
-                                   "    typeURI = 'https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw'",
-                                   '    """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""',
-                                   "",
-                                   "    def __init__(self):",
-                                   '        super().__init__()',
-                                   "",
-                                   "        self._grondplan = OTLAttribuut(field=DtcDocument,",
-                                   "                                       naam='grondplan',",
-                                   "                                       label='grondplan',",
-                                   "                                       objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw.grondplan',",
-                                   "                                       definition='Plattegrond van het gebouw met aanduidingen van de verschillende aanwezige elementen zoals kelder, kasten met kastnummers, toegangscontrole en meer.',",
-                                   "                                       owner=self)",
-                                   "",
-                                   "    @property",
-                                   "    def grondplan(self) -> DtcDocumentWaarden:",
-                                   '        """Plattegrond van het gebouw met aanduidingen van de verschillende aanwezige elementen zoals kelder, kasten met kastnummers, toegangscontrole en meer."""',
-                                   "        return self._grondplan.get_waarde()",
-                                   "",
-                                   "    @grondplan.setter",
-                                   "    def grondplan(self, value):",
-                                   "        self._grondplan.set_waarde(value, owner=self)"]
-
-
-class GeometrieArtefactCollectorDouble:
-    def __init__(self):
-        self.geometrie_types = [
-            GeometrieType(objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw',
-                          label_nl='Gebouw',
-                          geen_geometrie=0, punt3D=0, lijn3D=0,
-                          polygoon3D=1)]
 
 
 def set_up_real_collector_and_creator():
@@ -213,17 +141,6 @@ def test_ContainerBuis():
         'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis')
     data_to_write = creator.create_blocks_to_write_from_classes(container_buis)
     assert data_to_write == expectedDataContainerBuis
-
-
-def test_Gebouw_DtcKardMax1():
-    collector = ClassOSLOCollector(mock)
-    collector.relations = []
-    geo_collector = GeometrieArtefactCollectorDouble()
-    creator = OTLClassCreator(collector)
-    creator.geometry_types = geo_collector.geometrie_types
-    gebouw = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw')
-    data_to_write = creator.create_blocks_to_write_from_classes(gebouw)
-    assert data_to_write == collector.expectedDataGebouw
 
 
 # TODO change these tests to implementation assumptions

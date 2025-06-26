@@ -231,10 +231,11 @@ class OTLModelCreator:
             if oslo_class.abstract:
                 continue
             ns = None
-            if oslo_class.objectUri != 'http://purl.org/dc/terms/Agent':
-                ns, name = get_ns_and_name_from_uri(oslo_class.objectUri)
+
+            if oslo_class.objectUri in valid_uri_and_types:
+                name = valid_uri_and_types[oslo_class.objectUri]
             else:
-                name = 'Agent'
+                ns, name = get_ns_and_name_from_uri(oslo_class.objectUri)
 
             if ns is not None:
                 data_to_write.append(f'from ..Classes.{get_titlecase_from_ns(ns)}.{name} import {name}')

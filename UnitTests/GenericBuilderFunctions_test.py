@@ -93,114 +93,113 @@ def test_get_white_space_equivalent_string_of_2_length():
 
 
 def test_add_attributen_to_dataBlock_StringField():
-    attribuut = OSLODatatypeComplexAttribuut('huisnummer', 'huisnummer',
-                                             'Een nummer dat door de gemeente aan bv. een huis wordt toegekend.',
-                                             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcAdres',
-                                             '1', '1',
-                                             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcAdres.huisnummer',
-                                             'http://www.w3.org/2001/XMLSchema#string', 0, '', 0, '', '')
+    collector = set_up()
+    attribuut = OSLODatatypeComplexAttribuut('testStringField','Test StringField','Test attribuut voor StringField','https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass','1','1','https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testStringField','http://www.w3.org/2001/XMLSchema#string',0,'',0,'','')
 
-    expected_datablock = ['        self._huisnummer = OTLAttribuut(field=StringField,',
-                          "                                        naam='huisnummer',",
-                          "                                        label='huisnummer',",
-                          "                                        objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcAdres.huisnummer',",
-                          "                                        definition='Een nummer dat door de gemeente aan bv. een huis wordt toegekend.',",
-                          "                                        owner=self)",
-                          '',
-                          '    @property',
-                          '    def huisnummer(self) -> str:',
-                          '        """Een nummer dat door de gemeente aan bv. een huis wordt toegekend."""',
-                          '        return self._huisnummer.get_waarde()',
-                          '',
-                          '    @huisnummer.setter',
-                          '    def huisnummer(self, value):',
-                          '        self._huisnummer.set_waarde(value, owner=self._parent)',
-                          '']
+    expected_datablock = [
+        '        self._testStringField = OTLAttribuut(field=StringField,',
+        "                                             naam='testStringField',",
+        "                                             label='Test StringField',",
+        '                                             '
+        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testStringField',",
+        "                                             definition='Test attribuut voor "
+        "StringField',",
+        '                                             owner=self)',
+        '',
+        '    @property',
+        '    def testStringField(self) -> str:',
+        '        """Test attribuut voor StringField"""',
+        '        return self._testStringField.get_waarde()',
+        '',
+        '    @testStringField.setter',
+        '    def testStringField(self, value):',
+        '        self._testStringField.set_waarde(value, owner=self._parent)',
+        '']
 
-    assert add_attributen_to_data_block([attribuut], [], valid_uri_and_types={}) == expected_datablock
+    assert add_attributen_to_data_block(collector,[attribuut], [], valid_uri_and_types={}) == expected_datablock
 
 
 def test_add_attributen_to_dataBlock_DteField():
-    attribuut = OSLOAttribuut('toestandBuis', 'toestand buis', 'Opmerkingen van de toestand en staat van de buis.',
-                              'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Buis', '1', '1',
-                              'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Buis.toestandBuis',
-                              'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DteTekstblok', 0,
-                              '', 0, '', '')
+    collector = set_up()
+    attribuut = OSLOAttribuut('testEenvoudigType','Test EenvoudigType','Test attribuut voor een eenvoudige waarde','https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass','1','1','https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testEenvoudigType','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DteTestEenvoudigType',0,'',0,'','')
 
-    expected_datablock = ['        self._toestandBuis = OTLAttribuut(field=DteTekstblok,',
-                          "                                          naam='toestandBuis',",
-                          "                                          label='toestand buis',",
-                          "                                          objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Buis.toestandBuis',",
-                          "                                          definition='Opmerkingen van de toestand en staat van de buis.',",
-                          "                                          owner=self)",
-                          '',
-                          '    @property',
-                          '    def toestandBuis(self) -> DteTekstblokWaarden:',
-                          '        """Opmerkingen van de toestand en staat van de buis."""',
-                          '        return self._toestandBuis.get_waarde()',
-                          '',
-                          '    @toestandBuis.setter',
-                          '    def toestandBuis(self, value):',
-                          '        self._toestandBuis.set_waarde(value, owner=self._parent)',
-                          '']
+    expected_datablock = [
+        '        self._testEenvoudigType = OTLAttribuut(field=DteTestEenvoudigType,',
+        "                                               naam='testEenvoudigType',",
+        "                                               label='Test EenvoudigType',",
+        '                                               '
+        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testEenvoudigType',",
+        "                                               definition='Test attribuut "
+        "voor een eenvoudige waarde',",
+        '                                               owner=self)',
+        '',
+        '    @property',
+        '    def testEenvoudigType(self) -> DteTestEenvoudigTypeWaarden:',
+        '        """Test attribuut voor een eenvoudige waarde"""',
+        '        return self._testEenvoudigType.get_waarde()',
+        '',
+        '    @testEenvoudigType.setter',
+        '    def testEenvoudigType(self, value):',
+        '        self._testEenvoudigType.set_waarde(value, owner=self._parent)',
+        '']
 
-    assert add_attributen_to_data_block([attribuut], [], valid_uri_and_types={}) == expected_datablock
+    assert add_attributen_to_data_block(collector, [attribuut], [], valid_uri_and_types={}) == expected_datablock
 
 
 def test_add_attributen_to_dataBlock_KwantWrd():
-    attribuut = OSLOAttribuut('lengte', 'lengte',
-                              'De totale lengte in meter van de buis tussen opwaartse en afwaartse put.',
-                              'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Buis', '1', '1',
-                              'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Buis.lengte',
-                              'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdInMeter',
-                              0, '', 0, '', '')
+    collector = set_up()
+    attribuut = OSLOAttribuut('testKwantWrd','Test KwantWrd','Test attribuut voor een kwantitatieve waarde','https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass','1','1','https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testKwantWrd','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTest',0,'',0,'','')
 
-    expected_datablock = ['        self._lengte = OTLAttribuut(field=KwantWrdInMeter,',
-                          "                                    naam='lengte',",
-                          "                                    label='lengte',",
-                          "                                    objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Buis.lengte',",
-                          "                                    definition='De totale lengte in meter van de buis tussen opwaartse en afwaartse put.',",
-                          "                                    owner=self)",
-                          '',
-                          '    @property',
-                          '    def lengte(self) -> KwantWrdInMeterWaarden:',
-                          '        """De totale lengte in meter van de buis tussen opwaartse en afwaartse put."""',
-                          '        return self._lengte.get_waarde()',
-                          '',
-                          '    @lengte.setter',
-                          '    def lengte(self, value):',
-                          '        self._lengte.set_waarde(value, owner=self._parent)',
-                          '']
+    expected_datablock = [
+        '        self._testKwantWrd = OTLAttribuut(field=KwantWrdTest,',
+        "                                          naam='testKwantWrd',",
+        "                                          label='Test KwantWrd',",
+        '                                          '
+        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testKwantWrd',",
+        "                                          definition='Test attribuut voor "
+        "een kwantitatieve waarde',",
+        '                                          owner=self)',
+        '',
+        '    @property',
+        '    def testKwantWrd(self) -> KwantWrdTestWaarden:',
+        '        """Test attribuut voor een kwantitatieve waarde"""',
+        '        return self._testKwantWrd.get_waarde()',
+        '',
+        '    @testKwantWrd.setter',
+        '    def testKwantWrd(self, value):',
+        '        self._testKwantWrd.set_waarde(value, owner=self._parent)',
+        '']
 
-    assert add_attributen_to_data_block([attribuut], [], valid_uri_and_types={}) == expected_datablock
+    assert add_attributen_to_data_block(collector, [attribuut], [], valid_uri_and_types={}) == expected_datablock
 
 
 def test_add_attributen_to_data_block_DtcAdres():
-    attribuut = OSLODatatypeComplexAttribuut('adres', 'adres', 'Adres dat men kan aanschrijven of bezoeken.',
-                                             'https://schema.org/ContactPoint', '0', '1',
-                                             'https://schema.org/ContactPoint.adres',
-                                             'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcAdres',
-                                             0, '', 0, '', '')
+    collector = set_up()
+    attribuut = OSLODatatypeComplexAttribuut('assetId','asset-id','Unieke identificatie van de asset zoals toegekend door de assetbeheerder of n.a.v. eerste aanlevering door de leverancier.','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject','1','1','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject.assetId','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcIdentificator',0,'',0,'','')
 
-    expected_datablock = ['        self._adres = OTLAttribuut(field=DtcAdres,',
-                          "                                   naam='adres',",
-                          "                                   label='adres',",
-                          "                                   objectUri='https://schema.org/ContactPoint.adres',",
-                          "                                   kardinaliteit_min='0',",
-                          "                                   definition='Adres dat men kan aanschrijven of bezoeken.',",
-                          "                                   owner=self)",
-                          '',
-                          '    @property',
-                          '    def adres(self) -> DtcAdresWaarden:',
-                          '        """Adres dat men kan aanschrijven of bezoeken."""',
-                          '        return self._adres.get_waarde()',
-                          '',
-                          '    @adres.setter',
-                          '    def adres(self, value):',
-                          '        self._adres.set_waarde(value, owner=self._parent)',
-                          '']
+    expected_datablock = [
+        '        self._assetId = OTLAttribuut(field=DtcIdentificator,',
+        "                                     naam='assetId',",
+        "                                     label='asset-id',",
+        '                                     '
+        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject.assetId',",
+        "                                     definition='Unieke identificatie van de "
+        'asset zoals toegekend door de assetbeheerder of n.a.v. eerste aanlevering '
+        "door de leverancier.',",
+        '                                     owner=self)',
+        '',
+        '    @property',
+        '    def assetId(self) -> DtcIdentificatorWaarden:',
+        '        """Unieke identificatie van de asset zoals toegekend door de '
+        'assetbeheerder of n.a.v. eerste aanlevering door de leverancier."""',
+        '        return self._assetId.get_waarde()',
+        '',
+        '    @assetId.setter',
+        '    def assetId(self, value):',
+        '        self._assetId.set_waarde(value, owner=self._parent)',
+        '']
 
-    assert add_attributen_to_data_block([attribuut], [], valid_uri_and_types={}) == expected_datablock
+    assert add_attributen_to_data_block(collector, [attribuut], [], valid_uri_and_types={}) == expected_datablock
 
 
 @skip('change the write_file test')  # TODO change this test
