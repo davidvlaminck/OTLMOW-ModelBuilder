@@ -81,7 +81,9 @@
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#FiguratieMarkeringVerschuind.basisOppervlakte",
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#LetterMarkeringVerschaald.basisOppervlakte",
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Boom.doorrijhoogte",
-        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Hoogtebegrenzer.doorrijHoogte"
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Hoogtebegrenzer.doorrijHoogte",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Verkeersbord.kaartVoorstelling",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/installatie#AanzichtVerkeersbordopstelling.kaartvoorstelling"
     ],
     "valid_base_class_uris" : [
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject",
