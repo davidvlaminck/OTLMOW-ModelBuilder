@@ -37,10 +37,7 @@ class OTLExtraChecker:
 "        if hasattr(attribuut.owner, 'naampad') and attribuut.owner.naampad is not None:\n",
 "            return attribuut.owner.naampad.split('/')[-1] == value\n",
 '        return True\n',
- "\n",
-"    @classmethod\n",
-"    def create_dummy_data(cls) -> str:\n",
-"        return 'dummy'", '\n']
+                 '']
 
         for index, line in enumerate(block):
             lines.insert(class_line_number + index, line)
