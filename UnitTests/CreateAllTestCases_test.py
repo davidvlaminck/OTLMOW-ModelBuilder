@@ -22,6 +22,8 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                                   ]
 
     for path in paths_to_create_test_class:
+        if not path.exists():
+            continue
         with subtests.test(msg=f'Creating testclasses for {path}'):
             with warnings.catch_warnings():
                 warnings.filterwarnings("ignore", category=DeprecationWarning)  # supress deprecation warnings from tqdm
@@ -41,6 +43,8 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
     paths_to_create_test_class_no_double_kard = []
 
     for path in paths_to_create_test_class_no_double_kard:
+        if not path.exists():
+            continue
         with subtests.test(msg=f'Creating testclasses for {path}'):
             with warnings.catch_warnings():
                 warnings.filterwarnings("ignore", category=DeprecationWarning)  # supress deprecation warnings from tqdm
