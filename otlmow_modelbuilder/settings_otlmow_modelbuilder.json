@@ -79,7 +79,9 @@
         "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Behuizing.risicoanalyse",
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#DwarseMarkeringVerschuind.basisoppervlakte",
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#FiguratieMarkeringVerschuind.basisOppervlakte",
-        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#LetterMarkeringVerschaald.basisOppervlakte"
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#LetterMarkeringVerschaald.basisOppervlakte",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Boom.doorrijhoogte",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Hoogtebegrenzer.doorrijHoogte"
     ],
     "valid_base_class_uris" : [
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject",
