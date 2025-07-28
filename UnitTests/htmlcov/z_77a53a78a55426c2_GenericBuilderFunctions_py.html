@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Coverage for otlmow_modelbuilder/GenericBuilderFunctions.py: 94%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
-    <link rel="stylesheet" href="style_cb_81f8c14c.css" type="text/css">
+    <link rel="stylesheet" href="style_cb_6b508a39.css" type="text/css">
     <script src="coverage_html_cb_6fb7b396.js" defer></script>
 </head>
 <body class="pyfile">
@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_77a53a78a55426c2_GeometrieArtefactCollector_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.9.2">coverage.py v7.9.2</a>,
-            created at 2025-07-09 20:54 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.1">coverage.py v7.10.1</a>,
+            created at 2025-07-28 07:17 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -84,8 +84,8 @@
     <p class="run"><span class="n"><a id="t2" href="#t2">2</a></span><span class="t"><span class="key">from</span> <span class="nam">typing</span> <span class="key">import</span> <span class="nam">List</span><span class="op">,</span> <span class="nam">Dict</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t3" href="#t3">3</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t4" href="#t4">4</a></span><span class="t"><span class="key">from</span> <span class="nam">otlmow_modelbuilder</span><span class="op">.</span><span class="nam">DatatypeBuilderFunctions</span> <span class="key">import</span> <span class="nam">get_single_field_from_type_uri</span><span class="op">,</span> <span class="nam">get_type_link_from_attribuut</span><span class="op">,</span> <span class="xx">\</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t5" href="#t5">5</a></span><span class="t">    <span class="nam">get_type_name_of_complex_attribuut</span><span class="op">,</span> <span class="nam">get_type_name_of_union_attribuut</span><span class="op">,</span> <span class="nam">get_field_name_from_type_uri</span><span class="op">,</span> <span class="xx">\</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t">    <span class="nam">get_non_single_field_from_type_uri</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t5" href="#t5">5</a></span><span class="t">    <span class="nam">get_type_name_of_complex_attribuut</span><span class="op">,</span> <span class="nam">get_type_name_of_union_attribuut</span><span class="op">,</span> <span class="nam">get_field_name_from_type_uri</span><span class="op">,</span> <span class="xx">\</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t">    <span class="nam">get_non_single_field_from_type_uri</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t"><span class="key">from</span> <span class="nam">otlmow_modelbuilder</span><span class="op">.</span><span class="nam">HelperFunctions</span> <span class="key">import</span> <span class="nam">wrap_in_quotes</span><span class="op">,</span> <span class="nam">escape_backslash</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -156,7 +156,7 @@
     <p class="pln"><span class="n"><a id="t74" href="#t74">74</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t75" href="#t75">75</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t76" href="#t76">76</a></span><span class="t"><span class="key">def</span> <span class="nam">add_attributen_to_data_block</span><span class="op">(</span><span class="nam">attributen</span><span class="op">,</span> <span class="nam">datablock</span><span class="op">:</span> <span class="nam">List</span><span class="op">[</span><span class="nam">str</span><span class="op">]</span><span class="op">,</span> <span class="nam">valid_uri_and_types</span><span class="op">:</span> <span class="nam">Dict</span><span class="op">,</span> <span class="nam">for_class_use</span><span class="op">=</span><span class="key">False</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t77" href="#t77">77</a></span><span class="t">                                 <span class="nam">type_field</span><span class="op">=</span><span class="str">''</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t77" href="#t77">77</a></span><span class="t">                                 <span class="nam">type_field</span><span class="op">=</span><span class="str">''</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t78" href="#t78">78</a></span><span class="t">    <span class="nam">prop_datablock</span> <span class="op">=</span> <span class="op">[</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t79" href="#t79">79</a></span><span class="t">    <span class="key">for</span> <span class="nam">attribuut</span> <span class="key">in</span> <span class="nam">sorted</span><span class="op">(</span><span class="nam">attributen</span><span class="op">,</span> <span class="nam">key</span><span class="op">=</span><span class="key">lambda</span> <span class="nam">a</span><span class="op">:</span> <span class="nam">a</span><span class="op">.</span><span class="nam">name</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t80" href="#t80">80</a></span><span class="t">        <span class="key">if</span> <span class="nam">attribuut</span><span class="op">.</span><span class="nam">overerving</span> <span class="op">==</span> <span class="num">1</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -225,7 +225,7 @@
     <p class="pln"><span class="n"><a id="t143" href="#t143">143</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t144" href="#t144">144</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t145" href="#t145">145</a></span><span class="t"><span class="key">def</span> <span class="nam">get_fields_to_import_from_list_of_attributes</span><span class="op">(</span><span class="nam">oslo_collector</span><span class="op">,</span> <span class="nam">attributen</span><span class="op">,</span> <span class="nam">valid_uri_and_types</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t146" href="#t146">146</a></span><span class="t">                                                 <span class="nam">list_to_start_from</span><span class="op">=</span><span class="key">None</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t146" href="#t146">146</a></span><span class="t">                                                 <span class="nam">list_to_start_from</span><span class="op">=</span><span class="key">None</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t147" href="#t147">147</a></span><span class="t">    <span class="key">if</span> <span class="nam">list_to_start_from</span> <span class="key">is</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t148" href="#t148">148</a></span><span class="t">        <span class="nam">list_to_start_from</span> <span class="op">=</span> <span class="op">[</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t149" href="#t149">149</a></span><span class="t">    <span class="key">if</span> <span class="nam">len</span><span class="op">(</span><span class="nam">attributen</span><span class="op">)</span> <span class="op">==</span> <span class="num">0</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -242,7 +242,7 @@
     <p class="run"><span class="n"><a id="t160" href="#t160">160</a></span><span class="t">            <span class="nam">collected_list</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="nam">get_single_field_from_type_uri</span><span class="op">(</span><span class="nam">attribuut</span><span class="op">.</span><span class="nam">type</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t161" href="#t161">161</a></span><span class="t">        <span class="key">elif</span> <span class="nam">type_link</span> <span class="op">==</span> <span class="str">"OSLODatatypeComplex"</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t162" href="#t162">162</a></span><span class="t">            <span class="nam">collected_list</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="nam">get_type_name_of_complex_attribuut</span><span class="op">(</span><span class="nam">attribuut</span><span class="op">.</span><span class="nam">type</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t163" href="#t163">163</a></span><span class="t">                                                                     <span class="nam">valid_uri_and_types</span><span class="op">=</span><span class="nam">valid_uri_and_types</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t163" href="#t163">163</a></span><span class="t">                                                                     <span class="nam">valid_uri_and_types</span><span class="op">=</span><span class="nam">valid_uri_and_types</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t164" href="#t164">164</a></span><span class="t">        <span class="key">elif</span> <span class="nam">type_link</span> <span class="op">==</span> <span class="str">"OSLODatatypeUnion"</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t165" href="#t165">165</a></span><span class="t">            <span class="nam">collected_list</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="nam">get_type_name_of_union_attribuut</span><span class="op">(</span><span class="nam">attribuut</span><span class="op">.</span><span class="nam">type</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t166" href="#t166">166</a></span><span class="t">        <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -275,8 +275,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_77a53a78a55426c2_GeometrieArtefactCollector_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.9.2">coverage.py v7.9.2</a>,
-            created at 2025-07-09 20:54 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.1">coverage.py v7.10.1</a>,
+            created at 2025-07-28 07:17 +0000
         </p>
     </div>
 </footer>
