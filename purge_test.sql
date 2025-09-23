@@ -18,6 +18,10 @@ UPDATE OSLOAttributen
 SET class_uri = REPLACE(class_uri, '-test', '')
 WHERE class_uri LIKE '%-test%';
 
+UPDATE OSLOAttributen
+SET "type" = REPLACE("type", '-test', '')
+WHERE "type" LIKE '%-test%';
+
 UPDATE OSLODatatypeComplex
 SET uri = REPLACE(uri, '-test', '')
 WHERE uri LIKE '%-test%';
@@ -25,6 +29,10 @@ WHERE uri LIKE '%-test%';
 UPDATE OSLODatatypeComplexAttributen
 SET uri = REPLACE(uri, '-test', '')
 WHERE uri LIKE '%-test%';
+
+UPDATE OSLODatatypeComplexAttributen
+SET "type" = REPLACE("type", '-test', '')
+WHERE "type" LIKE '%-test%';
 
 UPDATE OSLODatatypeComplexAttributen
 SET class_uri = REPLACE(class_uri, '-test', '')
@@ -39,6 +47,10 @@ SET uri = REPLACE(uri, '-test', '')
 WHERE uri LIKE '%-test%';
 
 UPDATE OSLODatatypePrimitiveAttributen
+SET "type" = REPLACE("type", '-test', '')
+WHERE "type" LIKE '%-test%';
+
+UPDATE OSLODatatypePrimitiveAttributen
 SET class_uri = REPLACE(class_uri, '-test', '')
 WHERE class_uri LIKE '%-test%';
 
@@ -49,6 +61,10 @@ WHERE uri LIKE '%-test%';
 UPDATE OSLODatatypeUnionAttributen
 SET uri = REPLACE(uri, '-test', '')
 WHERE uri LIKE '%-test%';
+
+UPDATE OSLODatatypeUnionAttributen
+SET "type" = REPLACE("type", '-test', '')
+WHERE "type" LIKE '%-test%';
 
 UPDATE OSLODatatypeUnionAttributen
 SET class_uri = REPLACE(class_uri, '-test', '')
