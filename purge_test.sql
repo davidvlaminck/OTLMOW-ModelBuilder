@@ -74,6 +74,10 @@ UPDATE OSLOEnumeration
 SET uri = REPLACE(uri, '-test', '')
 WHERE uri LIKE '%-test%';
 
+UPDATE OSLOEnumeration
+SET codelist = REPLACE(codelist, '-test', '')
+WHERE codelist LIKE '%-test%';
+
 UPDATE OSLORelaties
 SET uri = REPLACE(uri, '-test', '')
 WHERE uri LIKE '%-test%';
