@@ -187,14 +187,18 @@ class OTLAttribuut:
                 if self.field.validate(value=converted_value, attribuut=self):
                     self.waarde = converted_value
                 else:
-                    if owner is None and self.owner is not None and self.owner._parent is not None:
-                        raise ValueError(
-                            f'Could not assign the best effort converted value to {self.owner._parent.naam}.'
-                            f'{self.naam}. Value {value} is not valid (type: {self.field.label}')
-
+                    if owner is None and self.owner is not None:
+                        if hasattr(self.owner, '_parent') and self.owner._parent is not None:
+                            raise ValueError(
+                                f'Could not assign the best effort converted value to {self.owner._parent.naam}.'
+                                f'{self.naam}. Value {value} is not valid (type: {self.field.label})')
+                        else:
+                            raise ValueError(
+                                f'Could not assign the best effort converted value to {self.owner.__class__.__name__}.'
+                                f'{self.naam} Value {value} is not valid (type: {self.field.label})')
                     raise ValueError(
                         f'Could not assign the best effort converted value to {owner.__class__.__name__}.{self.naam} '
-                        f'Value {value} is not valid (type: {self.field.label}')
+                        f'Value {value} is not valid (type: {self.field.label})')
 
         # check if kwant Wrd inside a union type, if so, call clear_props
         if (owner is not None and value is not None and hasattr(owner, 'field') and owner.field.waardeObject is not None
@@ -353,9 +357,11 @@ class OTLObject(object):
     def __iter__(self) -> Generator[OTLAttribuut, None, None]:
         yield from sorted(filter(lambda v: isinstance(v, OTLAttribuut), (vars(self).values())), key=lambda x: x.naam)
 
-    def __eq__(self, other):
+    def __eq__(self, value) -> bool:
+        if value is None:
+            return False
         return (create_dict_from_asset(self, warn_for_non_otl_conform_attributes=False) ==
-                create_dict_from_asset(other, warn_for_non_otl_conform_attributes=False))
+                create_dict_from_asset(value, warn_for_non_otl_conform_attributes=False))
 
     def is_instance_of(self, otl_type: type, dynamic_created: bool = False, model_directory: Path = None):
         if dynamic_created:
