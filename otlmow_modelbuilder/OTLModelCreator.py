@@ -208,6 +208,8 @@ class OTLModelCreator:
         for oslo_class in tqdm(oslo_collector.classes):
             try:
                 model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
+                if oslo_class.label == 'ignore this class when generating the model':
+                    continue
                 data_to_write = creator.create_blocks_to_write_from_classes(oslo_class, model_location=model_name,
                                                                             valid_uri_and_types=valid_uri_and_types)
                 if data_to_write is None:
@@ -397,6 +399,7 @@ class OTLModelCreator:
     def add_generated_info(cls, directory: Path, oslo_collector: OSLOCollector) -> None:
         relation_dict = cls.generate_relation_dict(oslo_collector)
         class_dict = cls.generate_class_dict(oslo_collector)
+        class_dict = {k: v for k, v in class_dict.items() if v['label'] != 'ignore this class when generating the model'}
         with open(directory / 'generated_info.json', mode='w') as generated_info_file:
             json.dump({'relations': relation_dict, 'classes': class_dict}, generated_info_file, indent=4)
 
@@ -528,3 +531,24 @@ class OTLModelCreator:
             oslo_collector.inheritances.append(
                 Inheritance(base_name=inh['base_name'], base_uri=inh['base_uri'], class_name=inh['class_name'],
                             class_uri=inh['class_uri'], deprecated_version=''))
+            if inh['class_uri'] not in oslo_collector.class_dict:
+                oslo_collector.class_dict[inh['class_uri']] = OSLOClass(
+                    label='ignore this class when generating the model',
+                    name=inh['class_name'],
+                    objectUri=inh['class_uri'],
+                    deprecated_version='',
+                    definition='',
+                    abstract=1
+                )
+                oslo_collector.classes.append(oslo_collector.class_dict[inh['class_uri']])
+            # same for base class, if not present
+            if inh['base_uri'] not in oslo_collector.class_dict:
+                oslo_collector.class_dict[inh['base_uri']] = OSLOClass(
+                    label='ignore this class when generating the model',
+                    name=inh['base_name'],
+                    objectUri=inh['base_uri'],
+                    deprecated_version='',
+                    definition='',
+                    abstract=1
+                )
+                oslo_collector.classes.append(oslo_collector.class_dict[inh['base_uri']])

@@ -137,12 +137,12 @@ class OSLOInMemoryCreator:
         data = self.perform_read_query(
             "SELECT base_name, base_uri, class_uri, class_name, deprecated_version "
             "FROM InternalBaseClass "
-            "WHERE NOT (base_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NaampadObject' "
-            "   AND class_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Noodverlichtingstoestel') AND "
-            "   NOT (base_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Fundering' AND "
-            "        class_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Grindkern') AND "
-            "   NOT (base_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AxiaalDraagvermogen' AND "
-            "        class_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Grindkern') "
+            # "WHERE NOT (base_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NaampadObject' "
+            # "   AND class_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Noodverlichtingstoestel') AND "
+            # "   NOT (base_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Fundering' AND "
+            # "        class_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Grindkern') AND "
+            # "   NOT (base_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AxiaalDraagvermogen' AND "
+            # "        class_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Grindkern') "
             "ORDER BY base_uri, class_uri")
 
         return [Inheritance(row[0], row[1], row[2], row[3], row[4]) for row in data]
