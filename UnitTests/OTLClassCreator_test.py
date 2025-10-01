@@ -43,6 +43,8 @@ class ClassOSLOCollector(OSLOCollector):
                          "")
         ]
 
+        self.class_dict = {c.objectUri: c for c in self.classes}
+
         self.expectedDataGebouw = ['# coding=utf-8',
                                    'from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut',
                                    'from ...Classes.Abstracten.Behuizing import Behuizing',
@@ -116,6 +118,8 @@ def set_up_real_collector_and_creator():
                     deprecated_version=''))
     collector.inheritances.append(
         Inheritance(base_name='OTLObject', base_uri='', class_name='', class_uri='http://purl.org/dc/terms/Agent', deprecated_version=''))
+
+    collector.class_dict = {c.objectUri: c for c in collector.classes}
 
     return collector, creator
 
