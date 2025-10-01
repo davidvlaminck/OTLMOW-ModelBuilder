@@ -399,6 +399,7 @@ class OTLModelCreator:
     def add_generated_info(cls, directory: Path, oslo_collector: OSLOCollector) -> None:
         relation_dict = cls.generate_relation_dict(oslo_collector)
         class_dict = cls.generate_class_dict(oslo_collector)
+        class_dict = {k: v for k, v in class_dict.items() if v['label'] != 'ignore this class when generating the model'}
         with open(directory / 'generated_info.json', mode='w') as generated_info_file:
             json.dump({'relations': relation_dict, 'classes': class_dict}, generated_info_file, indent=4)
 
