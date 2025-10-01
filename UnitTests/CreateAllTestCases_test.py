@@ -19,6 +19,7 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                                   base_dir.parent.parent / 'OTLMOW-Converter/UnitTests/TestModel',
                                   base_dir.parent.parent / 'OTLMOW-GUI/UnitTests/TestModel',
                                   base_dir.parent.parent / 'OTLMOW-Template/UnitTests/TestModel',
+                                  base_dir.parent.parent / 'OTLMOW-PostenMapping/UnitTests/TestModel',
                                   ]
 
     for path in paths_to_create_test_class:
