@@ -303,4 +303,4 @@ def test_check_inheritances_RelationInteractor():
     creator = OTLClassCreator(collector)
     c_class = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#C')
     inheritance_line = creator.create_blocks_to_write_from_classes(c_class)[6]
-    assert inheritance_line == 'class C(A, B):'
+    assert inheritance_line == 'class C(B, A):'
