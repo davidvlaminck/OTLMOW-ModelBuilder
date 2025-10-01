@@ -140,6 +140,8 @@ class OSLOInMemoryCreator:
             "WHERE NOT (base_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NaampadObject' "
             "   AND class_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Noodverlichtingstoestel') AND "
             "   NOT (base_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Fundering' AND "
+            "        class_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Grindkern') AND "
+            "   NOT (base_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AxiaalDraagvermogen' AND "
             "        class_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Grindkern') "
             "ORDER BY base_uri, class_uri")
 
