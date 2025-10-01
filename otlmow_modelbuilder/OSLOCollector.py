@@ -1,3 +1,5 @@
+import itertools
+from collections import defaultdict, deque
 from pathlib import Path
 from typing import List, Optional
 
@@ -37,6 +39,7 @@ class OSLOCollector:
         self.general_info: list[GeneralInfoRecord] = None
 
         self.class_dict: Optional[dict] = None
+        self.inheritance_map: Optional[dict] = None
 
     def collect_all(self, include_abstract: bool = False) -> None:
         self.class_dict = {}
@@ -215,3 +218,108 @@ class OSLOCollector:
             or r.richting != 'Unspecified'
         ]
         return sorted(filtered, key=lambda r: r.objectUri) if sort_by_uri else filtered
+
+    @classmethod
+    def _c3_merge(cls, seqs):
+        result = []
+        seqs = [list(s) for s in seqs if s]
+        while seqs:
+            for seq in seqs:
+                cand = seq[0]
+                # kandidaat mag niet in de staart van een andere lijst voorkomen
+                if all(cand not in s[1:] for s in seqs):
+                    break
+            else:
+                raise TypeError(f"Inconsistent hierarchy: {seqs!r}")
+            result.append(cand)
+            # verwijder cand overal
+            new_seqs = []
+            for s in seqs:
+                if s[0] == cand:
+                    s = s[1:]
+                if s:
+                    new_seqs.append(s)
+            seqs = new_seqs
+        return result
+
+    @classmethod
+    def _find_valid_base_order_uris(cls, bases_uris, mro_map):
+        """
+        Vind een permutatie van bases_uris waarvoor C3-merge slaagt.
+        bases_uris: list[str]
+        mro_map: dict[str, list[str]] met al berekende MRO's van parents
+        """
+        for perm in itertools.permutations(bases_uris):
+            parent_mros = [mro_map[b] for b in perm]
+            try:
+                # test C3 op deze volgorde
+                _ = cls._c3_merge(parent_mros + [list(perm)])
+                return list(perm)
+            except TypeError:
+                continue
+        raise TypeError(f"No consistent base order for {bases_uris!r}")
+
+    @classmethod
+    def _topo_sort(cls, class_uris, inheritances):
+        indegree = {u: 0 for u in class_uris}
+        children = defaultdict(list)
+        for inh in inheritances:
+            if inh.base_uri in indegree and inh.class_uri in indegree:
+                indegree[inh.class_uri] += 1
+                children[inh.base_uri].append(inh.class_uri)
+        q = deque(u for u, d in indegree.items() if d == 0)
+        order = []
+        while q:
+            u = q.popleft()
+            order.append(u)
+            for v in children[u]:
+                indegree[v] -= 1
+                if indegree[v] == 0:
+                    q.append(v)
+        if len(order) != len(class_uris):
+            raise RuntimeError("Cirkels in inheritance gedetecteerd")
+        return order
+
+    @classmethod
+    def _compute_mros(cls, oslo_classes: list[OSLOClass], inheritances: list[Inheritance]):
+        class_uris = [c.objectUri for c in oslo_classes]
+
+        # let op: volgorde van bases behouden zoals in metadata
+        direct_bases = defaultdict(list)
+        for inh in inheritances:
+            direct_bases[inh.class_uri].append(inh.base_uri)
+
+        order = cls._topo_sort(class_uris, inheritances)
+        mro_map = {}
+        direct_order_map = {}
+
+        for uri in order:
+            bases = direct_bases.get(uri, [])
+            if not bases:
+                mro_map[uri] = [uri]
+                direct_order_map[uri] = []
+                continue
+
+            # Kies eerst een permutatie van bases die C3 accepteert
+            valid_bases = cls._find_valid_base_order_uris(bases, mro_map)
+
+            # Merge met MRO(parent_i) in die volgorde én de lijst van directe bases in diezelfde volgorde
+            parent_mros = [mro_map[b] for b in valid_bases]
+            merged = cls._c3_merge(parent_mros + [valid_bases])
+
+            mro_map[uri] = [uri] + merged
+            direct_order_map[uri] = valid_bases
+
+        return mro_map, direct_order_map
+
+
+    def get_inheritance_map(self):
+        if self.inheritance_map is not None:
+            return self.inheritance_map
+
+        if self.classes is None or self.inheritances is None:
+            raise ValueError('Classes and inheritances must be collected before computing the inheritance map.')
+
+        _, self.inheritance_map = OSLOCollector._compute_mros(oslo_classes=self.classes, inheritances=self.inheritances)
+        return self.inheritance_map
+

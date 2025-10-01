@@ -115,7 +115,6 @@ class OTLClassCreator(AbstractDatatypeCreator):
         datablock.append('')
         datablock.append(f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit')
 
-        inheritances = self.sort_inheritances_for_naampad_naam_interaction(inheritances)
         datablock.append(self.get_class_line_from_class_and_inheritances(oslo_class=oslo_class,
                                                                          inheritances=inheritances,
                                                                          geometry_types=list_of_geometry_types))
@@ -155,7 +154,14 @@ class OTLClassCreator(AbstractDatatypeCreator):
             return f'class {oslo_class.name}(ABC):'
         if len(inheritances) + len(geometry_types) > 0:
             line = f'class {oslo_class.name}('
-            for inheritance in inheritances:
+            map_inh_list = self.oslo_collector.get_inheritance_map()[oslo_class.objectUri]
+            if len(map_inh_list) != len(inheritances):
+                raise ValueError(f"Could not find all inheritances for {oslo_class.objectUri}. "
+                                 f"Found {len(inheritances)}, expected {len(map_inh_list)}")
+            for inh_uri in map_inh_list:
+                inheritance = next((i for i in inheritances if i.base_uri == inh_uri), None)
+                if inheritance is None:
+                    raise ValueError(f"Could not find inheritance for {inh_uri} in {oslo_class.objectUri}")
                 line += inheritance.base_name + ', '
             for geometry_type in geometry_types:
                 line += geometry_type + ', '
@@ -231,21 +237,3 @@ class OTLClassCreator(AbstractDatatypeCreator):
             if self.search_recursive_inheritance_for_relation_interactor(inheritance.base_uri):
                 return True
         return False
-
-    @classmethod
-    def sort_inheritances_for_naampad_naam_interaction(cls, inheritances: [Inheritance]):
-        naampad = next(
-            (i for i in inheritances 
-             if i.base_uri == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#NaampadObject'), None)
-        if naampad is None:
-            return inheritances
-        naam_inh = next(
-            (i for i in inheritances
-             if i.base_uri == 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMNaamObject'), None)
-        if naam_inh is None:
-            return inheritances
-        naam_index = inheritances.index(naam_inh)
-        inheritances.pop(inheritances.index(naampad))
-        inheritances.insert(naam_index, naampad)
-
-        return inheritances
