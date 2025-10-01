@@ -277,6 +277,12 @@ class OSLOCollector:
                 if indegree[v] == 0:
                     q.append(v)
         if len(order) != len(class_uris):
+            cyclic_classes = [uri for uri in class_uris if uri not in order]
+            raise RuntimeError(
+                f"Cirkels in inheritance gedetecteerd. Betrokken klassen: {', '.join(cyclic_classes)}"
+            )
+        return order
+        if len(order) != len(class_uris):
             raise RuntimeError("Cirkels in inheritance gedetecteerd")
         return order
 
