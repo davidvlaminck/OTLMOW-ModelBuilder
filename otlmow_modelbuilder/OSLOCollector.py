@@ -220,77 +220,75 @@ class OSLOCollector:
         return sorted(filtered, key=lambda r: r.objectUri) if sort_by_uri else filtered
 
     @classmethod
-    def _c3_merge(cls, seqs):
+    def _c3_merge(cls, seqs: list[list[str]]) -> list[str]:
+        """
+        Perform C3 linearization merge on the given sequences.
+        """
         result = []
         seqs = [list(s) for s in seqs if s]
         while seqs:
             for seq in seqs:
-                cand = seq[0]
-                # kandidaat mag niet in de staart van een andere lijst voorkomen
-                if all(cand not in s[1:] for s in seqs):
+                candidate = seq[0]
+                if all(candidate not in s[1:] for s in seqs):
                     break
             else:
                 raise TypeError(f"Inconsistent hierarchy: {seqs!r}")
-            result.append(cand)
-            # verwijder cand overal
-            new_seqs = []
-            for s in seqs:
-                if s[0] == cand:
-                    s = s[1:]
-                if s:
-                    new_seqs.append(s)
-            seqs = new_seqs
+            result.append(candidate)
+            # Remove candidate from all sequences (simplified)
+            seqs = [s[1:] if s and s[0] == candidate else s for s in seqs if s and (s[0] != candidate or len(s) > 1)]
+            seqs = [s for s in seqs if s]
         return result
 
     @classmethod
-    def _find_valid_base_order_uris(cls, bases_uris, mro_map):
+    def _find_valid_base_order_uris(cls, base_uris: list[str], mro_map: dict[str, list[str]]) -> list[str]:
         """
-        Vind een permutatie van bases_uris waarvoor C3-merge slaagt.
-        bases_uris: list[str]
-        mro_map: dict[str, list[str]] met al berekende MRO's van parents
+        Find a permutation of base_uris for which C3-merge succeeds.
         """
-        for perm in itertools.permutations(bases_uris):
+        for perm in itertools.permutations(base_uris):
             parent_mros = [mro_map[b] for b in perm]
             try:
-                # test C3 op deze volgorde
-                _ = cls._c3_merge(parent_mros + [list(perm)])
+                cls._c3_merge(parent_mros + [list(perm)])
                 return list(perm)
             except TypeError:
                 continue
-        raise TypeError(f"No consistent base order for {bases_uris!r}")
+        raise TypeError(f"No consistent base order for {base_uris!r}")
 
     @classmethod
-    def _topo_sort(cls, class_uris, inheritances):
+    def _topo_sort(cls, class_uris: list[str], inheritances: list[Inheritance]) -> list[str]:
+        """
+        Topologically sort class_uris based on inheritances.
+        """
+        if not class_uris:
+            return []
         indegree = {u: 0 for u in class_uris}
         children = defaultdict(list)
         for inh in inheritances:
             if inh.base_uri in indegree and inh.class_uri in indegree:
                 indegree[inh.class_uri] += 1
                 children[inh.base_uri].append(inh.class_uri)
-        q = deque(u for u, d in indegree.items() if d == 0)
+        queue = deque(u for u, d in indegree.items() if d == 0)
         order = []
-        while q:
-            u = q.popleft()
+        while queue:
+            u = queue.popleft()
             order.append(u)
             for v in children[u]:
                 indegree[v] -= 1
                 if indegree[v] == 0:
-                    q.append(v)
+                    queue.append(v)
         if len(order) != len(class_uris):
-            cyclic_classes = [uri for uri in class_uris if uri not in order]
+            cyclic_classes = set(class_uris) - set(order)
             raise RuntimeError(
                 f"Cirkels in inheritance gedetecteerd. Betrokken klassen: {', '.join(cyclic_classes)}"
             )
         return order
-        if len(order) != len(class_uris):
-            raise RuntimeError("Cirkels in inheritance gedetecteerd")
-        return order
 
     @classmethod
-    def _compute_mros(cls, oslo_classes: list[OSLOClass], inheritances: list[Inheritance]):
+    def _compute_mros(cls, oslo_classes: list[OSLOClass], inheritances: list[Inheritance]
+                      ) -> tuple[dict[str, list[str]], dict[str, list[str]]]:
+        """
+        Compute MROs and direct base order for each class.
+        """
         class_uris = [c.objectUri for c in oslo_classes]
-
-        # let op: volgorde van bases behouden zoals in metadata
         direct_bases = defaultdict(list)
         for inh in inheritances:
             direct_bases[inh.class_uri].append(inh.base_uri)
@@ -306,10 +304,7 @@ class OSLOCollector:
                 direct_order_map[uri] = []
                 continue
 
-            # Kies eerst een permutatie van bases die C3 accepteert
             valid_bases = cls._find_valid_base_order_uris(bases, mro_map)
-
-            # Merge met MRO(parent_i) in die volgorde én de lijst van directe bases in diezelfde volgorde
             parent_mros = [mro_map[b] for b in valid_bases]
             merged = cls._c3_merge(parent_mros + [valid_bases])
 
@@ -317,7 +312,6 @@ class OSLOCollector:
             direct_order_map[uri] = valid_bases
 
         return mro_map, direct_order_map
-
 
     def get_inheritance_map(self):
         if self.inheritance_map is not None:
