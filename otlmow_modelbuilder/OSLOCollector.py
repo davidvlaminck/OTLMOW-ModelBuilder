@@ -298,7 +298,7 @@ class OSLOCollector:
         direct_order_map = {}
 
         for uri in order:
-            bases = direct_bases.get(uri, [])
+            bases = [b for b in direct_bases.get(uri, []) if b]
             if not bases:
                 mro_map[uri] = [uri]
                 direct_order_map[uri] = []
