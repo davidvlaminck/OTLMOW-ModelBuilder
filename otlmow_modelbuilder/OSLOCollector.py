@@ -276,7 +276,7 @@ class OSLOCollector:
                 if indegree[v] == 0:
                     queue.append(v)
         if len(order) != len(class_uris):
-            cyclic_classes = set(class_uris) - set(order)
+            cyclic_classes = list(set(order) ^ set(class_uris))
             raise RuntimeError(
                 f"Cirkels in inheritance gedetecteerd. Betrokken klassen: {', '.join(cyclic_classes)}"
             )
@@ -289,6 +289,12 @@ class OSLOCollector:
         Compute MROs and direct base order for each class.
         """
         class_uris = [c.objectUri for c in oslo_classes]
+        if len(class_uris) != len(set(class_uris)):
+            # print duplicate URIs for debugging
+            duplicates = set([uri for uri in class_uris if class_uris.count(uri) > 1])
+            raise ValueError("Duplicate class URIs found in oslo_classes: " + ", ".join(duplicates))
+
+
         direct_bases = defaultdict(list)
         for inh in inheritances:
             direct_bases[inh.class_uri].append(inh.base_uri)
