@@ -170,3 +170,38 @@ def test_find_all_concrete_relations_input_not_concrete(oslo_collector):
         oslo_collector.find_all_concrete_relations('C')
     with pytest.raises(ValueError):
         oslo_collector.find_all_concrete_relations('Z')
+
+
+def test_get_inheritance_map_examples():
+    # Example classes and inheritances from the original main
+    oslo_classes = [
+        OSLOClass(name="J", objectUri="J"),
+        OSLOClass(name="K", objectUri="K"),
+        OSLOClass(name="N", objectUri="N"),
+        OSLOClass(name="L", objectUri="L"),
+        OSLOClass(name="M", objectUri="M"),
+    ]
+    inheritances = [
+        Inheritance(base_uri="J", class_uri="K"),
+        Inheritance(base_uri="J", class_uri="N"),
+        Inheritance(base_uri="N", class_uri="L"),
+        Inheritance(base_uri="J", class_uri="M"),
+        Inheritance(base_uri="K", class_uri="M"),
+        Inheritance(base_uri="L", class_uri="M"),
+    ]
+
+    oslo_collector = OSLOCollector(Path(''))
+    oslo_collector.classes = oslo_classes
+    oslo_collector.inheritances = inheritances
+    inheritance_map = oslo_collector.get_inheritance_map()
+
+    # Basic structure checks
+    assert isinstance(inheritance_map, dict)
+    assert set(inheritance_map.keys()) == {c.objectUri for c in oslo_classes}
+
+    # Expected direct base order per class (C3-consistent)
+    assert inheritance_map["J"] == []
+    assert inheritance_map["K"] == ["J"]
+    assert inheritance_map["N"] == ["J"]
+    assert inheritance_map["L"] == ["N"]
+    assert inheritance_map["M"] == ["K", "L", "J"]
