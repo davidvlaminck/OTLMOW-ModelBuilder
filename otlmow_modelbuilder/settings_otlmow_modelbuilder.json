@@ -14,7 +14,8 @@
         "https://w3id.org/isCharacterisedBy#isCharacterisedBy",
         "https://data.vlaanderen.be/ns/mobiliteit#inwerkingstijd",
         "https://data.vlaanderen.be/ns/mobiliteit#Verkeersteken.variabele",
-        "https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.variabele"
+        "https://data.vlaanderen.be/ns/mobiliteit#Verkeerstekenconcept.variabele",
+        "https://data.vlaanderen.be/ns/mobiliteit#VariabeleMetVerwijzing.template"
     ],
     "attributes_with_different_cases_uris": [
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#IVSB.lampType",
@@ -92,15 +93,32 @@
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Toegangsprocedure",
         "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie",
         "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject",
-        "https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#VLAGAIMObject"
+        "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#LinkObjectSV",
+        "http://www.w3.org/2004/02/skos/core#Concept"
     ],
     "class_validation_rules" : {
         "valid_uri_and_types" : {
             "http://purl.org/dc/terms/Agent": "Agent",
             "http://www.w3.org/2004/02/skos/core#Concept": "Concept",
-            "https://www.w3.org/2004/02/skos/core#ConceptScheme": "Codelijst"
+            "https://www.w3.org/2004/02/skos/core#ConceptScheme": "Codelijst",
+            "http://purl.org/dc/terms/isPartOf": "isPartOf",
+            "http://todo.com/AanvullendReglement.isOntwerpVoor": "isOntwerpVoor",
+            "http://www.w3.org/ns/prov#wasDerivedFrom": "wasDerivedFrom",
+            "https://data.vlaanderen.be/ns/todo#bevatMaatregelOntwerp": "bevatMaatregelOntwerp",
+            "https://data.vlaanderen.be/ns/todo#bevatOntwerp": "bevatOntwerp",
+            "https://data.vlaanderen.be/ns/todo#bevatOntwerpVoor": "bevatOntwerpVoor",
+            "https://data.vlaanderen.be/ns/todo#heeftItem": "heeftItem",
+            "https://data.vlaanderen.be/ns/todo#heeftVerkeersteken": "heeftVerkeersteken",
+            "https://data.vlaanderen.be/ns/todo#ontwerpVanMaatregel": "ontwerpVanMaatregel",
+            "https://w3id.org/isCharacterisedBy#isCharacterisedBy": "isCharacterisedBy",
+            "https://www.w3.org/2009/08/skos-reference/skos.html#inScheme": "inScheme"
         },
-        "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
+        "valid_regexes" : [
+          "https://wegenenverkeer.data.vlaanderen.be/ns/.+#.+",
+          "http://lblod.data.gift/vocabularies/variables/.+",
+          "https://lblod.data.gift/vocabularies/variables/.+",
+          "https://data.vlaanderen.be/ns/besluit#.+",
+          "https://data.vlaanderen.be/ns/mobiliteit#.+"]
     },
     "complex_datatype_validation_rules" : {
         "valid_uri_and_types" : {
@@ -110,7 +128,12 @@
             "http://www.cidoc-crm.org/cidoc-crm/E54_Dimension": "DtcDimensie",
             "https://schema.org/Schedule": "DtcTijdschema",
             "https://schema.org/ContactPoint" : "DtcContactinfo",
-            "https://w3id.org/tribont/core#Shape": "DtcVorm"
+            "https://w3id.org/tribont/core#Shape": "DtcVorm",
+            "http://lblod.data.gift/vocabularies/variables/Variable": "Variabele",
+            "https://data.vlaanderen.be/ns/mobiliteit#Zone": "DtcZone",
+            "https://data.vlaanderen.be/ns/projecten#DtcCodelijst": "DtcCodelijst",
+            "https://data.vlaanderen.be/ns/projecten#DtcTemplate": "DtcTemplate",
+            "https://data.vlaanderen.be/ns/projecten#DtcVariabeleWaarden": "DtcVariabeleWaarden"
         },
         "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]
     },
