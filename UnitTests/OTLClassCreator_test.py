@@ -87,6 +87,14 @@ class GeometrieArtefactCollectorDouble:
                           geen_geometrie=0, punt3D=0, lijn3D=0,
                           polygoon3D=1)]
 
+class_validation_rules = {
+        "valid_uri_and_types" : {
+            "http://purl.org/dc/terms/Agent": "Agent",
+            "http://www.w3.org/2004/02/skos/core#Concept": "Concept",
+            "https://www.w3.org/2004/02/skos/core#ConceptScheme": "Codelijst",
+        },
+        "valid_regexes" : ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#.+"]
+    }
 
 def set_up_real_collector_and_creator():
     base_dir = os.path.dirname(os.path.realpath(__file__))
@@ -216,8 +224,8 @@ def test_InvalidOSLOClassEmptyUri():
                           deprecated_version='')
 
     with pytest.raises(ValueError) as exception_empty_uri:
-        creator.create_blocks_to_write_from_classes(osloClass)
-    assert str(exception_empty_uri.value) == "OSLOClass.objectUri is invalid. Value = ''"
+        creator.create_blocks_to_write_from_classes(osloClass, class_validation_rules=class_validation_rules)
+    assert str(exception_empty_uri.value) == "OSLOClass.objectUri is invalid (empty). Value = ''"
 
 
 def test_InvalidOSLODatatypeComplexBadUri():
@@ -227,8 +235,8 @@ def test_InvalidOSLODatatypeComplexBadUri():
                           deprecated_version='')
 
     with pytest.raises(ValueError) as exception_bad_uri:
-        creator.create_blocks_to_write_from_classes(osloClass)
-    assert str(exception_bad_uri.value) == "OSLOClass.objectUri is invalid. Value = 'Bad objectUri'"
+        creator.create_blocks_to_write_from_classes(osloClass, class_validation_rules=class_validation_rules)
+    assert str(exception_bad_uri.value) == "OSLOClass.objectUri is invalid. It's not included in valid_uri_and_types of class_validation_rules or doesn't match one of valid regex in class_validation_rules. Value = 'Bad objectUri'"
 
 
 def test_InvalidOSLODatatypeComplexEmptyName():
@@ -240,8 +248,8 @@ def test_InvalidOSLODatatypeComplexEmptyName():
                           deprecated_version='')
 
     with pytest.raises(ValueError) as exception_bad_name:
-        creator.create_blocks_to_write_from_classes(osloClass)
-    assert str(exception_bad_name.value) == "OSLOClass.name is invalid. Value = ''"
+        creator.create_blocks_to_write_from_classes(osloClass, class_validation_rules=class_validation_rules)
+    assert str(exception_bad_name.value) == "OSLOClass.name is invalid (empty). Value = ''"
 
 
 def test_InValidType():
@@ -300,7 +308,7 @@ def test_ContainerBuis():
     collector, creator = set_up_real_collector_and_creator()
     container_buis = collector.find_class_by_uri(
         'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis')
-    data_to_write = creator.create_blocks_to_write_from_classes(container_buis)
+    data_to_write = creator.create_blocks_to_write_from_classes(container_buis, class_validation_rules=class_validation_rules)
     assert data_to_write == expectedDataContainerBuis
 
 
@@ -359,7 +367,7 @@ def test_Gebouw_DtcKardMax1():
 
     # Act
     gebouw = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw')
-    data_to_write = creator.create_blocks_to_write_from_classes(gebouw)
+    data_to_write = creator.create_blocks_to_write_from_classes(gebouw, class_validation_rules=class_validation_rules)
 
     # Assert
     assert data_to_write == expectedDataGebouw
@@ -370,10 +378,8 @@ def test_CheckInheritances_Agent():
     collector, creator = set_up_real_collector_and_creator()
 
     agent = collector.find_class_by_uri('http://purl.org/dc/terms/Agent')
-    data_to_write = creator.create_blocks_to_write_from_classes(agent, valid_uri_and_types={
-        "http://purl.org/dc/terms/Agent": "Agent",
-        "https://schema.org/ContactPoint" : "DtcContactinfo",
-    })
+    class_validation_rules['valid_uri_and_types'].update({"https://schema.org/ContactPoint": "DtcContactinfo"})
+    data_to_write = creator.create_blocks_to_write_from_classes(agent, class_validation_rules=class_validation_rules)
     inheritance_line = 'class Agent(RelationInteractor, OTLObject):'
 
     assert data_to_write[11] == inheritance_line
@@ -384,7 +390,7 @@ def test_CheckInheritances_AIMObject():
 
     aim_object = collector.find_class_by_uri(
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject')
-    data_to_write = creator.create_blocks_to_write_from_classes(aim_object)
+    data_to_write = creator.create_blocks_to_write_from_classes(aim_object, class_validation_rules=class_validation_rules)
     inheritance_line = 'class AIMObject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor, AIMVersie):'
 
     assert data_to_write[17] == inheritance_line
@@ -395,7 +401,7 @@ def test_CheckInheritances_RelatieObject():
 
     relatie_object = collector.find_class_by_uri(
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#RelatieObject')
-    data_to_write = creator.create_blocks_to_write_from_classes(relatie_object)
+    data_to_write = creator.create_blocks_to_write_from_classes(relatie_object, class_validation_rules=class_validation_rules)
     inheritance_line = 'class RelatieObject(AIMDBStatus, DavieRelatieAttributes, OTLObject):'
 
     assert data_to_write[10] == inheritance_line
@@ -406,7 +412,8 @@ def test_CheckInheritances_DerdenObject():
 
     derdenobject = collector.find_class_by_uri(
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject')
-    data_to_write = creator.create_blocks_to_write_from_classes(derdenobject)
+    data_to_write = creator.create_blocks_to_write_from_classes(derdenobject,
+                                                                class_validation_rules=class_validation_rules)
     inheritance_line = 'class Derdenobject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):'
 
     assert data_to_write[14] == inheritance_line
@@ -441,5 +448,6 @@ def test_check_inheritances_RelationInteractor():
     collector.relations = []
     creator = OTLClassCreator(collector)
     c_class = collector.find_class_by_uri('https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#C')
-    inheritance_line = creator.create_blocks_to_write_from_classes(c_class)[6]
+    inheritance_line = creator.create_blocks_to_write_from_classes(c_class,
+                                                                   class_validation_rules=class_validation_rules)[6]
     assert inheritance_line == 'class C(B, A):'

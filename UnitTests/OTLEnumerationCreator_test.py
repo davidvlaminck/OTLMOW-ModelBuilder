@@ -114,7 +114,7 @@ def test_InvalidOSLOEnumerationEmptyUri():
         with pytest.raises(ValueError) as exception_empty_uri:
             creator.create_block_to_write_from_enumerations(
                 oslo_enumeration, enumeration_validation_rules=enumeration_validation_rules)
-        assert str(exception_empty_uri.value) == "OSLOEnumeration.objectUri is invalid. Value = ''"
+        assert str(exception_empty_uri.value) == "OSLOEnumeration.objectUri is invalid (empty). Value = ''"
 
 
 def test_InvalidOSLOEnumerationBadUri():
@@ -126,7 +126,7 @@ def test_InvalidOSLOEnumerationBadUri():
         with pytest.raises(ValueError) as exception_bad_uri:
             creator.create_block_to_write_from_enumerations(
                 oslo_enumeration, enumeration_validation_rules=enumeration_validation_rules)
-        assert str(exception_bad_uri.value) == "OSLOEnumeration.objectUri is invalid. Value = 'Bad objectUri'"
+        assert str(exception_bad_uri.value) == "OSLOEnumeration.objectUri is invalid. It's not included in valid_uri_and_types of class_validation_rules or doesn't match one of valid regex in class_validation_rules. Value = 'Bad objectUri'"
 
 
 def test_InvalidOSLOEnumerationEmptyName():
@@ -139,7 +139,7 @@ def test_InvalidOSLOEnumerationEmptyName():
         with pytest.raises(ValueError) as exception_bad_name:
             creator.create_block_to_write_from_enumerations(
                 oslo_enumeration, enumeration_validation_rules=enumeration_validation_rules)
-        assert str(exception_bad_name.value) == "OSLOEnumeration.name is invalid. Value = ''"
+        assert str(exception_bad_name.value) == "OSLOEnumeration.name is invalid (empty). Value = ''"
 
 
 def test_InValidType():

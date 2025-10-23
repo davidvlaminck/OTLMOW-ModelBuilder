@@ -29,14 +29,14 @@ class OTLClassCreator(AbstractDatatypeCreator):
             self.geometry_types = gip.process_inheritances()
 
     def create_blocks_to_write_from_classes(self, oslo_class: OSLOClass, model_location='',
-                                            class_validation_rules: Dict = None) -> [str]:
+                                            class_validation_rules: Dict = {}) -> [str]:
         if not isinstance(oslo_class, OSLOClass):
             raise ValueError("Input is not a OSLOClass")
 
         if oslo_class.objectUri == '':
             raise ValueError(f"OSLOClass.objectUri is invalid (empty). Value = '{oslo_class.objectUri}'")
 
-        valid_uri_and_types = class_validation_rules['valid_uri_and_types']
+        valid_uri_and_types = class_validation_rules.get('valid_uri_and_types')
 
         if valid_uri_and_types is None:
             valid_uri_and_types = {}
@@ -44,7 +44,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
         if oslo_class.objectUri in valid_uri_and_types.keys():
             pass
         else:
-            for regex in class_validation_rules['valid_regexes']:
+            for regex in class_validation_rules.get('valid_regexes', []):
                 if re.match(pattern=regex, string=oslo_class.objectUri):
                     break
             else:
