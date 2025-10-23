@@ -104,20 +104,22 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             raise ValueError("Input is not a OSLOEnumeration")
 
         if oslo_enumeration.objectUri == '':
-            raise ValueError(f"OSLOEnumeration.objectUri is invalid. Value = '{oslo_enumeration.objectUri}'")
+            raise ValueError(f"OSLOEnumeration.objectUri is invalid (empty). Value = '{oslo_enumeration.objectUri}'")
 
-        if oslo_enumeration.objectUri not in enumeration_validation_rules['valid_uri_and_types'].keys():
-            match_re = False
-            for regex in enumeration_validation_rules["valid_regexes"]:
-                match_re = re.match(pattern=regex, string=oslo_enumeration.objectUri)
-                if match_re:
+        if oslo_enumeration.objectUri in enumeration_validation_rules['valid_uri_and_types'].keys():
+            pass
+        else:
+            for regex in enumeration_validation_rules['valid_regexes']:
+                if re.match(pattern=regex, string=oslo_enumeration.objectUri):
                     break
-            if not match_re:
+            else:
                 raise ValueError(
-                    f"OSLOEnumeration.objectUri is invalid. Value = '{oslo_enumeration.objectUri}'")
+                    f"OSLOEnumeration.objectUri is invalid. It's not included in valid_uri_and_types of "
+                    f"class_validation_rules or doesn't match one of valid regex in class_validation_rules. "
+                    f"Value = '{oslo_enumeration.objectUri}'")
 
         if oslo_enumeration.name == '':
-            raise ValueError(f"OSLOEnumeration.name is invalid. Value = '{oslo_enumeration.name}'")
+            raise ValueError(f"OSLOEnumeration.name is invalid (empty). Value = '{oslo_enumeration.name}'")
 
         return self.create_block_to_write_from_enumeration(oslo_enumeration=oslo_enumeration, environment=environment)
 

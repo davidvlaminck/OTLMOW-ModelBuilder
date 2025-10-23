@@ -29,23 +29,31 @@ class OTLClassCreator(AbstractDatatypeCreator):
             self.geometry_types = gip.process_inheritances()
 
     def create_blocks_to_write_from_classes(self, oslo_class: OSLOClass, model_location='',
-                                            valid_uri_and_types: Dict = None) -> [str]:
+                                            class_validation_rules: Dict = None) -> [str]:
         if not isinstance(oslo_class, OSLOClass):
             raise ValueError("Input is not a OSLOClass")
 
         if oslo_class.objectUri == '':
-            raise ValueError(f"OSLOClass.objectUri is invalid. Value = '{oslo_class.objectUri}'")
+            raise ValueError(f"OSLOClass.objectUri is invalid (empty). Value = '{oslo_class.objectUri}'")
+
+        valid_uri_and_types = class_validation_rules['valid_uri_and_types']
 
         if valid_uri_and_types is None:
             valid_uri_and_types = {}
 
         if oslo_class.objectUri in valid_uri_and_types.keys():
             pass
-        elif not re.match(pattern="^.+/ns/.+#.+", string=oslo_class.objectUri):
-            raise ValueError(f"OSLOClass.objectUri is invalid. Value = '{oslo_class.objectUri}'")
+        else:
+            for regex in class_validation_rules['valid_regexes']:
+                if re.match(pattern=regex, string=oslo_class.objectUri):
+                    break
+            else:
+                raise ValueError(
+                    f"OSLOClass.objectUri is invalid. It's not included in valid_uri_and_types of class_validation_rules"
+                    f" or doesn't match one of valid regex in class_validation_rules. Value = '{oslo_class.objectUri}'")
 
         if oslo_class.name == '':
-            raise ValueError(f"OSLOClass.name is invalid. Value = '{oslo_class.name}'")
+            raise ValueError(f"OSLOClass.name is invalid (empty). Value = '{oslo_class.name}'")
 
         return self.create_block_from_class(oslo_class, model_location, valid_uri_and_types=valid_uri_and_types)
 

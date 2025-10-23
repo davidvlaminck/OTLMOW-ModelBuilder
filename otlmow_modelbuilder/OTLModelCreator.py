@@ -64,12 +64,13 @@ class OTLModelCreator:
             enumeration_validation_rules=settings['enumeration_validation_rules'],
             enumeration_locations_by_environment=settings['enumeration_locations_by_environment'],
             include_kl_test_keuzelijst=include_kl_test_keuzelijst)
-        class_validation_settings = settings['complex_datatype_validation_rules']['valid_uri_and_types']
-        class_validation_settings.update(settings['class_validation_rules']['valid_uri_and_types'])
+        class_validation_rules = settings['class_validation_rules']
+        class_validation_rules['valid_uri_and_types'].update(
+            settings['complex_datatype_validation_rules']['valid_uri_and_types'])
         OTLModelCreator.create_classes(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
             geo_artefact_collector=geo_artefact_collector,
-            valid_uri_and_types=class_validation_settings)
+            class_validation_rules=class_validation_rules)
         if include_legacy:
             oslo_collector = OTLModelCreator.create_legacy_classes(oslo_collector=oslo_collector,
                 directory=directory / 'OtlmowModel', legacy_types_path=Path(__file__).parent / 'legacy_types.csv')
@@ -202,7 +203,7 @@ class OTLModelCreator:
             logging.error(f"Could not create a class for {enumeration.name}")
 
     @staticmethod
-    def create_classes(directory, oslo_collector, geo_artefact_collector, valid_uri_and_types):
+    def create_classes(directory, oslo_collector, geo_artefact_collector, class_validation_rules):
         creator = OTLClassCreator(oslo_collector, geo_artefact_collector)
 
         for oslo_class in tqdm(oslo_collector.classes):
@@ -211,7 +212,7 @@ class OTLModelCreator:
                 if oslo_class.label == 'ignore this class when generating the model':
                     continue
                 data_to_write = creator.create_blocks_to_write_from_classes(oslo_class, model_location=model_name,
-                                                                            valid_uri_and_types=valid_uri_and_types)
+                                                                            class_validation_rules=class_validation_rules)
                 if data_to_write is None:
                     logging.info(f"Could not create a class for {oslo_class.name}")
                 if len(data_to_write) == 0:
@@ -234,8 +235,8 @@ class OTLModelCreator:
                 continue
             ns = None
 
-            if oslo_class.objectUri in valid_uri_and_types:
-                name = valid_uri_and_types[oslo_class.objectUri]
+            if oslo_class.objectUri in class_validation_rules['valid_uri_and_types']:
+                name = class_validation_rules['valid_uri_and_types'][oslo_class.objectUri]
             else:
                 ns, name = get_ns_and_name_from_uri(oslo_class.objectUri)
 
