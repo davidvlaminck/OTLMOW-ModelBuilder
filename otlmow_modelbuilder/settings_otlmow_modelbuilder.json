@@ -71,6 +71,7 @@
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Stroomverdelingssysteem.ipAdres",
         "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#IPNetwerkToegangObject.ipAdres",
         "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#IpAdresObject.ipAdres",
+        "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#DynBordExternePU.ipAdres",
         "https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Sensoropstelling.opstelhoogte",
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bewegingssensor.opstelHoogte",
         "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Tank.opstelHoogte",
