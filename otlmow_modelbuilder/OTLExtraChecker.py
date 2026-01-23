@@ -58,7 +58,8 @@ class OTLExtraChecker:
             lines.insert(1, '\n')
             lines.insert(1, 'import re\n')
 
-        lines.remove("from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField\n")
+        if "..BaseClasses.StringField import StringField\n" in lines:
+            lines.remove("..BaseClasses.StringField import StringField\n")
 
         namefield_line_number = lines.index("        self._naampad = OTLAttribuut(field=StringField,\n")
         lines[namefield_line_number] = "        self._naampad = OTLAttribuut(field=NaampadField,\n"

@@ -8,22 +8,22 @@ from datetime import datetime
 from pathlib import Path
 from typing import Union, Dict, List, Generator, TypeVar, Type
 
-from otlmow_model.OtlmowModel.BaseClasses.DateField import DateField
-from otlmow_model.OtlmowModel.BaseClasses.DateTimeField import DateTimeField
-from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstField import KeuzelijstField
-from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField
-from otlmow_model.OtlmowModel.BaseClasses.TimeField import TimeField
-from otlmow_model.OtlmowModel.BaseClasses.URIField import URIField
-from otlmow_model.OtlmowModel.BaseClasses.UnionTypeField import UnionTypeField
-from otlmow_model.OtlmowModel.BaseClasses.UnionWaarden import UnionWaarden
-from otlmow_model.OtlmowModel.Exceptions.AttributeDeprecationWarning import AttributeDeprecationWarning
-from otlmow_model.OtlmowModel.Exceptions.CanNotClearAttributeError import CanNotClearAttributeError
-from otlmow_model.OtlmowModel.Exceptions.ClassDeprecationWarning import ClassDeprecationWarning
-from otlmow_model.OtlmowModel.Exceptions.CouldNotCreateInstanceError import CouldNotCreateInstanceError
-from otlmow_model.OtlmowModel.Exceptions.MethodNotApplicableError import MethodNotApplicableError
-from otlmow_model.OtlmowModel.Exceptions.NonStandardAttributeWarning import NonStandardAttributeWarning
-from otlmow_model.OtlmowModel.Helpers.GenericHelper import get_titlecase_from_ns, get_ns_and_name_from_uri
-from otlmow_model.OtlmowModel.Helpers.generated_lists import get_hardcoded_class_dict
+from .DateField import DateField
+from .DateTimeField import DateTimeField
+from .KeuzelijstField import KeuzelijstField
+from .OTLField import OTLField
+from .TimeField import TimeField
+from .URIField import URIField
+from .UnionTypeField import UnionTypeField
+from .UnionWaarden import UnionWaarden
+from ..Exceptions.AttributeDeprecationWarning import AttributeDeprecationWarning
+from ..Exceptions.CanNotClearAttributeError import CanNotClearAttributeError
+from ..Exceptions.ClassDeprecationWarning import ClassDeprecationWarning
+from ..Exceptions.CouldNotCreateInstanceError import CouldNotCreateInstanceError
+from ..Exceptions.MethodNotApplicableError import MethodNotApplicableError
+from ..Exceptions.NonStandardAttributeWarning import NonStandardAttributeWarning
+from ..Helpers.GenericHelper import get_titlecase_from_ns, get_ns_and_name_from_uri
+from ..Helpers.generated_lists import get_hardcoded_class_dict
 
 
 class OTLAttribuut:

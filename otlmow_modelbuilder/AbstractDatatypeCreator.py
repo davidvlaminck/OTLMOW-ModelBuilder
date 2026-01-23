@@ -19,16 +19,16 @@ class AbstractDatatypeCreator(ABC):
         attributen = get_attributen_by_type_field(self.oslo_collector, type_field, oslo_datatype)
 
         datablock = ['# coding=utf-8',
-                     'from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut']
+                     'from ..BaseClasses.OTLObject import OTLAttribuut']
 
         list_fields_to_start_with = [f'{type_field}Field']
         if type_field == 'UnionType':
             list_fields_to_start_with.append('UnionWaarden')
         elif type_field == 'Complex':
-            datablock.append('from otlmow_model.OtlmowModel.BaseClasses.WaardenObject import WaardenObject')
+            datablock.append('from ..BaseClasses.WaardenObject import WaardenObject')
         elif type_field == 'Primitive' or type_field == 'KwantWrd':
-            datablock.append('from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField')
-            datablock.append('from otlmow_model.OtlmowModel.BaseClasses.WaardenObject import WaardenObject')
+            datablock.append('from ..BaseClasses.OTLField import OTLField')
+            datablock.append('from ..BaseClasses.WaardenObject import WaardenObject')
             list_fields_to_start_with = []
         list_of_fields = get_fields_to_import_from_list_of_attributes(self.oslo_collector, attributen,
                                                                       valid_uri_and_types=valid_uri_and_types,
@@ -40,7 +40,7 @@ class AbstractDatatypeCreator(ABC):
             if module not in base_fields:
                 datablock.append(f'from ..Datatypes.{module} import {module}')
             else:
-                datablock.append(f'from otlmow_model.OtlmowModel.BaseClasses.{module} import {module}')
+                datablock.append(f'from ..BaseClasses.{module} import {module}')
 
         datablock.append('')
         datablock.append('')

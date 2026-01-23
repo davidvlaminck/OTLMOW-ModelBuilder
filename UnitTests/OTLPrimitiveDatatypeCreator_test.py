@@ -90,9 +90,9 @@ def test_ValidOSLODatatypePrimitive():
     block_to_write = creator.create_block_to_write_from_primitive_types(
         boolean_primitive, primitive_datatype_validation_rules=primitive_datatype_validation_rules)
     assert (block_to_write ==
-            ['# coding=utf-8', 'from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut',
-             'from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField',
-             'from otlmow_model.OtlmowModel.BaseClasses.WaardenObject import WaardenObject',
+            ['# coding=utf-8', 'from ..BaseClasses.OTLObject import OTLAttribuut',
+             'from ..BaseClasses.OTLField import OTLField',
+             'from ..BaseClasses.WaardenObject import WaardenObject',
              '',
              '',
              '# Generated with OTLPrimitiveDatatypeCreator. To modify: extend, do not edit',
@@ -147,11 +147,11 @@ def test_create_block_kwant_wrd():
 
 
 expectedKwantWrd = ['# coding=utf-8',
-                    'from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut',
-                    'from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField',
-                    'from otlmow_model.OtlmowModel.BaseClasses.WaardenObject import WaardenObject',
-                    'from otlmow_model.OtlmowModel.BaseClasses.FloatOrDecimalField import FloatOrDecimalField',
-                    'from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField',
+                    'from ..BaseClasses.OTLObject import OTLAttribuut',
+                    'from ..BaseClasses.OTLField import OTLField',
+                    'from ..BaseClasses.WaardenObject import WaardenObject',
+                    'from ..BaseClasses.FloatOrDecimalField import FloatOrDecimalField',
+                    'from ..BaseClasses.StringField import StringField',
                     '',
                     '',
                     '# Generated with OTLPrimitiveDatatypeCreator. To modify: extend, do not edit',
@@ -208,10 +208,10 @@ expectedKwantWrd = ['# coding=utf-8',
                     '']
 
 expectedDte = ['# coding=utf-8',
-               'from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut',
-               'from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField',
-               'from otlmow_model.OtlmowModel.BaseClasses.WaardenObject import WaardenObject',
-               'from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField',
+               'from ..BaseClasses.OTLObject import OTLAttribuut',
+               'from ..BaseClasses.OTLField import OTLField',
+               'from ..BaseClasses.WaardenObject import WaardenObject',
+               'from ..BaseClasses.StringField import StringField',
                '',
                '',
                '# Generated with OTLPrimitiveDatatypeCreator. To modify: extend, do not edit',

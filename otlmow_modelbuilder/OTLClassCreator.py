@@ -67,7 +67,10 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         datablock = ['# coding=utf-8']
         if len(attributen) > 0:
-            datablock.append('from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut')
+            if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+                datablock.append('from ..BaseClasses.OTLObject import OTLAttribuut')
+            else:
+                datablock.append('from ...BaseClasses.OTLObject import OTLAttribuut')
 
         if oslo_class.abstract == 1:
             if len(inheritances) + len(list_of_geometry_types) < 1:
@@ -78,8 +81,12 @@ class OTLClassCreator(AbstractDatatypeCreator):
         if len(inheritances) > 0:
             for inheritance in inheritances:
                 if inheritance.base_name in ['OTLAsset', 'OTLObject', 'RelationInteractor', 'DavieRelatieAttributes']:
-                    datablock.append(
-                        f'from otlmow_model.OtlmowModel.BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
+                    if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+                        datablock.append(
+                            f'from ..BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
+                    else:
+                        datablock.append(
+                            f'from ...BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
                 else:
                     class_directory = 'Classes'
                     ns = None
@@ -111,13 +118,16 @@ class OTLClassCreator(AbstractDatatypeCreator):
                 else:
                     datablock.append(f'from ...Datatypes.{type_field} import {type_field}')
             else:
-                datablock.append(f'from otlmow_model.OtlmowModel.BaseClasses.{type_field} import {type_field}')
+                if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+                    datablock.append(f'from ..BaseClasses.{type_field} import {type_field}')
+                else:
+                    datablock.append(f'from ...BaseClasses.{type_field} import {type_field}')
 
         if 'Bevestiging' in oslo_class.objectUri:
             pass
 
         for geometry_type in list_of_geometry_types:
-            datablock.append(f'from otlmow_model.OtlmowModel.GeometrieTypes.{geometry_type} import {geometry_type}')
+            datablock.append(f'from ...GeometrieTypes.{geometry_type} import {geometry_type}')
 
         datablock.append('')
         datablock.append('')

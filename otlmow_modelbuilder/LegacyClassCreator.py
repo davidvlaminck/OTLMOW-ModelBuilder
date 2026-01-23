@@ -44,7 +44,7 @@ class LegacyClassCreator(AbstractDatatypeCreator):
                                 model_location: str = '') -> [str]:
         return [
             '# coding=utf-8',
-            'from otlmow_model.OtlmowModel.BaseClasses.LegacyObject import LegacyObject',
+            'from ...BaseClasses.LegacyObject import LegacyObject',
             '',
             '',
             f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit',

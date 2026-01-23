@@ -6,7 +6,7 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 
 expectedDataAB = ['# coding=utf-8',
-    'from otlmow_model.OtlmowModel.BaseClasses.LegacyObject import LegacyObject',
+    'from ...BaseClasses.LegacyObject import LegacyObject',
     '', '',
     '# Generated with LegacyClassCreator. To modify: extend, do not edit',
     'class AB(LegacyObject):',

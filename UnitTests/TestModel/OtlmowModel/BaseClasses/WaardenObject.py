@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import Generator
 
-from otlmow_model.OtlmowModel.Exceptions.CanNotClearAttributeError import CanNotClearAttributeError
+from ..Exceptions.CanNotClearAttributeError import CanNotClearAttributeError
 
 
 class WaardenObject:

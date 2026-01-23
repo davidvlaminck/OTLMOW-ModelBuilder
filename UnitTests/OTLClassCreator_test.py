@@ -262,9 +262,9 @@ def test_InValidType():
 
 expectedDataContainerBuis = ['# coding=utf-8',
                              'from typing import List',
-                             'from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut',
+                             'from ...BaseClasses.OTLObject import OTLAttribuut',
                              'from abc import abstractmethod, ABC',
-                             'from otlmow_model.OtlmowModel.BaseClasses.StringField import StringField',
+                             'from ...BaseClasses.StringField import StringField',
                              '',
                              '',
                              '# Generated with OTLClassCreator. To modify: extend, do not edit',
@@ -313,10 +313,10 @@ def test_ContainerBuis():
 
 
 expectedDataGebouw = ['# coding=utf-8',
-                      'from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLAttribuut',
+                      'from ...BaseClasses.OTLObject import OTLAttribuut',
                       'from ...Classes.Abstracten.Behuizing import Behuizing',
                       'from ...Datatypes.DtcDocument import DtcDocument, DtcDocumentWaarden',
-                      'from otlmow_model.OtlmowModel.GeometrieTypes.VlakGeometrie import VlakGeometrie',
+                      'from ...GeometrieTypes.VlakGeometrie import VlakGeometrie',
                       '',
                       '',
                       '# Generated with OTLClassCreator. To modify: extend, do not edit',

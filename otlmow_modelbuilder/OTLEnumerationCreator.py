@@ -129,9 +129,9 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         adm_status = self.get_adm_status_by_uri(oslo_enumeration.codelist, env=environment)
 
         datablock = ['# coding=utf-8',
-                     'from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstField import KeuzelijstField']
+                     'from ..BaseClasses.KeuzelijstField import KeuzelijstField']
         if len(keuzelijst_waardes) > 0:
-            datablock.append('from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde')
+            datablock.append(f'from ..BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde')
 
         datablock.extend(['',
                           '',
