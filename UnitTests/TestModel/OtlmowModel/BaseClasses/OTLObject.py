@@ -530,7 +530,7 @@ def _recursive_create_dict_from_asset(
         for attr_key, attr in vars(asset).items():
             if attr_key in {'_parent', '_valid_relations', '_geometry_types'}:
                 continue
-            if isinstance(attr, OTLAttribuut):
+            if hasattr(attr, '__class__') and attr.__class__.__name__ == 'OTLAttribuut':
                 if not attr.mark_to_be_cleared:
                     if attr.waarde is None:
                         continue
@@ -567,17 +567,17 @@ def _recursive_create_dict_from_asset(
                     if attr.mark_to_be_cleared:
                         d[attr.naam] = attr.field.clearing_value
                     elif cast_datetime:
-                        if attr.field == TimeField:
+                        if attr.field.__name__ == 'TimeField':
                             if isinstance(attr.waarde, list):
                                 d[attr.naam] = [time.strftime(list_item, "%H:%M:%S") for list_item in attr.waarde]
                             else:
                                 d[attr.naam] = time.strftime(attr.waarde, "%H:%M:%S")
-                        elif attr.field == DateField:
+                        elif attr.field.__name__ == 'DateField':
                             if isinstance(attr.waarde, list):
                                 d[attr.naam] = [date.strftime(list_item, "%Y-%m-%d") for list_item in attr.waarde]
                             else:
                                 d[attr.naam] = date.strftime(attr.waarde, "%Y-%m-%d")
-                        elif attr.field == DateTimeField:
+                        elif attr.field.__name__ == 'DateTimeField':
                             if isinstance(attr.waarde, list):
                                 d[attr.naam] = [DateTimeField.value_default(list_item)
                                                 for list_item in attr.waarde]
@@ -628,7 +628,7 @@ def _recursive_create_rdf_dict_from_asset(
         for attr_key, attr in vars(asset).items():
             if attr_key in {'_parent', '_valid_relations', '_geometry_types'}:
                 continue
-            if isinstance(attr, OTLAttribuut):
+            if hasattr(attr, '__class__') and attr.__class__.__name__ == 'OTLAttribuut':
                 if not attr.mark_to_be_cleared:
                     if attr.waarde is None:
                         continue
@@ -669,17 +669,17 @@ def _recursive_create_rdf_dict_from_asset(
                     if attr.mark_to_be_cleared:
                         d[attr.objectUri] = attr.field.clearing_value
                     elif cast_datetime:
-                        if attr.field == TimeField:
+                        if attr.field.__name__ == 'TimeField':
                             if isinstance(attr.waarde, list):
                                 d[attr.objectUri] = [time.strftime(list_item, "%H:%M:%S") for list_item in attr.waarde]
                             else:
                                 d[attr.objectUri] = time.strftime(attr.waarde, "%H:%M:%S")
-                        elif attr.field == DateField:
+                        elif attr.field.__name__ == 'DateField':
                             if isinstance(attr.waarde, list):
                                 d[attr.objectUri] = [date.strftime(list_item, "%Y-%m-%d") for list_item in attr.waarde]
                             else:
                                 d[attr.objectUri] = date.strftime(attr.waarde, "%Y-%m-%d")
-                        elif attr.field == DateTimeField:
+                        elif attr.field.__name__ == 'DateTimeField':
                             if isinstance(attr.waarde, list):
                                 d[attr.objectUri] = [datetime.strftime(list_item, "%Y-%m-%d %H:%M:%S")
                                                      for list_item in attr.waarde]
