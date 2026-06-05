@@ -1,6 +1,5 @@
 ﻿from typing import Union
 
-from .KeuzelijstField import KeuzelijstField
 from .OTLObject import OTLObject, OTLAttribuut
 
 
@@ -21,10 +20,11 @@ def meta_info(obj: Union[OTLObject, OTLAttribuut], attribute: str = '') -> str:
                 return meta_info(attr)
             else:
                 raise ValueError(f"'{attribute}' does not exist, please check the spelling")
-    if isinstance(obj, OTLObject):
+    if hasattr(obj, 'return_is_otl_object') and obj.return_is_otl_object():
         return _meta_info_otl_object(obj)
-    elif isinstance(obj, OTLAttribuut):
+    elif hasattr(obj, 'is_otl_attribute') and obj.is_otl_attribute:
         return _meta_info_attribute(obj)
+    return None
 
 
 def _meta_info_otl_object(otl_object: OTLObject) -> str:
@@ -58,7 +58,7 @@ def _meta_info_attribute(attribute: OTLAttribuut) -> str:
     if callable(field):
         field = field()
 
-    if isinstance(field, KeuzelijstField):
+    if hasattr(field, 'options'):
         object_string += f'valid values:\n'
         options = getattr(field, 'options', {})
         for i, k in enumerate(options.keys()):

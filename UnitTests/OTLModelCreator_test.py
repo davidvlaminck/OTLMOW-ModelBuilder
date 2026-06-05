@@ -95,6 +95,15 @@ def test_generate_class_dict():
                       'Toestand',
              'name': 'AIMToestand',
              'ns': 'implementatieelement'},
+        'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMVersie':
+            {'abstract': True,
+             'deprecated_version': '',
+             'direct_subclasses': [
+                 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject'],
+             'label': 'AIM '
+                      'versie',
+             'name': 'AIMVersie',
+             'ns': 'implementatieelement'},
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DirectioneleRelatie':
             {'abstract': True,
              'deprecated_version': '',
