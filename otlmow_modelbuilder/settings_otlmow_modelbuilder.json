@@ -159,7 +159,7 @@
     },
     "enumeration_locations_by_environment" : {
         "all": [],
-        "prd": ["https://github.com/Informatievlaanderen/OSLOthema-wegenenverkeer/blob/e06a0549660b006a4c444e85a38db7953bc6abff/codelijsten/all.ttl.zip"],
+        "prd": ["https://github.com/Informatievlaanderen/OSLOthema-wegenenverkeer/raw/e06a0549660b006a4c444e85a38db7953bc6abff/codelijsten/all.ttl.zip"],
         "tei": ["https://github.com/Informatievlaanderen/OSLO-codelistgenerated/raw/refs/heads/wegenenverkeer-test/all.ttl.zip"],
         "dev": ["https://github.com/Informatievlaanderen/OSLO-codelistgenerated/raw/refs/heads/wegenenverkeer-dev/all.ttl.zip"],
         "aim": ["https://github.com/Informatievlaanderen/OSLO-codelistgenerated/raw/refs/heads/wegenenverkeer-aim/all.ttl.zip"]
