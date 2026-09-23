@@ -74,7 +74,21 @@ class GeometrieInheritanceProcessor:
             for inheritance in inheritances:
                 current_geo_type = next((g for g in self.geometrie_types if g.objectUri == inheritance.class_uri), None)
                 if current_geo_type is not None:
-                    self.geometrie_types.remove(current_geo_type)
+                    # strip the common (inherited) geometry types from the subclass, keep the rest
+                    if geen == 1:
+                        current_geo_type.geen_geometrie = 0
+                    if point == 1:
+                        current_geo_type.punt3D = 0
+                    if line == 1:
+                        current_geo_type.lijn3D = 0
+                    if polygon == 1:
+                        current_geo_type.polygoon3D = 0
+                    # if the subclass has no geometry types left, remove the entry
+                    if (current_geo_type.geen_geometrie != 1 and
+                            current_geo_type.punt3D != 1 and
+                            current_geo_type.lijn3D != 1 and
+                            current_geo_type.polygoon3D != 1):
+                        self.geometrie_types.remove(current_geo_type)
 
         # regardless of outcomes, remove all inheritances from base to avoid duplicates
         for inheritance in inheritances:
