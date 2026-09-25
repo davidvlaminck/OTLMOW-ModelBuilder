@@ -1,0 +1,9 @@
+rdflib>=6.0.0
+tqdm>=4.66.1
+
+[test]
+pytest
+pytest-cov
+pytest-subtests
+pytest-timeout
+nbmake
