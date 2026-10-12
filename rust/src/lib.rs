@@ -1,8 +1,22 @@
 use pyo3::prelude::*;
 
+mod datatype_builder_functions;
+mod generic_builder_functions;
+mod helper_functions;
 mod sqlite_reader;
 mod ttl_reader;
 
+use datatype_builder_functions::{
+    py_get_field_name_by_type_uri, py_get_field_name_from_type_uri,
+    py_get_fields_to_import_from_list_of_attributes, py_get_non_single_field_from_type_uri,
+    py_get_single_field_from_type_uri, py_get_type_name_of_complex_attribuut,
+    py_get_type_name_of_union_attribuut,
+};
+use generic_builder_functions::py_add_attributen_to_data_block;
+use helper_functions::{
+    py_escape_backslash, py_get_class_directory_from_ns, py_get_ns_and_name_from_uri,
+    py_get_titlecase_from_ns, py_get_white_space_equivalent, py_wrap_in_quotes,
+};
 use sqlite_reader::{py_find_subclasses_uri_by_class_uri, py_get_all_inheritances, PyInheritance};
 use ttl_reader::{py_get_keuzelijstwaardes_from_ttl, py_get_adm_status_from_ttl, py_parse_graph_to_dict, PyKeuzelijstWaarde};
 
@@ -21,5 +35,19 @@ fn _otlmow_modelbuilder_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(py_get_keuzelijstwaardes_from_ttl, m)?)?;
     m.add_function(wrap_pyfunction!(py_get_adm_status_from_ttl, m)?)?;
     m.add_function(wrap_pyfunction!(py_parse_graph_to_dict, m)?)?;
+    m.add_function(wrap_pyfunction!(py_escape_backslash, m)?)?;
+    m.add_function(wrap_pyfunction!(py_wrap_in_quotes, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_white_space_equivalent, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_ns_and_name_from_uri, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_class_directory_from_ns, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_titlecase_from_ns, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_single_field_from_type_uri, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_non_single_field_from_type_uri, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_type_name_of_complex_attribuut, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_type_name_of_union_attribuut, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_field_name_from_type_uri, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_field_name_by_type_uri, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_fields_to_import_from_list_of_attributes, m)?)?;
+    m.add_function(wrap_pyfunction!(py_add_attributen_to_data_block, m)?)?;
     Ok(())
 }
