@@ -233,3 +233,41 @@ def test_get_adms_status_for_options():
 
         waarde_6 = next(k for k in keuzelijst_waarden if k.invulwaarde == 'waarde-6')
         assert waarde_6.status == 'verwijderd'
+
+
+@pytest.mark.parametrize("ttl_file,env", [
+    ('kl_testkeuzelijst/KlTestKeuzelijst.ttl', 'prd'),
+    ('new_format_ttl.ttl', 'prd'),
+    ('unittest_antiparkeerpaaltype_extracted.ttl', 'prd'),
+    ('unittest_toestand_extracted.ttl', 'prd'),
+])
+def test_rust_get_keuzelijstwaardes_matches_python(ttl_file, env):
+    from otlmow_modelbuilder._otlmow_modelbuilder_rs import get_keuzelijstwaardes_from_ttl
+
+    ttl_path = str(CURRENT_DIR / ttl_file)
+    rust_waardes = get_keuzelijstwaardes_from_ttl(ttl_path, env)
+
+    g = Graph()
+    g.parse(ttl_path, format="turtle")
+    python_waardes = OTLEnumerationCreator.get_keuzelijstwaardes_from_graph(g, env)
+
+    assert len(rust_waardes) == len(python_waardes)
+    for rw, pw in zip(rust_waardes, python_waardes):
+        assert rw.invulwaarde == pw.invulwaarde
+        assert rw.label == pw.label
+        assert rw.definitie == pw.definitie
+        assert rw.objectUri == pw.objectUri
+        assert rw.status == pw.status
+
+
+def test_rust_get_adm_status_matches_python():
+    from otlmow_modelbuilder._otlmow_modelbuilder_rs import get_adm_status_from_ttl
+
+    ttl_path = str(CURRENT_DIR / 'kl_testkeuzelijst' / 'KlTestKeuzelijst.ttl')
+    uri = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlTestKeuzelijst'
+    rust_status = get_adm_status_from_ttl(ttl_path, uri, 'prd')
+
+    g = Graph()
+    g.parse(ttl_path, format="turtle")
+    python_status = OTLEnumerationCreator.get_adm_status_from_graph(g, uri=uri)
+    assert rust_status == python_status

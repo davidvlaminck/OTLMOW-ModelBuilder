@@ -1,4 +1,5 @@
 import itertools
+import os
 from collections import defaultdict, deque
 from pathlib import Path
 from typing import List, Optional
@@ -103,11 +104,22 @@ class OSLOCollector:
         if oslo_class_uri is None or not oslo_class_uri:
             return []
 
+        if self._path_is_valid():
+            try:
+                from otlmow_modelbuilder._otlmow_modelbuilder_rs import find_subclasses_uri_by_class_uri as rust_find
+                return rust_find(str(self.path.resolve()), oslo_class_uri, sort_by_uri)
+            except Exception:
+                pass
+
         if sort_by_uri:
             return sorted((i.class_uri for i in self.inheritances if i.base_uri == oslo_class_uri),
                           key=lambda uri: uri)
 
         return [i.class_uri for i in self.inheritances if i.base_uri == oslo_class_uri]
+
+    def _path_is_valid(self) -> bool:
+        path = self.path
+        return path is not None and path != '' and os.path.isfile(str(path))
 
     def find_indirect_subclasses_uri_by_class_uri(self, oslo_class_uri: str, sort_by_uri: bool = True) -> list[str]:
         if oslo_class_uri is None or not oslo_class_uri:
