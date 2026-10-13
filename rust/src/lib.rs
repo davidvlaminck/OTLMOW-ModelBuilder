@@ -1,7 +1,9 @@
 use pyo3::prelude::*;
 
+mod class_creator;
 mod datatype_builder_functions;
 mod datatype_creator;
+mod enumeration_creator;
 mod generic_builder_functions;
 mod helper_functions;
 mod sqlite_reader;
@@ -13,7 +15,9 @@ use datatype_builder_functions::{
     py_get_single_field_from_type_uri, py_get_type_name_of_complex_attribuut,
     py_get_type_name_of_union_attribuut,
 };
+use class_creator::py_create_block_from_class;
 use datatype_creator::py_create_block_to_write_from_complex_primitive_or_union_types;
+use enumeration_creator::py_create_block_to_write_from_enumeration;
 use generic_builder_functions::py_add_attributen_to_data_block;
 use helper_functions::{
     py_escape_backslash, py_get_class_directory_from_ns, py_get_ns_and_name_from_uri,
@@ -52,5 +56,7 @@ fn _otlmow_modelbuilder_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(py_get_fields_to_import_from_list_of_attributes, m)?)?;
     m.add_function(wrap_pyfunction!(py_add_attributen_to_data_block, m)?)?;
     m.add_function(wrap_pyfunction!(py_create_block_to_write_from_complex_primitive_or_union_types, m)?)?;
+    m.add_function(wrap_pyfunction!(py_create_block_to_write_from_enumeration, m)?)?;
+    m.add_function(wrap_pyfunction!(py_create_block_from_class, m)?)?;
     Ok(())
 }

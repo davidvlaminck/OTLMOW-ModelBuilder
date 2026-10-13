@@ -65,6 +65,38 @@ class OTLClassCreator(AbstractDatatypeCreator):
         inheritances = self.oslo_collector.find_inheritances_by_class(oslo_class)
         list_of_geometry_types = self.get_geometry_types_from_uri(oslo_class.objectUri)
 
+        try:
+            from otlmow_modelbuilder._otlmow_modelbuilder_rs import create_block_from_class as rust_create
+            type_links = [(t.item_uri, t.item_tabel) for t in self.oslo_collector.typeLinks]
+            enumerations = [(e.objectUri, e.name) for e in self.oslo_collector.enumerations]
+            complex_datatypes = [(c.objectUri, c.name) for c in self.oslo_collector.complex_datatypes]
+            union_datatypes = [(u.objectUri, u.name) for u in self.oslo_collector.union_datatypes]
+            inheritance_map = self.oslo_collector.get_inheritance_map().get(oslo_class.objectUri, [])
+            relations = self.oslo_collector.find_all_relations(oslo_class.objectUri, allow_duplicates=False)
+            inh_list = [(i.base_name, i.base_uri, i.class_uri, i.class_name, i.deprecated_version)
+                        for i in inheritances]
+            rel_list = [(r.bron_uri, r.doel_uri, r.objectUri, r.richting, r.deprecated_version)
+                        for r in relations]
+            return rust_create(
+                [a for a in attributen],
+                inh_list,
+                rel_list,
+                list(valid_uri_and_types.items()),
+                type_links,
+                enumerations,
+                complex_datatypes,
+                union_datatypes,
+                inheritance_map,
+                list_of_geometry_types,
+                oslo_class.name,
+                oslo_class.definition,
+                oslo_class.objectUri,
+                oslo_class.abstract,
+                oslo_class.deprecated_version,
+                self.__class__.__name__)
+        except Exception:
+            pass
+
         datablock = ['# coding=utf-8']
         if len(attributen) > 0:
             if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
