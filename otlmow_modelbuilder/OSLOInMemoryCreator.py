@@ -49,7 +49,7 @@ class OSLOInMemoryCreator:
         return [GeneralInfoRecord(row[0], row[1]) for row in data]
 
     def get_otl_version(self) -> str:
-        data = self.perform_read_query(li"SELECT Waarde FROM GeneralInfo WHERE Parameter = 'Version'")
+        data = self.perform_read_query("SELECT Waarde FROM GeneralInfo WHERE Parameter = 'Version'")
 
         return None if len(data) == 0 else data[0][0]
 
