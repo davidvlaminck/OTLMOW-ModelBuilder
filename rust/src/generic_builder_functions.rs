@@ -237,7 +237,7 @@ pub fn add_attributen_to_data_block(
         prop_datablock.push(format!("    def {}(self){}:", attribuut.name, type_hint));
         prop_datablock.push(format!("        \"\"\"{}\"\"\"", attribuut.definition));
         if type_field == "KwantWrd" && attribuut.name == "standaardEenheid" {
-            prop_datablock.push(format!("        return self._{}.usagenote.split(\"'\"')[1]", attribuut.name));
+            prop_datablock.push(format!("        return self._{}.usagenote.split('\"')[1]", attribuut.name));
         } else {
             prop_datablock.push(format!("        return self._{}.get_waarde()", attribuut.name));
         }
@@ -260,7 +260,7 @@ pub fn add_attributen_to_data_block(
     datablock
 }
 
-fn extract_attribute(obj: &Bound<'_, PyAny>) -> PyResult<Attribute> {
+pub fn extract_attribute(obj: &Bound<'_, PyAny>) -> PyResult<Attribute> {
     Ok(Attribute {
         name: obj.getattr("name")?.extract::<String>()?,
         label: obj.getattr("label")?.extract::<String>()?,
