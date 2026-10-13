@@ -320,7 +320,7 @@ pub fn py_generate_model_optimized(
                         invulwaarde: item.getattr("invulwaarde").unwrap().extract::<String>().unwrap_or_default(),
                         label: item.getattr("label").unwrap().extract::<String>().unwrap_or_default(),
                         definitie: item.getattr("definitie").unwrap().extract::<String>().unwrap_or_default(),
-                        objectUri: item.getattr("objectUri").unwrap().extract::<String>().unwrap_or_default(),
+                        object_uri: item.getattr("objectUri").unwrap().extract::<String>().unwrap_or_default(),
                         status: item.getattr("status").unwrap().extract::<String>().unwrap_or_default(),
                     }
                 }).collect()

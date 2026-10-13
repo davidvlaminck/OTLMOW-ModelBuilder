@@ -158,8 +158,8 @@ pub struct PyKeuzelijstWaarde {
     pub label: String,
     #[pyo3(get, set)]
     pub definitie: String,
-    #[pyo3(get, set)]
-    pub objectUri: String,
+    #[pyo3(get, set, name = "objectUri")]
+    pub object_uri: String,
     #[pyo3(get, set)]
     pub status: String,
 }
@@ -179,7 +179,7 @@ impl PyKeuzelijstWaarde {
             invulwaarde: invulwaarde.unwrap_or_default(),
             label: label.unwrap_or_default(),
             definitie: definitie.unwrap_or_default(),
-            objectUri: object_uri,
+            object_uri: object_uri,
             status: status.unwrap_or_default(),
         }
     }
@@ -208,11 +208,11 @@ fn get_keuzelijstwaardes_from_store(store: &TripleStore, env: &str) -> Vec<PyKeu
             invulwaarde: String::new(),
             label: String::new(),
             definitie: String::new(),
-            objectUri: String::new(),
+            object_uri: String::new(),
             status: String::new(),
         };
 
-        waarde.objectUri = subject_str.replace("-test.data", ".data");
+        waarde.object_uri = subject_str.replace("-test.data", ".data");
         if let Some(v) = store.object_for(&subject_str, &(SKOS.to_string() + "notation")) {
             waarde.invulwaarde = v;
         }
@@ -290,4 +290,131 @@ pub fn py_parse_graph_to_dict(
         pyo3::exceptions::PyRuntimeError::new_err(format!("Failed to parse graph: {}", e))
     })?;
     Ok(dict.into_iter().collect())
+}
+
+#[pyfunction]
+#[pyo3(name = "parse_file_or_dir_to_dict")]
+pub fn py_parse_file_or_dir_to_dict(
+    path: &str,
+) -> PyResult<Vec<(String, Vec<(String, String, String)>)>> {
+    let p = Path::new(path);
+    if !p.exists() {
+        return Err(pyo3::exceptions::PyFileNotFoundError::new_err(format!(
+            "Path not found: {}", p.display()
+        )));
+    }
+
+    let mut combined: std::collections::BTreeMap<String, Vec<(String, String, String)>> = std::collections::BTreeMap::new();
+
+    if p.is_file() {
+        if let Ok(dict) = parse_graph_to_dict(p) {
+            for (k, v) in dict {
+                combined.entry(k).or_default().extend(v);
+            }
+        }
+    } else {
+        for entry in std::fs::read_dir(p).map_err(|e| {
+            pyo3::exceptions::PyRuntimeError::new_err(format!("Failed to read directory: {}", e))
+        })? {
+            let entry = entry.map_err(|e| {
+                pyo3::exceptions::PyRuntimeError::new_err(format!("Failed to read entry: {}", e))
+            })?;
+            let path = entry.path();
+            if path.is_file() && path.extension().map_or(false, |ext| ext == "ttl") {
+                if let Ok(dict) = parse_graph_to_dict(&path) {
+                    for (k, v) in dict {
+                        combined.entry(k).or_default().extend(v);
+                    }
+                }
+            }
+        }
+    }
+
+    Ok(combined.into_iter().collect())
+}
+
+fn triple_from_strings(s: NamedNode, p: NamedNode, val: String) -> Triple {
+    if val.starts_with("http://") || val.starts_with("https://") {
+        if let Ok(o) = NamedNode::new(val.clone()) {
+            return Triple::new(s, p, Term::NamedNode(o));
+        }
+    }
+    Triple::new(s, p, Term::Literal(oxrdf::Literal::new_simple_literal(val)))
+}
+
+fn triple_store_from_dir(path: &Path) -> Result<TripleStore, String> {
+    let mut all_triples: Vec<Triple> = Vec::new();
+
+    if path.is_file() {
+        let store = TripleStore::load(path)?;
+        all_triples.extend(store.triples);
+    } else {
+        for entry in std::fs::read_dir(path).map_err(|e| e.to_string())? {
+            let entry = entry.map_err(|e| e.to_string())?;
+            let p = entry.path();
+            if p.is_file() && p.extension().map_or(false, |ext| ext == "ttl") {
+                let store = TripleStore::load(&p)?;
+                all_triples.extend(store.triples);
+            }
+        }
+    }
+
+    Ok(TripleStore { triples: all_triples })
+}
+
+#[pyfunction]
+#[pyo3(name = "get_enumerations_from_dir")]
+pub fn py_get_enumerations_from_dir(
+    _py: Python<'_>,
+    path: &str,
+    env: &str,
+) -> PyResult<(Vec<(String, Vec<PyKeuzelijstWaarde>)>, Vec<(String, String)>)> {
+    let p = Path::new(path);
+    if !p.exists() {
+        return Err(pyo3::exceptions::PyFileNotFoundError::new_err(format!(
+            "Path not found: {}", p.display()
+        )));
+    }
+
+    let store = triple_store_from_dir(p).map_err(|e| {
+        pyo3::exceptions::PyRuntimeError::new_err(format!("Failed to parse TTL: {}", e))
+    })?;
+
+    let concept_schemes = store.concept_scheme_subjects();
+
+    let mut waardes_dict: Vec<(String, Vec<PyKeuzelijstWaarde>)> = Vec::new();
+    let mut adm_status_dict: Vec<(String, String)> = Vec::new();
+
+    for cs_uri in &concept_schemes {
+        let mut concept_triples: Vec<Triple> = Vec::new();
+        for (s, pred, val) in store.triples_for_subject(cs_uri) {
+            if let (Ok(nn), Ok(pn)) = (NamedNode::new(s), NamedNode::new(pred)) {
+                concept_triples.push(triple_from_strings(nn, pn, val));
+            }
+        }
+
+        let in_scheme_subjects = store.in_scheme_subjects(cs_uri);
+        for subj_uri in &in_scheme_subjects {
+            for (s, pred, val) in store.triples_for_subject(subj_uri) {
+                if let (Ok(nn), Ok(pn)) = (NamedNode::new(s), NamedNode::new(pred)) {
+                    concept_triples.push(triple_from_strings(nn, pn, val));
+                }
+            }
+        }
+
+        let sub_store = TripleStore { triples: concept_triples };
+        let waardes = get_keuzelijstwaardes_from_store(&sub_store, env);
+        waardes_dict.push((cs_uri.clone(), waardes));
+
+        let adm_status: String = if env != "prd" {
+            let lookup_uri = cs_uri.replace("wegenenverkeer", "wegenenverkeer-test");
+            store.object_for(&lookup_uri, ADMS_STATUS).unwrap_or_default()
+        } else {
+            store.object_for(cs_uri, ADMS_STATUS).unwrap_or_default()
+        };
+        let adm_status_cleaned = adm_status.replace(KL_ADMS_PREFIX, "");
+        adm_status_dict.push((cs_uri.clone(), adm_status_cleaned));
+    }
+
+    Ok((waardes_dict, adm_status_dict))
 }

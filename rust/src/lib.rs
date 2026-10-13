@@ -25,7 +25,10 @@ use helper_functions::{
     py_get_titlecase_from_ns, py_get_white_space_equivalent, py_wrap_in_quotes,
 };
 use sqlite_reader::{py_find_subclasses_uri_by_class_uri, py_get_all_inheritances, PyInheritance};
-use ttl_reader::{py_get_keuzelijstwaardes_from_ttl, py_get_adm_status_from_ttl, py_parse_graph_to_dict, PyKeuzelijstWaarde};
+use ttl_reader::{
+    py_get_adm_status_from_ttl, py_get_enumerations_from_dir, py_get_keuzelijstwaardes_from_ttl,
+    py_parse_file_or_dir_to_dict, py_parse_graph_to_dict, PyKeuzelijstWaarde,
+};
 use model_creator::py_generate_model_optimized;
 
 #[pyfunction]
@@ -43,6 +46,10 @@ fn _otlmow_modelbuilder_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(py_get_keuzelijstwaardes_from_ttl, m)?)?;
     m.add_function(wrap_pyfunction!(py_get_adm_status_from_ttl, m)?)?;
     m.add_function(wrap_pyfunction!(py_parse_graph_to_dict, m)?)?;
+    m.add_function(wrap_pyfunction!(py_parse_file_or_dir_to_dict, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_enumerations_from_dir, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_keuzelijstwaardes_from_ttl, m)?)?;
+    m.add_function(wrap_pyfunction!(py_get_adm_status_from_ttl, m)?)?;
     m.add_function(wrap_pyfunction!(py_escape_backslash, m)?)?;
     m.add_function(wrap_pyfunction!(py_wrap_in_quotes, m)?)?;
     m.add_function(wrap_pyfunction!(py_get_white_space_equivalent, m)?)?;

@@ -64,7 +64,7 @@ pub fn create_block_to_write_from_enumeration(
         let invulwaarde = &waarde.invulwaarde;
         let label = &waarde.label;
         let definitie = &waarde.definitie;
-        let object_uri = &waarde.objectUri;
+        let object_uri = &waarde.object_uri;
         let status = &waarde.status;
 
         let whitespace = get_white_space_equivalent(&format!("        '{}': KeuzelijstWaarde(", invulwaarde));

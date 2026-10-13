@@ -518,8 +518,23 @@ class OTLModelCreator:
     @classmethod
     def copy_fixed_classes_from_otlmow_model(cls, model_directory: Path):
         otlmow_model_github_dir = Path(__file__).parent / 'OTLMOW-Model'
-        subprocess.call(["git", "clone", "--depth=1", "https://github.com/davidvlaminck/OTLMOW-Model/",
-                         str(otlmow_model_github_dir.absolute())])
+        if otlmow_model_github_dir.exists():
+            shutil.rmtree(otlmow_model_github_dir)
+        subprocess.call([
+            "git", "clone", "--depth=1", "--filter=blob:none", "--sparse",
+            "https://github.com/davidvlaminck/OTLMOW-Model/",
+            str(otlmow_model_github_dir.absolute())
+        ])
+        os.chdir(str(otlmow_model_github_dir.absolute()))
+        subprocess.call([
+            "git", "sparse-checkout", "set",
+            "otlmow_model/OtlmowModel/BaseClasses",
+            "otlmow_model/OtlmowModel/Exceptions",
+            "otlmow_model/OtlmowModel/GeometrieTypes",
+            "otlmow_model/OtlmowModel/Helpers",
+            "otlmow_model/OtlmowModel/warnings",
+        ])
+        os.chdir(str(Path(__file__).parent.parent))
 
         otlmow_model_dir = otlmow_model_github_dir / 'otlmow_model' / 'OtlmowModel'
         if not otlmow_model_dir.exists():
