@@ -41,6 +41,39 @@ class OSLOCollector:
 
         self.class_dict: Optional[dict] = None
         self.inheritance_map: Optional[dict] = None
+        self._relations_by_uri: Optional[dict] = None
+        self._attributes_by_class_uri: Optional[dict] = None
+        self._inheritances_by_class_uri: Optional[dict] = None
+
+        # Build fast lookup maps after data is loaded
+        self._build_lookup_maps()
+
+    def _build_lookup_maps(self) -> None:
+        if not self.relations:
+            return
+        self._relations_by_uri = {}
+        for r in self.relations:
+            if r.bron_uri not in self._relations_by_uri:
+                self._relations_by_uri[r.bron_uri] = []
+            self._relations_by_uri[r.bron_uri].append(r)
+            if r.doel_uri != r.bron_uri:
+                if r.richting == 'Unspecified':
+                    # Bidirectional: add to doel_uri only if not already in bron_uri (unspecified direction)
+                    pass
+                else:
+                    if r.doel_uri not in self._relations_by_uri:
+                        self._relations_by_uri[r.doel_uri] = []
+                    self._relations_by_uri[r.doel_uri].append(r)
+        self._attributes_by_class_uri = {}
+        for a in self.attributes:
+            if a.class_uri not in self._attributes_by_class_uri:
+                self._attributes_by_class_uri[a.class_uri] = []
+            self._attributes_by_class_uri[a.class_uri].append(a)
+        self._inheritances_by_class_uri = {}
+        for i in self.inheritances:
+            if i.class_uri not in self._inheritances_by_class_uri:
+                self._inheritances_by_class_uri[i.class_uri] = []
+            self._inheritances_by_class_uri[i.class_uri].append(i)
 
     def collect_all(self, include_abstract: bool = False) -> None:
         self.class_dict = {}

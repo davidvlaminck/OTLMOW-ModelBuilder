@@ -6,6 +6,7 @@ mod datatype_creator;
 mod enumeration_creator;
 mod generic_builder_functions;
 mod helper_functions;
+mod model_creator;
 mod sqlite_reader;
 mod ttl_reader;
 
@@ -25,6 +26,7 @@ use helper_functions::{
 };
 use sqlite_reader::{py_find_subclasses_uri_by_class_uri, py_get_all_inheritances, PyInheritance};
 use ttl_reader::{py_get_keuzelijstwaardes_from_ttl, py_get_adm_status_from_ttl, py_parse_graph_to_dict, PyKeuzelijstWaarde};
+use model_creator::py_generate_model_optimized;
 
 #[pyfunction]
 fn rust_hello() -> String {
@@ -58,5 +60,6 @@ fn _otlmow_modelbuilder_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(py_create_block_to_write_from_complex_primitive_or_union_types, m)?)?;
     m.add_function(wrap_pyfunction!(py_create_block_to_write_from_enumeration, m)?)?;
     m.add_function(wrap_pyfunction!(py_create_block_from_class, m)?)?;
+    m.add_function(wrap_pyfunction!(py_generate_model_optimized, m)?)?;
     Ok(())
 }

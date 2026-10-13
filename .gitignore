@@ -6,3 +6,8 @@
 .coverage
 rust/target/
 *.so
+OTLMOW-Model/
+bench_rust/
+bench_*/
+UnitTests/TestModelPython/
+UnitTests/TestModelRust/

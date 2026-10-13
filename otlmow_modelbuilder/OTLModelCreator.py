@@ -50,27 +50,166 @@ class OTLModelCreator:
             oslo_collector, attributes_with_different_cases_uris=settings['attributes_with_different_cases_uris'])
         OTLModelCreator.check_for_nested_attributes_in_classes(
             collector=oslo_collector, known_attribute_uris=settings['nested_list_attribute_uris'])
-        OTLModelCreator.create_primitive_datatypes(
-            directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-            primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules'])
-        OTLModelCreator.create_complex_datatypes(
-            directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-            complex_datatype_validation_rules=settings['complex_datatype_validation_rules'])
-        OTLModelCreator.create_union_datatypes(
-            directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-            union_datatype_validation_rules=settings['union_datatype_validation_rules'])
-        OTLModelCreator.create_enumerations(
-            directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
-            enumeration_validation_rules=settings['enumeration_validation_rules'],
-            enumeration_locations_by_environment=settings['enumeration_locations_by_environment'],
-            include_kl_test_keuzelijst=include_kl_test_keuzelijst)
-        class_validation_rules = settings['class_validation_rules']
+
+        # Pre-extract all data for batch Rust generation
+        type_links_data = [(t.item_uri, t.item_tabel) for t in oslo_collector.typeLinks]
+        enumerations_data = [(e.objectUri, e.name) for e in oslo_collector.enumerations]
+        complex_datatypes_data = [(c.objectUri, c.name) for c in oslo_collector.complex_datatypes]
+        union_datatypes_data = [(u.objectUri, u.name) for u in oslo_collector.union_datatypes]
+
+        # Pre-parse enumeration waardes (requires Python rdflib for TTL parsing)
+        enumeration_waardes = {}
+        enumeration_adm_status = {}
+        with OTLEnumerationCreator(oslo_collector, env=environment,
+                                   enumeration_locations_by_environment=settings['enumeration_locations_by_environment'],
+                                   include_kl_test_keuzelijst=include_kl_test_keuzelijst) as ec:
+            for enumeration in oslo_collector.enumerations:
+                try:
+                    waardes = ec.get_keuzelijstwaardes_by_uri(enumeration.codelist, env=environment or 'prd')
+                    adm_status = ec.get_adm_status_by_uri(enumeration.codelist, env=environment or 'prd')
+                    enumeration_waardes[enumeration.objectUri] = waardes
+                    enumeration_adm_status[enumeration.objectUri] = adm_status or ''
+                except Exception:
+                    enumeration_waardes[enumeration.objectUri] = []
+                    enumeration_adm_status[enumeration.objectUri] = ''
+
+        # Build attributes, inheritances, relations by class/uri - use fast lookup maps
+        # Also include datatype attributes (complex, primitive, union)
+        all_attribute_lists = []
+        all_attribute_lists.extend(oslo_collector.primitive_datatype_attributen or [])
+        all_attribute_lists.extend(oslo_collector.complex_datatype_attributen or [])
+        all_attribute_lists.extend(oslo_collector.union_datatype_attributen or [])
+
+        attributes_by_class_uri = {}
+        inheritances_by_class_uri = {}
+        relations_by_object_uri = {}
+        if oslo_collector._attributes_by_class_uri is not None:
+            for uri in [cls.objectUri for cls in oslo_collector.classes]:
+                attrs = oslo_collector._attributes_by_class_uri.get(uri, [])
+                attributes_by_class_uri[uri] = sorted(attrs, key=lambda a: a.objectUri)
+        else:
+            for cls in oslo_collector.classes:
+                attributes_by_class_uri[cls.objectUri] = oslo_collector.find_attributes_by_class(cls, sort_by_uri=True)
+        # Add datatype attributes to the lookup map
+        for a in all_attribute_lists:
+            key = a.class_uri
+            if key not in attributes_by_class_uri:
+                attributes_by_class_uri[key] = []
+            attributes_by_class_uri[key].append(a)
+        # Sort the datatype attribute lists too
+        for key in list(attributes_by_class_uri.keys()):
+            if key not in [cls.objectUri for cls in oslo_collector.classes]:
+                attributes_by_class_uri[key] = sorted(attributes_by_class_uri[key], key=lambda a: a.objectUri)
+        if oslo_collector._inheritances_by_class_uri is not None:
+            for uri in [cls.objectUri for cls in oslo_collector.classes]:
+                inh = oslo_collector._inheritances_by_class_uri.get(uri, [])
+                inheritances_by_class_uri[uri] = sorted(inh, key=lambda i: i.base_uri)
+        else:
+            for cls in oslo_collector.classes:
+                inheritances_by_class_uri[cls.objectUri] = oslo_collector.find_inheritances_by_class(cls, sort_by_uri=True)
+        if oslo_collector._relations_by_uri is not None:
+            for uri in [cls.objectUri for cls in oslo_collector.classes]:
+                rels = oslo_collector._relations_by_uri.get(uri, [])
+                # Same filtering logic as find_all_relations with allow_duplicates=False
+                filtered = [
+                    r for r in rels
+                    if r.bron_overerving == '' and r.doel_overerving == ''
+                    and ((r.richting == 'Unspecified' and r.bron_uri == uri) or r.richting != 'Unspecified')
+                ]
+                relations_by_object_uri[uri] = sorted(filtered, key=lambda r: r.objectUri)
+        else:
+            for cls in oslo_collector.classes:
+                relations_by_object_uri[cls.objectUri] = oslo_collector.find_all_relations(cls.objectUri, allow_duplicates=False)
+
+        inheritance_map = oslo_collector.get_inheritance_map()
+
+        class_validation_rules = settings['class_validation_rules'].copy()
+        class_validation_rules['valid_uri_and_types'] = class_validation_rules['valid_uri_and_types'].copy()
         class_validation_rules['valid_uri_and_types'].update(
             settings['complex_datatype_validation_rules']['valid_uri_and_types'])
-        OTLModelCreator.create_classes(
-            directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-            geo_artefact_collector=geo_artefact_collector,
-            class_validation_rules=class_validation_rules)
+
+        model_name = OTLModelCreator.get_model_name_from_directory_path(directory / 'OtlmowModel')
+
+        use_rust = os.environ.get('OTLMOW_USE_RUST', '1') != '0'
+        if use_rust:
+            # Build geometry type map
+            geometry_type_map = {}
+            if geo_artefact_collector is not None:
+                class_creator = OTLClassCreator(oslo_collector, geo_artefact_collector)
+                for cls in oslo_collector.classes:
+                    geom_types = class_creator.get_geometry_types_from_uri(cls.objectUri)
+                    if geom_types:
+                        geometry_type_map[cls.objectUri] = geom_types
+
+            try:
+                from otlmow_modelbuilder._otlmow_modelbuilder_rs import generate_model_optimized as rust_generate
+                files_written, errors = rust_generate(
+                    directory=str(directory / 'OtlmowModel'),
+                    model_name=model_name,
+                    settings=settings,
+                    type_links=type_links_data,
+                    enumerations_lookup=enumerations_data,
+                    complex_datatypes_lookup=complex_datatypes_data,
+                    union_datatypes_lookup=union_datatypes_data,
+                    primitive_datatypes=oslo_collector.primitive_datatypes,
+                    complex_datatypes=oslo_collector.complex_datatypes,
+                    union_datatypes=oslo_collector.union_datatypes,
+                    enumerations=oslo_collector.enumerations,
+                    enumeration_waardes=enumeration_waardes,
+                    enumeration_adm_status=enumeration_adm_status,
+                    classes=oslo_collector.classes,
+                    geometry_type_map=geometry_type_map,
+                    inheritance_map=inheritance_map,
+                    attributes_by_class_uri=attributes_by_class_uri,
+                    inheritances_by_class_uri=inheritances_by_class_uri,
+                    relations_by_object_uri=relations_by_object_uri,
+                    complex_datatype_validation_rules=settings['complex_datatype_validation_rules']['valid_uri_and_types'],
+                    primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules']['valid_uri_and_types'],
+                    union_datatype_validation_rules=settings['union_datatype_validation_rules']['valid_uri_and_types'],
+                    enumeration_validation_rules=settings['enumeration_validation_rules']['valid_uri_and_types'],
+                    class_validation_rules=class_validation_rules['valid_uri_and_types'],
+                    include_kl_test_keuzelijst=include_kl_test_keuzelijst,
+                )
+                logging.info(f'Rust batch generation: {files_written} files, {errors} errors')
+            except BaseException:
+                # Fallback to Python per-item generation
+                OTLModelCreator.create_primitive_datatypes(
+                    directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
+                    primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules'])
+                OTLModelCreator.create_complex_datatypes(
+                    directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
+                    complex_datatype_validation_rules=settings['complex_datatype_validation_rules'])
+                OTLModelCreator.create_union_datatypes(
+                    directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
+                    union_datatype_validation_rules=settings['union_datatype_validation_rules'])
+                OTLModelCreator.create_enumerations(
+                    directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
+                    enumeration_validation_rules=settings['enumeration_validation_rules'],
+                    enumeration_locations_by_environment=settings['enumeration_locations_by_environment'],
+                    include_kl_test_keuzelijst=include_kl_test_keuzelijst)
+                OTLModelCreator.create_classes(
+                    directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
+                    geo_artefact_collector=geo_artefact_collector,
+                    class_validation_rules=class_validation_rules)
+        else:
+            OTLModelCreator.create_primitive_datatypes(
+                directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
+                primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules'])
+            OTLModelCreator.create_complex_datatypes(
+                directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
+                complex_datatype_validation_rules=settings['complex_datatype_validation_rules'])
+            OTLModelCreator.create_union_datatypes(
+                directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
+                union_datatype_validation_rules=settings['union_datatype_validation_rules'])
+            OTLModelCreator.create_enumerations(
+                directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
+                enumeration_validation_rules=settings['enumeration_validation_rules'],
+                enumeration_locations_by_environment=settings['enumeration_locations_by_environment'],
+                include_kl_test_keuzelijst=include_kl_test_keuzelijst)
+            OTLModelCreator.create_classes(
+                directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
+                geo_artefact_collector=geo_artefact_collector,
+                class_validation_rules=class_validation_rules)
         if include_legacy:
             oslo_collector = OTLModelCreator.create_legacy_classes(oslo_collector=oslo_collector,
                 directory=directory / 'OtlmowModel', legacy_types_path=Path(__file__).parent / 'legacy_types.csv')
