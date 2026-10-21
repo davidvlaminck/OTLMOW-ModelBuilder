@@ -81,6 +81,9 @@ def _run(
 
 def _tool(name: str) -> list[str] | None:
     """Resolve a tool to a runnable command, preferring the project venv."""
+    venv_tool = REPO_ROOT / '.venv' / 'bin' / name
+    if venv_tool.exists():
+        return [str(venv_tool)]
     if shutil.which(name):
         return [name]
     return None

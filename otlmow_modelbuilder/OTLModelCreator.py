@@ -10,7 +10,7 @@ from concurrent.futures import FIRST_COMPLETED
 from datetime import datetime
 from os import path
 from pathlib import Path
-from typing import Dict
+from typing import Optional
 
 from tqdm import tqdm
 
@@ -20,6 +20,7 @@ from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactColl
 from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns, \
     get_titlecase_from_ns
 from otlmow_modelbuilder.LegacyClassCreator import LegacyClassCreator
+from otlmow_modelbuilder.ModelData import EnumerationData, Lookups, ModelData
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OTLClassCreator import OTLClassCreator
 from otlmow_modelbuilder.OTLComplexDatatypeCreator import OTLComplexDatatypeCreator
@@ -30,6 +31,44 @@ from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
 
+CLASS_DIRECTORIES = [
+    'Classes/Abstracten',
+    'Classes/ImplementatieElement',
+    'Classes/Installatie',
+    'Classes/Legacy',
+    'Classes/Levenscyclus',
+    'Classes/Onderdeel',
+    'Classes/ProefEnMeting',
+]
+
+PRIMITIVE_DATATYPES_TO_SKIP = (
+    'http://www.w3.org/2000/01/rdf-schema#Literal',
+    'http://www.w3.org/2001/XMLSchema#dateTime',
+    'http://www.w3.org/2001/XMLSchema#integer',
+    'http://www.w3.org/2001/XMLSchema#decimal',
+    'http://www.w3.org/2001/XMLSchema#time',
+    'http://www.w3.org/2001/XMLSchema#date',
+    'http://www.w3.org/2001/XMLSchema#nonNegativeInteger',
+    'http://www.w3.org/2001/XMLSchema#string',
+    'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString',
+    'http://www.w3.org/2001/XMLSchema#boolean',
+    'http://www.w3.org/2001/XMLSchema#anyURI',
+)
+
+LEGACY_CLASS_NAME_ALIASES = {
+    'RIS': 'RISLegacy',
+    'Fietstel': 'FietstelLegacy',
+    'Brug': 'BeweegbareBrug',
+    'Voedingskeuzeschakelaar': 'VKS',
+}
+
+LEGACY_BASE_CLASS_NAMES = ('AIMDBStatus', 'AIMToestand', 'AIMVersie')
+LEGACY_OBJECT_URI = 'https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'
+AGENT_URI = 'http://purl.org/dc/terms/Agent'
+IGNORED_CLASS_LABEL = 'ignore this class when generating the model'
+DEFAULT_NESTED_LIST_EXCEPTIONS = [
+    'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testComplexTypeMetKard']
+
 
 class OTLModelCreator:
     def __init__(self):
@@ -37,185 +76,27 @@ class OTLModelCreator:
 
     @staticmethod
     def create_full_model(directory: Path, oslo_collector: OSLOCollector,
-                          geo_artefact_collector: GeometrieArtefactCollector, settings: Dict, include_legacy: bool,
+                          geo_artefact_collector: Optional[GeometrieArtefactCollector], settings: dict, include_legacy: bool,
                           environment: str = '', include_kl_test_keuzelijst: bool = False):
+        """Create the model: the datatypes, the classes and the helpers of the OTL subset."""
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-        OTLModelCreator.check_and_create_subdirectories(directory)
-        oslo_collector.query_correct_base_classes(valid_base_class_uris=settings['valid_base_class_uris'])
-
-        OTLModelCreator.add_inheritances(oslo_collector=oslo_collector,
-                                         additional_inheritances=settings['additional_inheritances'])
-
-        OTLModelCreator.check_for_attributes_with_different_case(
-            oslo_collector, attributes_with_different_cases_uris=settings['attributes_with_different_cases_uris'])
-        OTLModelCreator.check_for_nested_attributes_in_classes(
-            collector=oslo_collector, known_attribute_uris=settings['nested_list_attribute_uris'])
-
-        # Pre-extract all data for batch Rust generation
-        type_links_data = [(t.item_uri, t.item_tabel) for t in oslo_collector.typeLinks]
-        enumerations_data = [(e.objectUri, e.name) for e in oslo_collector.enumerations]
-        complex_datatypes_data = [(c.objectUri, c.name) for c in oslo_collector.complex_datatypes]
-        union_datatypes_data = [(u.objectUri, u.name) for u in oslo_collector.union_datatypes]
-
-        # Pre-parse enumeration waardes (requires Python rdflib for TTL parsing)
-        enumeration_waardes = {}
-        enumeration_adm_status = {}
-        with OTLEnumerationCreator(oslo_collector, env=environment,
-                                   enumeration_locations_by_environment=settings['enumeration_locations_by_environment'],
-                                   include_kl_test_keuzelijst=include_kl_test_keuzelijst) as ec:
-            for enumeration in oslo_collector.enumerations:
-                try:
-                    waardes = ec.get_keuzelijstwaardes_by_uri(enumeration.codelist, env=environment or 'prd')
-                    adm_status = ec.get_adm_status_by_uri(enumeration.codelist, env=environment or 'prd')
-                    enumeration_waardes[enumeration.objectUri] = waardes
-                    enumeration_adm_status[enumeration.objectUri] = adm_status or ''
-                except Exception:
-                    enumeration_waardes[enumeration.objectUri] = []
-                    enumeration_adm_status[enumeration.objectUri] = ''
-
-        # Build attributes, inheritances, relations by class/uri - use fast lookup maps
-        # Also include datatype attributes (complex, primitive, union)
-        all_attribute_lists = []
-        all_attribute_lists.extend(oslo_collector.primitive_datatype_attributen or [])
-        all_attribute_lists.extend(oslo_collector.complex_datatype_attributen or [])
-        all_attribute_lists.extend(oslo_collector.union_datatype_attributen or [])
-
-        attributes_by_class_uri = {}
-        inheritances_by_class_uri = {}
-        relations_by_object_uri = {}
-        if oslo_collector._attributes_by_class_uri is not None:
-            for uri in [cls.objectUri for cls in oslo_collector.classes]:
-                attrs = oslo_collector._attributes_by_class_uri.get(uri, [])
-                attributes_by_class_uri[uri] = sorted(attrs, key=lambda a: a.objectUri)
-        else:
-            for cls in oslo_collector.classes:
-                attributes_by_class_uri[cls.objectUri] = oslo_collector.find_attributes_by_class(cls, sort_by_uri=True)
-        # Add datatype attributes to the lookup map
-        for a in all_attribute_lists:
-            key = a.class_uri
-            if key not in attributes_by_class_uri:
-                attributes_by_class_uri[key] = []
-            attributes_by_class_uri[key].append(a)
-        # Sort the datatype attribute lists too
-        for key in list(attributes_by_class_uri.keys()):
-            if key not in [cls.objectUri for cls in oslo_collector.classes]:
-                attributes_by_class_uri[key] = sorted(attributes_by_class_uri[key], key=lambda a: a.objectUri)
-        if oslo_collector._inheritances_by_class_uri is not None:
-            for uri in [cls.objectUri for cls in oslo_collector.classes]:
-                inh = oslo_collector._inheritances_by_class_uri.get(uri, [])
-                inheritances_by_class_uri[uri] = sorted(inh, key=lambda i: i.base_uri)
-        else:
-            for cls in oslo_collector.classes:
-                inheritances_by_class_uri[cls.objectUri] = oslo_collector.find_inheritances_by_class(cls, sort_by_uri=True)
-        if oslo_collector._relations_by_uri is not None:
-            for uri in [cls.objectUri for cls in oslo_collector.classes]:
-                rels = oslo_collector._relations_by_uri.get(uri, [])
-                # Same filtering logic as find_all_relations with allow_duplicates=False
-                filtered = [
-                    r for r in rels
-                    if r.bron_overerving == '' and r.doel_overerving == ''
-                    and ((r.richting == 'Unspecified' and r.bron_uri == uri) or r.richting != 'Unspecified')
-                ]
-                relations_by_object_uri[uri] = sorted(filtered, key=lambda r: r.objectUri)
-        else:
-            for cls in oslo_collector.classes:
-                relations_by_object_uri[cls.objectUri] = oslo_collector.find_all_relations(cls.objectUri, allow_duplicates=False)
-
-        inheritance_map = oslo_collector.get_inheritance_map()
-
-        class_validation_rules = settings['class_validation_rules'].copy()
-        class_validation_rules['valid_uri_and_types'] = class_validation_rules['valid_uri_and_types'].copy()
-        class_validation_rules['valid_uri_and_types'].update(
-            settings['complex_datatype_validation_rules']['valid_uri_and_types'])
-
+        OTLModelCreator._prepare_the_model(directory=directory, oslo_collector=oslo_collector, settings=settings)
+        model_data = OTLModelCreator._collect_the_model_data(oslo_collector=oslo_collector, environment=environment,
+                                                             settings=settings,
+                                                             include_kl_test_keuzelijst=include_kl_test_keuzelijst)
         model_name = OTLModelCreator.get_model_name_from_directory_path(directory / 'OtlmowModel')
 
-        use_rust = os.environ.get('OTLMOW_USE_RUST', '1') != '0'
-        logging.info(f'OTLMOW_USE_RUST={os.environ.get("OTLMOW_USE_RUST", "1")} -> use_rust={use_rust}')
-        if use_rust:
-            # Build geometry type map
-            geometry_type_map = {}
-            if geo_artefact_collector is not None:
-                class_creator = OTLClassCreator(oslo_collector, geo_artefact_collector)
-                for cls in oslo_collector.classes:
-                    geom_types = class_creator.get_geometry_types_from_uri(cls.objectUri)
-                    if geom_types:
-                        geometry_type_map[cls.objectUri] = geom_types
-
-            try:
-                from otlmow_modelbuilder._otlmow_modelbuilder_rs import generate_model_optimized as rust_generate
-                logging.info('Attempting Rust batch generation (using _otlmow_modelbuilder_rs.generate_model_optimized)...')
-                files_written, errors = rust_generate(
-                    directory=str(directory / 'OtlmowModel'),
-                    model_name=model_name,
-                    settings=settings,
-                    type_links=type_links_data,
-                    enumerations_lookup=enumerations_data,
-                    complex_datatypes_lookup=complex_datatypes_data,
-                    union_datatypes_lookup=union_datatypes_data,
-                    primitive_datatypes=oslo_collector.primitive_datatypes,
-                    complex_datatypes=oslo_collector.complex_datatypes,
-                    union_datatypes=oslo_collector.union_datatypes,
-                    enumerations=oslo_collector.enumerations,
-                    enumeration_waardes=enumeration_waardes,
-                    enumeration_adm_status=enumeration_adm_status,
-                    classes=oslo_collector.classes,
-                    geometry_type_map=geometry_type_map,
-                    inheritance_map=inheritance_map,
-                    attributes_by_class_uri=attributes_by_class_uri,
-                    inheritances_by_class_uri=inheritances_by_class_uri,
-                    relations_by_object_uri=relations_by_object_uri,
-                    complex_datatype_validation_rules=settings['complex_datatype_validation_rules']['valid_uri_and_types'],
-                    primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules']['valid_uri_and_types'],
-                    union_datatype_validation_rules=settings['union_datatype_validation_rules']['valid_uri_and_types'],
-                    enumeration_validation_rules=settings['enumeration_validation_rules']['valid_uri_and_types'],
-                    class_validation_rules=class_validation_rules['valid_uri_and_types'],
-                    include_kl_test_keuzelijst=include_kl_test_keuzelijst,
-                )
-                logging.info(f'Rust batch generation: {files_written} files, {errors} errors')
-            except BaseException as e:
-                logging.warning(f'Falling back to Python path (Rust batch generation unavailable): {e}')
-                if "No module named 'otlmow_modelbuilder._otlmow_modelbuilder_rs'" in str(e):
-                    logging.warning('Rust extension not built. Build it with: source .venv/bin/activate && maturin develop --release (or --release depending on build)')
-                # Fallback to Python per-item generation
-                logging.info('Using Python path for model creation...')
-                OTLModelCreator.create_primitive_datatypes(
-                    directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-                    primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules'])
-                OTLModelCreator.create_complex_datatypes(
-                    directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-                    complex_datatype_validation_rules=settings['complex_datatype_validation_rules'])
-                OTLModelCreator.create_union_datatypes(
-                    directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-                    union_datatype_validation_rules=settings['union_datatype_validation_rules'])
-                OTLModelCreator.create_enumerations(
-                    directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
-                    enumeration_validation_rules=settings['enumeration_validation_rules'],
-                    enumeration_locations_by_environment=settings['enumeration_locations_by_environment'],
-                    include_kl_test_keuzelijst=include_kl_test_keuzelijst)
-                OTLModelCreator.create_classes(
-                    directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-                    geo_artefact_collector=geo_artefact_collector,
-                    class_validation_rules=class_validation_rules)
-        else:
-            OTLModelCreator.create_primitive_datatypes(
-                directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-                primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules'])
-            OTLModelCreator.create_complex_datatypes(
-                directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-                complex_datatype_validation_rules=settings['complex_datatype_validation_rules'])
-            OTLModelCreator.create_union_datatypes(
-                directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-                union_datatype_validation_rules=settings['union_datatype_validation_rules'])
-            OTLModelCreator.create_enumerations(
-                directory=directory / 'OtlmowModel', environment=environment, oslo_collector=oslo_collector,
-                enumeration_validation_rules=settings['enumeration_validation_rules'],
-                enumeration_locations_by_environment=settings['enumeration_locations_by_environment'],
+        if OTLModelCreator._use_rust():
+            OTLModelCreator._create_the_model_with_rust(
+                directory=directory, oslo_collector=oslo_collector, geo_artefact_collector=geo_artefact_collector,
+                settings=settings, model_name=model_name, model_data=model_data, environment=environment,
                 include_kl_test_keuzelijst=include_kl_test_keuzelijst)
-            OTLModelCreator.create_classes(
-                directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
-                geo_artefact_collector=geo_artefact_collector,
-                class_validation_rules=class_validation_rules)
+        else:
+            OTLModelCreator._create_the_model_with_python(
+                directory=directory, oslo_collector=oslo_collector, geo_artefact_collector=geo_artefact_collector,
+                settings=settings, class_validation_rules=model_data.class_validation_rules, environment=environment,
+                include_kl_test_keuzelijst=include_kl_test_keuzelijst)
+
         if include_legacy:
             oslo_collector = OTLModelCreator.create_legacy_classes(oslo_collector=oslo_collector,
                 directory=directory / 'OtlmowModel', legacy_types_path=Path(__file__).parent / 'legacy_types.csv')
@@ -225,34 +106,261 @@ class OTLModelCreator:
         logging.info(f'finished creating model in {directory} at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 
     @staticmethod
+    def _prepare_the_model(directory: Path, oslo_collector: OSLOCollector, settings: dict) -> None:
+        """Create the directories of the model and check the subset before generating it."""
+        OTLModelCreator.check_and_create_subdirectories(directory)
+        oslo_collector.query_correct_base_classes(valid_base_class_uris=settings['valid_base_class_uris'])
+        OTLModelCreator.add_inheritances(oslo_collector=oslo_collector,
+                                         additional_inheritances=settings['additional_inheritances'])
+        OTLModelCreator.check_for_attributes_with_different_case(
+            oslo_collector, attributes_with_different_cases_uris=settings['attributes_with_different_cases_uris'])
+        OTLModelCreator.check_for_nested_attributes_in_classes(
+            collector=oslo_collector, known_attribute_uris=settings['nested_list_attribute_uris'])
+
+    @staticmethod
+    def _collect_the_model_data(oslo_collector: OSLOCollector, environment: str, settings: dict,
+                                include_kl_test_keuzelijst: bool) -> ModelData:
+        """Collect the data that the rust and the python implementation of the model need."""
+        enumeration_data = OTLModelCreator._read_the_enumerations(
+            oslo_collector=oslo_collector, environment=environment, settings=settings,
+            include_kl_test_keuzelijst=include_kl_test_keuzelijst)
+        lookups = OTLModelCreator._build_the_lookups(oslo_collector)
+        return ModelData(
+            type_links=[(t.item_uri, t.item_tabel) for t in oslo_collector.typeLinks],
+            enumerations=[(e.objectUri, e.name) for e in oslo_collector.enumerations],
+            complex_datatypes=[(c.objectUri, c.name) for c in oslo_collector.complex_datatypes],
+            union_datatypes=[(u.objectUri, u.name) for u in oslo_collector.union_datatypes],
+            enumeration_waardes=enumeration_data.waardes,
+            enumeration_adm_status=enumeration_data.adm_status,
+            inheritance_map=oslo_collector.get_inheritance_map(),
+            lookups=lookups,
+            class_validation_rules=OTLModelCreator._merge_the_class_validation_rules(settings))
+
+    @staticmethod
+    def _read_the_enumerations(oslo_collector: OSLOCollector, environment: str, settings: dict,
+                               include_kl_test_keuzelijst: bool) -> EnumerationData:
+        """Read the values of every enumeration of the subset."""
+        waardes = {}
+        adm_status = {}
+        with OTLEnumerationCreator(oslo_collector, env=environment,
+                                   enumeration_locations_by_environment=settings['enumeration_locations_by_environment'],
+                                   include_kl_test_keuzelijst=include_kl_test_keuzelijst) as creator:
+            for enumeration in oslo_collector.enumerations:
+                try:
+                    waardes[enumeration.objectUri] = creator.get_keuzelijstwaardes_by_uri(
+                        enumeration.codelist, env=environment or 'prd')
+                    adm_status[enumeration.objectUri] = creator.get_adm_status_by_uri(
+                        enumeration.codelist, env=environment or 'prd') or ''
+                except Exception:
+                    waardes[enumeration.objectUri] = []
+                    adm_status[enumeration.objectUri] = ''
+        return EnumerationData(waardes=waardes, adm_status=adm_status)
+
+    @staticmethod
+    def _build_the_lookups(oslo_collector: OSLOCollector) -> Lookups:
+        """Look up the attributes, the inheritances and the relations of every class."""
+        return Lookups(
+            attributes_by_class_uri=OTLModelCreator._build_the_attributes_by_class_uri(oslo_collector),
+            inheritances_by_class_uri=OTLModelCreator._build_the_inheritances_by_class_uri(oslo_collector),
+            relations_by_object_uri=OTLModelCreator._build_the_relations_by_object_uri(oslo_collector))
+
+    @staticmethod
+    def _build_the_attributes_by_class_uri(oslo_collector: OSLOCollector) -> dict[str, list]:
+        """The attributes of every class, sorted by their uri."""
+        if oslo_collector._attributes_by_class_uri is not None:
+            attributes_by_class_uri = {
+                oslo_class.objectUri: sorted(
+                    oslo_collector._attributes_by_class_uri.get(oslo_class.objectUri, []),
+                    key=lambda attribute: attribute.objectUri)
+                for oslo_class in oslo_collector.classes}
+        else:
+            attributes_by_class_uri = {
+                oslo_class.objectUri: oslo_collector.find_attributes_by_class(oslo_class, sort_by_uri=True)
+                for oslo_class in oslo_collector.classes}
+        OTLModelCreator._add_the_datatype_attributes(attributes_by_class_uri, oslo_collector)
+        return attributes_by_class_uri
+
+    @staticmethod
+    def _add_the_datatype_attributes(attributes_by_class_uri: dict[str, list], oslo_collector: OSLOCollector) -> None:
+        """Add the attributes of the datatypes to the lookup map of the classes."""
+        for attribute in OTLModelCreator._datatype_attributes(oslo_collector):
+            attributes_by_class_uri.setdefault(attribute.class_uri, []).append(attribute)
+        class_uris = [oslo_class.objectUri for oslo_class in oslo_collector.classes]
+        for uri in list(attributes_by_class_uri.keys()):
+            if uri not in class_uris:
+                attributes_by_class_uri[uri] = sorted(attributes_by_class_uri[uri],
+                                                      key=lambda attribute: attribute.objectUri)
+
+    @staticmethod
+    def _datatype_attributes(oslo_collector: OSLOCollector) -> list:
+        """The attributes of the primitive, the complex and the union datatypes."""
+        attributes: list = []
+        attributes.extend(oslo_collector.primitive_datatype_attributen or [])
+        attributes.extend(oslo_collector.complex_datatype_attributen or [])
+        attributes.extend(oslo_collector.union_datatype_attributen or [])
+        return attributes
+
+    @staticmethod
+    def _build_the_inheritances_by_class_uri(oslo_collector: OSLOCollector) -> dict[str, list]:
+        """The inheritances of every class, sorted by the uri of their base class."""
+        if oslo_collector._inheritances_by_class_uri is not None:
+            return {
+                oslo_class.objectUri: sorted(
+                    oslo_collector._inheritances_by_class_uri.get(oslo_class.objectUri, []),
+                    key=lambda inheritance: inheritance.base_uri)
+                for oslo_class in oslo_collector.classes}
+        return {
+            oslo_class.objectUri: oslo_collector.find_inheritances_by_class(oslo_class, sort_by_uri=True)
+            for oslo_class in oslo_collector.classes}
+
+    @staticmethod
+    def _build_the_relations_by_object_uri(oslo_collector: OSLOCollector) -> dict[str, list]:
+        """The relations of every class, without the duplicated ones."""
+        if oslo_collector._relations_by_uri is not None:
+            return {
+                oslo_class.objectUri: OTLModelCreator._filter_the_relations(
+                    oslo_collector._relations_by_uri.get(oslo_class.objectUri, []), oslo_class.objectUri)
+                for oslo_class in oslo_collector.classes}
+        return {
+            oslo_class.objectUri: oslo_collector.find_all_relations(oslo_class.objectUri, allow_duplicates=False)
+            for oslo_class in oslo_collector.classes}
+
+    @staticmethod
+    def _filter_the_relations(relations: list, object_uri: str) -> list:
+        """Keep the relations of the object, without the ones that are inherited."""
+        filtered = [relation for relation in relations
+                    if OTLModelCreator._is_a_relation_of_the_object(relation, object_uri)]
+        return sorted(filtered, key=lambda relation: relation.objectUri)
+
+    @staticmethod
+    def _is_a_relation_of_the_object(relation, object_uri: str) -> bool:
+        """A relation of the object is not inherited, and points to the object when it is not directional."""
+        if relation.bron_overerving != '' or relation.doel_overerving != '':
+            return False
+        if relation.richting == 'Unspecified':
+            return relation.bron_uri == object_uri
+        return True
+
+    @staticmethod
+    def _merge_the_class_validation_rules(settings: dict) -> dict:
+        """The validation rules of the classes, extended with the ones of the complex datatypes."""
+        class_validation_rules = settings['class_validation_rules'].copy()
+        class_validation_rules['valid_uri_and_types'] = class_validation_rules['valid_uri_and_types'].copy()
+        class_validation_rules['valid_uri_and_types'].update(
+            settings['complex_datatype_validation_rules']['valid_uri_and_types'])
+        return class_validation_rules
+
+    @staticmethod
+    def _use_rust() -> bool:
+        """The rust implementation is used, unless it is switched off with an environment variable."""
+        use_rust = os.environ.get('OTLMOW_USE_RUST', '1') != '0'
+        logging.info(f'OTLMOW_USE_RUST={os.environ.get("OTLMOW_USE_RUST", "1")} -> use_rust={use_rust}')
+        return use_rust
+
+    @staticmethod
+    def _create_the_model_with_rust(directory: Path, oslo_collector: OSLOCollector,
+                                    geo_artefact_collector: Optional[GeometrieArtefactCollector], settings: dict,
+                                    model_name: str, model_data: ModelData, environment: str,
+                                    include_kl_test_keuzelijst: bool) -> None:
+        """Generate the model with the rust implementation, and fall back to python when it is not available."""
+        geometry_type_map = OTLModelCreator._build_the_geometry_type_map(oslo_collector, geo_artefact_collector)
+        try:
+            from otlmow_modelbuilder._otlmow_modelbuilder_rs import generate_model_optimized as rust_generate
+            logging.info('Attempting Rust batch generation (using _otlmow_modelbuilder_rs.generate_model_optimized)...')
+            files_written, errors = rust_generate(
+                directory=str(directory / 'OtlmowModel'),
+                model_name=model_name,
+                settings=settings,
+                type_links=model_data.type_links,
+                enumerations_lookup=model_data.enumerations,
+                complex_datatypes_lookup=model_data.complex_datatypes,
+                union_datatypes_lookup=model_data.union_datatypes,
+                primitive_datatypes=oslo_collector.primitive_datatypes,
+                complex_datatypes=oslo_collector.complex_datatypes,
+                union_datatypes=oslo_collector.union_datatypes,
+                enumerations=oslo_collector.enumerations,
+                enumeration_waardes=model_data.enumeration_waardes,
+                enumeration_adm_status=model_data.enumeration_adm_status,
+                classes=oslo_collector.classes,
+                geometry_type_map=geometry_type_map,
+                inheritance_map=model_data.inheritance_map,
+                attributes_by_class_uri=model_data.lookups.attributes_by_class_uri,
+                inheritances_by_class_uri=model_data.lookups.inheritances_by_class_uri,
+                relations_by_object_uri=model_data.lookups.relations_by_object_uri,
+                complex_datatype_validation_rules=settings['complex_datatype_validation_rules']['valid_uri_and_types'],
+                primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules'][
+                    'valid_uri_and_types'],
+                union_datatype_validation_rules=settings['union_datatype_validation_rules']['valid_uri_and_types'],
+                enumeration_validation_rules=settings['enumeration_validation_rules']['valid_uri_and_types'],
+                class_validation_rules=model_data.class_validation_rules['valid_uri_and_types'],
+                include_kl_test_keuzelijst=include_kl_test_keuzelijst,
+            )
+            logging.info(f'Rust batch generation: {files_written} files, {errors} errors')
+        except BaseException as e:
+            logging.warning(f'Falling back to Python path (Rust batch generation unavailable): {e}')
+            if "No module named 'otlmow_modelbuilder._otlmow_modelbuilder_rs'" in str(e):
+                logging.warning('Rust extension not built. Build it with: source .venv/bin/activate && maturin develop --release (or --release depending on build)')
+            # Fallback to Python per-item generation
+            logging.info('Using Python path for model creation...')
+            OTLModelCreator._create_the_model_with_python(
+                directory=directory, oslo_collector=oslo_collector, geo_artefact_collector=geo_artefact_collector,
+                settings=settings, class_validation_rules=model_data.class_validation_rules, environment=environment,
+                include_kl_test_keuzelijst=include_kl_test_keuzelijst)
+
+    @staticmethod
+    def _build_the_geometry_type_map(oslo_collector: OSLOCollector,
+                                      geo_artefact_collector: Optional[GeometrieArtefactCollector]) -> dict[str, list]:
+        """The geometry types of every class, when there are geometry artefacts."""
+        geometry_type_map: dict = {}
+        if geo_artefact_collector is None:
+            return geometry_type_map
+        class_creator = OTLClassCreator(oslo_collector, geo_artefact_collector)
+        for oslo_class in oslo_collector.classes:
+            geom_types = class_creator.get_geometry_types_from_uri(oslo_class.objectUri)
+            if geom_types:
+                geometry_type_map[oslo_class.objectUri] = geom_types
+        return geometry_type_map
+
+    @staticmethod
+    def _create_the_model_with_python(directory: Path, oslo_collector: OSLOCollector,
+                                      geo_artefact_collector: Optional[GeometrieArtefactCollector], settings: dict,
+                                      class_validation_rules: dict, environment: str,
+                                      include_kl_test_keuzelijst: bool) -> None:
+        """Generate the model with the python implementation."""
+        model_directory = directory / 'OtlmowModel'
+        OTLModelCreator.create_primitive_datatypes(
+            directory=model_directory, oslo_collector=oslo_collector,
+            primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules'])
+        OTLModelCreator.create_complex_datatypes(
+            directory=model_directory, oslo_collector=oslo_collector,
+            complex_datatype_validation_rules=settings['complex_datatype_validation_rules'])
+        OTLModelCreator.create_union_datatypes(
+            directory=model_directory, oslo_collector=oslo_collector,
+            union_datatype_validation_rules=settings['union_datatype_validation_rules'])
+        OTLModelCreator.create_enumerations(
+            directory=model_directory, environment=environment, oslo_collector=oslo_collector,
+            enumeration_validation_rules=settings['enumeration_validation_rules'],
+            enumeration_locations_by_environment=settings['enumeration_locations_by_environment'],
+            include_kl_test_keuzelijst=include_kl_test_keuzelijst)
+        OTLModelCreator.create_classes(
+            directory=model_directory, oslo_collector=oslo_collector,
+            geo_artefact_collector=geo_artefact_collector,
+            class_validation_rules=class_validation_rules)
+
+    @staticmethod
     def create_primitive_datatypes(directory, oslo_collector, primitive_datatype_validation_rules):
         creator = OTLPrimitiveDatatypeCreator(oslo_collector)
 
         for prim_datatype in tqdm(oslo_collector.primitive_datatypes):
-            if prim_datatype.objectUri in ['http://www.w3.org/2000/01/rdf-schema#Literal',
-                                           'http://www.w3.org/2001/XMLSchema#dateTime',
-                                           'http://www.w3.org/2001/XMLSchema#integer',
-                                           'http://www.w3.org/2001/XMLSchema#decimal',
-                                           'http://www.w3.org/2001/XMLSchema#time',
-                                           'http://www.w3.org/2001/XMLSchema#date',
-                                           'http://www.w3.org/2001/XMLSchema#nonNegativeInteger',
-                                           'http://www.w3.org/2001/XMLSchema#string',
-                                           'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString',
-                                           'http://www.w3.org/2001/XMLSchema#boolean',
-                                           'http://www.w3.org/2001/XMLSchema#anyURI']:
+            if prim_datatype.objectUri in PRIMITIVE_DATATYPES_TO_SKIP:
                 logging.info(f"Skip creating class for {prim_datatype.name}")
                 continue
 
             try:
-                model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
                 data_to_write = creator.create_block_to_write_from_primitive_types(
-                    prim_datatype, model_location=model_name,
+                    prim_datatype, model_location=OTLModelCreator.get_model_name_from_directory_path(directory),
                     primitive_datatype_validation_rules=primitive_datatype_validation_rules)
-                if data_to_write is None:
-                    logging.info(f"Could not create a class for {prim_datatype.name}")
-                if len(data_to_write) == 0:
-                    logging.info(f"Could not create a class for {prim_datatype.name}")
-                write_to_file(prim_datatype.name, 'Datatypes', data_to_write, relative_path=directory)
+                OTLModelCreator._write_the_datatype(prim_datatype.name, data_to_write, directory)
             except BaseException as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {prim_datatype.name}")
@@ -270,15 +378,10 @@ class OTLModelCreator:
 
         for complex_datatype in tqdm(oslo_collector.complex_datatypes):
             try:
-                model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
                 data_to_write = creator.create_block_to_write_from_complex_types(
                     complex_datatype, complex_datatype_validation_rules=complex_datatype_validation_rules,
-                    model_location=model_name)
-                if data_to_write is None:
-                    logging.info(f"Could not create a class for {complex_datatype.name}")
-                if len(data_to_write) == 0:
-                    logging.info(f"Could not create a class for {complex_datatype.name}")
-                write_to_file(complex_datatype.name, 'Datatypes', data_to_write, relative_path=directory)
+                    model_location=OTLModelCreator.get_model_name_from_directory_path(directory))
+                OTLModelCreator._write_the_datatype(complex_datatype.name, data_to_write, directory)
             except BaseException as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {complex_datatype.name}")
@@ -289,22 +392,26 @@ class OTLModelCreator:
 
         for union_datatype in tqdm(oslo_collector.union_datatypes):
             try:
-                model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
                 data_to_write = creator.create_block_to_write_from_union_types(
-                    union_datatype, model_location=model_name,
+                    union_datatype, model_location=OTLModelCreator.get_model_name_from_directory_path(directory),
                     union_datatype_validation_rules=union_datatype_validation_rules)
-                if data_to_write is None:
-                    logging.info(f"Could not create a class for {union_datatype.name}")
-                if len(data_to_write) == 0:
-                    logging.info(f"Could not create a class for {union_datatype.name}")
-                write_to_file(union_datatype.name, 'Datatypes', data_to_write, relative_path=directory)
+                OTLModelCreator._write_the_datatype(union_datatype.name, data_to_write, directory)
             except BaseException as e:
                 logging.error(str(e))
                 logging.error(f"Could not create a class for {union_datatype.name}")
 
     @staticmethod
+    def _write_the_datatype(name, data_to_write, directory, log=logging.info):
+        """Write a datatype, and report it when there is nothing to write."""
+        if data_to_write is None:
+            log(f"Could not create a class for {name}")
+        if len(data_to_write) == 0:
+            log(f"Could not create a class for {name}")
+        write_to_file(name, 'Datatypes', data_to_write, relative_path=directory)
+
+    @staticmethod
     def create_enumerations(directory, oslo_collector, enumeration_validation_rules,
-                            enumeration_locations_by_environment: Dict[str, list[str]],
+                            enumeration_locations_by_environment: dict[str, list[str]],
                             include_kl_test_keuzelijst: bool = False, environment: str = 'prd'):
         with OTLEnumerationCreator(oslo_collector, env=environment,
                                    enumeration_locations_by_environment=enumeration_locations_by_environment,
@@ -316,33 +423,35 @@ class OTLModelCreator:
                            enumeration in oslo_collector.enumerations}
                 with tqdm(total=len(futures)) as pbar:
                     while futures:
-                        new_futures = {}
-                        done, pending = concurrent.futures.wait(futures, return_when=FIRST_COMPLETED, timeout=60)
-                        for fut in done:
-                            if fut.exception():
-                                enumeration = futures[fut]
-                                new_futures[executor.submit(
-                                    OTLModelCreator.create_enumeration, creator=creator, directory=directory,
-                                    enumeration=enumeration, environment=environment,
-                                    enumeration_validation_rules=enumeration_validation_rules)
-                                ] = job
-                            else:
-                                pbar.update()
-                        for fut in pending:
-                            job = futures[fut]
-                            new_futures[fut] = job
-                        futures = new_futures
+                        futures = OTLModelCreator._wait_for_the_enumerations(
+                            executor, futures, creator, directory, environment, enumeration_validation_rules, pbar)
+
+    @staticmethod
+    def _wait_for_the_enumerations(executor, futures, creator, directory, environment,
+                                   enumeration_validation_rules, pbar):
+        """Wait for the enumerations that are created, and retry the ones that failed."""
+        new_futures = {}
+        done, pending = concurrent.futures.wait(futures, return_when=FIRST_COMPLETED, timeout=60)
+        for fut in done:
+            enumeration = futures[fut]
+            if fut.exception():
+                new_futures[executor.submit(
+                    OTLModelCreator.create_enumeration, creator=creator, directory=directory,
+                    enumeration=enumeration, environment=environment,
+                    enumeration_validation_rules=enumeration_validation_rules)
+                ] = enumeration
+            else:
+                pbar.update()
+        for fut in pending:
+            new_futures[fut] = futures[fut]
+        return new_futures
 
     @staticmethod
     def create_enumeration(creator, directory, enumeration, environment, enumeration_validation_rules):
         try:
             data_to_write = creator.create_block_to_write_from_enumerations(
                 enumeration, environment=environment, enumeration_validation_rules=enumeration_validation_rules)
-            if data_to_write is None:
-                logging.error(f"Could not create a class for {enumeration.name}")
-            if len(data_to_write) == 0:
-                logging.error(f"Could not create a class for {enumeration.name}")
-            write_to_file(enumeration.name, 'Datatypes', data_to_write, relative_path=directory)
+            OTLModelCreator._write_the_datatype(enumeration.name, data_to_write, directory, log=logging.error)
         except BaseException as e:
             logging.error(str(e))
             logging.error(f"Could not create a class for {enumeration.name}")
@@ -352,46 +461,66 @@ class OTLModelCreator:
         creator = OTLClassCreator(oslo_collector, geo_artefact_collector)
 
         for oslo_class in tqdm(oslo_collector.classes):
-            try:
-                model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
-                if oslo_class.label == 'ignore this class when generating the model':
-                    continue
-                data_to_write = creator.create_blocks_to_write_from_classes(oslo_class, model_location=model_name,
-                                                                            class_validation_rules=class_validation_rules)
-                if data_to_write is None:
-                    logging.info(f"Could not create a class for {oslo_class.name}")
-                if len(data_to_write) == 0:
-                    logging.info(f"Could not create a class for {oslo_class.name}")
-                class_directory = 'Classes'
-                ns = None
-                if oslo_class.objectUri != 'http://purl.org/dc/terms/Agent':
-                    ns, _ = get_ns_and_name_from_uri(oslo_class.objectUri)
-                if ns is not None:
-                    class_directory = get_class_directory_from_ns(ns)
+            OTLModelCreator._create_the_class(oslo_class, creator, directory, class_validation_rules)
 
-                write_to_file(oslo_class.name, class_directory, data_to_write, relative_path=directory)
-            except Exception as e:
-                logging.error(str(e))
-                logging.error(f"Could not create a class for {oslo_class.name}")
+        OTLModelCreator._write_the_all_classes_helper(oslo_collector, directory, class_validation_rules)
 
+    @staticmethod
+    def _create_the_class(oslo_class, creator, directory, class_validation_rules):
+        """Write the class of one OTL class."""
+        try:
+            if oslo_class.label == IGNORED_CLASS_LABEL:
+                return
+            data_to_write = creator.create_blocks_to_write_from_classes(
+                oslo_class, model_location=OTLModelCreator.get_model_name_from_directory_path(directory),
+                class_validation_rules=class_validation_rules)
+            OTLModelCreator._write_the_class(oslo_class.name, data_to_write,
+                                            OTLModelCreator._class_directory_of(oslo_class), directory)
+        except Exception as e:
+            logging.error(str(e))
+            logging.error(f"Could not create a class for {oslo_class.name}")
+
+    @staticmethod
+    def _class_directory_of(oslo_class):
+        """The directory of a class, based on the namespace of its uri."""
+        if oslo_class.objectUri == AGENT_URI:
+            return 'Classes'
+        ns, _ = get_ns_and_name_from_uri(oslo_class.objectUri)
+        if ns is None:
+            return 'Classes'
+        return get_class_directory_from_ns(ns)
+
+    @staticmethod
+    def _write_the_class(name, data_to_write, class_directory, directory):
+        """Write a class, and report it when there is nothing to write."""
+        if data_to_write is None:
+            logging.info(f"Could not create a class for {name}")
+        if len(data_to_write) == 0:
+            logging.info(f"Could not create a class for {name}")
+        write_to_file(name, class_directory, data_to_write, relative_path=directory)
+
+    @staticmethod
+    def _write_the_all_classes_helper(oslo_collector, directory, class_validation_rules):
+        """Write the helper that imports every class of the model."""
         data_to_write = []
         for oslo_class in oslo_collector.classes:
             if oslo_class.abstract:
                 continue
-            ns = None
-
-            if oslo_class.objectUri in class_validation_rules['valid_uri_and_types']:
-                name = class_validation_rules['valid_uri_and_types'][oslo_class.objectUri]
-            else:
-                ns, name = get_ns_and_name_from_uri(oslo_class.objectUri)
-
-            if ns is not None:
-                data_to_write.append(f'from ..Classes.{get_titlecase_from_ns(ns)}.{name} import {name}')
-            else:
-                data_to_write.append(f'from ..Classes.{name} import {name}')
-
+            data_to_write.append(OTLModelCreator._import_statement_of(oslo_class, class_validation_rules))
         write_to_file('all_classes', 'Helpers', data_to_write, relative_path=directory)
 
+    @staticmethod
+    def _import_statement_of(oslo_class, class_validation_rules):
+        """The import statement of a class, in the helper that imports every class."""
+        valid_uri_and_types = class_validation_rules['valid_uri_and_types']
+        if oslo_class.objectUri in valid_uri_and_types:
+            ns = None
+            name = valid_uri_and_types[oslo_class.objectUri]
+        else:
+            ns, name = get_ns_and_name_from_uri(oslo_class.objectUri)
+        if ns is not None:
+            return f'from ..Classes.{get_titlecase_from_ns(ns)}.{name} import {name}'
+        return f'from ..Classes.{name} import {name}'
 
     @staticmethod
     def check_and_create_subdirectories(directory: Path):
@@ -410,25 +539,14 @@ class OTLModelCreator:
         OTLModelCreator.clean_directory(model_directory)
         OTLModelCreator.copy_fixed_classes_from_otlmow_model(model_directory)
 
-        if not path.exists(model_directory / 'Classes'):
-            os.mkdir(model_directory / 'Classes')
-        if not path.exists(model_directory / 'Datatypes'):
-            os.mkdir(model_directory / 'Datatypes')
+        OTLModelCreator._create_the_class_directories(model_directory)
 
-        if not path.exists(model_directory / 'Classes/Abstracten'):
-            os.mkdir(model_directory / 'Classes/Abstracten')
-        if not path.exists(model_directory / 'Classes/ImplementatieElement'):
-            os.mkdir(model_directory / 'Classes/ImplementatieElement')
-        if not path.exists(model_directory / 'Classes/Installatie'):
-            os.mkdir(model_directory / 'Classes/Installatie')
-        if not path.exists(model_directory / 'Classes/Legacy'):
-            os.mkdir(model_directory / 'Classes/Legacy')
-        if not path.exists(model_directory / 'Classes/Levenscyclus'):
-            os.mkdir(model_directory / 'Classes/Levenscyclus')
-        if not path.exists(model_directory / 'Classes/Onderdeel'):
-            os.mkdir(model_directory / 'Classes/Onderdeel')
-        if not path.exists(model_directory / 'Classes/ProefEnMeting'):
-            os.mkdir(model_directory / 'Classes/ProefEnMeting')
+    @staticmethod
+    def _create_the_class_directories(model_directory: Path) -> None:
+        """Create the directories the classes and the datatypes are written to."""
+        for class_directory in ['Classes', 'Datatypes'] + CLASS_DIRECTORIES:
+            if not path.exists(model_directory / class_directory):
+                os.mkdir(model_directory / class_directory)
 
     @staticmethod
     def clean_directory(directory):
@@ -440,86 +558,102 @@ class OTLModelCreator:
 
     @staticmethod
     def check_for_nested_attributes_in_classes(collector: OSLOCollector, exceptions=None,
-                                               known_attribute_uris: [str] = None):
+                                               known_attribute_uris: Optional[list[str]] = None):
         if known_attribute_uris is None:
             known_attribute_uris = []
         if exceptions is None:
-            exceptions = [
-                'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testComplexTypeMetKard']
+            exceptions = DEFAULT_NESTED_LIST_EXCEPTIONS
         for cl in collector.classes:
             if cl.abstract:
                 continue
+            OTLModelCreator._check_the_class_for_nested_attributes(cl, collector, exceptions, known_attribute_uris)
 
-            attributes = collector.find_attributes_by_class(cl)
-            for attr in attributes:
-                if attr.objectUri in exceptions:
-                    # exception for test classes
-                    continue
-                list_found = False
-                if attr.kardinaliteit_max != '1':
-                    list_found = True
-                nested_attrs = collector.find_complex_datatype_attributes_by_class_uri(attr.type)
-                if len(nested_attrs) == 0:
-                    nested_attrs = collector.find_primitive_datatype_attributes_by_class_uri(attr.type)
-                if len(nested_attrs) == 0:
-                    nested_attrs = collector.find_union_datatype_attributes_by_class_uri(attr.type)
+    @staticmethod
+    def _check_the_class_for_nested_attributes(cl, collector, exceptions, known_attribute_uris) -> None:
+        """Check the attributes of one class for a list inside a list."""
+        for attr in collector.find_attributes_by_class(cl):
+            if attr.objectUri in exceptions:
+                # exception for test classes
+                continue
+            nested_attrs = OTLModelCreator._find_the_nested_attributes(collector, attr)
+            if len(nested_attrs) > 1:
+                list_found = attr.kardinaliteit_max != '1'
+                try:
+                    OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)
+                except NestedListAttributeError as exc:
+                    if attr.objectUri not in known_attribute_uris:
+                        raise NestedListAttributeError(f'found in {cl.objectUri} {attr.objectUri}') from exc
 
-                if len(nested_attrs) > 1:
-                    try:
-                        OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)
-                    except NestedListAttributeError as exc:
-                        if attr.objectUri not in known_attribute_uris:
-                            raise NestedListAttributeError(f'found in {cl.objectUri} {attr.objectUri}') from exc
+    @staticmethod
+    def _find_the_nested_attributes(collector, attr) -> list:
+        """The attributes of the datatype of an attribute."""
+        nested_attrs = collector.find_complex_datatype_attributes_by_class_uri(attr.type)
+        if len(nested_attrs) == 0:
+            nested_attrs = collector.find_primitive_datatype_attributes_by_class_uri(attr.type)
+        if len(nested_attrs) == 0:
+            nested_attrs = collector.find_union_datatype_attributes_by_class_uri(attr.type)
+        return nested_attrs
 
     @staticmethod
     def check_for_nested_attributes_in_attributes(list_already_found, attributes, collector):
         for attr in attributes:
-            list_found = False
-            if attr.kardinaliteit_max != '1':
-                list_found = True
+            list_found = attr.kardinaliteit_max != '1'
 
             if list_found and list_already_found:
                 raise NestedListAttributeError(f'Found nested list attributes: {attr.objectUri}')
-            nested_attrs = collector.find_complex_datatype_attributes_by_class_uri(attr.type)
-            if len(nested_attrs) == 0:
-                nested_attrs = collector.find_primitive_datatype_attributes_by_class_uri(attr.type)
-            if len(nested_attrs) == 0:
-                nested_attrs = collector.find_union_datatype_attributes_by_class_uri(attr.type)
+            nested_attrs = OTLModelCreator._find_the_nested_attributes(collector, attr)
 
             if len(nested_attrs) > 1:
-                list_found = list_found or list_already_found
-                OTLModelCreator.check_for_nested_attributes_in_attributes(list_found, nested_attrs, collector)
+                OTLModelCreator.check_for_nested_attributes_in_attributes(
+                    list_found or list_already_found, nested_attrs, collector)
 
     @classmethod
-    def check_for_attributes_with_different_case(cls, oslo_collector, attributes_with_different_cases_uris: [str]):
-        lower_case_names = [d.name.lower() for d in oslo_collector.attributes]
-        # find names that are identical when case-insensitive
-        unique_lower_case_names = set(lower_case_names)
-        problems = defaultdict(set)
-        for lower_case_name in unique_lower_case_names:
-            attrs = [d for d in oslo_collector.attributes if
-                     d.name.lower() == lower_case_name and d.deprecated_version == '']
-            if len(attrs) < 2:
-                continue
-            first_attr = attrs[0].name
-            for attr in attrs[1:]:
-                if attr.name != first_attr:
-                    problems[first_attr.lower()].add(attrs[0].objectUri)
-                    problems[first_attr.lower()].add(attr.objectUri)
-
-        problems = {k: list(v) for k, v in problems.items()}
-
-        for k, uri_list in problems.items():
-            for uri in tuple(uri_list):
-                if uri in attributes_with_different_cases_uris:
-                    problems[k].remove(uri)
-
-        for k in list(problems.keys()):
-            if len(problems[k]) == 0:
-                del problems[k]
+    def check_for_attributes_with_different_case(cls, oslo_collector, attributes_with_different_cases_uris: list[str]):
+        problems = cls._find_the_attributes_with_a_different_case(oslo_collector)
+        problems = cls._remove_the_ignored_attributes(problems, attributes_with_different_cases_uris)
 
         if problems:
             raise NotImplementedError(f'Found attributes with different case:\n{json.dumps(problems, indent=4)}')
+
+    @classmethod
+    def _find_the_attributes_with_a_different_case(cls, oslo_collector) -> dict[str, list]:
+        """The attributes that only differ in case, per name."""
+        problems: dict = defaultdict(set)
+        for lower_case_name in {attribute.name.lower() for attribute in oslo_collector.attributes}:
+            attributes = cls._active_attributes_with_name(oslo_collector, lower_case_name)
+            if len(attributes) < 2:
+                continue
+            cls._register_the_conflicting_uris(problems, attributes)
+        return {name: list(uris) for name, uris in problems.items()}
+
+    @staticmethod
+    def _active_attributes_with_name(oslo_collector, lower_case_name) -> list:
+        """The attributes with the given name that are not deprecated."""
+        return [attribute for attribute in oslo_collector.attributes
+                if attribute.name.lower() == lower_case_name and attribute.deprecated_version == '']
+
+    @staticmethod
+    def _register_the_conflicting_uris(problems, attributes) -> None:
+        """Register the uris of the attributes that only differ in case."""
+        first_attr = attributes[0].name
+        for attr in attributes[1:]:
+            if attr.name != first_attr:
+                problems[first_attr.lower()].add(attributes[0].objectUri)
+                problems[first_attr.lower()].add(attr.objectUri)
+
+    @staticmethod
+    def _remove_the_ignored_attributes(problems, ignored_uris) -> dict[str, list]:
+        """Remove the attributes that are on the ignore list."""
+        for name, uri_list in problems.items():
+            for uri in tuple(uri_list):
+                if uri in ignored_uris:
+                    uri_list.remove(uri)
+
+        for name in list(problems.keys()):
+            if len(problems[name]) == 0:
+                del problems[name]
+
+        return problems
 
     @classmethod
     def copy_fixed_classes_from_otlmow_model(cls, model_directory: Path):
@@ -530,8 +664,7 @@ class OTLModelCreator:
             "git", "clone", "--depth=1", "--filter=blob:none", "--sparse",
             "https://github.com/davidvlaminck/OTLMOW-Model/",
             str(otlmow_model_github_dir.absolute())
-        ])
-        os.chdir(str(otlmow_model_github_dir.absolute()))
+        ], cwd=str(Path(__file__).parent))
         subprocess.call([
             "git", "sparse-checkout", "set",
             "otlmow_model/OtlmowModel/BaseClasses",
@@ -539,8 +672,7 @@ class OTLModelCreator:
             "otlmow_model/OtlmowModel/GeometrieTypes",
             "otlmow_model/OtlmowModel/Helpers",
             "otlmow_model/OtlmowModel/warnings",
-        ])
-        os.chdir(str(Path(__file__).parent.parent))
+        ], cwd=str(otlmow_model_github_dir.absolute()))
 
         otlmow_model_dir = otlmow_model_github_dir / 'otlmow_model' / 'OtlmowModel'
         if not otlmow_model_dir.exists():
@@ -561,7 +693,7 @@ class OTLModelCreator:
     def add_generated_info(cls, directory: Path, oslo_collector: OSLOCollector) -> None:
         relation_dict = cls.generate_relation_dict(oslo_collector)
         class_dict = cls.generate_class_dict(oslo_collector)
-        class_dict = {k: v for k, v in class_dict.items() if v['label'] != 'ignore this class when generating the model'}
+        class_dict = {k: v for k, v in class_dict.items() if v['label'] != IGNORED_CLASS_LABEL}
         with open(directory / 'generated_info.json', mode='w') as generated_info_file:
             json.dump({'relations': relation_dict, 'classes': class_dict}, generated_info_file, indent=4)
 
@@ -592,125 +724,114 @@ class OTLModelCreator:
     def create_legacy_classes(cls, oslo_collector: OSLOCollector, directory: Path, legacy_types_path: Path):
         creator = LegacyClassCreator()
 
-        lgc_type_data = []
+        lgc_type_data: list = []
         with open(legacy_types_path) as legacy_types_file:
             lgc_type_data.extend(iter(csv.reader(legacy_types_file, delimiter='\t')))
 
-        oslo_collector.inheritances.append(Inheritance(
-            base_name='AIMDBStatus',
-            base_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMDBStatus',
-            class_name='LegacyObject',
-            class_uri='https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'
-        ))
-        oslo_collector.inheritances.append(Inheritance(
-            base_name='AIMToestand',
-            base_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMToestand',
-            class_name='LegacyObject',
-            class_uri='https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'
-        ))
-        oslo_collector.inheritances.append(Inheritance(
-            base_name='AIMVersie',
-            base_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMVersie',
-            class_name='LegacyObject',
-            class_uri='https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'
-        ))
+        cls._add_the_legacy_base_classes(oslo_collector)
+
+        for lgc_type_row in tqdm(lgc_type_data):
+            cls._create_the_legacy_class(lgc_type_row, oslo_collector, creator, directory)
+
+        cls._add_the_legacy_classes_to_the_helper(lgc_type_data, directory)
+
+        return oslo_collector
+
+    @staticmethod
+    def _add_the_legacy_base_classes(oslo_collector: OSLOCollector) -> None:
+        """Add the legacy object class and the base classes it inherits from."""
+        for base_name in LEGACY_BASE_CLASS_NAMES:
+            oslo_collector.inheritances.append(Inheritance(
+                base_name=base_name,
+                base_uri=f'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#{base_name}',
+                class_name='LegacyObject',
+                class_uri=LEGACY_OBJECT_URI
+            ))
 
         lgc_class = OSLOClass(
             label='Legacy Object',
             name='LegacyObject',
-            objectUri='https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject',
+            objectUri=LEGACY_OBJECT_URI,
             deprecated_version='',
             definition='Abstracte voor een Legacy object',
             abstract=1
         )
         oslo_collector.classes.append(lgc_class)
-        oslo_collector.class_dict['https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'] = lgc_class
+        oslo_collector.class_dict[LEGACY_OBJECT_URI] = lgc_class
 
+    @classmethod
+    def _create_the_legacy_class(cls, lgc_type_row, oslo_collector, creator, directory) -> None:
+        """Add one legacy type to the model and write its class."""
+        class_uri = lgc_type_row[0]
+        class_name = cls.alter_legacy_class_name(lgc_type_row[2])
 
-        for lgc_type_row in tqdm(lgc_type_data):
-            class_name = lgc_type_row[2]
-            class_uri = lgc_type_row[0]
-            class_name = cls.alter_legacy_class_name(class_name)
+        oslo_class = OSLOClass(
+            objectUri=class_uri,
+            name=class_name,
+            label=lgc_type_row[1],
+            deprecated_version='',
+            abstract=False)
+        oslo_collector.classes.append(oslo_class)
+        oslo_collector.inheritances.append(Inheritance(
+            base_name='LegacyObject',
+            base_uri=LEGACY_OBJECT_URI,
+            class_name=class_name,
+            class_uri=class_uri
+        ))
+        oslo_collector.class_dict[class_uri] = oslo_class
+        try:
+            data_to_write = creator.create_blocks_to_write_from_rows(
+                lgc_type_row=lgc_type_row, model_location=OTLModelCreator.get_model_name_from_directory_path(directory))
+            if data_to_write is None:
+                logging.info(f"Could not create a class for {class_name}")
+            if len(data_to_write) == 0:
+                logging.info(f"Could not create a class for {class_name}")
+            class_directory = 'Classes/Legacy'
 
-            oslo_class = OSLOClass(
-                objectUri=class_uri,
-                name=class_name,
-                label=lgc_type_row[1],
-                deprecated_version='',
-                abstract=False)
-            oslo_collector.classes.append(oslo_class)
-            oslo_collector.inheritances.append(Inheritance(
-                base_name='LegacyObject',
-                base_uri='https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject',
-                class_name=class_name,
-                class_uri=class_uri
-            ))
-            oslo_collector.class_dict[class_uri] = oslo_class
-            try:
-                model_name = OTLModelCreator.get_model_name_from_directory_path(directory)
-                data_to_write = creator.create_blocks_to_write_from_rows(lgc_type_row=lgc_type_row, model_location=model_name)
-                if data_to_write is None:
-                    logging.info(f"Could not create a class for {class_name}")
-                if len(data_to_write) == 0:
-                    logging.info(f"Could not create a class for {class_name}")
-                class_directory = 'Classes/Legacy'
+            write_to_file(class_name, class_directory, data_to_write, relative_path=directory)
+        except Exception as e:
+            logging.error(str(e))
+            logging.error(f"Could not create a class for {class_name}")
 
-                write_to_file(class_name, class_directory, data_to_write, relative_path=directory)
-            except Exception as e:
-                logging.error(str(e))
-                logging.error(f"Could not create a class for {class_name}")
-
+    @classmethod
+    def _add_the_legacy_classes_to_the_helper(cls, lgc_type_data, directory) -> None:
+        """Add the imports of the legacy classes to the helper that imports every class."""
         data_to_write = []
         for lgc_type_row in lgc_type_data:
             uri = lgc_type_row[0]
-            ns, name = get_ns_and_name_from_uri(uri)
+            _, name = get_ns_and_name_from_uri(uri)
             name = cls.alter_legacy_class_name(name)
             data_to_write.append(f'from ..Classes.Legacy.{name} import {name}')
 
         write_to_file('all_classes', 'Helpers', data_to_write, relative_path=directory, write_mode='a')
 
-        return oslo_collector
-
     @classmethod
     def alter_legacy_class_name(cls, class_name):
-        if '.' in class_name:
-            class_name = class_name.replace('.', '_')
-        if '-' in class_name:
-            class_name = class_name.replace('-', '_')
-        if class_name == "RIS":
-            class_name = "RISLegacy"
-        elif class_name == 'Fietstel':
-            class_name = 'FietstelLegacy'
-        elif class_name == 'Brug':
-            class_name = 'BeweegbareBrug'
-        elif class_name == 'Voedingskeuzeschakelaar':
-            class_name = 'VKS'
-        return class_name
+        class_name = class_name.replace('.', '_').replace('-', '_')
+        return LEGACY_CLASS_NAME_ALIASES.get(class_name, class_name)
 
     @classmethod
-    def add_inheritances(cls, oslo_collector: OSLOCollector, additional_inheritances: [dict]):
+    def add_inheritances(cls, oslo_collector: OSLOCollector, additional_inheritances: list[dict]):
         for inh in additional_inheritances:
             oslo_collector.inheritances.append(
                 Inheritance(base_name=inh['base_name'], base_uri=inh['base_uri'], class_name=inh['class_name'],
                             class_uri=inh['class_uri'], deprecated_version=''))
-            if inh['class_uri'] not in oslo_collector.class_dict:
-                oslo_collector.class_dict[inh['class_uri']] = OSLOClass(
-                    label='ignore this class when generating the model',
-                    name=inh['class_name'],
-                    objectUri=inh['class_uri'],
-                    deprecated_version='',
-                    definition='',
-                    abstract=1
-                )
-                oslo_collector.classes.append(oslo_collector.class_dict[inh['class_uri']])
+            cls._add_the_placeholder_class(oslo_collector, inh['class_uri'], inh['class_name'])
             # same for base class, if not present
-            if inh['base_uri'] not in oslo_collector.class_dict:
-                oslo_collector.class_dict[inh['base_uri']] = OSLOClass(
-                    label='ignore this class when generating the model',
-                    name=inh['base_name'],
-                    objectUri=inh['base_uri'],
-                    deprecated_version='',
-                    definition='',
-                    abstract=1
-                )
-                oslo_collector.classes.append(oslo_collector.class_dict[inh['base_uri']])
+            cls._add_the_placeholder_class(oslo_collector, inh['base_uri'], inh['base_name'])
+
+    @staticmethod
+    def _add_the_placeholder_class(oslo_collector: OSLOCollector, uri: str, name: str) -> None:
+        """Add a class that is not generated, but that is needed by the model."""
+        if uri in oslo_collector.class_dict:
+            return
+        placeholder = OSLOClass(
+            label=IGNORED_CLASS_LABEL,
+            name=name,
+            objectUri=uri,
+            deprecated_version='',
+            definition='',
+            abstract=1
+        )
+        oslo_collector.class_dict[uri] = placeholder
+        oslo_collector.classes.append(placeholder)
