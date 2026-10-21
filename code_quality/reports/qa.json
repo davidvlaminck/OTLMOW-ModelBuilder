@@ -1,7 +1,7 @@
 {
   "date": "2026-10-21",
   "repo": "otlmow_modelbuilder",
-  "commit": "e255395",
+  "commit": "ae07920",
   "thresholds": {
     "ruff_issues": 0,
     "ruff_format_files": 0,
@@ -15,16 +15,16 @@
     "god_classes": 0
   },
   "metrics": {
-    "ruff_issues": 537,
+    "ruff_issues": 529,
     "ruff_format_files": 49,
-    "mypy_errors": 274,
-    "coverage_percent": 87.6,
-    "coverage_branch_percent": 73.6,
+    "mypy_errors": 268,
+    "coverage_percent": 88.4,
+    "coverage_branch_percent": 74.7,
     "max_crap": 92.1,
     "max_complexity": 22,
     "bandit_high": 0,
     "dead_code": 10,
-    "god_classes": 1
+    "god_classes": 2
   },
   "enforced_gates": [],
   "failed_gates": [],
@@ -39,11 +39,11 @@
   },
   "hotspots": [
     {
-      "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "commits": 7,
-      "lines_changed": 214,
-      "max_complexity": 15,
-      "score": 3210
+      "file": "otlmow_modelbuilder/OTLModelCreator.py",
+      "commits": 6,
+      "lines_changed": 1171,
+      "max_complexity": 6,
+      "score": 7026
     },
     {
       "file": "otlmow_modelbuilder/GeometrieInheritanceProcessor.py",
@@ -53,11 +53,11 @@
       "score": 1540
     },
     {
-      "file": "otlmow_modelbuilder/OTLModelCreator.py",
-      "commits": 5,
-      "lines_changed": 226,
-      "max_complexity": 6,
-      "score": 1356
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "commits": 7,
+      "lines_changed": 214,
+      "max_complexity": 5,
+      "score": 1070
     },
     {
       "file": "otlmow_modelbuilder/AbstractDatatypeCreator.py",
@@ -114,35 +114,41 @@
       "lines_changed": 3,
       "max_complexity": 5,
       "score": 15
+    },
+    {
+      "file": "otlmow_modelbuilder/ModelData.py",
+      "commits": 1,
+      "lines_changed": 32,
+      "max_complexity": 0,
+      "score": 0
     }
   ],
   "ruff_per_rule": {
     "I001": 80,
     "N999": 64,
-    "UP006": 57,
     "FA100": 56,
+    "UP006": 55,
     "ISC004": 47,
     "LOG015": 42,
-    "UP035": 26,
     "UP009": 25,
-    "RUF013": 24,
+    "UP035": 25,
+    "RUF013": 23,
     "F401": 20,
     "BLE001": 14,
     "F541": 11,
     "C417": 9,
-    "SIM118": 9,
+    "SIM118": 8,
     "TRY004": 7,
     "RUF012": 6,
     "C414": 4,
-    "S110": 4,
     "SIM114": 4,
     "SIM117": 4,
     "PLW0602": 3,
+    "S110": 3,
     "B009": 2,
     "B010": 2,
     "RUF015": 2,
     "UP004": 2,
-    "B006": 1,
     "C403": 1,
     "E722": 1,
     "FLY002": 1,
@@ -150,7 +156,6 @@
     "PIE790": 1,
     "PYI058": 1,
     "RUF010": 1,
-    "RUF059": 1,
     "RUF100": 1,
     "S112": 1,
     "TRY201": 1,
@@ -174,15 +179,6 @@
       "coverage": 54.3,
       "crap": 40.5,
       "lineno": 39
-    },
-    {
-      "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "name": "add_relations_to_datablock",
-      "block_type": "method",
-      "complexity": 7,
-      "coverage": 16.7,
-      "crap": 35.4,
-      "lineno": 256
     },
     {
       "file": "otlmow_modelbuilder/OSLOCollector.py",
@@ -249,12 +245,12 @@
     },
     {
       "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "name": "create_block_from_class",
+      "name": "_get_direction_and_target",
       "block_type": "method",
-      "complexity": 15,
-      "coverage": 90.0,
-      "crap": 15.2,
-      "lineno": 60
+      "complexity": 4,
+      "coverage": 10.0,
+      "crap": 15.7,
+      "lineno": 334
     },
     {
       "file": "otlmow_modelbuilder/GenericBuilderFunctions.py",
@@ -272,7 +268,7 @@
       "complexity": 4,
       "coverage": 12.5,
       "crap": 14.7,
-      "lineno": 294
+      "lineno": 354
     },
     {
       "file": "otlmow_modelbuilder/GeometrieInheritanceProcessor.py",
@@ -311,15 +307,6 @@
       "lineno": 302
     },
     {
-      "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "name": "get_class_line_from_class_and_inheritances",
-      "block_type": "method",
-      "complexity": 11,
-      "coverage": 77.8,
-      "crap": 12.3,
-      "lineno": 212
-    },
-    {
       "file": "otlmow_modelbuilder/GeometrieInheritanceProcessor.py",
       "name": "_strip_common_geometry",
       "block_type": "method",
@@ -329,15 +316,6 @@
       "lineno": 73
     },
     {
-      "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "name": "_add_field_imports",
-      "block_type": "method",
-      "complexity": 5,
-      "coverage": 36.4,
-      "crap": 11.4,
-      "lineno": 189
-    },
-    {
       "file": "otlmow_modelbuilder/OSLOCollector.py",
       "name": "_compute_mros",
       "block_type": "method",
@@ -345,15 +323,6 @@
       "coverage": 91.3,
       "crap": 11.1,
       "lineno": 331
-    },
-    {
-      "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "name": "_add_inheritance_imports",
-      "block_type": "method",
-      "complexity": 9,
-      "coverage": 70.6,
-      "crap": 11.1,
-      "lineno": 159
     },
     {
       "file": "otlmow_modelbuilder/HelperFunctions.py",
@@ -381,24 +350,6 @@
       "coverage": 100.0,
       "crap": 10.0,
       "lineno": 214
-    },
-    {
-      "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "name": "create_blocks_to_write_from_classes",
-      "block_type": "method",
-      "complexity": 9,
-      "coverage": 94.1,
-      "crap": 9.0,
-      "lineno": 31
-    },
-    {
-      "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "name": "get_geometry_types_from_uri",
-      "block_type": "method",
-      "complexity": 9,
-      "coverage": 93.8,
-      "crap": 9.0,
-      "lineno": 236
     },
     {
       "file": "otlmow_modelbuilder/OTLPrimitiveDatatypeCreator.py",
@@ -572,6 +523,15 @@
       "lineno": 645
     },
     {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_add_inheritance_imports",
+      "block_type": "method",
+      "complexity": 5,
+      "coverage": 77.8,
+      "crap": 5.3,
+      "lineno": 229
+    },
+    {
       "file": "otlmow_modelbuilder/DatatypeBuilderFunctions.py",
       "name": "get_field_name_by_type_uri",
       "block_type": "function",
@@ -590,6 +550,15 @@
       "lineno": 38
     },
     {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "get_class_line_from_class_and_inheritances",
+      "block_type": "method",
+      "complexity": 5,
+      "coverage": 85.7,
+      "crap": 5.1,
+      "lineno": 272
+    },
+    {
       "file": "otlmow_modelbuilder/GenericBuilderFunctions.py",
       "name": "cardinality_check",
       "block_type": "function",
@@ -606,6 +575,15 @@
       "coverage": 92.3,
       "crap": 5.0,
       "lineno": 34
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_validate_class",
+      "block_type": "method",
+      "complexity": 5,
+      "coverage": 100.0,
+      "crap": 5.0,
+      "lineno": 70
     },
     {
       "file": "otlmow_modelbuilder/OTLEnumerationCreator.py",
@@ -672,21 +650,21 @@
     },
     {
       "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "name": "_add_attribute_import",
-      "block_type": "method",
-      "complexity": 3,
-      "coverage": 40.0,
-      "crap": 4.9,
-      "lineno": 145
-    },
-    {
-      "file": "otlmow_modelbuilder/OTLClassCreator.py",
       "name": "_add_abstract_import",
       "block_type": "method",
       "complexity": 3,
       "coverage": 40.0,
       "crap": 4.9,
-      "lineno": 152
+      "lineno": 222
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "add_relations_to_datablock",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 44.4,
+      "crap": 4.5,
+      "lineno": 314
     },
     {
       "file": "otlmow_modelbuilder/OTLModelCreator.py",
@@ -741,6 +719,24 @@
       "coverage": 83.3,
       "crap": 4.1,
       "lineno": 176
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_finalize_datablock",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 80.0,
+      "crap": 4.1,
+      "lineno": 206
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_find_inheritance_by_uri",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 80.0,
+      "crap": 4.1,
+      "lineno": 297
     },
     {
       "file": "otlmow_modelbuilder/OTLModelCreator.py",
@@ -840,6 +836,33 @@
       "coverage": 85.7,
       "crap": 4.0,
       "lineno": 98
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "get_geometry_types_from_uri",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 303
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_find_geometry_type",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 309
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_get_deprecated_argument",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 20.0,
+      "crap": 4.0,
+      "lineno": 328
     },
     {
       "file": "otlmow_modelbuilder/OTLComplexDatatypeCreator.py",
@@ -948,6 +971,15 @@
       "coverage": 62.5,
       "crap": 3.5,
       "lineno": 198
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_add_field_imports",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 66.7,
+      "crap": 3.3,
+      "lineno": 259
     },
     {
       "file": "otlmow_modelbuilder/OTLModelCreator.py",
@@ -1140,12 +1172,66 @@
     },
     {
       "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "create_block_from_class",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 90.0,
+      "crap": 3.0,
+      "lineno": 55
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_is_valid_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 102
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_create_block_with_rust",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 107
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_create_block_with_python",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 89.7,
+      "crap": 3.0,
+      "lineno": 162
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_get_class_directory_of_inheritance",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 247
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
       "name": "_check_readonly",
       "block_type": "method",
       "complexity": 3,
       "coverage": 100.0,
       "crap": 3.0,
-      "lineno": 185
+      "lineno": 255
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_get_base_names_in_order",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 88.9,
+      "crap": 3.0,
+      "lineno": 284
     },
     {
       "file": "otlmow_modelbuilder/OTLEnumerationCreator.py",
@@ -1320,12 +1406,21 @@
     },
     {
       "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_add_attribute_import",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 66.7,
+      "crap": 2.1,
+      "lineno": 218
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
       "name": "_add_geometry_imports",
       "block_type": "method",
       "complexity": 2,
       "coverage": 66.7,
       "crap": 2.1,
-      "lineno": 208
+      "lineno": 268
     },
     {
       "file": "otlmow_modelbuilder/OTLEnumerationCreator.py",
@@ -1523,7 +1618,97 @@
       "complexity": 2,
       "coverage": 100.0,
       "crap": 2.0,
-      "lineno": 18
+      "lineno": 37
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_ensure_oslo_class",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 90
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_get_valid_uri_and_types",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 80.0,
+      "crap": 2.0,
+      "lineno": 95
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_collect_type_links",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 140
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_collect_enumerations",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 143
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_collect_complex_datatypes",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 146
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_collect_union_datatypes",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 149
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_to_inheritance_list",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 153
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_to_relation_list",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 158
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_import_prefix",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 214
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "_is_agent_inheritance",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 243
     },
     {
       "file": "otlmow_modelbuilder/OTLModelCreator.py",
@@ -1778,6 +1963,15 @@
       "lineno": 93
     },
     {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "name": "create_blocks_to_write_from_classes",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 50
+    },
+    {
       "file": "otlmow_modelbuilder/OTLComplexDatatypeCreator.py",
       "name": "__init__",
       "block_type": "method",
@@ -1906,9 +2100,10 @@
   ],
   "god_classes_detail": {
     "available": true,
-    "count": 1,
+    "count": 2,
     "classes": [
-      "otlmow_modelbuilder/OTLModelCreator.py:OTLModelCreator"
+      "otlmow_modelbuilder/OTLModelCreator.py:OTLModelCreator",
+      "otlmow_modelbuilder/OTLClassCreator.py:OTLClassCreator"
     ]
   },
   "tools": {
