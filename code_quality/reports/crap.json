@@ -1,0 +1,643 @@
+{
+  "crap": [
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "add_choice_list_validation",
+      "block_type": "method",
+      "complexity": 5,
+      "coverage": 100.0,
+      "crap": 5.0,
+      "lineno": 818
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "delete_dummy_rows",
+      "block_type": "method",
+      "complexity": 5,
+      "coverage": 100.0,
+      "crap": 5.0,
+      "lineno": 862
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "add_attribute",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 70
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "generate_template_from_subset_async",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 135
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "generate_template_from_subset",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 197
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "create_x_objects",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 259
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "get_non_relation_class_uris",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 372
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "create_x_objects_async",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 381
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "create_objects_in_parallel_async",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 441
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "fill_attributes_of_subset",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 87.5,
+      "crap": 4.0,
+      "lineno": 484
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "fill_all_attributes",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 500
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "fill_asset_id",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 509
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "alter_csv_template",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 90.9,
+      "crap": 4.0,
+      "lineno": 556
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "alter_csv_template_async",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 92.3,
+      "crap": 4.0,
+      "lineno": 573
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "collect_csv_header_info",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 85.7,
+      "crap": 4.0,
+      "lineno": 619
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "write_csv_info_rows",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 660
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "process_header_cell",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 775
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "get_attribute_info",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 90.9,
+      "crap": 4.0,
+      "lineno": 910
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "get_standard_unit",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 941
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "generate_choice_list_in_excel",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 965
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "filters_classes_by_subset",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 982
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "append_relations_of_relation",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 1056
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "create_relation_instance",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 85.7,
+      "crap": 4.0,
+      "lineno": 1074
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "add_type_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 82
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "add_missing_attribute",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 89
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "generate_objects_for_template",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 274
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "create_objects_with_unique_ids",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 305
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "create_objects_in_parallel",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 313
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "get_classes_to_create",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 346
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "has_unique_ids",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 358
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "generate_objects_for_template_async",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 399
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "create_objects_with_unique_ids_async",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 433
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "generate_object_from_oslo_class",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 90.9,
+      "crap": 3.0,
+      "lineno": 459
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "alter_excel_template",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 528
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "write_csv_data_rows",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 668
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "alter_excel_template_async",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 676
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "alter_excel_sheet",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 697
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "get_instance_for_type_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 734
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "find_instance_with_type_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 746
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "find_instance_with_type_uri_prefix",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 754
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "format_string_columns",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 855
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "add_deprecated_row",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 873
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "add_deprecated_row_to_sheet",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 891
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "get_quantitative_attribute",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 929
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "find_standard_unit",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 956
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "add_choice_list_to_sheet",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 996
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "get_uri_from_sheet_name",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 1013
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "append_relations_of_class",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 1036
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "report_progress",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 75.0,
+      "crap": 2.1,
+      "lineno": 351
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "submit_object_creation",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 329
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "clear_asset_version",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 521
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "fill_class_dict",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 548
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "collect_csv_attribute_info",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 630
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "get_first_data_row",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 762
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "is_agent_asset_id_header",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 788
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "process_attribute_header",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 805
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "add_attribute_info_row",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 879
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "color_choice_lists_green",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 885
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "add_attribute_info_to_sheet",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 900
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "set_fixed_column_width",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 989
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "append_relations_to_objects",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 1022
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "abbreviate_excel_sheettitle",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 1101
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "_load_collector_from_subset_path",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 129
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "alter_csv_file",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 594
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "read_csv_file",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 610
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "write_csv_file",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 640
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "process_type_uri_header",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 793
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "add_boolean_validation",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 828
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "add_option_validation",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 836
+    },
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "name": "get_validation_range",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 849
+    }
+  ],
+  "hotspots": [
+    {
+      "file": "otlmow_modelbuilder/SubsetTemplateCreator.py",
+      "commits": 8,
+      "lines_changed": 846,
+      "max_complexity": 5,
+      "score": 4230
+    }
+  ]
+}
