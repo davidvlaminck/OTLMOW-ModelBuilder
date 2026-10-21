@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14', '3.15']
     steps:
       - uses: actions/checkout@v7
       - name: Install uv with Python version ${{ matrix.python-version }}
@@ -27,6 +27,9 @@ jobs:
         run: |
           uv venv --python ${{ matrix.python-version }}
           uv pip install -r pyproject.toml --extra test
+          # Build and install the Rust extension
+          uv pip install maturin
+          PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 uv run maturin develop --release
       - name: Run unittests with pytest
         run: uv run python -m pytest -v
         working-directory: .

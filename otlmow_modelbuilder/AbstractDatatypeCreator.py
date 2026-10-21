@@ -16,6 +16,35 @@ class AbstractDatatypeCreator(ABC):
                                                                     model_location='', valid_uri_and_types: Dict = None):
         if valid_uri_and_types is None:
             valid_uri_and_types = {}
+
+        try:
+            from otlmow_modelbuilder._otlmow_modelbuilder_rs import \
+                create_block_to_write_from_complex_primitive_or_union_types as rust_create
+            attributen = get_attributen_by_type_field(self.oslo_collector, type_field, oslo_datatype)
+            type_links = [(t.item_uri, t.item_tabel) for t in self.oslo_collector.typeLinks]
+            enumerations = [(e.objectUri, e.name) for e in self.oslo_collector.enumerations]
+            complex_datatypes = [(c.objectUri, c.name) for c in self.oslo_collector.complex_datatypes]
+            union_datatypes = [(u.objectUri, u.name) for u in self.oslo_collector.union_datatypes]
+            valid_uri_and_types_list = list(valid_uri_and_types.items())
+            return rust_create(
+                [a for a in attributen],
+                valid_uri_and_types_list,
+                type_links,
+                enumerations,
+                complex_datatypes,
+                union_datatypes,
+                type_field,
+                model_location,
+                oslo_datatype.name,
+                oslo_datatype.definition,
+                oslo_datatype.label,
+                oslo_datatype.objectUri,
+                oslo_datatype.usagenote,
+                oslo_datatype.deprecated_version,
+                self.__class__.__name__)
+        except Exception:
+            pass
+
         attributen = get_attributen_by_type_field(self.oslo_collector, type_field, oslo_datatype)
 
         datablock = ['# coding=utf-8',
