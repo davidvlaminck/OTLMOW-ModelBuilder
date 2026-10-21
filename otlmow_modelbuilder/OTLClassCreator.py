@@ -66,68 +66,12 @@ class OTLClassCreator(AbstractDatatypeCreator):
         list_of_geometry_types = self.get_geometry_types_from_uri(oslo_class.objectUri)
 
         datablock = ['# coding=utf-8']
-        if len(attributen) > 0:
-            if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
-                datablock.append('from ..BaseClasses.OTLObject import OTLAttribuut')
-            else:
-                datablock.append('from ...BaseClasses.OTLObject import OTLAttribuut')
-
-        if oslo_class.abstract == 1:
-            if len(inheritances) + len(list_of_geometry_types) < 1:
-                datablock.append('from abc import abstractmethod, ABC')
-            else:
-                datablock.append('from abc import abstractmethod')
-
-        if len(inheritances) > 0:
-            for inheritance in inheritances:
-                if inheritance.base_name in ['OTLAsset', 'OTLObject', 'RelationInteractor', 'DavieRelatieAttributes']:
-                    if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
-                        datablock.append(
-                            f'from ..BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
-                    else:
-                        datablock.append(
-                            f'from ...BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
-                else:
-                    class_directory = 'Classes'
-                    ns = None
-                    if inheritance.base_uri != 'http://purl.org/dc/terms/Agent':
-                        ns, name = get_ns_and_name_from_uri(inheritance.base_uri)
-                    if ns is not None:
-                        class_directory = get_class_directory_from_ns(ns).replace('/', '.')
-
-                    if inheritance.class_name == 'Agent' and inheritance.base_name in {'AIMDBStatus', 'AIMVersie'}:
-                        datablock.append(f'from ..{class_directory}.{inheritance.base_name} '
-                                         f'import {inheritance.base_name}')
-                    else:
-                        datablock.append(f'from ...{class_directory}.{inheritance.base_name} '
-                                     f'import {inheritance.base_name}')
-
-        if any(atr.readonly == 1 for atr in attributen):
-            raise NotImplementedError("readonly property is assumed to be 0 on value fields")
-
-        list_of_fields = get_fields_to_import_from_list_of_attributes(oslo_collector=self.oslo_collector,
-                                                                      attributen=attributen,
-                                                                      valid_uri_and_types=valid_uri_and_types)
-        base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
-                       'IntegerField', 'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField',
-                       'NonNegIntegerField', 'TimeField', 'StringField', 'UnionWaarden']
-        for type_field in list_of_fields:
-            if type_field not in base_fields:
-                if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
-                    datablock.append(f'from ..Datatypes.{type_field} import {type_field}')
-                else:
-                    datablock.append(f'from ...Datatypes.{type_field} import {type_field}')
-            else:
-                if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
-                    datablock.append(f'from ..BaseClasses.{type_field} import {type_field}')
-                else:
-                    datablock.append(f'from ...BaseClasses.{type_field} import {type_field}')
-
-        if 'Bevestiging' in oslo_class.objectUri:
-            pass
-
-        for geometry_type in list_of_geometry_types:
-            datablock.append(f'from ...GeometrieTypes.{geometry_type} import {geometry_type}')
+        self._add_attribute_import(datablock, oslo_class, attributen)
+        self._add_abstract_import(datablock, oslo_class, inheritances, list_of_geometry_types)
+        self._add_inheritance_imports(datablock, oslo_class, inheritances)
+        self._check_readonly(attributen)
+        self._add_field_imports(datablock, oslo_class, attributen, valid_uri_and_types)
+        self._add_geometry_imports(datablock, list_of_geometry_types)
 
         datablock.append('')
         datablock.append('')
@@ -138,6 +82,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
                                                                          geometry_types=list_of_geometry_types))
         datablock.append(f'    """{oslo_class.definition}"""')
         datablock.append('')
+
         datablock.append(f"    typeURI = '{oslo_class.objectUri}'")
         datablock.append('    """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""')
 
@@ -165,6 +110,73 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         return datablock
 
+    def _add_attribute_import(self, datablock, oslo_class, attributen):
+        if len(attributen) > 0:
+            if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+                datablock.append('from ..BaseClasses.OTLObject import OTLAttribuut')
+            else:
+                datablock.append('from ...BaseClasses.OTLObject import OTLAttribuut')
+
+    def _add_abstract_import(self, datablock, oslo_class, inheritances, list_of_geometry_types):
+        if oslo_class.abstract == 1:
+            if len(inheritances) + len(list_of_geometry_types) < 1:
+                datablock.append('from abc import abstractmethod, ABC')
+            else:
+                datablock.append('from abc import abstractmethod')
+
+    def _add_inheritance_imports(self, datablock, oslo_class, inheritances):
+        if len(inheritances) == 0:
+            return
+        for inheritance in inheritances:
+            if inheritance.base_name in ['OTLAsset', 'OTLObject', 'RelationInteractor', 'DavieRelatieAttributes']:
+                if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+                    datablock.append(
+                        f'from ..BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
+                else:
+                    datablock.append(
+                        f'from ...BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
+            else:
+                class_directory = 'Classes'
+                ns = None
+                if inheritance.base_uri != 'http://purl.org/dc/terms/Agent':
+                    ns, name = get_ns_and_name_from_uri(inheritance.base_uri)
+                if ns is not None:
+                    class_directory = get_class_directory_from_ns(ns).replace('/', '.')
+
+                if inheritance.class_name == 'Agent' and inheritance.base_name in {'AIMDBStatus', 'AIMVersie'}:
+                    datablock.append(f'from ..{class_directory}.{inheritance.base_name} '
+                                     f'import {inheritance.base_name}')
+                else:
+                    datablock.append(f'from ...{class_directory}.{inheritance.base_name} '
+                                  f'import {inheritance.base_name}')
+
+    def _check_readonly(self, attributen):
+        if any(atr.readonly == 1 for atr in attributen):
+            raise NotImplementedError("readonly property is assumed to be 0 on value fields")
+
+    def _add_field_imports(self, datablock, oslo_class, attributen, valid_uri_and_types):
+        list_of_fields = get_fields_to_import_from_list_of_attributes(oslo_collector=self.oslo_collector,
+                                                                      attributen=attributen,
+                                                                      valid_uri_and_types=valid_uri_and_types)
+        base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
+                       'IntegerField', 'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField',
+                       'NonNegIntegerField', 'TimeField', 'StringField', 'UnionWaarden']
+        for type_field in list_of_fields:
+            if type_field not in base_fields:
+                if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+                    datablock.append(f'from ..Datatypes.{type_field} import {type_field}')
+                else:
+                    datablock.append(f'from ...Datatypes.{type_field} import {type_field}')
+            else:
+                if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
+                    datablock.append(f'from ..BaseClasses.{type_field} import {type_field}')
+                else:
+                    datablock.append(f'from ...BaseClasses.{type_field} import {type_field}')
+
+    def _add_geometry_imports(self, datablock, list_of_geometry_types):
+        for geometry_type in list_of_geometry_types:
+            datablock.append(f'from ...GeometrieTypes.{geometry_type} import {geometry_type}')
+
     def get_class_line_from_class_and_inheritances(self, oslo_class: OSLOClass, inheritances: [Inheritance],
                                                    geometry_types: [GeometrieType]) -> str:
         if oslo_class.abstract + len(inheritances) + len(geometry_types) < 1:
@@ -184,8 +196,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
                 line += inheritance.base_name + ', '
             for geometry_type in geometry_types:
                 line += geometry_type + ', '
-            line = line[:-2]
-            line += '):'
+            line = line[:-2] + '):'
             return line
 
         raise NotImplementedError(f"{oslo_class.objectUri} class structure not implemented")
