@@ -18,38 +18,31 @@ def get_field_name_by_type_uri(oslo_collector: OSLOCollector, type_uri: str):
         union_attribuut = oslo_collector.find_union_datatype_by_uri(type_uri)
         return union_attribuut.name
 
-def get_single_field_from_type_uri(field_type: str):
-    if field_type.startswith('https://wegenenverkeer.data.vlaanderen.be/ns/') and '#' in field_type:
-        return field_type.split('#')[1]
+_SINGLE_FIELD_MAP = {
+    'http://www.w3.org/2001/XMLSchema#decimal': 'FloatOrDecimalField',
+    'http://www.w3.org/2001/XMLSchema#string': 'StringField',
+    'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString': 'StringField',
+    'http://www.w3.org/2001/XMLSchema#boolean': 'BooleanField',
+    'http://www.w3.org/2001/XMLSchema#integer': 'IntegerField',
+    'http://www.w3.org/2001/XMLSchema#nonNegativeInteger': 'NonNegIntegerField',
+    'http://www.w3.org/2001/XMLSchema#date': 'DateField',
+    'http://www.w3.org/2001/XMLSchema#dateTime': 'DateTimeField',
+    'http://www.w3.org/2001/XMLSchema#time': 'TimeField',
+    'http://www.w3.org/2001/XMLSchema#anyURI': 'URIField',
+    'https://schema.org/OpeningHoursSpecification': 'DtcOpeningsurenSpecificatie',
+    'https://schema.org/ContactPoint': 'DtcContactinfo',
+    'http://www.w3.org/2000/01/rdf-schema#Literal': 'StringField',
+}
 
+
+def get_single_field_from_type_uri(field_type: str):
     if field_type is None:
         return ''
-    elif field_type == 'http://www.w3.org/2001/XMLSchema#decimal':
-        return 'FloatOrDecimalField'
-    elif field_type in {'http://www.w3.org/2001/XMLSchema#string', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString'}:
-        return 'StringField'
-    elif field_type == 'http://www.w3.org/2001/XMLSchema#boolean':
-        return 'BooleanField'
-    elif field_type == 'http://www.w3.org/2001/XMLSchema#integer':
-        return 'IntegerField'
-    elif field_type == 'http://www.w3.org/2001/XMLSchema#nonNegativeInteger':
-        return 'NonNegIntegerField'
-    elif field_type == 'http://www.w3.org/2001/XMLSchema#date':
-        return 'DateField'
-    elif field_type == 'http://www.w3.org/2001/XMLSchema#dateTime':
-        return 'DateTimeField'
-    elif field_type == 'http://www.w3.org/2001/XMLSchema#time':
-        return 'TimeField'
-    elif field_type == 'http://www.w3.org/2001/XMLSchema#anyURI':
-        return 'URIField'
-    elif field_type == 'https://schema.org/OpeningHoursSpecification':
-        return 'DtcOpeningsurenSpecificatie'
-    elif field_type == 'https://schema.org/ContactPoint':
-        return 'DtcContactinfo'
-    elif field_type == 'http://www.w3.org/2000/01/rdf-schema#Literal':
-        return 'StringField'
-    else:
-        raise NotImplementedError(f'not supported field_type in get_single_field_from_type_uri() for {field_type}')
+    if field_type.startswith('https://wegenenverkeer.data.vlaanderen.be/ns/') and '#' in field_type:
+        return field_type.split('#')[1]
+    if field_type in _SINGLE_FIELD_MAP:
+        return _SINGLE_FIELD_MAP[field_type]
+    raise NotImplementedError(f'not supported field_type in get_single_field_from_type_uri() for {field_type}')
 
 
 def get_non_single_field_from_type_uri(field_type: str, valid_uri_and_types: Dict):
