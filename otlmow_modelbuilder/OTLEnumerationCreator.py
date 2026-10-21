@@ -124,9 +124,25 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         return self.create_block_to_write_from_enumeration(oslo_enumeration=oslo_enumeration, environment=environment)
 
     def create_block_to_write_from_enumeration(self, oslo_enumeration: OSLOEnumeration,
-                                               environment: str = default_environment) -> [str]:
+                                           environment: str = default_environment) -> [str]:
         keuzelijst_waardes = self.get_keuzelijstwaardes_by_uri(oslo_enumeration.codelist, env=environment)
         adm_status = self.get_adm_status_by_uri(oslo_enumeration.codelist, env=environment)
+
+        try:
+            from otlmow_modelbuilder._otlmow_modelbuilder_rs import \
+                create_block_to_write_from_enumeration as rust_create
+            return rust_create(
+                [w for w in keuzelijst_waardes],
+                adm_status or '',
+                oslo_enumeration.name,
+                oslo_enumeration.definition,
+                oslo_enumeration.label,
+                oslo_enumeration.objectUri,
+                oslo_enumeration.codelist,
+                oslo_enumeration.deprecated_version,
+                self.__class__.__name__)
+        except Exception:
+            pass
 
         datablock = ['# coding=utf-8',
                      'from ..BaseClasses.KeuzelijstField import KeuzelijstField']
