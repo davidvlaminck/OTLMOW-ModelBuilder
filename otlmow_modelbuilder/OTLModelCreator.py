@@ -131,6 +131,7 @@ class OTLModelCreator:
         model_name = OTLModelCreator.get_model_name_from_directory_path(directory / 'OtlmowModel')
 
         use_rust = os.environ.get('OTLMOW_USE_RUST', '1') != '0'
+        logging.info(f'OTLMOW_USE_RUST={os.environ.get("OTLMOW_USE_RUST", "1")} -> use_rust={use_rust}')
         if use_rust:
             # Build geometry type map
             geometry_type_map = {}
@@ -143,6 +144,7 @@ class OTLModelCreator:
 
             try:
                 from otlmow_modelbuilder._otlmow_modelbuilder_rs import generate_model_optimized as rust_generate
+                logging.info('Attempting Rust batch generation (using _otlmow_modelbuilder_rs.generate_model_optimized)...')
                 files_written, errors = rust_generate(
                     directory=str(directory / 'OtlmowModel'),
                     model_name=model_name,
@@ -171,8 +173,12 @@ class OTLModelCreator:
                     include_kl_test_keuzelijst=include_kl_test_keuzelijst,
                 )
                 logging.info(f'Rust batch generation: {files_written} files, {errors} errors')
-            except BaseException:
+            except BaseException as e:
+                logging.warning(f'Falling back to Python path (Rust batch generation unavailable): {e}')
+                if "No module named 'otlmow_modelbuilder._otlmow_modelbuilder_rs'" in str(e):
+                    logging.warning('Rust extension not built. Build it with: source .venv/bin/activate && maturin develop --release (or --release depending on build)')
                 # Fallback to Python per-item generation
+                logging.info('Using Python path for model creation...')
                 OTLModelCreator.create_primitive_datatypes(
                     directory=directory / 'OtlmowModel', oslo_collector=oslo_collector,
                     primitive_datatype_validation_rules=settings['primitive_datatype_validation_rules'])
