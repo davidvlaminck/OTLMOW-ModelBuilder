@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "otlmow_modelbuilder"
-version = "0.44"
+version = "0.45rc1"
 authors = [{name = "David Vlaminck", email = "david.vlaminck@mow.vlaanderen.be"}]
 readme = "README.md"
 license = {file = "LICENSE"}
