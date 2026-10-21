@@ -161,7 +161,24 @@ def test_find_all_concrete_relations(oslo_collector, objectUri, allow_duplicates
     assert result == expected, f"Failed test case: {test_id}"
 
 
-def test_find_all_concrete_relations_input_not_concrete(oslo_collector):
+@pytest.mark.parametrize('objectUri, sort_by_uri, expected_uris, test_id', [
+    ('A', True, ['R1'], 'A_sorted'),
+    ('A', False, ['R1'], 'A_unsorted'),
+    ('B', True, ['R2', 'R3', 'R5'], 'B_sorted'),
+    ('B', False, ['R2', 'R3', 'R5'], 'B_unsorted'),
+    ('F', True, ['R3'], 'F_sorted'),
+    ('F', False, ['R3'], 'F_unsorted'),
+    ('G', True, ['R4', 'R5'], 'G_sorted'),
+    ('G', False, ['R4', 'R5'], 'G_unsorted'),
+    ('Z', True, [], 'unknown_sorted'),
+    ('Z', False, [], 'unknown_unsorted'),
+])
+def test_find_outgoing_relations(oslo_collector, objectUri, sort_by_uri, expected_uris, test_id):
+    result = oslo_collector.find_outgoing_relations(objectUri, sort_by_uri=sort_by_uri)
+    assert [r.objectUri for r in result] == expected_uris, f"Failed test case: {test_id}"
+
+
+def test_find_outgoing_relations_input_not_concrete(oslo_collector):
     with pytest.raises(ValueError):
         oslo_collector.find_all_concrete_relations('A')
     with pytest.raises(ValueError):
