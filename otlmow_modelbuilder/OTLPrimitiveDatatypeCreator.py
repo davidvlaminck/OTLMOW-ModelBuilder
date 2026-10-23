@@ -17,7 +17,7 @@ class OTLPrimitiveDatatypeCreator(AbstractDatatypeCreator):
 
     def create_block_to_write_from_primitive_types(self, oslo_datatype_primitive: OSLODatatypePrimitive,
                                                    primitive_datatype_validation_rules,
-                                                   model_location: str = '') -> [str]:
+                                                   model_location: str = '') -> list[str]:
         if not isinstance(oslo_datatype_primitive, OSLODatatypePrimitive):
             raise TypeError("Input is not a OSLODatatypePrimitive")
 

@@ -7,12 +7,12 @@ from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
 
 class GeometrieInheritanceProcessor:
     """This class uses the geometry type definitions and OTL classes and inheritances to determine what classes can inherit their geometry type definition instead of directly. The result is a changed set of geometry type definitions that contains both concrete and base classes. Inheritance works from at least one geometry type definition."""
-    def __init__(self, geometrie_types: [GeometrieType], inheritances: [Inheritance], classes: [OSLOClass]):
+    def __init__(self, geometrie_types: list[GeometrieType], inheritances: list[Inheritance], classes: list[OSLOClass]):
         self.geometrie_types = geometrie_types
         self.inheritances = copy.copy(inheritances)
         self.classes = copy.copy(classes)
 
-    def process_inheritances(self) -> [GeometrieType]:
+    def process_inheritances(self) -> list[GeometrieType]:
         while len(self.inheritances) > 0:
             # zoek een inheritance en gebruik die voor een goede base class af te leiden
 

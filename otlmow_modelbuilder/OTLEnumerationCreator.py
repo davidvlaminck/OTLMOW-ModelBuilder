@@ -100,7 +100,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         self.graph_dict[env].update(self.parse_graph_to_dict(graph=graph))
 
     def create_block_to_write_from_enumerations(self, oslo_enumeration: OSLOEnumeration, enumeration_validation_rules,
-                                                environment: str = default_environment) -> [str]:
+                                                environment: str = default_environment) -> list[str]:
         if not isinstance(oslo_enumeration, OSLOEnumeration):
             raise TypeError("Input is not a OSLOEnumeration")
 
@@ -125,7 +125,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         return self.create_block_to_write_from_enumeration(oslo_enumeration=oslo_enumeration, environment=environment)
 
     def create_block_to_write_from_enumeration(self, oslo_enumeration: OSLOEnumeration,
-                                           environment: str = default_environment) -> [str]:
+                                           environment: str = default_environment) -> list[str]:
         keuzelijst_waardes = self.get_keuzelijstwaardes_by_uri(oslo_enumeration.codelist, env=environment)
         adm_status = self.get_adm_status_by_uri(oslo_enumeration.codelist, env=environment)
 
@@ -235,7 +235,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         rdflib.term.URIRef('https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlTestKeuzelijst')
         return keuzelijst_dict
 
-    def get_keuzelijstwaardes_by_uri(self, uri: str, env: str = default_environment) -> [KeuzelijstWaarde]:
+    def get_keuzelijstwaardes_by_uri(self, uri: str, env: str = default_environment) -> list[KeuzelijstWaarde]:
         if uri not in self.graph_dict[env]:
             test_uri = uri.replace('wegenenverkeer', 'wegenenverkeer-test')
             if test_uri in self.graph_dict[env]:

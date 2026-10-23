@@ -25,14 +25,14 @@ class GeometrieInMemoryCreator:
     def __exit__(self, exc_type, exc_value, exc_traceback):
         self.connection.close()
 
-    def perform_read_query(self, query: str, params=None) -> [tuple]:
+    def perform_read_query(self, query: str, params=None) -> list[tuple]:
         if params is None:
             params = {}
 
         cur = self.connection.cursor()
         return [row for row in cur.execute(query, params)]
 
-    def get_all_geometrie_types(self) -> [GeometrieType]:
+    def get_all_geometrie_types(self) -> list[GeometrieType]:
         data = self.perform_read_query(query='SELECT * FROM GeometrieType')
         return [GeometrieType(row[0].replace('-test', ''), row[1], row[2], row[3], row[4], row[5], row[6])
                 for row in data]

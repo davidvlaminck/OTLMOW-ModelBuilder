@@ -79,7 +79,7 @@ def get_type_hint_from_field(oslo_collector, attribute, datablock, valid_uri_and
     return ''
 
 
-def add_attributen_to_data_block(oslo_collector: OSLOCollector, attributen: [OSLOAttribuut], datablock: list[str],
+def add_attributen_to_data_block(oslo_collector: OSLOCollector, attributen: list[OSLOAttribuut], datablock: list[str],
                                  valid_uri_and_types: dict, for_class_use=False, type_field=''):
     prop_datablock = []
     for attribuut in sorted(attributen, key=lambda a: a.name):

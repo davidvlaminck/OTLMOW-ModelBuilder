@@ -10,7 +10,7 @@ class GeometrieArtefactCollector:
     def __init__(self, path: Path):
         self.path = path
 
-        self.geometrie_types: [GeometrieType] = None
+        self.geometrie_types: list[GeometrieType] = None
 
     def collect_all(self):
         with GeometrieInMemoryCreator(self.path) as memory_creator:

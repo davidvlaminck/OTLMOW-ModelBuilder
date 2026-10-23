@@ -11,7 +11,7 @@ class LegacyClassCreator(AbstractDatatypeCreator):
         logger.info("Created an instance of LegacyClassCreator")
 
 
-    def create_blocks_to_write_from_rows(self, lgc_type_row: [str], model_location='') -> [str]:
+    def create_blocks_to_write_from_rows(self, lgc_type_row: list[str], model_location='') -> list[str]:
         try:
             legacy_uri = lgc_type_row[0]
             legacy_name = lgc_type_row[2]
@@ -43,7 +43,7 @@ class LegacyClassCreator(AbstractDatatypeCreator):
                                             legacy_definition=legacy_definition, model_location=model_location)
 
     def create_block_from_class(self, legacy_uri: str, legacy_name: str, legacy_definition: str,
-                                model_location: str = '') -> [str]:
+                                model_location: str = '') -> list[str]:
         return [
             '# coding=utf-8',
             'from ...BaseClasses.LegacyObject import LegacyObject',

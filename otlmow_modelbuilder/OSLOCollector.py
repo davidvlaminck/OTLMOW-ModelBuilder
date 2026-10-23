@@ -223,7 +223,7 @@ class OSLOCollector:
         return sorted(outgoing, key=lambda r: r.objectUri) if sort_by_uri else outgoing
 
     def find_all_relations(self, objectUri: str, allow_duplicates: bool = False, sort_by_uri: bool = True
-                           ) -> [OSLORelatie]:
+                           ) -> list[OSLORelatie]:
         """finds all relations, given an objectUri, where the object is either the source or the target of the relation.
         allow_duplicates is relevant for unidirectional relations, as the relation would be included twice:
         once where objectUri is the source and once where objectUri is the target. If allow_duplicates is False,
@@ -232,7 +232,7 @@ class OSLOCollector:
         return self._select_relations(all_relations, allow_duplicates, sort_by_uri,
                                       lambda r: r.bron_uri == objectUri)
 
-    def query_correct_base_classes(self, valid_base_class_uris: [str] = None) -> None:
+    def query_correct_base_classes(self, valid_base_class_uris: list[str] = None) -> None:
         if valid_base_class_uris is None:
             valid_base_class_uris = []
         with OSLOInMemoryCreator(self.path) as memory_creator:
