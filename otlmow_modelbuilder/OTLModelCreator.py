@@ -159,7 +159,7 @@ class OTLModelCreator:
                         enumeration.codelist, env=environment or 'prd')
                     adm_status[enumeration.objectUri] = creator.get_adm_status_by_uri(
                         enumeration.codelist, env=environment or 'prd') or ''
-                except:
+                except Exception:  # noqa: BLE001 - fallback to empty on any enumeration lookup failure
                     waardes[enumeration.objectUri] = []
                     adm_status[enumeration.objectUri] = ''
         return EnumerationData(waardes=waardes, adm_status=adm_status)

@@ -1,7 +1,7 @@
 {
   "date": "2026-10-23",
   "repo": "otlmow_modelbuilder",
-  "commit": "d5d0c6e",
+  "commit": "cb07c72",
   "thresholds": {
     "ruff_issues": 0,
     "ruff_format_files": 0,
@@ -16,7 +16,7 @@
     "membership_list_violations": 0
   },
   "metrics": {
-    "ruff_issues": 33,
+    "ruff_issues": 27,
     "ruff_format_files": 49,
     "mypy_errors": 250,
     "coverage_percent": 92.6,
@@ -42,31 +42,31 @@
   "hotspots": [
     {
       "file": "otlmow_modelbuilder/OTLModelCreator.py",
-      "commits": 6,
-      "lines_changed": 1233,
+      "commits": 7,
+      "lines_changed": 1235,
       "max_complexity": 6,
-      "score": 7398
+      "score": 7410
     },
     {
       "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "commits": 8,
-      "lines_changed": 536,
+      "commits": 9,
+      "lines_changed": 538,
       "max_complexity": 5,
-      "score": 2680
+      "score": 2690
     },
     {
       "file": "otlmow_modelbuilder/OSLOCollector.py",
-      "commits": 4,
-      "lines_changed": 409,
+      "commits": 5,
+      "lines_changed": 411,
       "max_complexity": 6,
-      "score": 2454
+      "score": 2466
     },
     {
       "file": "otlmow_modelbuilder/AbstractDatatypeCreator.py",
-      "commits": 3,
-      "lines_changed": 79,
+      "commits": 4,
+      "lines_changed": 81,
       "max_complexity": 20,
-      "score": 1580
+      "score": 1620
     },
     {
       "file": "otlmow_modelbuilder/GeometrieInheritanceProcessor.py",
@@ -77,10 +77,10 @@
     },
     {
       "file": "otlmow_modelbuilder/OTLEnumerationCreator.py",
-      "commits": 4,
-      "lines_changed": 52,
+      "commits": 5,
+      "lines_changed": 54,
       "max_complexity": 13,
-      "score": 676
+      "score": 702
     },
     {
       "file": "otlmow_modelbuilder/GenericBuilderFunctions.py",
@@ -175,12 +175,11 @@
     }
   ],
   "ruff_per_rule": {
-    "BLE001": 11,
+    "BLE001": 7,
     "TRY004": 7,
     "RUF012": 6,
     "PLW0602": 3,
     "SIM117": 3,
-    "S110": 2,
     "E722": 1
   },
   "crap": [
