@@ -98,7 +98,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
     @staticmethod
     def _ensure_oslo_class(oslo_class) -> None:
         if not isinstance(oslo_class, OSLOClass):
-            raise ValueError("Input is not a OSLOClass")
+            raise TypeError("Input is not a OSLOClass")
 
     @staticmethod
     def _get_valid_uri_and_types(rules: dict) -> dict:

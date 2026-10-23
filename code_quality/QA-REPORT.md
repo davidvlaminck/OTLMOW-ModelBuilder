@@ -3,13 +3,13 @@
 > GENERATED FILE — produced by `code_quality/scripts/qa_report.py`.
 > Do not edit by hand; edit the thresholds in the script instead.
 
-Generated: 2026-10-23 · commit `9d0728e`
+Generated: 2026-10-23 · commit `b9ae3c1`
 
 ## Thresholds (gate)
 
 | Metric | Threshold | Current | Status |
 |---|---|---|---|
-| ruff issues | 0 | 20 | 🔴 |
+| ruff issues | 0 | 13 | 🔴 |
 | files needing `ruff format` | 0 | 49 | 🔴 |
 | mypy errors | 0 | 250 | 🔴 |
 | test coverage (lines) | ≥ 80.0 % | 92.6 % | 🟢 |
@@ -31,7 +31,7 @@ Verify with `code_quality/README.md` §7 before touching it: the behaviour must 
 
 | Score | Commits | Lines changed | Max complexity | File |
 |---:|---:|---:|---:|---|
-| 7422 | 8 | 1237 | 6 | `otlmow_modelbuilder/OTLModelCreator.py` |
+| 7506 | 9 | 1251 | 6 | `otlmow_modelbuilder/OTLModelCreator.py` |
 | 2690 | 9 | 538 | 5 | `otlmow_modelbuilder/OTLClassCreator.py` |
 | 2466 | 5 | 411 | 6 | `otlmow_modelbuilder/OSLOCollector.py` |
 | 1620 | 4 | 81 | 20 | `otlmow_modelbuilder/AbstractDatatypeCreator.py` |
@@ -41,7 +41,6 @@ Verify with `code_quality/README.md` §7 before touching it: the behaviour must 
 
 | Rule | Count |
 |---|---:|
-| `TRY004` | 7 |
 | `RUF012` | 6 |
 | `PLW0602` | 3 |
 | `SIM117` | 3 |
@@ -51,7 +50,6 @@ Verify with `code_quality/README.md` §7 before touching it: the behaviour must 
 
 | Date | Coverage % | Branch % | Ruff | MyPy | Max CRAP | Max complexity | Result |
 |---|---:|---:|---:|---:|---:|---:|---|
-| 2026-10-23 | 92.6 | 0.0 | 140 | 250 | 6.0 | 6 | red |
 | 2026-10-23 | 92.6 | 0.0 | 76 | 250 | 6.0 | 6 | red |
 | 2026-10-23 | 92.6 | 0.0 | 75 | 250 | 6.0 | 6 | red |
 | 2026-10-23 | 92.6 | 0.0 | 68 | 250 | 6.0 | 6 | red |
@@ -61,3 +59,4 @@ Verify with `code_quality/README.md` §7 before touching it: the behaviour must 
 | 2026-10-23 | 92.6 | 0.0 | 27 | 250 | 6.0 | 6 | red |
 | 2026-10-23 | 92.6 | 0.0 | 26 | 250 | 6.0 | 6 | red |
 | 2026-10-23 | 92.6 | 0.0 | 20 | 250 | 6.0 | 6 | red |
+| 2026-10-23 | 92.6 | 0.0 | 13 | 250 | 6.0 | 6 | red |

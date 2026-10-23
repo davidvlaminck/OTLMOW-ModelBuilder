@@ -22,11 +22,11 @@ class OTLField:
         if isinstance(value, list):
             for list_item in value:
                 if not isinstance(list_item, attribuut.field.waardeObject):
-                    raise ValueError(
+                    raise ValueError(  # noqa: TRY004
                         f'{attribuut.objectUri} is a complex datatype. Set the values through the attributes. '
                         f'Use .attr_type_info() for more info')
         elif not isinstance(value, attribuut.field.waardeObject):
-            raise ValueError(
+            raise ValueError(  # noqa: TRY004
                 f'{attribuut.objectUri} is a complex datatype. Set the values through the attributes. '
                 f'Use .attr_type_info() for more info')
         validation = True

@@ -102,7 +102,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
     def create_block_to_write_from_enumerations(self, oslo_enumeration: OSLOEnumeration, enumeration_validation_rules,
                                                 environment: str = default_environment) -> [str]:
         if not isinstance(oslo_enumeration, OSLOEnumeration):
-            raise ValueError("Input is not a OSLOEnumeration")
+            raise TypeError("Input is not a OSLOEnumeration")
 
         if oslo_enumeration.objectUri == '':
             raise ValueError(f"OSLOEnumeration.objectUri is invalid (empty). Value = '{oslo_enumeration.objectUri}'")

@@ -19,7 +19,7 @@ class OTLPrimitiveDatatypeCreator(AbstractDatatypeCreator):
                                                    primitive_datatype_validation_rules,
                                                    model_location: str = '') -> [str]:
         if not isinstance(oslo_datatype_primitive, OSLODatatypePrimitive):
-            raise ValueError("Input is not a OSLODatatypePrimitive")
+            raise TypeError("Input is not a OSLODatatypePrimitive")
 
         if oslo_datatype_primitive.objectUri == '':
             raise ValueError(f"OSLODatatypePrimitive.objectUri is invalid. Value = '{oslo_datatype_primitive.objectUri}'")

@@ -1,7 +1,7 @@
 {
   "date": "2026-10-23",
   "repo": "otlmow_modelbuilder",
-  "commit": "9d0728e",
+  "commit": "b9ae3c1",
   "thresholds": {
     "ruff_issues": 0,
     "ruff_format_files": 0,
@@ -16,7 +16,7 @@
     "membership_list_violations": 0
   },
   "metrics": {
-    "ruff_issues": 20,
+    "ruff_issues": 13,
     "ruff_format_files": 49,
     "mypy_errors": 250,
     "coverage_percent": 92.6,
@@ -42,10 +42,10 @@
   "hotspots": [
     {
       "file": "otlmow_modelbuilder/OTLModelCreator.py",
-      "commits": 8,
-      "lines_changed": 1237,
+      "commits": 9,
+      "lines_changed": 1251,
       "max_complexity": 6,
-      "score": 7422
+      "score": 7506
     },
     {
       "file": "otlmow_modelbuilder/OTLClassCreator.py",
@@ -175,7 +175,6 @@
     }
   ],
   "ruff_per_rule": {
-    "TRY004": 7,
     "RUF012": 6,
     "PLW0602": 3,
     "SIM117": 3,
