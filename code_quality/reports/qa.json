@@ -1,7 +1,7 @@
 {
   "date": "2026-10-23",
   "repo": "otlmow_modelbuilder",
-  "commit": "24cf13d",
+  "commit": "8720b6b",
   "thresholds": {
     "ruff_issues": 0,
     "ruff_format_files": 0,
@@ -16,7 +16,7 @@
     "membership_list_violations": 0
   },
   "metrics": {
-    "ruff_issues": 76,
+    "ruff_issues": 34,
     "ruff_format_files": 49,
     "mypy_errors": 250,
     "coverage_percent": 92.6,
@@ -175,7 +175,6 @@
     }
   ],
   "ruff_per_rule": {
-    "LOG015": 42,
     "BLE001": 12,
     "TRY004": 7,
     "RUF012": 6,

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import logging
+
+logger = logging.getLogger(__name__)
 import re
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
@@ -43,7 +45,7 @@ RELATION_DIRECTION_COMMENTS = {'u': '# u = unidirectional',
 class OTLClassCreator(AbstractDatatypeCreator):
     def __init__(self, oslo_collector: OSLOCollector, geo_artefact_collector: GeometrieArtefactCollector = None):
         super().__init__(oslo_collector)
-        logging.info("Created an instance of OTLClassCreator")
+        logger.info("Created an instance of OTLClassCreator")
         self.oslo_collector = oslo_collector
         self.geoACollector = geo_artefact_collector
         self.geometry_types = []

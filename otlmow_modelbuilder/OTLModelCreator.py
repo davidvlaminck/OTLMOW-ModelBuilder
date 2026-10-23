@@ -4,6 +4,8 @@ import concurrent.futures
 import csv
 import json
 import logging
+
+logger = logging.getLogger(__name__)
 import os
 import shutil
 import subprocess
@@ -85,7 +87,7 @@ class OTLModelCreator:
                           geo_artefact_collector: GeometrieArtefactCollector | None, settings: dict, include_legacy: bool,
                           environment: str = '', include_kl_test_keuzelijst: bool = False):
         """Create the model: the datatypes, the classes and the helpers of the OTL subset."""
-        logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+        logger.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         OTLModelCreator._prepare_the_model(directory=directory, oslo_collector=oslo_collector, settings=settings)
         model_data = OTLModelCreator._collect_the_model_data(oslo_collector=oslo_collector, environment=environment,
                                                              settings=settings,
@@ -109,7 +111,7 @@ class OTLModelCreator:
         OTLExtraChecker.modify_for_extra_checks(directory=directory / 'OtlmowModel')
         OTLModelCreator.add_generated_info(
             directory=directory / 'OtlmowModel', oslo_collector=oslo_collector)
-        logging.info(f'finished creating model in {directory} at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+        logger.info(f'finished creating model in {directory} at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 
     @staticmethod
     def _prepare_the_model(directory: Path, oslo_collector: OSLOCollector, settings: dict) -> None:
@@ -260,7 +262,7 @@ class OTLModelCreator:
     def _use_rust() -> bool:
         """The rust implementation is used, unless it is switched off with an environment variable."""
         use_rust = os.environ.get('OTLMOW_USE_RUST', '1') != '0'
-        logging.info(f'OTLMOW_USE_RUST={os.environ.get("OTLMOW_USE_RUST", "1")} -> use_rust={use_rust}')
+        logger.info(f'OTLMOW_USE_RUST={os.environ.get("OTLMOW_USE_RUST", "1")} -> use_rust={use_rust}')
         return use_rust
 
     @staticmethod
@@ -274,7 +276,7 @@ class OTLModelCreator:
             from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
                 generate_model_optimized as rust_generate,
             )
-            logging.info('Attempting Rust batch generation (using _otlmow_modelbuilder_rs.generate_model_optimized)...')
+            logger.info('Attempting Rust batch generation (using _otlmow_modelbuilder_rs.generate_model_optimized)...')
             files_written, errors = rust_generate(
                 directory=str(directory / 'OtlmowModel'),
                 model_name=model_name,
@@ -303,13 +305,13 @@ class OTLModelCreator:
                 class_validation_rules=model_data.class_validation_rules['valid_uri_and_types'],
                 include_kl_test_keuzelijst=include_kl_test_keuzelijst,
             )
-            logging.info(f'Rust batch generation: {files_written} files, {errors} errors')
+            logger.info(f'Rust batch generation: {files_written} files, {errors} errors')
         except BaseException as e:
-            logging.warning(f'Falling back to Python path (Rust batch generation unavailable): {e}')
+            logger.warning(f'Falling back to Python path (Rust batch generation unavailable): {e}')
             if "No module named 'otlmow_modelbuilder._otlmow_modelbuilder_rs'" in str(e):
-                logging.warning('Rust extension not built. Build it with: source .venv/bin/activate && maturin develop --release (or --release depending on build)')
+                logger.warning('Rust extension not built. Build it with: source .venv/bin/activate && maturin develop --release (or --release depending on build)')
             # Fallback to Python per-item generation
-            logging.info('Using Python path for model creation...')
+            logger.info('Using Python path for model creation...')
             OTLModelCreator._create_the_model_with_python(
                 directory=directory, oslo_collector=oslo_collector, geo_artefact_collector=geo_artefact_collector,
                 settings=settings, class_validation_rules=model_data.class_validation_rules, environment=environment,
@@ -361,7 +363,7 @@ class OTLModelCreator:
 
         for prim_datatype in tqdm(oslo_collector.primitive_datatypes):
             if prim_datatype.objectUri in PRIMITIVE_DATATYPES_TO_SKIP:
-                logging.info(f"Skip creating class for {prim_datatype.name}")
+                logger.info(f"Skip creating class for {prim_datatype.name}")
                 continue
 
             try:
@@ -370,8 +372,8 @@ class OTLModelCreator:
                     primitive_datatype_validation_rules=primitive_datatype_validation_rules)
                 OTLModelCreator._write_the_datatype(prim_datatype.name, data_to_write, directory)
             except BaseException as e:
-                logging.error(str(e))
-                logging.error(f"Could not create a class for {prim_datatype.name}")
+                logger.error(str(e))
+                logger.error(f"Could not create a class for {prim_datatype.name}")
 
     @staticmethod
     def get_model_name_from_directory_path(directory):
@@ -391,8 +393,8 @@ class OTLModelCreator:
                     model_location=OTLModelCreator.get_model_name_from_directory_path(directory))
                 OTLModelCreator._write_the_datatype(complex_datatype.name, data_to_write, directory)
             except BaseException as e:
-                logging.error(str(e))
-                logging.error(f"Could not create a class for {complex_datatype.name}")
+                logger.error(str(e))
+                logger.error(f"Could not create a class for {complex_datatype.name}")
 
     @staticmethod
     def create_union_datatypes(directory, oslo_collector, union_datatype_validation_rules):
@@ -405,11 +407,11 @@ class OTLModelCreator:
                     union_datatype_validation_rules=union_datatype_validation_rules)
                 OTLModelCreator._write_the_datatype(union_datatype.name, data_to_write, directory)
             except BaseException as e:
-                logging.error(str(e))
-                logging.error(f"Could not create a class for {union_datatype.name}")
+                logger.error(str(e))
+                logger.error(f"Could not create a class for {union_datatype.name}")
 
     @staticmethod
-    def _write_the_datatype(name, data_to_write, directory, log=logging.info):
+    def _write_the_datatype(name, data_to_write, directory, log=logger.info):
         """Write a datatype, and report it when there is nothing to write."""
         if data_to_write is None:
             log(f"Could not create a class for {name}")
@@ -459,10 +461,10 @@ class OTLModelCreator:
         try:
             data_to_write = creator.create_block_to_write_from_enumerations(
                 enumeration, environment=environment, enumeration_validation_rules=enumeration_validation_rules)
-            OTLModelCreator._write_the_datatype(enumeration.name, data_to_write, directory, log=logging.error)
+            OTLModelCreator._write_the_datatype(enumeration.name, data_to_write, directory, log=logger.error)
         except BaseException as e:
-            logging.error(str(e))
-            logging.error(f"Could not create a class for {enumeration.name}")
+            logger.error(str(e))
+            logger.error(f"Could not create a class for {enumeration.name}")
 
     @staticmethod
     def create_classes(directory, oslo_collector, geo_artefact_collector, class_validation_rules):
@@ -485,8 +487,8 @@ class OTLModelCreator:
             OTLModelCreator._write_the_class(oslo_class.name, data_to_write,
                                             OTLModelCreator._class_directory_of(oslo_class), directory)
         except Exception as e:
-            logging.error(str(e))
-            logging.error(f"Could not create a class for {oslo_class.name}")
+            logger.error(str(e))
+            logger.error(f"Could not create a class for {oslo_class.name}")
 
     @staticmethod
     def _class_directory_of(oslo_class):
@@ -502,9 +504,9 @@ class OTLModelCreator:
     def _write_the_class(name, data_to_write, class_directory, directory):
         """Write a class, and report it when there is nothing to write."""
         if data_to_write is None:
-            logging.info(f"Could not create a class for {name}")
+            logger.info(f"Could not create a class for {name}")
         if len(data_to_write) == 0:
-            logging.info(f"Could not create a class for {name}")
+            logger.info(f"Could not create a class for {name}")
         write_to_file(name, class_directory, data_to_write, relative_path=directory)
 
     @staticmethod
@@ -791,15 +793,15 @@ class OTLModelCreator:
             data_to_write = creator.create_blocks_to_write_from_rows(
                 lgc_type_row=lgc_type_row, model_location=OTLModelCreator.get_model_name_from_directory_path(directory))
             if data_to_write is None:
-                logging.info(f"Could not create a class for {class_name}")
+                logger.info(f"Could not create a class for {class_name}")
             if len(data_to_write) == 0:
-                logging.info(f"Could not create a class for {class_name}")
+                logger.info(f"Could not create a class for {class_name}")
             class_directory = 'Classes/Legacy'
 
             write_to_file(class_name, class_directory, data_to_write, relative_path=directory)
         except Exception as e:
-            logging.error(str(e))
-            logging.error(f"Could not create a class for {class_name}")
+            logger.error(str(e))
+            logger.error(f"Could not create a class for {class_name}")
 
     @classmethod
     def _add_the_legacy_classes_to_the_helper(cls, lgc_type_data, directory) -> None:

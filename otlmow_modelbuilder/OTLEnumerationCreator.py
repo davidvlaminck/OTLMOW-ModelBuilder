@@ -1,4 +1,6 @@
 import logging
+
+logger = logging.getLogger(__name__)
 import re
 import warnings
 from pathlib import Path
@@ -42,7 +44,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         self.include_kl_test_keuzelijst = include_kl_test_keuzelijst
         self.enumeration_locations_by_environment = enumeration_locations_by_environment
         self.temp_dir = Path(__file__).parent / 'temp'
-        logging.info("Created an instance of OTLEnumerationCreator")
+        logger.info("Created an instance of OTLEnumerationCreator")
 
     def __enter__(self):
         if self.temp_dir.exists():
@@ -53,12 +55,12 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             self.temp_dir.mkdir(parents=True, exist_ok=True)
 
         self.download_and_unzip_files()
-        logging.info("Downloaded and unzipped the enumerations ttl files")
+        logger.info("Downloaded and unzipped the enumerations ttl files")
 
         if self.env != 'unittest':
             graph = self.parse_files_in_dir_to_graph(directory=self.temp_dir)
             self.graph_dict[self.env] = self.parse_graph_to_dict(graph=graph)
-            logging.info("parsed the enumerations ttl file")
+            logger.info("parsed the enumerations ttl file")
         if self.include_kl_test_keuzelijst:
             self.add_kl_test_keuzelijst(env=self.env)
         return self

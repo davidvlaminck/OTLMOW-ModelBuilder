@@ -1,4 +1,6 @@
 import logging
+
+logger = logging.getLogger(__name__)
 import re
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
@@ -9,7 +11,7 @@ from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnion import OSLODatatypeUni
 class OTLUnionDatatypeCreator(AbstractDatatypeCreator):
     def __init__(self, oslo_collector: OSLOCollector):
         super().__init__(oslo_collector)
-        logging.info("Created an instance of OTLUnionDatatypeCreator")
+        logger.info("Created an instance of OTLUnionDatatypeCreator")
 
     def create_block_to_write_from_union_types(self, union_datatype: OSLODatatypeUnion,
                                                union_datatype_validation_rules: dict, model_location: str = '') -> [str]:

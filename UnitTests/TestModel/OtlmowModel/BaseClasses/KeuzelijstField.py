@@ -1,6 +1,8 @@
 ﻿from __future__ import annotations
 
 import logging
+
+logger = logging.getLogger(__name__)
 import random
 import warnings
 from typing import Any
@@ -50,7 +52,7 @@ class KeuzelijstField(OTLField):
                                   f'please refrain from using this value.',
                           category=AttributeDeprecationWarning)
         elif option_value.status == 'verwijderd':
-            logging.error(f'{value} is no longer a valid value for {attribuut.naam}.')
+            logger.error(f'{value} is no longer a valid value for {attribuut.naam}.')
             raise RemovedOptionError(f'{value} is no longer a valid value for {attribuut.naam}.')
         return True
 

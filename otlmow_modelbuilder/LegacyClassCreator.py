@@ -1,12 +1,14 @@
 import logging
 
+logger = logging.getLogger(__name__)
+
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 
 
 class LegacyClassCreator(AbstractDatatypeCreator):
     def __init__(self):
         super().__init__(None)
-        logging.info("Created an instance of LegacyClassCreator")
+        logger.info("Created an instance of LegacyClassCreator")
 
 
     def create_blocks_to_write_from_rows(self, lgc_type_row: [str], model_location='') -> [str]:
@@ -15,7 +17,7 @@ class LegacyClassCreator(AbstractDatatypeCreator):
             legacy_name = lgc_type_row[2]
             legacy_definition = lgc_type_row[1] + "\n\t" + lgc_type_row[3]
         except Exception as e:
-            logging.error(f"Error in create_blocks_to_write_from_rows: {e}")
+            logger.error(f"Error in create_blocks_to_write_from_rows: {e}")
             raise
 
         if '.' in legacy_name:

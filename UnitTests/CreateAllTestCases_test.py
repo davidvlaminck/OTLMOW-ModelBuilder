@@ -1,4 +1,6 @@
 import logging
+
+logger = logging.getLogger(__name__)
 import warnings
 from pathlib import Path
 
@@ -38,7 +40,7 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                                                      geometry_artefact_location=ga_location, include_legacy=False,
                                                      directory=path, include_kl_test_keuzelijst=True)
                 except PermissionError:
-                    logging.info(f'PermissionError for {path}, skipping this test because it is not applicable')
+                    logger.info(f'PermissionError for {path}, skipping this test because it is not applicable')
                     continue
 
         all_cases_class_location = path / 'OtlmowModel' / 'Classes' / 'Onderdeel' / 'AllCasesTestClass.py'
@@ -59,7 +61,7 @@ def test_init_AllCasesTestClass_using_modelbuilder(subtests, caplog):
                                                      geometry_artefact_location=ga_location, include_legacy=False,
                                                      directory=path, include_kl_test_keuzelijst=True)
                 except PermissionError:
-                    logging.info(f'PermissionError for {path}, skipping this test because it is not applicable')
+                    logger.info(f'PermissionError for {path}, skipping this test because it is not applicable')
                     continue
 
         all_cases_class_location = path / 'OtlmowModel' / 'Classes' / 'Onderdeel' / 'AllCasesTestClass.py'

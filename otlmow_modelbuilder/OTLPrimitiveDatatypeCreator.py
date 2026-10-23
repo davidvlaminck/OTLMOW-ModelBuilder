@@ -1,4 +1,6 @@
 import logging
+
+logger = logging.getLogger(__name__)
 import re
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
@@ -11,7 +13,7 @@ from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import (
 class OTLPrimitiveDatatypeCreator(AbstractDatatypeCreator):
     def __init__(self, oslo_collector: OSLOCollector):
         super().__init__(oslo_collector)
-        logging.info("Created an instance of OTLPrimitiveDatatypeCreator")
+        logger.info("Created an instance of OTLPrimitiveDatatypeCreator")
 
     def create_block_to_write_from_primitive_types(self, oslo_datatype_primitive: OSLODatatypePrimitive,
                                                    primitive_datatype_validation_rules,

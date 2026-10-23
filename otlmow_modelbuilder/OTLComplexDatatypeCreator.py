@@ -1,4 +1,6 @@
 import logging
+
+logger = logging.getLogger(__name__)
 import re
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
@@ -9,7 +11,7 @@ from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplex import OSLODatatypeC
 class OTLComplexDatatypeCreator(AbstractDatatypeCreator):
     def __init__(self, oslo_collector: OSLOCollector):
         super().__init__(oslo_collector)
-        logging.info("Created an instance of OTLComplexDatatypeCreator")
+        logger.info("Created an instance of OTLComplexDatatypeCreator")
 
     def create_block_to_write_from_complex_types(self, oslo_datatype_complex: OSLODatatypeComplex,
                                                  complex_datatype_validation_rules: dict, model_location='') -> [str]:
