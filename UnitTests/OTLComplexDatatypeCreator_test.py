@@ -4,9 +4,9 @@ from unittest.mock import MagicMock
 
 import pytest
 
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLComplexDatatypeCreator import OTLComplexDatatypeCreator
-from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplex import OSLODatatypeComplex
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

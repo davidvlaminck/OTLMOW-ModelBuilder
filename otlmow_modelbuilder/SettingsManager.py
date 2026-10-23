@@ -1,7 +1,6 @@
 import json
 import os
 from pathlib import Path
-from typing import Dict
 
 
 def _check_settings_with_default(settings_path: Path) -> Path:
@@ -15,7 +14,7 @@ def _check_settings_with_default(settings_path: Path) -> Path:
     return settings_path
 
 
-def load_settings(settings_path: Path) -> Dict:
+def load_settings(settings_path: Path) -> dict:
     settings_path = _check_settings_with_default(settings_path=settings_path)
 
     try:

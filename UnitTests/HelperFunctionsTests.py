@@ -1,19 +1,30 @@
 import pytest
-from otlmow_modelbuilder.HelperFunctions import (
-    escape_backslash,
-    wrap_in_quotes,
-    get_ns_and_name_from_uri,
-    get_class_directory_from_ns,
-    get_titlecase_from_ns,
-)
-from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent
 from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
     escape_backslash as rust_escape_backslash,
-    wrap_in_quotes as rust_wrap_in_quotes,
-    get_white_space_equivalent as rust_get_white_space_equivalent,
-    get_ns_and_name_from_uri as rust_get_ns_and_name_from_uri,
+)
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
     get_class_directory_from_ns as rust_get_class_directory_from_ns,
+)
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    get_ns_and_name_from_uri as rust_get_ns_and_name_from_uri,
+)
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
     get_titlecase_from_ns as rust_get_titlecase_from_ns,
+)
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    get_white_space_equivalent as rust_get_white_space_equivalent,
+)
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    wrap_in_quotes as rust_wrap_in_quotes,
+)
+
+from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent
+from otlmow_modelbuilder.HelperFunctions import (
+    escape_backslash,
+    get_class_directory_from_ns,
+    get_ns_and_name_from_uri,
+    get_titlecase_from_ns,
+    wrap_in_quotes,
 )
 
 

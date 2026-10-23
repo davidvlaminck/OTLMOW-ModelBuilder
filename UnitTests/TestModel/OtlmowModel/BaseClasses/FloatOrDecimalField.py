@@ -1,11 +1,15 @@
-﻿import decimal
+﻿from __future__ import annotations
+
+import decimal
 import random
 import warnings
-from typing import Optional, Any
+from typing import Any
 
-from .OTLField import OTLField
-from ..Exceptions.CouldNotConvertToCorrectTypeError import CouldNotConvertToCorrectTypeError
+from ..Exceptions.CouldNotConvertToCorrectTypeError import (
+    CouldNotConvertToCorrectTypeError,
+)
 from ..warnings.IncorrectTypeWarning import IncorrectTypeWarning
+from .OTLField import OTLField
 
 
 class FloatOrDecimalField(OTLField):
@@ -19,7 +23,7 @@ class FloatOrDecimalField(OTLField):
     native_type = float
 
     @classmethod
-    def convert_to_correct_type(cls, value: Any, log_warnings: bool = True) -> Optional[float]:
+    def convert_to_correct_type(cls, value: Any, log_warnings: bool = True) -> float | None:
         if value is None:
             return None
         if isinstance(value, bool):

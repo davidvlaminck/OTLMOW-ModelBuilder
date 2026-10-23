@@ -16,7 +16,7 @@ class LegacyClassCreator(AbstractDatatypeCreator):
             legacy_definition = lgc_type_row[1] + "\n\t" + lgc_type_row[3]
         except Exception as e:
             logging.error(f"Error in create_blocks_to_write_from_rows: {e}")
-            raise e
+            raise
 
         if '.' in legacy_name:
             legacy_name = legacy_name.replace('.', '_')

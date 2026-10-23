@@ -1,7 +1,12 @@
+from __future__ import annotations
+
 from abc import abstractmethod
 from pathlib import Path
 
-from ..Helpers.generated_lists import get_hardcoded_class_dict, get_concrete_subclasses_from_class_dict
+from ..Helpers.generated_lists import (
+    get_concrete_subclasses_from_class_dict,
+    get_hardcoded_class_dict,
+)
 
 
 class RelationInteractor:
@@ -21,7 +26,7 @@ class RelationInteractor:
 
         self._valid_relations = {}
 
-    def _get_all_concrete_relations(self, model_directory: Path = None):
+    def _get_all_concrete_relations(self, model_directory: Path | None = None):
         class_dict = get_hardcoded_class_dict(model_directory)
         for relation in self._valid_relations:
             for target in self._valid_relations[relation]:

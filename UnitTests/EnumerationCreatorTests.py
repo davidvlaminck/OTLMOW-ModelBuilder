@@ -1,13 +1,15 @@
-import os
 from pathlib import Path
 
-import pytest
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    create_block_to_write_from_enumeration as rust_create_block,
+)
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    get_adm_status_from_ttl,
+    get_keuzelijstwaardes_from_ttl,
+)
 
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator
-from otlmow_modelbuilder._otlmow_modelbuilder_rs import create_block_to_write_from_enumeration as rust_create_block
-from otlmow_modelbuilder._otlmow_modelbuilder_rs import get_keuzelijstwaardes_from_ttl, get_adm_status_from_ttl
-
 
 CURRENT_DIR = Path(__file__).parent
 

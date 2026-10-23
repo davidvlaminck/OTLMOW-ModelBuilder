@@ -1,14 +1,16 @@
 import os
 from pathlib import Path
 
-import pytest
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    add_attributen_to_data_block as rust_add_attributen_to_data_block,
+)
 
-from otlmow_modelbuilder.DatatypeBuilderFunctions import get_field_name_by_type_uri
 from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block
-from otlmow_modelbuilder._otlmow_modelbuilder_rs import add_attributen_to_data_block as rust_add_attributen_to_data_block
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import OSLODatatypeComplexAttribuut
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import (
+    OSLODatatypeComplexAttribuut,
+)
 
 
 def set_up() -> OSLOCollector:

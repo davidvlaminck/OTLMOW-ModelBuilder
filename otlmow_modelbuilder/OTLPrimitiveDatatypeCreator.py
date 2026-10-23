@@ -3,7 +3,9 @@ import re
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import OSLODatatypePrimitive
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import (
+    OSLODatatypePrimitive,
+)
 
 
 class OTLPrimitiveDatatypeCreator(AbstractDatatypeCreator):
@@ -20,7 +22,7 @@ class OTLPrimitiveDatatypeCreator(AbstractDatatypeCreator):
         if oslo_datatype_primitive.objectUri == '':
             raise ValueError(f"OSLODatatypePrimitive.objectUri is invalid. Value = '{oslo_datatype_primitive.objectUri}'")
 
-        if oslo_datatype_primitive.objectUri not in primitive_datatype_validation_rules['valid_uri_and_types'].keys():
+        if oslo_datatype_primitive.objectUri not in primitive_datatype_validation_rules['valid_uri_and_types']:
             match_re = False
             for regex in primitive_datatype_validation_rules["valid_regexes"]:
                 match_re = re.match(pattern=regex, string=oslo_datatype_primitive.objectUri)

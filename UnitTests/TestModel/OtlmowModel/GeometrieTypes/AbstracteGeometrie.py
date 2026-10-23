@@ -1,4 +1,4 @@
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
 
 from ..BaseClasses.OTLObject import OTLAttribuut
 from ..BaseClasses.WKTField import WKTField

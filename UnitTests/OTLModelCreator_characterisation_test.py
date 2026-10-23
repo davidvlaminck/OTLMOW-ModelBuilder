@@ -8,6 +8,7 @@ Regenerate the golden snapshot after an intentional change with:
 
     UPDATE_GOLDEN=1 python -m pytest UnitTests/OTLModelCreator_characterisation_test.py
 """
+from __future__ import annotations
 
 import importlib
 import json
@@ -15,11 +16,13 @@ import logging
 import os
 import warnings
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import pytest
 
-from otlmow_modelbuilder.Exceptions.NestedListAttributeError import NestedListAttributeError
+from otlmow_modelbuilder.Exceptions.NestedListAttributeError import (
+    NestedListAttributeError,
+)
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator
 from otlmow_modelbuilder.OTLModelCreator import OTLModelCreator
@@ -27,7 +30,9 @@ from otlmow_modelbuilder.SettingsManager import load_settings
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import OSLODatatypeComplexAttribuut
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import (
+    OSLODatatypeComplexAttribuut,
+)
 from otlmow_modelbuilder.SQLDataClasses.OSLORelatie import OSLORelatie
 
 CURRENT_DIR = Path(__file__).parent
@@ -74,7 +79,7 @@ def collected_subset() -> OSLOCollector:
     return collector
 
 
-def build_the_model(directory: Path, collector: Optional[OSLOCollector] = None,
+def build_the_model(directory: Path, collector: OSLOCollector | None = None,
                     include_legacy: bool = False) -> dict[str, str]:
     """Create the model of the test subset and return a snapshot of the result."""
     if collector is None:
@@ -605,22 +610,7 @@ def test_create_legacy_classes_writes_the_legacy_classes(tmp_path: Path) -> None
     assert 'VKS.py' in legacy_files
     assert 'BeweegbareBrug.py' in legacy_files
 
-    assert (model_directory / 'Classes' / 'Legacy' / 'VKS.py').read_text(encoding='utf-8') == '\n'.join([
-        '# coding=utf-8',
-        'from ...BaseClasses.LegacyObject import LegacyObject',
-        '',
-        '',
-        '# Generated with LegacyClassCreator. To modify: extend, do not edit',
-        'class VKS(LegacyObject):',
-        '    """Voedingskeuzeschakelaar (Legacy)',
-        '\tVoedingskeuzeschakelaar"""',
-        '',
-        "    typeURI = 'https://lgc.data.wegenenverkeer.be/ns/installatie#Voedingskeuzeschakelaar'",
-        '    """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""',
-        '',
-        '    def __init__(self):',
-        '        super().__init__()',
-        ''])
+    assert (model_directory / 'Classes' / 'Legacy' / 'VKS.py').read_text(encoding='utf-8') == '# coding=utf-8\nfrom ...BaseClasses.LegacyObject import LegacyObject\n\n\n# Generated with LegacyClassCreator. To modify: extend, do not edit\nclass VKS(LegacyObject):\n    """Voedingskeuzeschakelaar (Legacy)\n\tVoedingskeuzeschakelaar"""\n\n    typeURI = \'https://lgc.data.wegenenverkeer.be/ns/installatie#Voedingskeuzeschakelaar\'\n    """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""\n\n    def __init__(self):\n        super().__init__()\n'
 
     helper = (model_directory / 'Helpers' / 'all_classes.py').read_text(encoding='utf-8')
     assert 'from ..Classes.Legacy.VKS import VKS' in helper

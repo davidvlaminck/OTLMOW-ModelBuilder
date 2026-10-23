@@ -1,20 +1,25 @@
-# coding=utf-8
 from datetime import date, datetime, time
-from typing import List
-from ...BaseClasses.OTLObject import OTLAttribuut
-from ...Classes.ImplementatieElement.AIMObject import AIMObject
+
 from ...BaseClasses.BooleanField import BooleanField
 from ...BaseClasses.DateField import DateField
 from ...BaseClasses.DateTimeField import DateTimeField
-from ...Datatypes.DtcTestComplexType import DtcTestComplexType, DtcTestComplexTypeWaarden
-from ...Datatypes.DteTestEenvoudigType import DteTestEenvoudigType, DteTestEenvoudigTypeWaarden
-from ...Datatypes.DtuTestUnionType import DtuTestUnionType, DtuTestUnionTypeWaarden
 from ...BaseClasses.FloatOrDecimalField import FloatOrDecimalField
 from ...BaseClasses.IntegerField import IntegerField
-from ...Datatypes.KlTestKeuzelijst import KlTestKeuzelijst
-from ...Datatypes.KwantWrdTest import KwantWrdTest, KwantWrdTestWaarden
+from ...BaseClasses.OTLObject import OTLAttribuut
 from ...BaseClasses.StringField import StringField
 from ...BaseClasses.TimeField import TimeField
+from ...Classes.ImplementatieElement.AIMObject import AIMObject
+from ...Datatypes.DtcTestComplexType import (
+    DtcTestComplexType,
+    DtcTestComplexTypeWaarden,
+)
+from ...Datatypes.DteTestEenvoudigType import (
+    DteTestEenvoudigType,
+    DteTestEenvoudigTypeWaarden,
+)
+from ...Datatypes.DtuTestUnionType import DtuTestUnionType, DtuTestUnionTypeWaarden
+from ...Datatypes.KlTestKeuzelijst import KlTestKeuzelijst
+from ...Datatypes.KwantWrdTest import KwantWrdTest, KwantWrdTestWaarden
 from ...GeometrieTypes.PuntGeometrie import PuntGeometrie
 
 
@@ -198,7 +203,7 @@ class AllCasesTestClass(AIMObject, PuntGeometrie):
         self._testComplexType.set_waarde(value, owner=self)
 
     @property
-    def testComplexTypeMetKard(self) -> List[DtcTestComplexTypeWaarden]:
+    def testComplexTypeMetKard(self) -> list[DtcTestComplexTypeWaarden]:
         """Test attribuut voor een complexe waarde met kardinaliteit > 1"""
         return self._testComplexTypeMetKard.get_waarde()
 
@@ -234,7 +239,7 @@ class AllCasesTestClass(AIMObject, PuntGeometrie):
         self._testDecimalField.set_waarde(value, owner=self)
 
     @property
-    def testDecimalFieldMetKard(self) -> List[float]:
+    def testDecimalFieldMetKard(self) -> list[float]:
         """Test attribuut voor DecimalField met kardinaliteit > 1"""
         return self._testDecimalFieldMetKard.get_waarde()
 
@@ -252,7 +257,7 @@ class AllCasesTestClass(AIMObject, PuntGeometrie):
         self._testEenvoudigType.set_waarde(value, owner=self)
 
     @property
-    def testEenvoudigTypeMetKard(self) -> List[DteTestEenvoudigTypeWaarden]:
+    def testEenvoudigTypeMetKard(self) -> list[DteTestEenvoudigTypeWaarden]:
         """Test attribuut voor een eenvoudige waarde met kardinaliteit > 1"""
         return self._testEenvoudigTypeMetKard.get_waarde()
 
@@ -270,7 +275,7 @@ class AllCasesTestClass(AIMObject, PuntGeometrie):
         self._testIntegerField.set_waarde(value, owner=self)
 
     @property
-    def testIntegerFieldMetKard(self) -> List[int]:
+    def testIntegerFieldMetKard(self) -> list[int]:
         """Test attribuut voor IntegerField met kardinaliteit > 1"""
         return self._testIntegerFieldMetKard.get_waarde()
 
@@ -288,7 +293,7 @@ class AllCasesTestClass(AIMObject, PuntGeometrie):
         self._testKeuzelijst.set_waarde(value, owner=self)
 
     @property
-    def testKeuzelijstMetKard(self) -> List[str]:
+    def testKeuzelijstMetKard(self) -> list[str]:
         """Test attribuut voor een keuzelijst met kardinaliteit > 1"""
         return self._testKeuzelijstMetKard.get_waarde()
 
@@ -306,7 +311,7 @@ class AllCasesTestClass(AIMObject, PuntGeometrie):
         self._testKwantWrd.set_waarde(value, owner=self)
 
     @property
-    def testKwantWrdMetKard(self) -> List[KwantWrdTestWaarden]:
+    def testKwantWrdMetKard(self) -> list[KwantWrdTestWaarden]:
         """Test attribuut voor een kwantitatieve waarde met kardinaliteit > 1"""
         return self._testKwantWrdMetKard.get_waarde()
 
@@ -324,7 +329,7 @@ class AllCasesTestClass(AIMObject, PuntGeometrie):
         self._testStringField.set_waarde(value, owner=self)
 
     @property
-    def testStringFieldMetKard(self) -> List[str]:
+    def testStringFieldMetKard(self) -> list[str]:
         """Test attribuut voor StringField met kardinaliteit > 1"""
         return self._testStringFieldMetKard.get_waarde()
 
@@ -351,7 +356,7 @@ class AllCasesTestClass(AIMObject, PuntGeometrie):
         self._testUnionType.set_waarde(value, owner=self)
 
     @property
-    def testUnionTypeMetKard(self) -> List[DtuTestUnionTypeWaarden]:
+    def testUnionTypeMetKard(self) -> list[DtuTestUnionTypeWaarden]:
         """Test attribuut voor een union type met kardinaliteit > 1"""
         return self._testUnionTypeMetKard.get_waarde()
 

@@ -1,7 +1,7 @@
 ﻿from typing import Any
 
-from .OTLField import OTLField
 from ..Exceptions.UnionTypeError import UnionTypeError
+from .OTLField import OTLField
 
 
 class UnionTypeField(OTLField):

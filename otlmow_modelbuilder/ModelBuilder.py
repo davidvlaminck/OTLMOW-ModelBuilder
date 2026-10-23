@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
@@ -11,8 +13,8 @@ class ModelBuilder:
     def build_otl_datamodel(otl_subset_location: Path,
                             directory: Path,
                             environment: str = 'prd',
-                            geometry_artefact_location: Path = None,
-                            settings_path: Path = None,
+                            geometry_artefact_location: Path | None = None,
+                            settings_path: Path | None = None,
                             include_kl_test_keuzelijst: bool = False,
                             include_legacy: bool = True):
         if directory is None:

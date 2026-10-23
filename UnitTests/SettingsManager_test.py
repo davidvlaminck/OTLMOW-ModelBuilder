@@ -2,7 +2,10 @@ from pathlib import Path
 
 import pytest
 
-from otlmow_modelbuilder.SettingsManager import _check_settings_with_default, load_settings
+from otlmow_modelbuilder.SettingsManager import (
+    _check_settings_with_default,
+    load_settings,
+)
 
 DEFAULT_SETTINGS_PATH = Path(__file__).parent.parent / 'otlmow_modelbuilder' / 'settings_otlmow_modelbuilder.json'
 

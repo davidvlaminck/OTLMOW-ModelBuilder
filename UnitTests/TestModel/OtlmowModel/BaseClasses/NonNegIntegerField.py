@@ -1,8 +1,8 @@
 import random
 from typing import Any
 
-from .OTLField import OTLField
 from .IntegerField import IntegerField
+from .OTLField import OTLField
 
 
 class NonNegIntegerField(IntegerField):

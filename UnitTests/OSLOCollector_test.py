@@ -1,11 +1,11 @@
 from pathlib import Path
 
 import pytest
+
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
 from otlmow_modelbuilder.SQLDataClasses.OSLORelatie import OSLORelatie
-
 
 # see collector_relations_with_inheritances.png for a visual representation of the relations
 

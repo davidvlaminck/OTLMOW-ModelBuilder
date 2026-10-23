@@ -1,28 +1,29 @@
-﻿import logging
-import warnings
-import random
+﻿from __future__ import annotations
 
-from typing import Dict, Optional, Any
+import logging
+import random
+import warnings
+from typing import Any
 
 from ..Exceptions.AttributeDeprecationWarning import AttributeDeprecationWarning
 from ..Exceptions.InvalidOptionError import InvalidOptionError
 from ..Exceptions.RemovedOptionError import RemovedOptionError
-from .OTLField import OTLField
 from .KeuzelijstWaarde import KeuzelijstWaarde
+from .OTLField import OTLField
 
 
 class KeuzelijstField(OTLField):
-    options: Dict[str, KeuzelijstWaarde] = {}
+    options: dict[str, KeuzelijstWaarde] = {}
     codelist = ''
     clearing_value = '88888888'
     native_type = str
 
     @classmethod
-    def create_dummy_data_keuzelijst(cls, options) -> Optional[str]:
+    def create_dummy_data_keuzelijst(cls, options) -> str | None:
         in_gebruik_values = list(filter(lambda option: option.status == 'ingebruik', options.values()))
         if len(in_gebruik_values) == 0:
             return None
-        return random.choice(list(map(lambda x: x.invulwaarde, in_gebruik_values)))
+        return random.choice([x.invulwaarde for x in in_gebruik_values])
 
     @classmethod
     def validate(cls, value: Any, attribuut) -> bool:
@@ -30,7 +31,7 @@ class KeuzelijstField(OTLField):
             return True
         if not isinstance(value, str):
             raise TypeError(f'{value} is not the correct type. Expecting a string')
-        if value not in attribuut.field.options.keys():
+        if value not in attribuut.field.options:
             # Find the closest matches within the options
             from difflib import get_close_matches
             closest_matches = get_close_matches(value, attribuut.field.options.keys(), n=5, cutoff=0.9)
@@ -62,17 +63,17 @@ label: {self.label}
 usagenote: {self.usagenote}
 deprecated_version: {self.deprecated_version}"""
         s += '\npossible values:\n'
-        s += '\n'.join(list(map(lambda x: '    ' + x.print(), self.options.values())))
+        s += '\n'.join(['    ' + x.print() for x in self.options.values()])
         return s
 
     @staticmethod
-    def convert_to_invulwaarde(value: str, field) -> Optional[str]:
+    def convert_to_invulwaarde(value: str, field) -> str | None:
         if value is None or value == '':
             return value
         if value == '-':
             return None
 
-        if value in field.options.keys():
+        if value in field.options:
             return value
 
         if value.startswith('http'):

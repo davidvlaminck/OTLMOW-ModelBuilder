@@ -278,14 +278,14 @@ expectedDataContainerBuis = ['# coding=utf-8',
                              '    @abstractmethod',
                              '    def __init__(self):',
                              '        super().__init__()',
-                             '','        '
+                             '',('        '
                              "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult', "
                              "target='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis', "
-                             "direction='o', deprecated='2.3.0')  # o = direction: outgoing",
-                             '        '
+                             "direction='o', deprecated='2.3.0')  # o = direction: outgoing"),
+                             ('        '
                              "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult', "
                              "target='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Mantelbuis', "
-                             "direction='o', deprecated='2.3.0')  # o = direction: outgoing",
+                             "direction='o', deprecated='2.3.0')  # o = direction: outgoing"),
                              '',
                              '        self._kleur = OTLAttribuut(field=StringField,',
                              "                                   naam='kleur',",
@@ -330,18 +330,18 @@ expectedDataGebouw = ['# coding=utf-8',
                       "    def __init__(self):",
                       '        super().__init__()',
                       "",
-                      '        '
+                      ('        '
                       "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging', "
                       "target='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#LEDBord', "
-                      "direction='u')  # u = unidirectional",
-                      '        '
+                      "direction='u')  # u = unidirectional"),
+                      ('        '
                       "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging', "
                       "target='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Laag', "
-                      "direction='u')  # u = unidirectional",
-                      '        '
+                      "direction='u')  # u = unidirectional"),
+                      ('        '
                       "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging', "
                       "target='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestigingsbeugel', "
-                      "direction='u')  # u = unidirectional",
+                      "direction='u')  # u = unidirectional"),
                       '',
                       "        self._grondplan = OTLAttribuut(field=DtcDocument,",
                       "                                       naam='grondplan',",

@@ -1,16 +1,15 @@
 import re
 from abc import abstractmethod
 
-from ..GeometrieTypes.PuntGeometrie import PuntGeometrie
-from .OTLObject import OTLAttribuut
-from .StringField import StringField
-from ..Datatypes.DtcIdentificator import DtcIdentificatorWaarden, DtcIdentificator
-from .RelationInteractor import RelationInteractor
-from .OTLAsset import OTLAsset
-from ..Classes.ImplementatieElement.AIMToestand import AIMToestand
 from ..Classes.ImplementatieElement.AIMDBStatus import AIMDBStatus
+from ..Classes.ImplementatieElement.AIMToestand import AIMToestand
 from ..Classes.ImplementatieElement.AIMVersie import AIMVersie
-
+from ..Datatypes.DtcIdentificator import DtcIdentificator, DtcIdentificatorWaarden
+from ..GeometrieTypes.PuntGeometrie import PuntGeometrie
+from .OTLAsset import OTLAsset
+from .OTLObject import OTLAttribuut
+from .RelationInteractor import RelationInteractor
+from .StringField import StringField
 
 
 class NaamField(StringField):

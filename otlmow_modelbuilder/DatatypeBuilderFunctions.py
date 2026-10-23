@@ -1,4 +1,3 @@
-from typing import Dict
 
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 
@@ -45,11 +44,11 @@ def get_single_field_from_type_uri(field_type: str):
     raise NotImplementedError(f'not supported field_type in get_single_field_from_type_uri() for {field_type}')
 
 
-def get_non_single_field_from_type_uri(field_type: str, valid_uri_and_types: Dict):
+def get_non_single_field_from_type_uri(field_type: str, valid_uri_and_types: dict):
     if '#Dtc' in field_type:
         type_name = field_type[field_type.find("#") + 1::]
         return ['ComplexField', type_name]
-    if field_type in valid_uri_and_types.keys():
+    if field_type in valid_uri_and_types:
         return ['ComplexField', valid_uri_and_types[field_type]]
     if '#Dte' in field_type or '#KwantWrd' in field_type:
         type_name = field_type[field_type.find("#") + 1::]
@@ -84,7 +83,7 @@ def get_attributen_by_type_field(oslo_collector: OSLOCollector, type_field, oslo
 
 
 def get_type_name_of_complex_attribuut(type_uri: str, valid_uri_and_types):
-    if type_uri in valid_uri_and_types.keys():
+    if type_uri in valid_uri_and_types:
         return valid_uri_and_types[type_uri]
     if '/ns/' in type_uri or type_uri.startswith('http://www.w3.org/2001/XMLSchema#'):
         return type_uri[type_uri.find('#') + 1::]
@@ -113,8 +112,7 @@ def get_fields_and_names_from_list_of_attributes(attributen, valid_uri_and_types
     other_types_list = list(
         filter(lambda t: not t.type.startswith('http://www.w3.org/2001/XMLSchema#'), attributen))
 
-    select_types_list = list(
-        map(lambda a: (get_single_field_from_type_uri(a.type), a.name), primitive_types_list))
+    select_types_list = [(get_single_field_from_type_uri(a.type), a.name) for a in primitive_types_list]
 
     for nonPrimitiveType in other_types_list:
         select_types_list.append((get_field_name_from_type_uri(nonPrimitiveType.type, valid_uri_and_types), nonPrimitiveType.name))

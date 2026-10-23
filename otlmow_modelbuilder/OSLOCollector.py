@@ -4,21 +4,30 @@ import itertools
 import os
 from collections import defaultdict, deque
 from pathlib import Path
-from typing import List
 
-from otlmow_modelbuilder.NewOTLBaseClassNotImplemented import NewOTLBaseClassNotImplemented
+from otlmow_modelbuilder.NewOTLBaseClassNotImplemented import (
+    NewOTLBaseClassNotImplemented,
+)
+from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.SQLDataClasses.GeneralInfoRecord import GeneralInfoRecord
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import OSLODatatypeComplexAttribuut
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitiveAttribuut import OSLODatatypePrimitiveAttribuut
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnion import OSLODatatypeUnion
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnionAttribuut import OSLODatatypeUnionAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplex import OSLODatatypeComplex
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import OSLODatatypePrimitive
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import (
+    OSLODatatypeComplexAttribuut,
+)
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import (
+    OSLODatatypePrimitive,
+)
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitiveAttribuut import (
+    OSLODatatypePrimitiveAttribuut,
+)
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnion import OSLODatatypeUnion
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnionAttribuut import (
+    OSLODatatypeUnionAttribuut,
+)
 from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
-from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.SQLDataClasses.OSLORelatie import OSLORelatie
 from otlmow_modelbuilder.SQLDataClasses.OSLOTypeLink import OSLOTypeLink
 
@@ -145,7 +154,9 @@ class OSLOCollector:
         if not self._path_is_valid():
             return None
         try:
-            from otlmow_modelbuilder._otlmow_modelbuilder_rs import find_subclasses_uri_by_class_uri as rust_find
+            from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+                find_subclasses_uri_by_class_uri as rust_find,
+            )
             return rust_find(str(self.path.resolve()), oslo_class_uri, sort_by_uri)
         except Exception:
             return None
@@ -178,7 +189,7 @@ class OSLOCollector:
         return next((p for p in self.primitive_datatypes if p.objectUri == uri), None)
 
     def find_primitive_datatype_attributes_by_class_uri(self, class_uri: str, sort_by_uri: bool = True
-                                                        ) -> List[OSLODatatypePrimitiveAttribuut]:
+                                                        ) -> list[OSLODatatypePrimitiveAttribuut]:
         return self._find_by_class_uri(self.primitive_datatype_attributen, class_uri, sort_by_uri,
                                        key=lambda p: p.objectUri)
 
@@ -186,7 +197,7 @@ class OSLOCollector:
         return next((p for p in self.complex_datatypes if p.objectUri == uri), None)
 
     def find_complex_datatype_attributes_by_class_uri(self, class_uri: str, sort_by_uri: bool = True
-                                                      ) -> List[OSLODatatypeComplexAttribuut]:
+                                                      ) -> list[OSLODatatypeComplexAttribuut]:
         return self._find_by_class_uri(self.complex_datatype_attributen, class_uri, sort_by_uri,
                                        key=lambda p: p.objectUri)
 
@@ -194,7 +205,7 @@ class OSLOCollector:
         return next((p for p in self.union_datatypes if p.objectUri == uri), None)
 
     def find_union_datatype_attributes_by_class_uri(self, class_uri: str, sort_by_uri: bool = True
-                                                     ) -> List[OSLODatatypeUnionAttribuut]:
+                                                     ) -> list[OSLODatatypeUnionAttribuut]:
         return self._find_by_class_uri(self.union_datatype_attributen, class_uri, sort_by_uri,
                                        key=lambda p: p.objectUri)
 

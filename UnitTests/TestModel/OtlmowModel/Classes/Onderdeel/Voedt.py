@@ -1,4 +1,3 @@
-# coding=utf-8
 from ...BaseClasses.OTLObject import OTLAttribuut
 from ...Classes.ImplementatieElement.DirectioneleRelatie import DirectioneleRelatie
 from ...Datatypes.KwantWrdInVolt import KwantWrdInVolt, KwantWrdInVoltWaarden

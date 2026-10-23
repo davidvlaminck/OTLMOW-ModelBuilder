@@ -2,12 +2,11 @@ import logging
 import re
 import warnings
 from pathlib import Path
-from typing import Dict
 from urllib.request import urlretrieve
 from zipfile import ZipFile
 
 import rdflib
-from rdflib import URIRef, Graph, RDF
+from rdflib import RDF, Graph, URIRef
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent
@@ -33,9 +32,9 @@ class KeuzelijstWaarde:
 
 class OTLEnumerationCreator(AbstractDatatypeCreator):
     default_environment = 'prd'
-    graph_dict: Dict[str, Dict[str, Graph]] = {'prd': {}, 'tei': {}, 'dev': {}, 'aim': {}}
+    graph_dict: dict[str, dict[str, Graph]] = {'prd': {}, 'tei': {}, 'dev': {}, 'aim': {}}
 
-    def __init__(self, oslo_collector: OSLOCollector, enumeration_locations_by_environment: Dict[str, list[str]],
+    def __init__(self, oslo_collector: OSLOCollector, enumeration_locations_by_environment: dict[str, list[str]],
                  env: str = default_environment, include_kl_test_keuzelijst: bool = False):
         super().__init__(oslo_collector)
         self.oslo_collector = oslo_collector
@@ -106,7 +105,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         if oslo_enumeration.objectUri == '':
             raise ValueError(f"OSLOEnumeration.objectUri is invalid (empty). Value = '{oslo_enumeration.objectUri}'")
 
-        if oslo_enumeration.objectUri in enumeration_validation_rules['valid_uri_and_types'].keys():
+        if oslo_enumeration.objectUri in enumeration_validation_rules['valid_uri_and_types']:
             pass
         else:
             for regex in enumeration_validation_rules['valid_regexes']:
@@ -129,8 +128,9 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         adm_status = self.get_adm_status_by_uri(oslo_enumeration.codelist, env=environment)
 
         try:
-            from otlmow_modelbuilder._otlmow_modelbuilder_rs import \
-                create_block_to_write_from_enumeration as rust_create
+            from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+                create_block_to_write_from_enumeration as rust_create,
+            )
             return rust_create(
                 [w for w in keuzelijst_waardes],
                 adm_status or '',
@@ -147,7 +147,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         datablock = ['# coding=utf-8',
                      'from ..BaseClasses.KeuzelijstField import KeuzelijstField']
         if len(keuzelijst_waardes) > 0:
-            datablock.append(f'from ..BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde')
+            datablock.append('from ..BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde')
 
         datablock.extend(['',
                           '',
@@ -213,7 +213,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         return g
 
     @staticmethod
-    def parse_graph_to_dict(graph: Graph) -> Dict[str, Graph]:
+    def parse_graph_to_dict(graph: Graph) -> dict[str, Graph]:
         keuzelijst_dict = {}
         keuzelijst_uris = set(graph.subjects(predicate=RDF.type, object=URIRef(
             'http://www.w3.org/2004/02/skos/core#ConceptScheme')))
@@ -254,9 +254,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
 
         for distinct_subject in distinct_subjects_list:
             subject_str = str(distinct_subject)
-            if subject_str.startswith('https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/'):
-                continue
-            elif env != 'prd' and subject_str.startswith(
+            if subject_str.startswith('https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/') or env != 'prd' and subject_str.startswith(
                     'https://wegenenverkeer-test.data.vlaanderen.be/id/conceptscheme/'):
                 continue
             waarde = KeuzelijstWaarde()

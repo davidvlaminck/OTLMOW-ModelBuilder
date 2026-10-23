@@ -1,21 +1,29 @@
 from pathlib import Path
 
 import pytest
+
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.SQLDataClasses.GeneralInfoRecord import GeneralInfoRecord
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import OSLODatatypePrimitive
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplex import OSLODatatypeComplex
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import (
+    OSLODatatypeComplexAttribuut,
+)
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import (
+    OSLODatatypePrimitive,
+)
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitiveAttribuut import (
+    OSLODatatypePrimitiveAttribuut,
+)
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnion import OSLODatatypeUnion
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnionAttribuut import (
+    OSLODatatypeUnionAttribuut,
+)
 from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
-from otlmow_modelbuilder.SQLDataClasses.OSLOTypeLink import OSLOTypeLink
 from otlmow_modelbuilder.SQLDataClasses.OSLORelatie import OSLORelatie
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitiveAttribuut import OSLODatatypePrimitiveAttribuut
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import OSLODatatypeComplexAttribuut
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnionAttribuut import OSLODatatypeUnionAttribuut
-
+from otlmow_modelbuilder.SQLDataClasses.OSLOTypeLink import OSLOTypeLink
 
 current_file_path = Path(__file__)
 base_dir = current_file_path.parent

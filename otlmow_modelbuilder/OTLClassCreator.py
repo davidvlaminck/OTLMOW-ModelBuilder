@@ -4,12 +4,19 @@ import logging
 import re
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
-from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block, \
-    get_fields_to_import_from_list_of_attributes
+from otlmow_modelbuilder.GenericBuilderFunctions import (
+    add_attributen_to_data_block,
+    get_fields_to_import_from_list_of_attributes,
+)
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
-from otlmow_modelbuilder.GeometrieInheritanceProcessor import GeometrieInheritanceProcessor
+from otlmow_modelbuilder.GeometrieInheritanceProcessor import (
+    GeometrieInheritanceProcessor,
+)
 from otlmow_modelbuilder.GeometrieType import GeometrieType
-from otlmow_modelbuilder.HelperFunctions import get_class_directory_from_ns, get_ns_and_name_from_uri
+from otlmow_modelbuilder.HelperFunctions import (
+    get_class_directory_from_ns,
+    get_ns_and_name_from_uri,
+)
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
@@ -108,7 +115,9 @@ class OTLClassCreator(AbstractDatatypeCreator):
                                 valid_uri_and_types: dict) -> list[str] | None:
         """Create the class with the rust implementation; None when the rust implementation is not available."""
         try:
-            from otlmow_modelbuilder._otlmow_modelbuilder_rs import create_block_from_class as rust_create
+            from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+                create_block_from_class as rust_create,
+            )
             type_links = self._collect_type_links()
             enumerations = self._collect_enumerations()
             complex_datatypes = self._collect_complex_datatypes()

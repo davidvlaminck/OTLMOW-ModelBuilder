@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 import inspect
 import warnings
 from pathlib import Path
-from typing import Type, Optional
 
 from ..BaseClasses.OTLObject import dynamic_create_instance_from_uri
 from ..BaseClasses.RelationInteractor import RelationInteractor
@@ -10,7 +11,7 @@ from ..Exceptions.RelationDeprecationWarning import RelationDeprecationWarning
 
 
 def is_valid_relation_instance(source: RelationInteractor, relation_instance: RelatieObject,
-                               target: RelationInteractor, model_directory: Path = None) -> bool:
+                               target: RelationInteractor, model_directory: Path | None = None) -> bool:
     """
     Verifies if a relation would be valid between a source and a target, given the instance of that relation
 
@@ -28,9 +29,9 @@ def is_valid_relation_instance(source: RelationInteractor, relation_instance: Re
                              model_directory=model_directory)
 
 
-def is_valid_relation_using_relation_uri(relation_uri: str, source: Optional[RelationInteractor] = None,
-                      source_typeURI: Optional[str] = None, target: Optional[RelationInteractor] = None,
-                      target_typeURI: Optional[str] = None, model_directory: Path = None) -> bool:
+def is_valid_relation_using_relation_uri(relation_uri: str, source: RelationInteractor | None = None,
+                      source_typeURI: str | None = None, target: RelationInteractor | None = None,
+                      target_typeURI: str | None = None, model_directory: Path | None = None) -> bool:
     """
     Verifies if a relation would be valid between a source and a target, given a relation_type type. Exactly one of
     source or source_typeURI must not be None. Exactly one of target or target_typeURI must not be None.
@@ -82,7 +83,7 @@ def is_valid_relation_using_relation_uri(relation_uri: str, source: Optional[Rel
         if ( 'i' in source._valid_relations[relation_uri][target_typeURI] and
                 'o' not in source._valid_relations[relation_uri][target_typeURI]):
             return False
-        deprecated_value = list(source._valid_relations[relation_uri][target_typeURI].values())[0]
+        deprecated_value = next(iter(source._valid_relations[relation_uri][target_typeURI].values()))
         if deprecated_value != '':
             warnings.warn(
                 message=f'the relation_type of type {relation_uri} between assets of types '
@@ -99,7 +100,7 @@ def is_valid_relation_using_relation_uri(relation_uri: str, source: Optional[Rel
             if ('i' in source._valid_relations[relation_uri][base_type_uri] and
                     'o' not in source._valid_relations[relation_uri][base_type_uri]):
                 return False
-            deprecated_value = list(source._valid_relations[relation_uri][base_type_uri].values())[0]
+            deprecated_value = next(iter(source._valid_relations[relation_uri][base_type_uri].values()))
             if deprecated_value != '':
                 warnings.warn(
                     message=f'the relation_type of type {relation_uri} between assets of types '
@@ -110,9 +111,9 @@ def is_valid_relation_using_relation_uri(relation_uri: str, source: Optional[Rel
     return False
 
 
-def is_valid_relation(relation_type: Type[RelatieObject], source: Optional[RelationInteractor] = None,
-                      source_typeURI: Optional[str] = None, target: Optional[RelationInteractor] = None,
-                      target_typeURI: Optional[str] = None, model_directory: Path = None) -> bool:
+def is_valid_relation(relation_type: type[RelatieObject], source: RelationInteractor | None = None,
+                      source_typeURI: str | None = None, target: RelationInteractor | None = None,
+                      target_typeURI: str | None = None, model_directory: Path | None = None) -> bool:
     """
     Verifies if a relation would be valid between a source and a target, given a relation_type type. Exactly one of
     source or source_typeURI must not be None. Exactly one of target or target_typeURI must not be None.

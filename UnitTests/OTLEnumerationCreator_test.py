@@ -7,7 +7,10 @@ from rdflib import Graph
 
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
-from otlmow_modelbuilder.OTLEnumerationCreator import OTLEnumerationCreator, KeuzelijstWaarde
+from otlmow_modelbuilder.OTLEnumerationCreator import (
+    KeuzelijstWaarde,
+    OTLEnumerationCreator,
+)
 from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
 
 CURRENT_DIR = Path(__file__).parent
@@ -31,31 +34,31 @@ expectedKeuzelijst = ['# coding=utf-8',
                       '    options = {',
                       "        'waarde-1': KeuzelijstWaarde(invulwaarde='waarde-1',",
                       "                                     label='waarde 1',",
-                      '                                     '
-                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-1'),",
+                      ('                                     '
+                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-1'),"),
                       "        'waarde-2': KeuzelijstWaarde(invulwaarde='waarde-2',",
                       "                                     label='waarde 2',",
-                      '                                     '
-                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-2'),",
+                      ('                                     '
+                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-2'),"),
                       "        'waarde-3': KeuzelijstWaarde(invulwaarde='waarde-3',",
                       "                                     label='waarde 3',",
-                      '                                     '
-                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-3'),",
+                      ('                                     '
+                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-3'),"),
                       "        'waarde-4': KeuzelijstWaarde(invulwaarde='waarde-4',",
                       "                                     label='waarde 4',",
                       "                                     status='ingebruik',",
-                      '                                     '
-                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-4'),",
+                      ('                                     '
+                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-4'),"),
                       "        'waarde-5': KeuzelijstWaarde(invulwaarde='waarde-5',",
                       "                                     label='waarde 5',",
                       "                                     status='uitgebruik',",
-                      '                                     '
-                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-5'),",
+                      ('                                     '
+                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-5'),"),
                       "        'waarde-6': KeuzelijstWaarde(invulwaarde='waarde-6',",
                       "                                     label='waarde 6',",
                       "                                     status='verwijderd',",
-                      '                                     '
-                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-6')",
+                      ('                                     '
+                      "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-6')"),
                       '    }',
                       '',
                       '    @classmethod',
@@ -96,13 +99,13 @@ def test_parse_graph_to_dict_all_test_ttl():
     expected_graph_1.parse(CURRENT_DIR / 'unittest_antiparkeerpaaltype_extracted.ttl', format="turtle")
     actual_graph_1 = graph_dict['https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/AntiParkeerpaalType']
 
-    assert set(sorted(actual_graph_1)) == set(sorted(expected_graph_1))
+    assert set(actual_graph_1) == set(expected_graph_1)
 
     epxected_graph_2 = Graph()
     epxected_graph_2.parse(CURRENT_DIR / 'unittest_toestand_extracted.ttl', format="turtle")
     actual_graph_2 = graph_dict['https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAIMToestand']
 
-    assert set(sorted(actual_graph_2)) == set(sorted(epxected_graph_2))
+    assert set(actual_graph_2) == set(epxected_graph_2)
 
 
 def test_InvalidOSLOEnumerationEmptyUri():
@@ -242,7 +245,9 @@ def test_get_adms_status_for_options():
     ('unittest_toestand_extracted.ttl', 'prd'),
 ])
 def test_rust_get_keuzelijstwaardes_matches_python(ttl_file, env):
-    from otlmow_modelbuilder._otlmow_modelbuilder_rs import get_keuzelijstwaardes_from_ttl
+    from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+        get_keuzelijstwaardes_from_ttl,
+    )
 
     ttl_path = str(CURRENT_DIR / ttl_file)
     rust_waardes = get_keuzelijstwaardes_from_ttl(ttl_path, env)

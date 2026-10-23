@@ -1,8 +1,7 @@
-# coding=utf-8
 from .ComplexField import ComplexField
-from .WaardenObject import WaardenObject
 from .OTLObject import OTLAttribuut
 from .StringField import StringField
+from .WaardenObject import WaardenObject
 
 
 class DteAssetTypeWaarden(WaardenObject):

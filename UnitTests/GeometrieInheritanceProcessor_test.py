@@ -1,4 +1,6 @@
-from otlmow_modelbuilder.GeometrieInheritanceProcessor import GeometrieInheritanceProcessor
+from otlmow_modelbuilder.GeometrieInheritanceProcessor import (
+    GeometrieInheritanceProcessor,
+)
 from otlmow_modelbuilder.GeometrieType import GeometrieType
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass

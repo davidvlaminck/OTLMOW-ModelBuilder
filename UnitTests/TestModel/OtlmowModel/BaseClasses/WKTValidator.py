@@ -1,4 +1,3 @@
-from typing import List
 
 
 class WKTValidator:
@@ -46,11 +45,7 @@ class WKTValidator:
         coords_list = cls.get_coords_list_from_wkt_string(input_string)
 
         level = cls.coord_params[geo_type]['level']
-        if level == 1 and not isinstance(coords_list[0], tuple):
-            return False
-        elif level == 2 and not isinstance(coords_list[0][0], tuple):
-            return False
-        elif level == 3 and not isinstance(coords_list[0][0][0], tuple):
+        if level == 1 and not isinstance(coords_list[0], tuple) or level == 2 and not isinstance(coords_list[0][0], tuple) or level == 3 and not isinstance(coords_list[0][0][0], tuple):
             return False
         # TODO: if level == 0
 
@@ -69,7 +64,7 @@ class WKTValidator:
             return True
 
     @classmethod
-    def get_coords_list_from_wkt_string(cls, input_string) -> List:
+    def get_coords_list_from_wkt_string(cls, input_string) -> list:
         coords_string = input_string.split(' (')[1][:-1].replace(', ', ',').replace(' ,', ',')
         coords_list = []
         cls.split_and_add_to_list(coords_list, coords_string)

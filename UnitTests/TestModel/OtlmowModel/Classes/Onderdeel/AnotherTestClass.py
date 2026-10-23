@@ -1,7 +1,6 @@
-# coding=utf-8
 from ...BaseClasses.OTLObject import OTLAttribuut
-from ...Classes.ImplementatieElement.AIMObject import AIMObject
 from ...BaseClasses.StringField import StringField
+from ...Classes.ImplementatieElement.AIMObject import AIMObject
 from ...GeometrieTypes.LijnGeometrie import LijnGeometrie
 
 

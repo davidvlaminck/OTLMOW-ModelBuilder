@@ -1,7 +1,5 @@
 from abc import abstractmethod
-from typing import Generator
-
-from ..Exceptions.CanNotClearAttributeError import CanNotClearAttributeError
+from collections.abc import Generator
 
 
 class WaardenObject:

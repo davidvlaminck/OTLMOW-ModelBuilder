@@ -1,7 +1,5 @@
 from pathlib import Path
 
-import pytest
-
 from otlmow_modelbuilder.ModelBuilder import ModelBuilder
 
 OTL_DB = Path(__file__).parent / 'OTL_AllCasesTestClass.db'

@@ -1,26 +1,39 @@
 import os
-import pytest
-
 from pathlib import Path
-from otlmow_modelbuilder.DatatypeBuilderFunctions import (
-    get_single_field_from_type_uri,
-    get_non_single_field_from_type_uri,
-    get_type_name_of_complex_attribuut,
-    get_type_name_of_union_attribuut,
-    get_field_name_from_type_uri,
-    get_field_name_by_type_uri,
+
+import pytest
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    get_field_name_by_type_uri as rust_get_field_name_by_type_uri,
 )
-from otlmow_modelbuilder.GenericBuilderFunctions import (
-    get_fields_to_import_from_list_of_attributes,
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    get_field_name_from_type_uri as rust_get_field_name_from_type_uri,
+)
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    get_fields_to_import_from_list_of_attributes as rust_get_fields_to_import_from_list_of_attributes,
+)
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    get_non_single_field_from_type_uri as rust_get_non_single_field_from_type_uri,
 )
 from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
     get_single_field_from_type_uri as rust_get_single_field_from_type_uri,
-    get_non_single_field_from_type_uri as rust_get_non_single_field_from_type_uri,
+)
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
     get_type_name_of_complex_attribuut as rust_get_type_name_of_complex_attribuut,
+)
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
     get_type_name_of_union_attribuut as rust_get_type_name_of_union_attribuut,
-    get_field_name_from_type_uri as rust_get_field_name_from_type_uri,
-    get_field_name_by_type_uri as rust_get_field_name_by_type_uri,
-    get_fields_to_import_from_list_of_attributes as rust_get_fields_to_import_from_list_of_attributes,
+)
+
+from otlmow_modelbuilder.DatatypeBuilderFunctions import (
+    get_field_name_by_type_uri,
+    get_field_name_from_type_uri,
+    get_non_single_field_from_type_uri,
+    get_single_field_from_type_uri,
+    get_type_name_of_complex_attribuut,
+    get_type_name_of_union_attribuut,
+)
+from otlmow_modelbuilder.GenericBuilderFunctions import (
+    get_fields_to_import_from_list_of_attributes,
 )
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 

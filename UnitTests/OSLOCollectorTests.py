@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 
 current_file_path = Path(__file__)
@@ -51,8 +52,11 @@ def test_find_indirect_superclasses_uri_by_class_uri_using_testmodel():
     ('', True, []),
 ])
 def test_rust_find_subclasses_matches_python(class_uri, sort_by_uri, expected):
+    from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+        find_subclasses_uri_by_class_uri as rust_find,
+    )
+
     from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
-    from otlmow_modelbuilder._otlmow_modelbuilder_rs import find_subclasses_uri_by_class_uri as rust_find
 
     rust_result = rust_find(str(test_classes_subset_location), class_uri, sort_by_uri)
     assert rust_result == expected

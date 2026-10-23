@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import concurrent.futures
 import csv
 import json
@@ -10,15 +12,19 @@ from concurrent.futures import FIRST_COMPLETED
 from datetime import datetime
 from os import path
 from pathlib import Path
-from typing import Optional
 
 from tqdm import tqdm
 
-from otlmow_modelbuilder.Exceptions.NestedListAttributeError import NestedListAttributeError
+from otlmow_modelbuilder.Exceptions.NestedListAttributeError import (
+    NestedListAttributeError,
+)
 from otlmow_modelbuilder.GenericBuilderFunctions import write_to_file
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
-from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns, \
-    get_titlecase_from_ns
+from otlmow_modelbuilder.HelperFunctions import (
+    get_class_directory_from_ns,
+    get_ns_and_name_from_uri,
+    get_titlecase_from_ns,
+)
 from otlmow_modelbuilder.LegacyClassCreator import LegacyClassCreator
 from otlmow_modelbuilder.ModelData import EnumerationData, Lookups, ModelData
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
@@ -76,7 +82,7 @@ class OTLModelCreator:
 
     @staticmethod
     def create_full_model(directory: Path, oslo_collector: OSLOCollector,
-                          geo_artefact_collector: Optional[GeometrieArtefactCollector], settings: dict, include_legacy: bool,
+                          geo_artefact_collector: GeometrieArtefactCollector | None, settings: dict, include_legacy: bool,
                           environment: str = '', include_kl_test_keuzelijst: bool = False):
         """Create the model: the datatypes, the classes and the helpers of the OTL subset."""
         logging.info('started creating model at ' + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
@@ -259,13 +265,15 @@ class OTLModelCreator:
 
     @staticmethod
     def _create_the_model_with_rust(directory: Path, oslo_collector: OSLOCollector,
-                                    geo_artefact_collector: Optional[GeometrieArtefactCollector], settings: dict,
+                                    geo_artefact_collector: GeometrieArtefactCollector | None, settings: dict,
                                     model_name: str, model_data: ModelData, environment: str,
                                     include_kl_test_keuzelijst: bool) -> None:
         """Generate the model with the rust implementation, and fall back to python when it is not available."""
         geometry_type_map = OTLModelCreator._build_the_geometry_type_map(oslo_collector, geo_artefact_collector)
         try:
-            from otlmow_modelbuilder._otlmow_modelbuilder_rs import generate_model_optimized as rust_generate
+            from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+                generate_model_optimized as rust_generate,
+            )
             logging.info('Attempting Rust batch generation (using _otlmow_modelbuilder_rs.generate_model_optimized)...')
             files_written, errors = rust_generate(
                 directory=str(directory / 'OtlmowModel'),
@@ -309,7 +317,7 @@ class OTLModelCreator:
 
     @staticmethod
     def _build_the_geometry_type_map(oslo_collector: OSLOCollector,
-                                      geo_artefact_collector: Optional[GeometrieArtefactCollector]) -> dict[str, list]:
+                                      geo_artefact_collector: GeometrieArtefactCollector | None) -> dict[str, list]:
         """The geometry types of every class, when there are geometry artefacts."""
         geometry_type_map: dict = {}
         if geo_artefact_collector is None:
@@ -323,7 +331,7 @@ class OTLModelCreator:
 
     @staticmethod
     def _create_the_model_with_python(directory: Path, oslo_collector: OSLOCollector,
-                                      geo_artefact_collector: Optional[GeometrieArtefactCollector], settings: dict,
+                                      geo_artefact_collector: GeometrieArtefactCollector | None, settings: dict,
                                       class_validation_rules: dict, environment: str,
                                       include_kl_test_keuzelijst: bool) -> None:
         """Generate the model with the python implementation."""
@@ -558,7 +566,7 @@ class OTLModelCreator:
 
     @staticmethod
     def check_for_nested_attributes_in_classes(collector: OSLOCollector, exceptions=None,
-                                               known_attribute_uris: Optional[list[str]] = None):
+                                               known_attribute_uris: list[str] | None = None):
         if known_attribute_uris is None:
             known_attribute_uris = []
         if exceptions is None:
