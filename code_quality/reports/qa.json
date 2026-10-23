@@ -1,7 +1,7 @@
 {
   "date": "2026-10-23",
   "repo": "otlmow_modelbuilder",
-  "commit": "863d820",
+  "commit": "24cf13d",
   "thresholds": {
     "ruff_issues": 0,
     "ruff_format_files": 0,
@@ -16,7 +16,7 @@
     "membership_list_violations": 0
   },
   "metrics": {
-    "ruff_issues": 140,
+    "ruff_issues": 76,
     "ruff_format_files": 49,
     "mypy_errors": 250,
     "coverage_percent": 92.6,
@@ -42,24 +42,31 @@
   "hotspots": [
     {
       "file": "otlmow_modelbuilder/OTLModelCreator.py",
-      "commits": 4,
-      "lines_changed": 1149,
+      "commits": 5,
+      "lines_changed": 1177,
       "max_complexity": 6,
-      "score": 6894
+      "score": 7062
     },
     {
       "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "commits": 6,
-      "lines_changed": 513,
+      "commits": 7,
+      "lines_changed": 532,
       "max_complexity": 5,
-      "score": 2565
+      "score": 2660
     },
     {
       "file": "otlmow_modelbuilder/OSLOCollector.py",
-      "commits": 3,
-      "lines_changed": 374,
+      "commits": 4,
+      "lines_changed": 409,
       "max_complexity": 6,
-      "score": 2244
+      "score": 2454
+    },
+    {
+      "file": "otlmow_modelbuilder/AbstractDatatypeCreator.py",
+      "commits": 3,
+      "lines_changed": 79,
+      "max_complexity": 20,
+      "score": 1580
     },
     {
       "file": "otlmow_modelbuilder/GeometrieInheritanceProcessor.py",
@@ -69,39 +76,67 @@
       "score": 1540
     },
     {
-      "file": "otlmow_modelbuilder/AbstractDatatypeCreator.py",
-      "commits": 2,
-      "lines_changed": 39,
-      "max_complexity": 20,
-      "score": 780
+      "file": "otlmow_modelbuilder/OTLEnumerationCreator.py",
+      "commits": 3,
+      "lines_changed": 44,
+      "max_complexity": 13,
+      "score": 572
+    },
+    {
+      "file": "otlmow_modelbuilder/GenericBuilderFunctions.py",
+      "commits": 1,
+      "lines_changed": 31,
+      "max_complexity": 17,
+      "score": 527
     },
     {
       "file": "otlmow_modelbuilder/DatatypeBuilderFunctions.py",
-      "commits": 1,
-      "lines_changed": 51,
-      "max_complexity": 8,
-      "score": 408
-    },
-    {
-      "file": "otlmow_modelbuilder/OTLEnumerationCreator.py",
       "commits": 2,
-      "lines_changed": 22,
-      "max_complexity": 13,
-      "score": 286
-    },
-    {
-      "file": "otlmow_modelbuilder/LegacyClassCreator.py",
-      "commits": 1,
-      "lines_changed": 2,
-      "max_complexity": 10,
-      "score": 20
+      "lines_changed": 61,
+      "max_complexity": 8,
+      "score": 488
     },
     {
       "file": "otlmow_modelbuilder/OSLOInMemoryCreator.py",
-      "commits": 0,
-      "lines_changed": 4,
+      "commits": 1,
+      "lines_changed": 20,
       "max_complexity": 4,
-      "score": 16
+      "score": 80
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLComplexDatatypeCreator.py",
+      "commits": 1,
+      "lines_changed": 7,
+      "max_complexity": 8,
+      "score": 56
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLUnionDatatypeCreator.py",
+      "commits": 1,
+      "lines_changed": 7,
+      "max_complexity": 8,
+      "score": 56
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLPrimitiveDatatypeCreator.py",
+      "commits": 1,
+      "lines_changed": 6,
+      "max_complexity": 9,
+      "score": 54
+    },
+    {
+      "file": "otlmow_modelbuilder/LegacyClassCreator.py",
+      "commits": 2,
+      "lines_changed": 4,
+      "max_complexity": 10,
+      "score": 40
+    },
+    {
+      "file": "otlmow_modelbuilder/ModelBuilder.py",
+      "commits": 1,
+      "lines_changed": 6,
+      "max_complexity": 4,
+      "score": 24
     },
     {
       "file": "otlmow_modelbuilder/OTLExtraChecker.py",
@@ -109,6 +144,27 @@
       "lines_changed": 3,
       "max_complexity": 5,
       "score": 15
+    },
+    {
+      "file": "otlmow_modelbuilder/GeometrieArtefactCollector.py",
+      "commits": 1,
+      "lines_changed": 5,
+      "max_complexity": 2,
+      "score": 10
+    },
+    {
+      "file": "otlmow_modelbuilder/SettingsManager.py",
+      "commits": 1,
+      "lines_changed": 3,
+      "max_complexity": 3,
+      "score": 9
+    },
+    {
+      "file": "otlmow_modelbuilder/main.py",
+      "commits": 1,
+      "lines_changed": 1,
+      "max_complexity": 1,
+      "score": 1
     },
     {
       "file": "otlmow_modelbuilder/ModelData.py",
@@ -119,7 +175,6 @@
     }
   ],
   "ruff_per_rule": {
-    "N999": 64,
     "LOG015": 42,
     "BLE001": 12,
     "TRY004": 7,

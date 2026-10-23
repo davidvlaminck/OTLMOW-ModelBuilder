@@ -49,3 +49,6 @@ test = [
     "pytest-timeout",
     "nbmake"
 ]
+[tool.ruff.lint.per-file-ignores]
+"otlmow_modelbuilder/**/*.py" = ["N999", "N802", "N803", "N815", "N806"]
+"UnitTests/**/*.py" = ["N999", "N802", "N803", "N815", "N806", "S101"]
