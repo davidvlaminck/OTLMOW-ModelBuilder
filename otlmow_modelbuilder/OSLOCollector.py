@@ -232,7 +232,7 @@ class OSLOCollector:
         return self._select_relations(all_relations, allow_duplicates, sort_by_uri,
                                       lambda r: r.bron_uri == objectUri)
 
-    def query_correct_base_classes(self, valid_base_class_uris: list[str] = None) -> None:
+    def query_correct_base_classes(self, valid_base_class_uris: list[str] | None = None) -> None:
         if valid_base_class_uris is None:
             valid_base_class_uris = []
         with OSLOInMemoryCreator(self.path) as memory_creator:
