@@ -1,7 +1,7 @@
 {
   "date": "2026-10-23",
   "repo": "otlmow_modelbuilder",
-  "commit": "8720b6b",
+  "commit": "d5d0c6e",
   "thresholds": {
     "ruff_issues": 0,
     "ruff_format_files": 0,
@@ -16,7 +16,7 @@
     "membership_list_violations": 0
   },
   "metrics": {
-    "ruff_issues": 34,
+    "ruff_issues": 33,
     "ruff_format_files": 49,
     "mypy_errors": 250,
     "coverage_percent": 92.6,
@@ -42,17 +42,17 @@
   "hotspots": [
     {
       "file": "otlmow_modelbuilder/OTLModelCreator.py",
-      "commits": 5,
-      "lines_changed": 1177,
+      "commits": 6,
+      "lines_changed": 1233,
       "max_complexity": 6,
-      "score": 7062
+      "score": 7398
     },
     {
       "file": "otlmow_modelbuilder/OTLClassCreator.py",
-      "commits": 7,
-      "lines_changed": 532,
+      "commits": 8,
+      "lines_changed": 536,
       "max_complexity": 5,
-      "score": 2660
+      "score": 2680
     },
     {
       "file": "otlmow_modelbuilder/OSLOCollector.py",
@@ -77,10 +77,10 @@
     },
     {
       "file": "otlmow_modelbuilder/OTLEnumerationCreator.py",
-      "commits": 3,
-      "lines_changed": 44,
+      "commits": 4,
+      "lines_changed": 52,
       "max_complexity": 13,
-      "score": 572
+      "score": 676
     },
     {
       "file": "otlmow_modelbuilder/GenericBuilderFunctions.py",
@@ -97,39 +97,39 @@
       "score": 488
     },
     {
+      "file": "otlmow_modelbuilder/LegacyClassCreator.py",
+      "commits": 3,
+      "lines_changed": 10,
+      "max_complexity": 10,
+      "score": 100
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLPrimitiveDatatypeCreator.py",
+      "commits": 2,
+      "lines_changed": 10,
+      "max_complexity": 9,
+      "score": 90
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLComplexDatatypeCreator.py",
+      "commits": 2,
+      "lines_changed": 11,
+      "max_complexity": 8,
+      "score": 88
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLUnionDatatypeCreator.py",
+      "commits": 2,
+      "lines_changed": 11,
+      "max_complexity": 8,
+      "score": 88
+    },
+    {
       "file": "otlmow_modelbuilder/OSLOInMemoryCreator.py",
       "commits": 1,
       "lines_changed": 20,
       "max_complexity": 4,
       "score": 80
-    },
-    {
-      "file": "otlmow_modelbuilder/OTLComplexDatatypeCreator.py",
-      "commits": 1,
-      "lines_changed": 7,
-      "max_complexity": 8,
-      "score": 56
-    },
-    {
-      "file": "otlmow_modelbuilder/OTLUnionDatatypeCreator.py",
-      "commits": 1,
-      "lines_changed": 7,
-      "max_complexity": 8,
-      "score": 56
-    },
-    {
-      "file": "otlmow_modelbuilder/OTLPrimitiveDatatypeCreator.py",
-      "commits": 1,
-      "lines_changed": 6,
-      "max_complexity": 9,
-      "score": 54
-    },
-    {
-      "file": "otlmow_modelbuilder/LegacyClassCreator.py",
-      "commits": 2,
-      "lines_changed": 4,
-      "max_complexity": 10,
-      "score": 40
     },
     {
       "file": "otlmow_modelbuilder/ModelBuilder.py",
@@ -175,7 +175,7 @@
     }
   ],
   "ruff_per_rule": {
-    "BLE001": 12,
+    "BLE001": 11,
     "TRY004": 7,
     "RUF012": 6,
     "PLW0602": 3,

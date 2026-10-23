@@ -145,7 +145,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
                 oslo_class.abstract,
                 oslo_class.deprecated_version,
                 self.__class__.__name__)
-        except Exception:
+        except ImportError:
             return None
 
     def _collect_type_links(self):

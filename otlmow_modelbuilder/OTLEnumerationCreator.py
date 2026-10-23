@@ -143,7 +143,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
                 oslo_enumeration.codelist,
                 oslo_enumeration.deprecated_version,
                 self.__class__.__name__)
-        except Exception:
+        except ImportError:
             pass
 
         datablock = ['# coding=utf-8',

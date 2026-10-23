@@ -158,7 +158,7 @@ class OSLOCollector:
                 find_subclasses_uri_by_class_uri as rust_find,
             )
             return rust_find(str(self.path.resolve()), oslo_class_uri, sort_by_uri)
-        except Exception:
+        except ImportError:
             return None
 
     def _python_find_subclasses(self, oslo_class_uri: str, sort_by_uri: bool) -> list[str]:

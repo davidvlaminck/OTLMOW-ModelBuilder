@@ -46,7 +46,7 @@ class AbstractDatatypeCreator(ABC):
                 oslo_datatype.usagenote,
                 oslo_datatype.deprecated_version,
                 self.__class__.__name__)
-        except Exception:
+        except ImportError:
             pass
 
         attributen = get_attributen_by_type_field(self.oslo_collector, type_field, oslo_datatype)
