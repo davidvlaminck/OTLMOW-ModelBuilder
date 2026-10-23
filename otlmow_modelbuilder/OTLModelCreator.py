@@ -306,7 +306,7 @@ class OTLModelCreator:
                 include_kl_test_keuzelijst=include_kl_test_keuzelijst,
             )
             logger.info(f'Rust batch generation: {files_written} files, {errors} errors')
-        except BaseException as e:
+        except ImportError as e:
             logger.warning(f'Falling back to Python path (Rust batch generation unavailable): {e}')
             if "No module named 'otlmow_modelbuilder._otlmow_modelbuilder_rs'" in str(e):
                 logger.warning('Rust extension not built. Build it with: source .venv/bin/activate && maturin develop --release (or --release depending on build)')
@@ -371,7 +371,7 @@ class OTLModelCreator:
                     prim_datatype, model_location=OTLModelCreator.get_model_name_from_directory_path(directory),
                     primitive_datatype_validation_rules=primitive_datatype_validation_rules)
                 OTLModelCreator._write_the_datatype(prim_datatype.name, data_to_write, directory)
-            except BaseException as e:
+            except Exception as e:  # noqa: BLE001 - per-item error logging, continue  # noqa: BLE001 - per-item error logging, continue
                 logger.error(str(e))
                 logger.error(f"Could not create a class for {prim_datatype.name}")
 
@@ -392,7 +392,7 @@ class OTLModelCreator:
                     complex_datatype, complex_datatype_validation_rules=complex_datatype_validation_rules,
                     model_location=OTLModelCreator.get_model_name_from_directory_path(directory))
                 OTLModelCreator._write_the_datatype(complex_datatype.name, data_to_write, directory)
-            except BaseException as e:
+            except BaseException as e:  # noqa: BLE001 - per-item error logging, continue
                 logger.error(str(e))
                 logger.error(f"Could not create a class for {complex_datatype.name}")
 
@@ -406,7 +406,7 @@ class OTLModelCreator:
                     union_datatype, model_location=OTLModelCreator.get_model_name_from_directory_path(directory),
                     union_datatype_validation_rules=union_datatype_validation_rules)
                 OTLModelCreator._write_the_datatype(union_datatype.name, data_to_write, directory)
-            except BaseException as e:
+            except BaseException as e:  # noqa: BLE001 - per-item error logging, continue
                 logger.error(str(e))
                 logger.error(f"Could not create a class for {union_datatype.name}")
 
@@ -462,7 +462,7 @@ class OTLModelCreator:
             data_to_write = creator.create_block_to_write_from_enumerations(
                 enumeration, environment=environment, enumeration_validation_rules=enumeration_validation_rules)
             OTLModelCreator._write_the_datatype(enumeration.name, data_to_write, directory, log=logger.error)
-        except BaseException as e:
+        except BaseException as e:  # noqa: BLE001 - per-item error logging, continue
             logger.error(str(e))
             logger.error(f"Could not create a class for {enumeration.name}")
 
@@ -486,7 +486,7 @@ class OTLModelCreator:
                 class_validation_rules=class_validation_rules)
             OTLModelCreator._write_the_class(oslo_class.name, data_to_write,
                                             OTLModelCreator._class_directory_of(oslo_class), directory)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - per-item error logging, continue
             logger.error(str(e))
             logger.error(f"Could not create a class for {oslo_class.name}")
 
@@ -799,7 +799,7 @@ class OTLModelCreator:
             class_directory = 'Classes/Legacy'
 
             write_to_file(class_name, class_directory, data_to_write, relative_path=directory)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - per-item error logging, continue
             logger.error(str(e))
             logger.error(f"Could not create a class for {class_name}")
 
