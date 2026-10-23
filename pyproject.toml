@@ -11,15 +11,13 @@ license = {file = "LICENSE"}
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Rust",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
-    "Operating System :: OS Independent"
+    "Programming Language :: Python :: 3.15",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
   'rdflib >= 6.0.0',
   'tqdm >= 4.66.1',

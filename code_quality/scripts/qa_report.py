@@ -34,7 +34,7 @@ REPORT_FILE = QUALITY_DIR / 'QA-REPORT.md'
 
 sys.path.insert(0, str(QUALITY_DIR / 'scripts'))
 
-from crap_scores import compute_crap, compute_hotspots  # noqa: E402
+from crap_scores import compute_crap, compute_hotspots
 
 DEFAULT_THRESHOLDS = {
     'ruff_issues': 0,
@@ -47,6 +47,7 @@ DEFAULT_THRESHOLDS = {
     'bandit_high': 0,
     'dead_code': 0,
     'god_classes': 0,
+    'membership_list_violations': 0,
 }
 
 # The gates that can be enforced on their own: the name, the metric it reads
@@ -63,6 +64,7 @@ GATES = {
     'bandit': ('bandit_high', False),
     'dead-code': ('dead_code', False),
     'god-classes': ('god_classes', False),
+    'membership-list': ('membership_list_violations', False),
 }
 
 
@@ -246,7 +248,7 @@ def detect_god_classes(source: str) -> dict[str, Any]:
             with py_file.open(encoding='utf-8') as f:
                 content_file = f.read()
             tree = ast.parse(content_file)
-        except Exception:
+        except (OSError, SyntaxError, UnicodeError):
             continue
         for node in ast.walk(tree):
             if isinstance(node, ast.ClassDef):
@@ -255,10 +257,41 @@ def detect_god_classes(source: str) -> dict[str, Any]:
                 if method_count > 30 or py_file.stat().st_size > 30000:
                     try:
                         rel_path = py_file.relative_to(REPO_ROOT)
-                    except Exception:
+                    except (OSError, SyntaxError, UnicodeError):
                         rel_path = py_file
                     god_classes.append(f'{rel_path}:{node.name}')
     return {'available': True, 'count': len(god_classes), 'classes': god_classes[:20]}
+
+
+
+def detect_membership_list_violations(source: str) -> dict[str, Any]:
+    """Count files where `x in [a, b, ...]` uses a list literal of 4+ items."""
+    violating_files = []
+    source_path = REPO_ROOT / source
+    if not source_path.exists():
+        return {'available': False, 'count': 0, 'files': []}
+    for py_file in source_path.rglob('*.py'):
+        if '__pycache__' in str(py_file) or 'TestModel' in str(py_file):
+            continue
+        try:
+            with py_file.open(encoding='utf-8') as f:
+                tree = ast.parse(f.read())
+        except (OSError, SyntaxError, UnicodeError):
+            continue
+        found = False
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Compare) and len(node.ops) == 1 and isinstance(node.ops[0], (ast.In, ast.NotIn)):
+                comp = node.comparators[0]
+                if isinstance(comp, ast.List) and len(comp.elts) >= 4:
+                    found = True
+                    break
+        if found:
+            try:
+                rel_path = py_file.relative_to(REPO_ROOT)
+            except (OSError, SyntaxError, UnicodeError):
+                rel_path = py_file
+            violating_files.append(str(rel_path))
+    return {'available': True, 'count': len(violating_files), 'files': violating_files[:20]}
 
 
 def repo_name() -> str:
@@ -343,27 +376,29 @@ def render_report(
         '',
         '| Metric | Threshold | Current | Status |',
         '|---|---|---|---|',
-        f'| ruff issues | {thresholds["ruff_issues"]} | {metrics["ruff_issues"]} '
-        f'| {status(metrics["ruff_issues"], thresholds["ruff_issues"], False)} |',
-        f'| files needing `ruff format` | {thresholds["ruff_format_files"]} | {metrics["ruff_format_files"]} '
-        f'| {status(metrics["ruff_format_files"], thresholds["ruff_format_files"], False)} |',
-        f'| mypy errors | {thresholds["mypy_errors"]} | {metrics["mypy_errors"]} '
-        f'| {status(metrics["mypy_errors"], thresholds["mypy_errors"], False)} |',
-        f'| test coverage (lines) | ≥ {thresholds["coverage_percent"]} % | {metrics["coverage_percent"]} % '
-        f'| {status(metrics["coverage_percent"], thresholds["coverage_percent"], True)} |',
-        f'| test coverage (branches) | ≥ {thresholds["coverage_branch_percent"]} % '
+        (f'| ruff issues | {thresholds["ruff_issues"]} | {metrics["ruff_issues"]} '
+        f'| {status(metrics["ruff_issues"], thresholds["ruff_issues"], False)} |'),
+        (f'| files needing `ruff format` | {thresholds["ruff_format_files"]} | {metrics["ruff_format_files"]} '
+        f'| {status(metrics["ruff_format_files"], thresholds["ruff_format_files"], False)} |'),
+        (f'| mypy errors | {thresholds["mypy_errors"]} | {metrics["mypy_errors"]} '
+        f'| {status(metrics["mypy_errors"], thresholds["mypy_errors"], False)} |'),
+        (f'| test coverage (lines) | ≥ {thresholds["coverage_percent"]} % | {metrics["coverage_percent"]} % '
+        f'| {status(metrics["coverage_percent"], thresholds["coverage_percent"], True)} |'),
+        (f'| test coverage (branches) | ≥ {thresholds["coverage_branch_percent"]} % '
         f'| {metrics["coverage_branch_percent"]} % '
-        f'| {status(metrics["coverage_branch_percent"], thresholds["coverage_branch_percent"], True)} |',
-        f'| max CRAP score | ≤ {thresholds["max_crap"]} | {metrics["max_crap"]} '
-        f'| {status(metrics["max_crap"], thresholds["max_crap"], False)} |',
-        f'| max cyclomatic complexity | ≤ {thresholds["max_complexity"]} | {metrics["max_complexity"]} '
-        f'| {status(metrics["max_complexity"], thresholds["max_complexity"], False)} |',
-        f'| bandit HIGH issues | {thresholds["bandit_high"]} | {metrics["bandit_high"]} '
-        f'| {status(metrics["bandit_high"], thresholds["bandit_high"], False)} |',
-        f'| dead code items | {thresholds["dead_code"]} | {metrics["dead_code"]} '
-        f'| {status(metrics["dead_code"], thresholds["dead_code"], False)} |',
-        f'| god classes | {thresholds["god_classes"]} | {metrics["god_classes"]} '
-        f'| {status(metrics["god_classes"], thresholds["god_classes"], False)} |',
+        f'| {status(metrics["coverage_branch_percent"], thresholds["coverage_branch_percent"], True)} |'),
+        (f'| max CRAP score | ≤ {thresholds["max_crap"]} | {metrics["max_crap"]} '
+        f'| {status(metrics["max_crap"], thresholds["max_crap"], False)} |'),
+        (f'| max cyclomatic complexity | ≤ {thresholds["max_complexity"]} | {metrics["max_complexity"]} '
+        f'| {status(metrics["max_complexity"], thresholds["max_complexity"], False)} |'),
+        (f'| bandit HIGH issues | {thresholds["bandit_high"]} | {metrics["bandit_high"]} '
+        f'| {status(metrics["bandit_high"], thresholds["bandit_high"], False)} |'),
+        (f'| dead code items | {thresholds["dead_code"]} | {metrics["dead_code"]} '
+        f'| {status(metrics["dead_code"], thresholds["dead_code"], False)} |'),
+        (f'| god classes | {thresholds["god_classes"]} | {metrics["god_classes"]} '
+        f'| {status(metrics["god_classes"], thresholds["god_classes"], False)} |'),
+        (f'| membership-list violations | {thresholds["membership_list_violations"]} | {metrics["membership_list_violations"]} '
+        f'| {status(metrics["membership_list_violations"], thresholds["membership_list_violations"], False)} |'),
         '',
     ]
 
@@ -384,8 +419,8 @@ def render_report(
         lines += [
             '## Enforced gates',
             '',
-            f'These gates block a merge — {met}. The gates that are not listed are '
-            'reported only; the ratchet is enforced by every run.',
+            (f'These gates block a merge — {met}. The gates that are not listed are '
+            'reported only; the ratchet is enforced by every run.'),
             '',
             '| Gate | Threshold | Current | Status |',
             '|---|---|---|---|',
@@ -402,11 +437,11 @@ def render_report(
     lines += ['## Lead refactor target (highest CRAP)', '']
     if lead:
         lines += [
-            f'`{lead["file"]}:{lead["lineno"]}` → `{lead["name"]}` — '
-            f'CRAP **{lead["crap"]}** — complexity **{lead["complexity"]}** — coverage **{lead["coverage"]} %**',
+            (f'`{lead["file"]}:{lead["lineno"]}` → `{lead["name"]}` — '
+            f'CRAP **{lead["crap"]}** — complexity **{lead["complexity"]}** — coverage **{lead["coverage"]} %**'),
             '',
-            'Verify with `code_quality/README.md` §7 before touching it: '
-            'the behaviour must be pinned by a golden-file test first.',
+            ('Verify with `code_quality/README.md` §7 before touching it: '
+            'the behaviour must be pinned by a golden-file test first.'),
             '',
         ]
     else:
@@ -514,6 +549,7 @@ def main(argv: list[str] | None = None) -> int:
     bandit = run_bandit(args.source)
     vulture = run_vulture(args.source)
     god_classes = detect_god_classes(args.source)
+    membership_list = detect_membership_list_violations(args.source)
 
     crap_rows: list[dict[str, Any]] = []
     if Path(args.coverage).exists():
@@ -531,6 +567,7 @@ def main(argv: list[str] | None = None) -> int:
         'bandit_high': bandit.get('high', 0),
         'dead_code': vulture.get('items', 0),
         'god_classes': god_classes.get('count', 0),
+        'membership_list_violations': membership_list.get('count', 0),
     }
 
     history = read_history()
@@ -556,6 +593,7 @@ def main(argv: list[str] | None = None) -> int:
         'ruff_per_rule': ruff['per_rule'],
         'crap': crap_rows,
         'god_classes_detail': god_classes,
+        'membership_list_detail': membership_list,
         'tools': {
             'ruff': ruff.get('available', False),
             'mypy': mypy.get('available', False),
