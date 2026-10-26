@@ -1,23 +1,51 @@
-import logging
-import re
-from typing import Dict
+from __future__ import annotations
 
-from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block, \
-    get_fields_to_import_from_list_of_attributes
-from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
-from otlmow_modelbuilder.GeometrieInheritanceProcessor import GeometrieInheritanceProcessor
-from otlmow_modelbuilder.GeometrieType import GeometrieType
-from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns
+import logging
+
+logger = logging.getLogger(__name__)
+import re
+
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
+from otlmow_modelbuilder.GenericBuilderFunctions import (
+    add_attributen_to_data_block,
+    get_fields_to_import_from_list_of_attributes,
+)
+from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
+from otlmow_modelbuilder.GeometrieInheritanceProcessor import (
+    GeometrieInheritanceProcessor,
+)
+from otlmow_modelbuilder.GeometrieType import GeometrieType
+from otlmow_modelbuilder.HelperFunctions import (
+    get_class_directory_from_ns,
+    get_ns_and_name_from_uri,
+)
+from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
-from otlmow_modelbuilder.OSLOCollector import OSLOCollector
+
+AGENT_OBJECT_URI = 'http://purl.org/dc/terms/Agent'
+
+BASE_CLASS_NAMES = ['OTLAsset', 'OTLObject', 'RelationInteractor', 'DavieRelatieAttributes']
+
+BASE_FIELD_NAMES = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
+                    'IntegerField', 'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField',
+                    'NonNegIntegerField', 'TimeField', 'StringField', 'UnionWaarden']
+
+# the flag on the GeometrieType and the name of the generated geometry class
+GEOMETRY_TYPE_FLAGS = [('geen_geometrie', 'GeenGeometrie'),
+                       ('punt3D', 'PuntGeometrie'),
+                       ('lijn3D', 'LijnGeometrie'),
+                       ('polygoon3D', 'VlakGeometrie')]
+
+RELATION_DIRECTION_COMMENTS = {'u': '# u = unidirectional',
+                               'o': '# o = direction: outgoing',
+                               'i': '# i = direction: incoming'}
 
 
 class OTLClassCreator(AbstractDatatypeCreator):
     def __init__(self, oslo_collector: OSLOCollector, geo_artefact_collector: GeometrieArtefactCollector = None):
         super().__init__(oslo_collector)
-        logging.info("Created an instance of OTLClassCreator")
+        logger.info("Created an instance of OTLClassCreator")
         self.oslo_collector = oslo_collector
         self.geoACollector = geo_artefact_collector
         self.geometry_types = []
@@ -29,54 +57,77 @@ class OTLClassCreator(AbstractDatatypeCreator):
             self.geometry_types = gip.process_inheritances()
 
     def create_blocks_to_write_from_classes(self, oslo_class: OSLOClass, model_location='',
-                                            class_validation_rules: Dict = {}) -> [str]:
-        if not isinstance(oslo_class, OSLOClass):
-            raise ValueError("Input is not a OSLOClass")
-
-        if oslo_class.objectUri == '':
-            raise ValueError(f"OSLOClass.objectUri is invalid (empty). Value = '{oslo_class.objectUri}'")
-
-        valid_uri_and_types = class_validation_rules.get('valid_uri_and_types')
-
-        if valid_uri_and_types is None:
-            valid_uri_and_types = {}
-
-        if oslo_class.objectUri in valid_uri_and_types.keys():
-            pass
-        else:
-            for regex in class_validation_rules.get('valid_regexes', []):
-                if re.match(pattern=regex, string=oslo_class.objectUri):
-                    break
-            else:
-                raise ValueError(
-                    f"OSLOClass.objectUri is invalid. It's not included in valid_uri_and_types of class_validation_rules"
-                    f" or doesn't match one of valid regex in class_validation_rules. Value = '{oslo_class.objectUri}'")
-
-        if oslo_class.name == '':
-            raise ValueError(f"OSLOClass.name is invalid (empty). Value = '{oslo_class.name}'")
-
+                                            class_validation_rules: dict | None = None) -> list[str]:
+        valid_uri_and_types = self._validate_class(oslo_class, class_validation_rules)
         return self.create_block_from_class(oslo_class, model_location, valid_uri_and_types=valid_uri_and_types)
 
     def create_block_from_class(self, oslo_class: OSLOClass, model_location: str = '',
-                                valid_uri_and_types: Dict = None) -> [str]:
+                                valid_uri_and_types: dict | None = None) -> list[str]:
         if valid_uri_and_types is None:
             valid_uri_and_types = {}
         attributen = self.oslo_collector.find_attributes_by_class(oslo_class)
         inheritances = self.oslo_collector.find_inheritances_by_class(oslo_class)
         list_of_geometry_types = self.get_geometry_types_from_uri(oslo_class.objectUri)
 
+        rust_block = self._create_block_with_rust(oslo_class, attributen, inheritances, list_of_geometry_types,
+                                                  valid_uri_and_types)
+        if rust_block is not None:
+            return rust_block
+        return self._create_block_with_python(oslo_class, attributen, inheritances, list_of_geometry_types,
+                                              valid_uri_and_types)
+
+    def _validate_class(self, oslo_class: OSLOClass, class_validation_rules: dict | None) -> dict:
+        """Check the class and return the valid uri and types of the class validation rules."""
+        self._ensure_oslo_class(oslo_class)
+
+        if oslo_class.objectUri == '':
+            raise ValueError(f"OSLOClass.objectUri is invalid (empty). Value = '{oslo_class.objectUri}'")
+
+        rules = class_validation_rules if class_validation_rules is not None else {}
+        valid_uri_and_types = self._get_valid_uri_and_types(rules)
+        if not self._is_valid_uri(oslo_class.objectUri, valid_uri_and_types, rules.get('valid_regexes', [])):
+            raise ValueError(
+                f"OSLOClass.objectUri is invalid. It's not included in valid_uri_and_types of class_validation_rules"
+                f" or doesn't match one of valid regex in class_validation_rules. Value = '{oslo_class.objectUri}'")
+
+        if oslo_class.name == '':
+            raise ValueError(f"OSLOClass.name is invalid (empty). Value = '{oslo_class.name}'")
+
+        return valid_uri_and_types
+
+    @staticmethod
+    def _ensure_oslo_class(oslo_class) -> None:
+        if not isinstance(oslo_class, OSLOClass):
+            raise TypeError("Input is not a OSLOClass")
+
+    @staticmethod
+    def _get_valid_uri_and_types(rules: dict) -> dict:
+        valid_uri_and_types = rules.get('valid_uri_and_types')
+        if valid_uri_and_types is None:
+            return {}
+        return valid_uri_and_types
+
+    @staticmethod
+    def _is_valid_uri(object_uri: str, valid_uri_and_types: dict, valid_regexes: list[str]) -> bool:
+        if object_uri in valid_uri_and_types:
+            return True
+        return any(re.match(pattern=regex, string=object_uri) for regex in valid_regexes)
+
+    def _create_block_with_rust(self, oslo_class: OSLOClass, attributen, inheritances, list_of_geometry_types,
+                                valid_uri_and_types: dict) -> list[str] | None:
+        """Create the class with the rust implementation; None when the rust implementation is not available."""
         try:
-            from otlmow_modelbuilder._otlmow_modelbuilder_rs import create_block_from_class as rust_create
-            type_links = [(t.item_uri, t.item_tabel) for t in self.oslo_collector.typeLinks]
-            enumerations = [(e.objectUri, e.name) for e in self.oslo_collector.enumerations]
-            complex_datatypes = [(c.objectUri, c.name) for c in self.oslo_collector.complex_datatypes]
-            union_datatypes = [(u.objectUri, u.name) for u in self.oslo_collector.union_datatypes]
+            from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+                create_block_from_class as rust_create,
+            )
+            type_links = self._collect_type_links()
+            enumerations = self._collect_enumerations()
+            complex_datatypes = self._collect_complex_datatypes()
+            union_datatypes = self._collect_union_datatypes()
             inheritance_map = self.oslo_collector.get_inheritance_map().get(oslo_class.objectUri, [])
             relations = self.oslo_collector.find_all_relations(oslo_class.objectUri, allow_duplicates=False)
-            inh_list = [(i.base_name, i.base_uri, i.class_uri, i.class_name, i.deprecated_version)
-                        for i in inheritances]
-            rel_list = [(r.bron_uri, r.doel_uri, r.objectUri, r.richting, r.deprecated_version)
-                        for r in relations]
+            inh_list = self._to_inheritance_list(inheritances)
+            rel_list = self._to_relation_list(relations)
             return rust_create(
                 [a for a in attributen],
                 inh_list,
@@ -94,72 +145,40 @@ class OTLClassCreator(AbstractDatatypeCreator):
                 oslo_class.abstract,
                 oslo_class.deprecated_version,
                 self.__class__.__name__)
-        except Exception:
-            pass
+        except ImportError:
+            return None
 
+    def _collect_type_links(self):
+        return [(t.item_uri, t.item_tabel) for t in self.oslo_collector.typeLinks]
+
+    def _collect_enumerations(self):
+        return [(e.objectUri, e.name) for e in self.oslo_collector.enumerations]
+
+    def _collect_complex_datatypes(self):
+        return [(c.objectUri, c.name) for c in self.oslo_collector.complex_datatypes]
+
+    def _collect_union_datatypes(self):
+        return [(u.objectUri, u.name) for u in self.oslo_collector.union_datatypes]
+
+    @staticmethod
+    def _to_inheritance_list(inheritances):
+        return [(i.base_name, i.base_uri, i.class_uri, i.class_name, i.deprecated_version)
+                for i in inheritances]
+
+    @staticmethod
+    def _to_relation_list(relations):
+        return [(r.bron_uri, r.doel_uri, r.objectUri, r.richting, r.deprecated_version)
+                for r in relations]
+
+    def _create_block_with_python(self, oslo_class: OSLOClass, attributen, inheritances, list_of_geometry_types,
+                                  valid_uri_and_types: dict) -> list[str]:
         datablock = ['# coding=utf-8']
-        if len(attributen) > 0:
-            if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
-                datablock.append('from ..BaseClasses.OTLObject import OTLAttribuut')
-            else:
-                datablock.append('from ...BaseClasses.OTLObject import OTLAttribuut')
-
-        if oslo_class.abstract == 1:
-            if len(inheritances) + len(list_of_geometry_types) < 1:
-                datablock.append('from abc import abstractmethod, ABC')
-            else:
-                datablock.append('from abc import abstractmethod')
-
-        if len(inheritances) > 0:
-            for inheritance in inheritances:
-                if inheritance.base_name in ['OTLAsset', 'OTLObject', 'RelationInteractor', 'DavieRelatieAttributes']:
-                    if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
-                        datablock.append(
-                            f'from ..BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
-                    else:
-                        datablock.append(
-                            f'from ...BaseClasses.{inheritance.base_name} import {inheritance.base_name}')
-                else:
-                    class_directory = 'Classes'
-                    ns = None
-                    if inheritance.base_uri != 'http://purl.org/dc/terms/Agent':
-                        ns, name = get_ns_and_name_from_uri(inheritance.base_uri)
-                    if ns is not None:
-                        class_directory = get_class_directory_from_ns(ns).replace('/', '.')
-
-                    if inheritance.class_name == 'Agent' and inheritance.base_name in {'AIMDBStatus', 'AIMVersie'}:
-                        datablock.append(f'from ..{class_directory}.{inheritance.base_name} '
-                                         f'import {inheritance.base_name}')
-                    else:
-                        datablock.append(f'from ...{class_directory}.{inheritance.base_name} '
-                                     f'import {inheritance.base_name}')
-
-        if any(atr.readonly == 1 for atr in attributen):
-            raise NotImplementedError("readonly property is assumed to be 0 on value fields")
-
-        list_of_fields = get_fields_to_import_from_list_of_attributes(oslo_collector=self.oslo_collector,
-                                                                      attributen=attributen,
-                                                                      valid_uri_and_types=valid_uri_and_types)
-        base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
-                       'IntegerField', 'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField',
-                       'NonNegIntegerField', 'TimeField', 'StringField', 'UnionWaarden']
-        for type_field in list_of_fields:
-            if type_field not in base_fields:
-                if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
-                    datablock.append(f'from ..Datatypes.{type_field} import {type_field}')
-                else:
-                    datablock.append(f'from ...Datatypes.{type_field} import {type_field}')
-            else:
-                if oslo_class.objectUri == 'http://purl.org/dc/terms/Agent':
-                    datablock.append(f'from ..BaseClasses.{type_field} import {type_field}')
-                else:
-                    datablock.append(f'from ...BaseClasses.{type_field} import {type_field}')
-
-        if 'Bevestiging' in oslo_class.objectUri:
-            pass
-
-        for geometry_type in list_of_geometry_types:
-            datablock.append(f'from ...GeometrieTypes.{geometry_type} import {geometry_type}')
+        self._add_attribute_import(datablock, oslo_class, attributen)
+        self._add_abstract_import(datablock, oslo_class, inheritances, list_of_geometry_types)
+        self._add_inheritance_imports(datablock, oslo_class, inheritances)
+        self._check_readonly(attributen)
+        self._add_field_imports(datablock, oslo_class, attributen, valid_uri_and_types)
+        self._add_geometry_imports(datablock, list_of_geometry_types)
 
         datablock.append('')
         datablock.append('')
@@ -170,6 +189,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
                                                                          geometry_types=list_of_geometry_types))
         datablock.append(f'    """{oslo_class.definition}"""')
         datablock.append('')
+
         datablock.append(f"    typeURI = '{oslo_class.objectUri}'")
         datablock.append('    """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""')
 
@@ -189,89 +209,151 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         add_attributen_to_data_block(oslo_collector=self.oslo_collector, attributen=attributen, datablock=datablock,
                                      for_class_use=True, valid_uri_and_types=valid_uri_and_types)
+        self._finalize_datablock(datablock, inheritances, attributen)
+
+        return datablock
+
+    @staticmethod
+    def _finalize_datablock(datablock, inheritances, attributen):
         if len(inheritances) == 0 and len(attributen) == 0:
             datablock.append('        pass')
 
         if datablock[-1] == '':
             datablock.pop()
 
-        return datablock
+    @staticmethod
+    def _import_prefix(oslo_class: OSLOClass) -> str:
+        """The Agent class lives one level higher in the package than the other classes."""
+        return '..' if oslo_class.objectUri == AGENT_OBJECT_URI else '...'
 
-    def get_class_line_from_class_and_inheritances(self, oslo_class: OSLOClass, inheritances: [Inheritance],
-                                                   geometry_types: [GeometrieType]) -> str:
+    def _add_attribute_import(self, datablock, oslo_class, attributen):
+        if len(attributen) > 0:
+            datablock.append(f'from {self._import_prefix(oslo_class)}BaseClasses.OTLObject import OTLAttribuut')
+
+    def _add_abstract_import(self, datablock, oslo_class, inheritances, list_of_geometry_types):
+        if oslo_class.abstract == 1:
+            if len(inheritances) + len(list_of_geometry_types) < 1:
+                datablock.append('from abc import abstractmethod, ABC')
+            else:
+                datablock.append('from abc import abstractmethod')
+
+    def _add_inheritance_imports(self, datablock, oslo_class, inheritances):
+        if len(inheritances) == 0:
+            return
+        for inheritance in inheritances:
+            if inheritance.base_name in BASE_CLASS_NAMES:
+                datablock.append(f'from {self._import_prefix(oslo_class)}BaseClasses.{inheritance.base_name} '
+                                 f'import {inheritance.base_name}')
+            else:
+                class_directory = self._get_class_directory_of_inheritance(inheritance)
+                prefix = '..' if self._is_agent_inheritance(inheritance) else '...'
+                datablock.append(f'from {prefix}{class_directory}.{inheritance.base_name} '
+                                 f'import {inheritance.base_name}')
+
+    @staticmethod
+    def _is_agent_inheritance(inheritance: Inheritance) -> bool:
+        return inheritance.class_name == 'Agent' and inheritance.base_name in {'AIMDBStatus', 'AIMVersie'}
+
+    @staticmethod
+    def _get_class_directory_of_inheritance(inheritance: Inheritance) -> str:
+        class_directory = 'Classes'
+        if inheritance.base_uri != AGENT_OBJECT_URI:
+            ns, _ = get_ns_and_name_from_uri(inheritance.base_uri)
+            if ns is not None:
+                class_directory = get_class_directory_from_ns(ns).replace('/', '.')
+        return class_directory
+
+    def _check_readonly(self, attributen):
+        if any(atr.readonly == 1 for atr in attributen):
+            raise NotImplementedError("readonly property is assumed to be 0 on value fields")
+
+    def _add_field_imports(self, datablock, oslo_class, attributen, valid_uri_and_types):
+        list_of_fields = get_fields_to_import_from_list_of_attributes(oslo_collector=self.oslo_collector,
+                                                                      attributen=attributen,
+                                                                      valid_uri_and_types=valid_uri_and_types)
+        prefix = self._import_prefix(oslo_class)
+        for type_field in list_of_fields:
+            module = 'BaseClasses' if type_field in BASE_FIELD_NAMES else 'Datatypes'
+            datablock.append(f'from {prefix}{module}.{type_field} import {type_field}')
+
+    def _add_geometry_imports(self, datablock, list_of_geometry_types):
+        for geometry_type in list_of_geometry_types:
+            datablock.append(f'from ...GeometrieTypes.{geometry_type} import {geometry_type}')
+
+    def get_class_line_from_class_and_inheritances(self, oslo_class: OSLOClass, inheritances: list[Inheritance],
+                                                   geometry_types: list[GeometrieType]) -> str:
         if oslo_class.abstract + len(inheritances) + len(geometry_types) < 1:
             raise NotImplementedError(f"{oslo_class.objectUri} class structure not implemented")
         if oslo_class.abstract == 1 and len(inheritances) + len(geometry_types) < 1:
             return f'class {oslo_class.name}(ABC):'
         if len(inheritances) + len(geometry_types) > 0:
-            line = f'class {oslo_class.name}('
-            map_inh_list = self.oslo_collector.get_inheritance_map()[oslo_class.objectUri]
-            if len(map_inh_list) != len(inheritances):
-                raise ValueError(f"Could not find all inheritances for {oslo_class.objectUri}. "
-                                 f"Found {len(inheritances)}, expected {len(map_inh_list)}")
-            for inh_uri in map_inh_list:
-                inheritance = next((i for i in inheritances if i.base_uri == inh_uri), None)
-                if inheritance is None:
-                    raise ValueError(f"Could not find inheritance for {inh_uri} in {oslo_class.objectUri}")
-                line += inheritance.base_name + ', '
-            for geometry_type in geometry_types:
-                line += geometry_type + ', '
-            line = line[:-2]
-            line += '):'
-            return line
+            base_names = self._get_base_names_in_order(oslo_class, inheritances) + list(geometry_types)
+            return f"class {oslo_class.name}({', '.join(base_names)}):"
 
         raise NotImplementedError(f"{oslo_class.objectUri} class structure not implemented")
 
-    def get_geometry_types_from_uri(self, object_uri: str) -> [str]:
-        if len(self.geometry_types) == 0:
-            return []
+    def _get_base_names_in_order(self, oslo_class: OSLOClass, inheritances: list[Inheritance]) -> list[str]:
+        """The base classes in the order of the inheritance map of the class."""
+        map_inh_list = self.oslo_collector.get_inheritance_map()[oslo_class.objectUri]
+        if len(map_inh_list) != len(inheritances):
+            raise ValueError(f"Could not find all inheritances for {oslo_class.objectUri}. "
+                             f"Found {len(inheritances)}, expected {len(map_inh_list)}")
+        base_names = []
+        for inh_uri in map_inh_list:
+            inheritance = self._find_inheritance_by_uri(inheritances, inh_uri, oslo_class.objectUri)
+            base_names.append(inheritance.base_name)
+        return base_names
 
-        geom_type = next((g for g in self.geometry_types if g.objectUri == object_uri), None)
+    @staticmethod
+    def _find_inheritance_by_uri(inheritances, inh_uri, object_uri):
+        inheritance = next((i for i in inheritances if i.base_uri == inh_uri), None)
+        if inheritance is None:
+            raise ValueError(f"Could not find inheritance for {inh_uri} in {object_uri}")
+        return inheritance
+
+    def get_geometry_types_from_uri(self, object_uri: str) -> list[str]:
+        geom_type = self._find_geometry_type(object_uri)
         if geom_type is None:
             return []
+        return [name for flag, name in GEOMETRY_TYPE_FLAGS if getattr(geom_type, flag) == 1]
 
-        geom_types = []
-        if geom_type.geen_geometrie == 1:
-            geom_types.append('GeenGeometrie')
-        if geom_type.punt3D == 1:
-            geom_types.append('PuntGeometrie')
-        if geom_type.lijn3D == 1:
-            geom_types.append('LijnGeometrie')
-        if geom_type.polygoon3D == 1:
-            geom_types.append('VlakGeometrie')
+    def _find_geometry_type(self, object_uri: str):
+        if len(self.geometry_types) == 0:
+            return None
+        return next((g for g in self.geometry_types if g.objectUri == object_uri), None)
 
-        return geom_types
-
-    def add_relations_to_datablock(self, datablock: [str], object_uri: str) -> None:
+    def add_relations_to_datablock(self, datablock: list[str], object_uri: str) -> None:
         relations = self.oslo_collector.find_all_relations(object_uri, allow_duplicates=False)
         if len(relations) == 0:
             return
 
         for relation in relations:
-            deprecated = ''
-            if relation.deprecated_version != '':
-                relation.deprecated_version = relation.deprecated_version.split('-')[0]
-                deprecated = f", deprecated='{relation.deprecated_version}'"
-            if relation.richting == 'Unspecified':
-                direction = 'u' # u = unidirectional
-                direction_comment = '# u = unidirectional'
-                if relation.bron_uri == object_uri:
-                    target_uri = relation.doel_uri
-                else:
-                    target_uri = relation.bron_uri
-            elif relation.bron_uri == object_uri:
-                direction = 'o' # o = direction: outgoing
-                direction_comment = '# o = direction: outgoing'
-                target_uri = relation.doel_uri
-            else:
-                direction = 'i' # i = direction: incoming
-                direction_comment = '# i = direction: incoming'
-                target_uri = relation.bron_uri
-
+            deprecated = self._get_deprecated_argument(relation)
+            direction, target_uri, direction_comment = self._get_direction_and_target(relation, object_uri)
             datablock.append(
                 f"        self.add_valid_relation(relation='{relation.objectUri}', target='{target_uri}', "
                 f"direction='{direction}'{deprecated})  {direction_comment}")
         datablock.append('')
+
+    @staticmethod
+    def _get_deprecated_argument(relation) -> str:
+        if relation.deprecated_version == '':
+            return ''
+        relation.deprecated_version = relation.deprecated_version.split('-')[0]
+        return f", deprecated='{relation.deprecated_version}'"
+
+    def _get_direction_and_target(self, relation, object_uri: str):
+        """The direction of the relation and the uri of the other side of the relation."""
+        if relation.richting == 'Unspecified':
+            direction = 'u'
+            target_uri = relation.doel_uri if relation.bron_uri == object_uri else relation.bron_uri
+        elif relation.bron_uri == object_uri:
+            direction = 'o'
+            target_uri = relation.doel_uri
+        else:
+            direction = 'i'
+            target_uri = relation.bron_uri
+        return direction, target_uri, RELATION_DIRECTION_COMMENTS[direction]
 
     relation_interactor_uris = {
         'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie',

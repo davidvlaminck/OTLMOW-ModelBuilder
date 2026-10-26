@@ -13,9 +13,9 @@ class UnionWaarden(WaardenObject):
             if attribute.naam == prop_name:
                 continue
             if attribute.field.waardeObject is not None and not attribute.field.waarde_shortcut_applicable:
-                setattr(attribute.waarde, 'waarde', None)
+                attribute.waarde.waarde = None
             else:
-                setattr(attribute, 'waarde', None)
+                attribute.waarde = None
 
     def __iter__(self):
         yield from super().__iter__()

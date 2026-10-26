@@ -2,12 +2,18 @@ import os
 from pathlib import Path
 from unittest import skip
 
-from UnitTests.OTLClassCreator_test import set_up_real_collector_and_creator
-from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent, add_attributen_to_data_block, \
-    get_fields_to_import_from_list_of_attributes, write_to_file
+from otlmow_modelbuilder.GenericBuilderFunctions import (
+    add_attributen_to_data_block,
+    get_fields_to_import_from_list_of_attributes,
+    get_white_space_equivalent,
+    write_to_file,
+)
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import OSLODatatypeComplexAttribuut
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import (
+    OSLODatatypeComplexAttribuut,
+)
+from UnitTests.OTLClassCreator_test import set_up_real_collector_and_creator
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -100,10 +106,10 @@ def test_add_attributen_to_dataBlock_StringField():
         '        self._testStringField = OTLAttribuut(field=StringField,',
         "                                             naam='testStringField',",
         "                                             label='Test StringField',",
-        '                                             '
-        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testStringField',",
-        "                                             definition='Test attribuut voor "
-        "StringField',",
+        ('                                             '
+        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testStringField',"),
+        ("                                             definition='Test attribuut voor "
+        "StringField',"),
         '                                             owner=self)',
         '',
         '    @property',
@@ -127,10 +133,10 @@ def test_add_attributen_to_dataBlock_DteField():
         '        self._testEenvoudigType = OTLAttribuut(field=DteTestEenvoudigType,',
         "                                               naam='testEenvoudigType',",
         "                                               label='Test EenvoudigType',",
-        '                                               '
-        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testEenvoudigType',",
-        "                                               definition='Test attribuut "
-        "voor een eenvoudige waarde',",
+        ('                                               '
+        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testEenvoudigType',"),
+        ("                                               definition='Test attribuut "
+        "voor een eenvoudige waarde',"),
         '                                               owner=self)',
         '',
         '    @property',
@@ -154,10 +160,10 @@ def test_add_attributen_to_dataBlock_KwantWrd():
         '        self._testKwantWrd = OTLAttribuut(field=KwantWrdTest,',
         "                                          naam='testKwantWrd',",
         "                                          label='Test KwantWrd',",
-        '                                          '
-        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testKwantWrd',",
-        "                                          definition='Test attribuut voor "
-        "een kwantitatieve waarde',",
+        ('                                          '
+        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testKwantWrd',"),
+        ("                                          definition='Test attribuut voor "
+        "een kwantitatieve waarde',"),
         '                                          owner=self)',
         '',
         '    @property',
@@ -181,17 +187,17 @@ def test_add_attributen_to_data_block_DtcAdres():
         '        self._assetId = OTLAttribuut(field=DtcIdentificator,',
         "                                     naam='assetId',",
         "                                     label='asset-id',",
-        '                                     '
-        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject.assetId',",
-        "                                     definition='Unieke identificatie van de "
+        ('                                     '
+        "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject.assetId',"),
+        ("                                     definition='Unieke identificatie van de "
         'asset zoals toegekend door de assetbeheerder of n.a.v. eerste aanlevering '
-        "door de leverancier.',",
+        "door de leverancier.',"),
         '                                     owner=self)',
         '',
         '    @property',
         '    def assetId(self) -> DtcIdentificatorWaarden:',
-        '        """Unieke identificatie van de asset zoals toegekend door de '
-        'assetbeheerder of n.a.v. eerste aanlevering door de leverancier."""',
+        ('        """Unieke identificatie van de asset zoals toegekend door de '
+        'assetbeheerder of n.a.v. eerste aanlevering door de leverancier."""'),
         '        return self._assetId.get_waarde()',
         '',
         '    @assetId.setter',

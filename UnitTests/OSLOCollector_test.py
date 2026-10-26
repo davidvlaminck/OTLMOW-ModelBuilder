@@ -1,11 +1,11 @@
 from pathlib import Path
 
 import pytest
+
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
 from otlmow_modelbuilder.SQLDataClasses.OSLORelatie import OSLORelatie
-
 
 # see collector_relations_with_inheritances.png for a visual representation of the relations
 
@@ -161,7 +161,24 @@ def test_find_all_concrete_relations(oslo_collector, objectUri, allow_duplicates
     assert result == expected, f"Failed test case: {test_id}"
 
 
-def test_find_all_concrete_relations_input_not_concrete(oslo_collector):
+@pytest.mark.parametrize('objectUri, sort_by_uri, expected_uris, test_id', [
+    ('A', True, ['R1'], 'A_sorted'),
+    ('A', False, ['R1'], 'A_unsorted'),
+    ('B', True, ['R2', 'R3', 'R5'], 'B_sorted'),
+    ('B', False, ['R2', 'R3', 'R5'], 'B_unsorted'),
+    ('F', True, ['R3'], 'F_sorted'),
+    ('F', False, ['R3'], 'F_unsorted'),
+    ('G', True, ['R4', 'R5'], 'G_sorted'),
+    ('G', False, ['R4', 'R5'], 'G_unsorted'),
+    ('Z', True, [], 'unknown_sorted'),
+    ('Z', False, [], 'unknown_unsorted'),
+])
+def test_find_outgoing_relations(oslo_collector, objectUri, sort_by_uri, expected_uris, test_id):
+    result = oslo_collector.find_outgoing_relations(objectUri, sort_by_uri=sort_by_uri)
+    assert [r.objectUri for r in result] == expected_uris, f"Failed test case: {test_id}"
+
+
+def test_find_outgoing_relations_input_not_concrete(oslo_collector):
     with pytest.raises(ValueError):
         oslo_collector.find_all_concrete_relations('A')
     with pytest.raises(ValueError):
@@ -205,3 +222,74 @@ def test_get_inheritance_map_examples():
     assert inheritance_map["N"] == ["J"]
     assert inheritance_map["L"] == ["N"]
     assert inheritance_map["M"] == ["K", "L", "J"]
+
+
+def test_build_lookup_maps_pinned_behaviour():
+    """The lookup maps are built from the relations, attributes and inheritances."""
+    collector = OSLOCollector(Path(''))
+    collector.relations = [r1, r2, r3a, r5a, r5b]
+    collector.attributes = []
+    collector.inheritances = []
+
+    collector._build_lookup_maps()
+
+    # bron_uri always indexes the relation
+    assert collector._relations_by_uri['A'] == [r1]
+    assert collector._relations_by_uri['B'] == [r2, r3a, r5a]
+    # a directional relation is also indexed under doel_uri
+    assert collector._relations_by_uri['I'] == [r1]
+    # an Unspecified relation is only indexed under bron_uri, not doel_uri
+    assert collector._relations_by_uri['G'] == [r5b]
+
+
+def test_build_lookup_maps_skipped_when_no_relations():
+    """Without relations, the lookup maps are left as None."""
+    collector = OSLOCollector(Path(''))
+    collector.relations = []
+    collector.attributes = []
+    collector.inheritances = []
+
+    collector._build_lookup_maps()
+
+    assert collector._relations_by_uri is None
+    assert collector._attributes_by_class_uri is None
+    assert collector._inheritances_by_class_uri is None
+
+
+def test_find_all_indirect_inheritances_pinned_behaviour():
+    """The indirect inheritances are collected recursively and sorted by base_uri."""
+    oslo_collector = OSLOCollector(Path(''))
+    oslo_collector.inheritances = [
+        Inheritance(base_uri="A", class_uri="B"),
+        Inheritance(base_uri="B", class_uri="C"),
+    ]
+
+    result = oslo_collector.find_all_indirect_inheritances_by_class_uri("C", sort_by_uri=True)
+    assert [i.base_uri for i in result] == ["A", "B"]
+
+    unsorted = oslo_collector.find_all_indirect_inheritances_by_class_uri("C", sort_by_uri=False)
+    assert len(unsorted) == 2
+
+    assert oslo_collector.find_all_indirect_inheritances_by_class_uri("A") == []
+    assert oslo_collector.find_all_indirect_inheritances_by_class_uri("Z") == []
+    assert oslo_collector.find_all_indirect_inheritances_by_class_uri("") == []
+
+
+def test_find_indirect_subclasses_pinned_behaviour():
+    """The indirect subclasses are collected recursively and sorted."""
+    oslo_collector = OSLOCollector(Path(''))
+    oslo_collector.inheritances = [
+        Inheritance(base_uri="A", class_uri="B"),
+        Inheritance(base_uri="A", class_uri="C"),
+        Inheritance(base_uri="B", class_uri="D"),
+        Inheritance(base_uri="C", class_uri="E"),
+    ]
+
+    result = oslo_collector.find_indirect_subclasses_uri_by_class_uri("A", sort_by_uri=True)
+    assert result == ["B", "C", "D", "E"]
+
+    unsorted = oslo_collector.find_indirect_subclasses_uri_by_class_uri("A", sort_by_uri=False)
+    assert set(unsorted) == {"B", "C", "D", "E"}
+
+    assert oslo_collector.find_indirect_subclasses_uri_by_class_uri("Z") == []
+    assert oslo_collector.find_indirect_subclasses_uri_by_class_uri("") == []

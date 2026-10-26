@@ -1,32 +1,34 @@
-﻿import importlib
+﻿from __future__ import annotations
+
+import importlib
 import math
 import random
 import sys
 import warnings
-from datetime import date, time
-from datetime import datetime
+from collections.abc import Iterator
+from datetime import date, datetime, time
 from pathlib import Path
-from typing import Union, Dict, List, Generator, TypeVar, Type
+from typing import TypeVar
 
-from .DateTimeField import DateTimeField
-from .OTLField import OTLField
-from .URIField import URIField
-from .UnionTypeField import UnionTypeField
-from .UnionWaarden import UnionWaarden
 from ..Exceptions.AttributeDeprecationWarning import AttributeDeprecationWarning
 from ..Exceptions.CanNotClearAttributeError import CanNotClearAttributeError
 from ..Exceptions.ClassDeprecationWarning import ClassDeprecationWarning
 from ..Exceptions.CouldNotCreateInstanceError import CouldNotCreateInstanceError
 from ..Exceptions.MethodNotApplicableError import MethodNotApplicableError
 from ..Exceptions.NonStandardAttributeWarning import NonStandardAttributeWarning
-from ..Helpers.GenericHelper import get_titlecase_from_ns
 from ..Helpers.generated_lists import get_hardcoded_class_dict
+from ..Helpers.GenericHelper import get_titlecase_from_ns
+from .DateTimeField import DateTimeField
+from .OTLField import OTLField
+from .UnionTypeField import UnionTypeField
+from .UnionWaarden import UnionWaarden
+from .URIField import URIField
 
 
 class OTLAttribuut:
     def __init__(self, naam: str = '', label: str = '', objectUri: str = '', definition: str = '',
                  constraints: str = '', usagenote: str = '', deprecated_version: str = '', kardinaliteit_min: str = '1',
-                 kardinaliteit_max: str = '1', field: Type[OTLField] = OTLField, readonly: bool = False,
+                 kardinaliteit_max: str = '1', field: type[OTLField] = OTLField, readonly: bool = False,
                  readonlyValue=None, owner=None):
         super().__init__()
         self.naam: str = naam
@@ -45,7 +47,7 @@ class OTLAttribuut:
         self.mark_to_be_cleared: bool = False
         self.waarde = None
         self.is_otl_attribute: bool = True
-        self.field: Type[OTLField] = field
+        self.field: type[OTLField] = field
 
         if self.field.waardeObject:
             def add_empty_value():
@@ -284,13 +286,13 @@ class OTLAttribuut:
 T = TypeVar('T', bound='OTLObject')
 
 
-class OTLObject(object):
+class OTLObject:
     typeURI: str = None
     """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""
 
     def __setattr__(self, name, value):
         if name != 'typeURI':
-            super(OTLObject, self).__setattr__(name, value)
+            super().__setattr__(name, value)
         else:
             if hasattr(self, 'typeURI') and (value is not None or self.typeURI is not None):
                 raise ValueError("The typeURI is an OSLOAttribute that indicates the class of the instance. "
@@ -325,7 +327,7 @@ class OTLObject(object):
 
     def create_dict_from_asset(self, waarde_shortcut: bool = False, rdf: bool = False, cast_datetime: bool = False,
                                warn_for_non_otl_conform_attributes: bool = True,
-                               allow_non_otl_conform_attributes: bool = True, ) -> Dict:
+                               allow_non_otl_conform_attributes: bool = True, ) -> dict:
         """Converts this asset into a dictionary representation. This is now deprecated, use to_dict instead.
 
         :param waarde_shortcut: whether to use the waarde shortcut when processing the dictionary, defaults to False
@@ -357,7 +359,7 @@ class OTLObject(object):
     def __repr__(self):
         return build_string_version(asset=self)
 
-    def __iter__(self) -> Generator[OTLAttribuut, None, None]:
+    def __iter__(self) -> Iterator[OTLAttribuut]:
         yield from sorted(filter(lambda v: isinstance(v, OTLAttribuut), (vars(self).values())), key=lambda x: x.naam)
 
     def __eq__(self, value) -> bool:
@@ -366,13 +368,13 @@ class OTLObject(object):
         return (create_dict_from_asset(self, warn_for_non_otl_conform_attributes=False) ==
                 create_dict_from_asset(value, warn_for_non_otl_conform_attributes=False))
 
-    def is_instance_of(self, otl_type: type, dynamic_created: bool = False, model_directory: Path = None):
+    def is_instance_of(self, otl_type: type, dynamic_created: bool = False, model_directory: Path | None = None):
         if dynamic_created:
             if model_directory is None:
                 current_file_path = Path(__file__)
                 model_directory = current_file_path.parent.parent.parent
             try:
-                otl_type_typeURI = getattr(otl_type, 'typeURI')
+                otl_type_typeURI = otl_type.typeURI
             except AttributeError:
                 return False
             dynamic_created_type = dynamic_create_type_from_uri(otl_type_typeURI, model_directory=model_directory)
@@ -383,7 +385,7 @@ class OTLObject(object):
             return True
 
         try:
-            otl_type_typeURI = getattr(otl_type, 'typeURI')
+            otl_type_typeURI = otl_type.typeURI
         except AttributeError:
             return False
 
@@ -393,7 +395,7 @@ class OTLObject(object):
         return issubclass(self.__class__, otl_type)
 
     @classmethod
-    def from_dict(cls: T, input_dict: Dict, model_directory: Path = None, rdf: bool = False,
+    def from_dict(cls: T, input_dict: dict, model_directory: Path | None = None, rdf: bool = False,
                   cast_datetime: bool = False, waarde_shortcut: bool = False,
                   allow_non_otl_conform_attributes: bool = True, warn_for_non_otl_conform_attributes: bool = True
                   ) -> T:
@@ -450,7 +452,7 @@ class OTLObject(object):
         return o
 
     def to_dict(self, rdf: bool = False, cast_datetime: bool = False, waarde_shortcut: bool = False,
-                allow_non_otl_conform_attributes: bool = True, warn_for_non_otl_conform_attributes: bool = True) -> Dict:
+                allow_non_otl_conform_attributes: bool = True, warn_for_non_otl_conform_attributes: bool = True) -> dict:
         """Converts this asset into a dictionary representation
 
         :param waarde_shortcut: whether to use the waarde shortcut when processing the dictionary, defaults to False
@@ -475,7 +477,7 @@ class OTLObject(object):
 
 def create_dict_from_asset(otl_object: OTLObject, waarde_shortcut=False, rdf: bool = False,
                            cast_datetime: bool = False, allow_non_otl_conform_attributes: bool = True,
-                           warn_for_non_otl_conform_attributes: bool = True) -> Dict:
+                           warn_for_non_otl_conform_attributes: bool = True) -> dict:
     """Creates a dictionary from an OTLObject with key value pairs for attributes and their values. Saves the type of the object in typeURI (or @type for the RDF dict)
 
     :param otl_object: input object to be transformed
@@ -514,10 +516,10 @@ def create_dict_from_asset(otl_object: OTLObject, waarde_shortcut=False, rdf: bo
 
 
 def _recursive_create_dict_from_asset(
-        asset: Union[OTLObject, OTLAttribuut, list, dict], waarde_shortcut: bool = False,
+        asset: OTLObject | OTLAttribuut | list | dict, waarde_shortcut: bool = False,
         cast_datetime: bool = False, warn_for_non_otl_conform_attributes: bool = True,
         allow_non_otl_conform_attributes: bool = True
-) -> Union[Dict, List[Dict]]:
+) -> dict | list[dict]:
     if isinstance(asset, list) and not isinstance(asset, dict):
         l = []
         for item in asset:
@@ -613,9 +615,9 @@ def _recursive_create_dict_from_asset(
 
 
 def _recursive_create_rdf_dict_from_asset(
-        asset: Union[OTLObject, OTLAttribuut, list, dict], waarde_shortcut: bool = False,
+        asset: OTLObject | OTLAttribuut | list | dict, waarde_shortcut: bool = False,
         cast_datetime: bool = False, allow_non_otl_conform_attributes: bool = True,
-        warn_for_non_otl_conform_attributes: bool = True) -> Union[Dict, List[Dict]]:
+        warn_for_non_otl_conform_attributes: bool = True) -> dict | list[dict]:
     if isinstance(asset, list) and not isinstance(asset, dict):
         l = []
         for item in asset:
@@ -733,7 +735,7 @@ def _recursive_create_rdf_dict_from_asset(
             return d
 
 
-def clean_dict(d) -> Union[Dict, None]:
+def clean_dict(d) -> dict | None:
     """Recursively remove None values and empty dicts from input dict"""
     if d is None:
         return None
@@ -757,7 +759,7 @@ def build_string_version(asset, indent: int = 4) -> str:
     return f'<{asset.__class__.__name__}> object\n{" " * indent}typeURI : {asset.typeURI}{string_version}'
 
 
-def _make_string_version_from_dict(d, level: int = 0, indent: int = 4, list_index: int = -1, prefix: str = '') -> List:
+def _make_string_version_from_dict(d, level: int = 0, indent: int = 4, list_index: int = -1, prefix: str = '') -> list:
     lines = []
 
     if list_index != -1:
@@ -769,9 +771,7 @@ def _make_string_version_from_dict(d, level: int = 0, indent: int = 4, list_inde
         if key == 'typeURI':
             continue
         value = d[key]
-        if isinstance(value, float) and value == 88888888.0:
-            value = '88888888 <value_marked_to_be_cleared>'
-        elif str(value) == '88888888':
+        if isinstance(value, float) and value == 88888888.0 or str(value) == '88888888':
             value = '88888888 <value_marked_to_be_cleared>'
 
         if isinstance(value, dict):
@@ -799,18 +799,18 @@ def _make_string_version_from_dict(d, level: int = 0, indent: int = 4, list_inde
     return lines
 
 
-def get_attribute_by_uri(instance_or_attribute, key: str) -> Union[OTLAttribuut, None]:
+def get_attribute_by_uri(instance_or_attribute, key: str) -> OTLAttribuut | None:
     return next((v for v in instance_or_attribute if v.objectUri == key), None)
 
 
-def get_attribute_by_name(instance_or_attribute, key: str) -> Union[OTLAttribuut, None]:
+def get_attribute_by_name(instance_or_attribute, key: str) -> OTLAttribuut | None:
     return getattr(instance_or_attribute, f'_{key}', None)
 
 
 # dict encoder = asset object to dict
 # dict decoder = dict to asset object
 
-def set_value_by_dictitem(instance_or_attribute: Union[OTLObject, OTLAttribuut], key: str, value,
+def set_value_by_dictitem(instance_or_attribute: OTLObject | OTLAttribuut, key: str, value,
                           waarde_shortcut: bool = False, rdf: bool = False, cast_datetime: bool = False,
                           allow_non_otl_conform_attributes: bool = True,
                           warn_for_non_otl_conform_attributes: bool = True):
@@ -892,7 +892,7 @@ def set_value_by_dictitem(instance_or_attribute: Union[OTLObject, OTLAttribuut],
         attribute_to_set.set_waarde(value)
 
 
-def dynamic_create_type_from_ns_and_name(namespace: str, class_name: str, model_directory: Path = None) -> type:
+def dynamic_create_type_from_ns_and_name(namespace: str, class_name: str, model_directory: Path | None = None) -> type:
     """Loads the OTL class module and attempts to return the type using the name and namespace of the class
 
     :param namespace: namespace of the class
@@ -941,7 +941,7 @@ def dynamic_create_type_from_ns_and_name(namespace: str, class_name: str, model_
 
 
 
-def dynamic_create_instance_from_ns_and_name(namespace: str, class_name: str, model_directory: Path = None) -> OTLObject:
+def dynamic_create_instance_from_ns_and_name(namespace: str, class_name: str, model_directory: Path | None = None) -> OTLObject:
     """Loads the OTL class module and attempts to instantiate the class using the name and namespace of the class.
     Caches imported modules for performance improvement.
 
@@ -959,7 +959,7 @@ def dynamic_create_instance_from_ns_and_name(namespace: str, class_name: str, mo
     return type_()
 
 
-def dynamic_create_instance_from_uri(class_uri: str, model_directory: Path = None) -> OTLObject:
+def dynamic_create_instance_from_uri(class_uri: str, model_directory: Path | None = None) -> OTLObject:
     """Loads the OTL class module and attempts to instantiate the class using the URI of the class.
 
     :param class_uri: URI of the class
@@ -973,7 +973,7 @@ def dynamic_create_instance_from_uri(class_uri: str, model_directory: Path = Non
     return type_()
 
 
-def dynamic_create_type_from_uri(class_uri: str, model_directory: Path = None) -> type:
+def dynamic_create_type_from_uri(class_uri: str, model_directory: Path | None = None) -> type:
     """Loads the OTL class module and attempts to return the type using the URI of the class.
 
     :param class_uri: URI of the class
@@ -1006,7 +1006,7 @@ def dynamic_create_type_from_uri(class_uri: str, model_directory: Path = None) -
 
 _imported_modules = {}
 
-def _create_type_from_class_dict_entry(class_dict_entry: Dict[str, str], model_directory: Path = None) -> type:
+def _create_type_from_class_dict_entry(class_dict_entry: dict[str, str], model_directory: Path | None = None) -> type:
     """Creates a type from a class dictionary entry.
 
     :param class_dict_entry: dictionary containing the class information

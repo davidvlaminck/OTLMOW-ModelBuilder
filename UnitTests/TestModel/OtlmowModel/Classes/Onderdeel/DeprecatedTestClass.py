@@ -1,4 +1,3 @@
-# coding=utf-8
 from ...Classes.ImplementatieElement.AIMObject import AIMObject
 from ...GeometrieTypes.VlakGeometrie import VlakGeometrie
 

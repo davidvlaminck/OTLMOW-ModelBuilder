@@ -7,7 +7,9 @@ import pytest
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
 from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatypeCreator
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import OSLODatatypePrimitive
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import (
+    OSLODatatypePrimitive,
+)
 from otlmow_modelbuilder.SQLDataClasses.OSLOTypeLink import OSLOTypeLink
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -102,13 +104,13 @@ def test_ValidOSLODatatypePrimitive():
              '',
              '# Generated with OTLPrimitiveDatatypeCreator. To modify: extend, do not edit',
              'class Boolean(OTLField):',
-             '    """Beschrijft een boolean volgens '
-             'http://www.w3.org/2001/XMLSchema#boolean."""',
+             ('    """Beschrijft een boolean volgens '
+             'http://www.w3.org/2001/XMLSchema#boolean."""'),
              "    naam = 'Boolean'",
              "    label = 'Boolean'",
              "    objectUri = 'http://www.w3.org/2001/XMLSchema#boolean'",
-             "    definition = 'Beschrijft een boolean volgens "
-             "http://www.w3.org/2001/XMLSchema#boolean.'",
+             ("    definition = 'Beschrijft een boolean volgens "
+             "http://www.w3.org/2001/XMLSchema#boolean.'"),
              "    usagenote = 'https://www.w3.org/TR/xmlschema-2/#boolean'",
              '    waarde_shortcut_applicable = True',
              '    waardeObject = BooleanWaarden',
@@ -161,8 +163,8 @@ expectedKwantWrd = ['# coding=utf-8',
                     '        self._standaardEenheid = OTLAttribuut(field=StringField,',
                     "                                              naam='standaardEenheid',",
                     "                                              label='standaard eenheid',",
-                    '                                              '
-                    "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTest.standaardEenheid',",
+                    ('                                              '
+                    "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTest.standaardEenheid',"),
                     '                                              usagenote=\'"%"^^cdt:ucumunit\',',
                     "                                              readonly=True,",
                     '                                              constraints=\'"%"^^cdt:ucumunit\',',
@@ -172,8 +174,8 @@ expectedKwantWrd = ['# coding=utf-8',
                     '        self._waarde = OTLAttribuut(field=FloatOrDecimalField,',
                     "                                    naam='waarde',",
                     "                                    label='waarde',",
-                    '                                    '
-                    "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTest.waarde',",
+                    ('                                    '
+                    "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTest.waarde',"),
                     "                                    definition='Bevat een getal die bij het datatype hoort.',",
                     '                                    owner=self)',
                     '',
@@ -197,8 +199,8 @@ expectedKwantWrd = ['# coding=utf-8',
                     '    """Een kwantitatieve waarde voor test doeleinden."""',
                     "    naam = 'KwantWrdTest'",
                     "    label = 'Kwantitatieve test waarde'",
-                    '    objectUri = '
-                    "'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTest'",
+                    ('    objectUri = '
+                    "'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#KwantWrdTest'"),
                     "    definition = 'Een kwantitatieve waarde voor test doeleinden.'",
                     '    waarde_shortcut_applicable = True',
                     '    waardeObject = KwantWrdTestWaarden',
@@ -221,10 +223,10 @@ expectedDte = ['# coding=utf-8',
                '        self._waarde = OTLAttribuut(field=StringField,',
                "                                    naam='waarde',",
                "                                    label='waarde',",
-               '                                    '
-               "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DteTestEenvoudigType.waarde',",
-               "                                    definition='De string die het eenvoudige "
-               "test datatype voorstelt.',",
+               ('                                    '
+               "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DteTestEenvoudigType.waarde',"),
+               ("                                    definition='De string die het eenvoudige "
+               "test datatype voorstelt.',"),
                '                                    owner=self)',
                '',
                '    @property',
@@ -242,8 +244,8 @@ expectedDte = ['# coding=utf-8',
                '    """Beschrijft een tekst van een eenvoudig type."""',
                "    naam = 'DteTestEenvoudigType'",
                "    label = 'Test EenvoudigType'",
-               '    objectUri = '
-               "'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DteTestEenvoudigType'",
+               ('    objectUri = '
+               "'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DteTestEenvoudigType'"),
                "    definition = 'Beschrijft een tekst van een eenvoudig type.'",
                '    waarde_shortcut_applicable = True',
                '    waardeObject = DteTestEenvoudigTypeWaarden',

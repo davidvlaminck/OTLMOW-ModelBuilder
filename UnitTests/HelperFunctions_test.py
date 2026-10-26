@@ -1,7 +1,11 @@
 import pytest
 
-from otlmow_modelbuilder.HelperFunctions import get_ns_and_name_from_uri, get_class_directory_from_ns, wrap_in_quotes, \
-    escape_backslash
+from otlmow_modelbuilder.HelperFunctions import (
+    escape_backslash,
+    get_class_directory_from_ns,
+    get_ns_and_name_from_uri,
+    wrap_in_quotes,
+)
 
 
 def test_escape_backslash_empty_string():
@@ -162,6 +166,5 @@ def test_get_class_directory_from_ns(subtests):
             result_class_dir = get_class_directory_from_ns(ns)
             assert result_class_dir == class_dir
 
-    with subtests.test(msg='None'):
-        with pytest.raises(ValueError):
-            get_class_directory_from_ns(None)
+    with subtests.test(msg='None'), pytest.raises(ValueError):
+        get_class_directory_from_ns(None)

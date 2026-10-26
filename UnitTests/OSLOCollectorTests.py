@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 
 current_file_path = Path(__file__)
@@ -51,8 +52,11 @@ def test_find_indirect_superclasses_uri_by_class_uri_using_testmodel():
     ('', True, []),
 ])
 def test_rust_find_subclasses_matches_python(class_uri, sort_by_uri, expected):
+    from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+        find_subclasses_uri_by_class_uri as rust_find,
+    )
+
     from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
-    from otlmow_modelbuilder._otlmow_modelbuilder_rs import find_subclasses_uri_by_class_uri as rust_find
 
     rust_result = rust_find(str(test_classes_subset_location), class_uri, sort_by_uri)
     assert rust_result == expected
@@ -63,3 +67,18 @@ def test_rust_find_subclasses_matches_python(class_uri, sort_by_uri, expected):
     collector.inheritances = inheritances
     python_result = collector.find_subclasses_uri_by_class_uri(class_uri, sort_by_uri)
     assert python_result == expected
+
+
+def test_python_fallback_is_used_when_path_is_invalid():
+    """When the path is not a valid file, the rust extension is skipped and the python implementation is used."""
+    from otlmow_modelbuilder.OSLOInMemoryCreator import OSLOInMemoryCreator
+
+    collector = OSLOCollector(Path(''))
+    with OSLOInMemoryCreator(test_classes_subset_location) as creator:
+        collector.inheritances = creator.get_all_inheritances()
+
+    aim_object_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject'
+    result = collector.find_subclasses_uri_by_class_uri(aim_object_uri, sort_by_uri=True)
+    assert result == ['https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass',
+                      'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AnotherTestClass',
+                      'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#DeprecatedTestClass']

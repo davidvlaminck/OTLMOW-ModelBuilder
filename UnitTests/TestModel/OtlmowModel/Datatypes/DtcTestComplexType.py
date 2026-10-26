@@ -1,13 +1,15 @@
-# coding=utf-8
-from typing import List
-from ..BaseClasses.OTLObject import OTLAttribuut
-from ..BaseClasses.WaardenObject import WaardenObject
+
 from ..BaseClasses.BooleanField import BooleanField
 from ..BaseClasses.ComplexField import ComplexField
-from ..Datatypes.DtcTestComplexType2 import DtcTestComplexType2, DtcTestComplexType2Waarden
+from ..BaseClasses.OTLObject import OTLAttribuut
+from ..BaseClasses.StringField import StringField
+from ..BaseClasses.WaardenObject import WaardenObject
+from ..Datatypes.DtcTestComplexType2 import (
+    DtcTestComplexType2,
+    DtcTestComplexType2Waarden,
+)
 from ..Datatypes.KlTestKeuzelijst import KlTestKeuzelijst
 from ..Datatypes.KwantWrdTest import KwantWrdTest, KwantWrdTestWaarden
-from ..BaseClasses.StringField import StringField
 
 
 # Generated with OTLComplexDatatypeCreator. To modify: extend, do not edit
@@ -92,7 +94,7 @@ class DtcTestComplexTypeWaarden(WaardenObject):
         self._testComplexType2.set_waarde(value, owner=self._parent)
 
     @property
-    def testComplexType2MetKard(self) -> List[DtcTestComplexType2Waarden]:
+    def testComplexType2MetKard(self) -> list[DtcTestComplexType2Waarden]:
         """Test attribuut voor complexe waarde met kardinaliteit > 1 in een complex datatype."""
         return self._testComplexType2MetKard.get_waarde()
 
@@ -119,7 +121,7 @@ class DtcTestComplexTypeWaarden(WaardenObject):
         self._testKwantWrd.set_waarde(value, owner=self._parent)
 
     @property
-    def testKwantWrdMetKard(self) -> List[KwantWrdTestWaarden]:
+    def testKwantWrdMetKard(self) -> list[KwantWrdTestWaarden]:
         """Test attribuut voor Kwantitatieve waarde met kardinaliteit > 0 in een complex datatype."""
         return self._testKwantWrdMetKard.get_waarde()
 
@@ -137,7 +139,7 @@ class DtcTestComplexTypeWaarden(WaardenObject):
         self._testStringField.set_waarde(value, owner=self._parent)
 
     @property
-    def testStringFieldMetKard(self) -> List[str]:
+    def testStringFieldMetKard(self) -> list[str]:
         """Test attribuut voor tekst met kardinaliteit > 0 in een complex datatype."""
         return self._testStringFieldMetKard.get_waarde()
 

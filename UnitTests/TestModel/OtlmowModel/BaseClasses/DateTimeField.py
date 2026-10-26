@@ -1,13 +1,16 @@
+from __future__ import annotations
+
 import datetime
-import logging
 import warnings
 from datetime import timedelta
 from random import randrange
-from typing import Optional, Any
+from typing import Any
 
-from ..Exceptions.CouldNotConvertToCorrectTypeError import CouldNotConvertToCorrectTypeError
-from .OTLField import OTLField
+from ..Exceptions.CouldNotConvertToCorrectTypeError import (
+    CouldNotConvertToCorrectTypeError,
+)
 from ..warnings.IncorrectTypeWarning import IncorrectTypeWarning
+from .OTLField import OTLField
 
 
 class DateTimeField(OTLField):
@@ -27,7 +30,7 @@ class DateTimeField(OTLField):
         return True
 
     @classmethod
-    def convert_to_correct_type(cls, value: Any, log_warnings: bool = True) -> Optional[datetime.datetime]:
+    def convert_to_correct_type(cls, value: Any, log_warnings: bool = True) -> datetime.datetime | None:
         if value is None:
             return None
         if isinstance(value, bool):
@@ -46,7 +49,7 @@ class DateTimeField(OTLField):
                 warnings.warn(category=IncorrectTypeWarning,
                               message='Assigned a int to a datetime datatype. '
                                       'Automatically converted to the correct type. Please change the type')
-            timestamp = datetime.datetime.fromtimestamp(value, datetime.timezone.utc)
+            timestamp = datetime.datetime.fromtimestamp(value, datetime.UTC)
             return datetime.datetime(timestamp.year, timestamp.month, timestamp.day, timestamp.hour, timestamp.minute,
                                      timestamp.second)
         if isinstance(value, str):
@@ -89,7 +92,7 @@ class DateTimeField(OTLField):
             ) from exc
 
     @classmethod
-    def value_default(cls, value: datetime.datetime) -> Optional[str]:
+    def value_default(cls, value: datetime.datetime) -> str | None:
         if value is None:
             return None
         if not isinstance(value, datetime.datetime):

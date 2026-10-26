@@ -24,23 +24,23 @@ expectedDtu = ['# coding=utf-8',
                '        UnionWaarden.__init__(self)',
                '        self._unionKwantWrd = OTLAttribuut(field=KwantWrdTest,',
                "                                           naam='unionKwantWrd',",
-               "                                           label='Union kwantitatieve "
-               "waarde',",
-               '                                           '
-               "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtuTestUnionType.unionKwantWrd',",
+               ("                                           label='Union kwantitatieve "
+               "waarde',"),
+               ('                                           '
+               "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtuTestUnionType.unionKwantWrd',"),
                "                                           kardinaliteit_min='0',",
-               "                                           definition='Kwantitatieve waarde "
-               "van het test Union datatype',",
+               ("                                           definition='Kwantitatieve waarde "
+               "van het test Union datatype',"),
                '                                           owner=self)',
                '',
                '        self._unionString = OTLAttribuut(field=StringField,',
                "                                         naam='unionString',",
                "                                         label='Union tekstveld',",
-               '                                         '
-               "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtuTestUnionType.unionString',",
+               ('                                         '
+               "objectUri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtuTestUnionType.unionString',"),
                "                                         kardinaliteit_min='0',",
-               "                                         definition='Vrij tekstveld van het "
-               "test Union datatype',",
+               ("                                         definition='Vrij tekstveld van het "
+               "test Union datatype',"),
                '                                         owner=self)',
                '',
                '    @property',
@@ -71,8 +71,8 @@ expectedDtu = ['# coding=utf-8',
                '    """Union datatype voor test doeleinden."""',
                "    naam = 'DtuTestUnionType'",
                "    label = 'Test UnionType'",
-               '    objectUri = '
-               "'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtuTestUnionType'",
+               ('    objectUri = '
+               "'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtuTestUnionType'"),
                "    definition = 'Union datatype voor test doeleinden.'",
                '    waardeObject = DtuTestUnionTypeWaarden',
                '',

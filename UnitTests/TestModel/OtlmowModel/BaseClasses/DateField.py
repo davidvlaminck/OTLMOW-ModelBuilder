@@ -1,11 +1,15 @@
-import warnings
-from datetime import date, datetime, timedelta, timezone
-from random import randrange
-from typing import Optional, Any
+from __future__ import annotations
 
-from .OTLField import OTLField
-from ..Exceptions.CouldNotConvertToCorrectTypeError import CouldNotConvertToCorrectTypeError
+import warnings
+from datetime import UTC, date, datetime, timedelta
+from random import randrange
+from typing import Any
+
+from ..Exceptions.CouldNotConvertToCorrectTypeError import (
+    CouldNotConvertToCorrectTypeError,
+)
 from ..warnings.IncorrectTypeWarning import IncorrectTypeWarning
+from .OTLField import OTLField
 
 
 class DateField(OTLField):
@@ -19,7 +23,7 @@ class DateField(OTLField):
     native_type = date
 
     @classmethod
-    def convert_to_correct_type(cls, value: Any, log_warnings: bool = True) -> Optional[date]:
+    def convert_to_correct_type(cls, value: Any, log_warnings: bool = True) -> date | None:
         if value is None:
             return None
         if isinstance(value, bool):
@@ -38,7 +42,7 @@ class DateField(OTLField):
                 warnings.warn(category=IncorrectTypeWarning,
                               message='Assigned a int to a date datatype. '
                                       'Automatically converted to the correct type. Please change the type')
-            timestamp = datetime.fromtimestamp(value, timezone.utc)
+            timestamp = datetime.fromtimestamp(value, UTC)
 
             return date(timestamp.year, timestamp.month, timestamp.day)
 

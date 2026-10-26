@@ -1,6 +1,7 @@
 import logging
+
+logger = logging.getLogger(__name__)
 import re
-from typing import Dict
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
@@ -10,17 +11,17 @@ from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnion import OSLODatatypeUni
 class OTLUnionDatatypeCreator(AbstractDatatypeCreator):
     def __init__(self, oslo_collector: OSLOCollector):
         super().__init__(oslo_collector)
-        logging.info("Created an instance of OTLUnionDatatypeCreator")
+        logger.info("Created an instance of OTLUnionDatatypeCreator")
 
     def create_block_to_write_from_union_types(self, union_datatype: OSLODatatypeUnion,
-                                               union_datatype_validation_rules: Dict, model_location: str = '') -> [str]:
+                                               union_datatype_validation_rules: dict, model_location: str = '') -> list[str]:
         if not isinstance(union_datatype, OSLODatatypeUnion):
-            raise ValueError(f"Input is not a OSLODatatypeUnion")
+            raise TypeError("Input is not a OSLODatatypeUnion")
 
         if union_datatype.objectUri == '':
             raise ValueError(f"OSLODatatypeUnion.objectUri is invalid. Value = '{union_datatype.objectUri}'")
 
-        if union_datatype.objectUri in union_datatype_validation_rules['valid_uri_and_types'].keys():
+        if union_datatype.objectUri in union_datatype_validation_rules['valid_uri_and_types']:
             pass
         else:
             match_re = False

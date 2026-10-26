@@ -1,6 +1,8 @@
 import logging
 
+logger = logging.getLogger(__name__)
+
 
 class IncorrectTypeWarning(Warning):
     def __init__(self, msg):
-        logging.warning(msg)
+        logger.warning(msg)

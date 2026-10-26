@@ -1,9 +1,9 @@
 from typing import Any
 
+from ..Exceptions.WrongGeometryTypeError import WrongGeometryTypeError
 from .OTLField import OTLField
 from .StringField import StringField
 from .WKTValidator import WKTValidator
-from ..Exceptions.WrongGeometryTypeError import WrongGeometryTypeError
 
 
 class WKTField(StringField):

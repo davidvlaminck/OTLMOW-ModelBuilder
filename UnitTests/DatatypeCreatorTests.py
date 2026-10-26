@@ -1,11 +1,11 @@
 import os
 from pathlib import Path
 
-import pytest
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    create_block_to_write_from_complex_primitive_or_union_types as rust_create_block,
+)
 
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
-from otlmow_modelbuilder._otlmow_modelbuilder_rs import create_block_to_write_from_complex_primitive_or_union_types as rust_create_block
-from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 from otlmow_modelbuilder.OTLComplexDatatypeCreator import OTLComplexDatatypeCreator
 from otlmow_modelbuilder.OTLPrimitiveDatatypeCreator import OTLPrimitiveDatatypeCreator
 from otlmow_modelbuilder.OTLUnionDatatypeCreator import OTLUnionDatatypeCreator

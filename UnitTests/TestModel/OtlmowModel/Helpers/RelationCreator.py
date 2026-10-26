@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 import warnings
 from pathlib import Path
-from typing import Optional
 
 from ..BaseClasses.OTLObject import dynamic_create_instance_from_uri
 from ..BaseClasses.RelationInteractor import RelationInteractor
@@ -8,15 +9,15 @@ from ..Classes.Agent import Agent
 from ..Classes.ImplementatieElement.RelatieObject import RelatieObject
 from ..Classes.Onderdeel.HeeftBetrokkene import HeeftBetrokkene
 from ..Exceptions.CouldNotCreateRelationError import CouldNotCreateRelationError
-from ..Helpers.GenericHelper import validate_guid, get_aim_id_from_uuid_and_typeURI
+from ..Helpers.GenericHelper import get_aim_id_from_uuid_and_typeURI, validate_guid
 from ..Helpers.RelationValidator import is_valid_relation
 
 
-def create_relation(relation_type: type[RelatieObject], source: Optional[RelationInteractor] = None,
-                    target: Optional[RelationInteractor] = None,
-                    source_uuid: Optional[str] = None, source_typeURI: Optional[str] = None,
-                    target_uuid: Optional[str] = None, target_typeURI: Optional[str] = None,
-                    model_directory: Path = None) -> Optional[RelatieObject]:
+def create_relation(relation_type: type[RelatieObject], source: RelationInteractor | None = None,
+                    target: RelationInteractor | None = None,
+                    source_uuid: str | None = None, source_typeURI: str | None = None,
+                    target_uuid: str | None = None, target_typeURI: str | None = None,
+                    model_directory: Path | None = None) -> RelatieObject | None:
     """
     Instantiates a relation, if valid, between instantiated objects, given a specific relation type.
     Instead of instantiated objects, valid guids and typeURI's can be provided, for source and/or target.
@@ -169,11 +170,11 @@ def create_relation(relation_type: type[RelatieObject], source: Optional[Relatio
     return relation_type
 
 
-def create_betrokkenerelation(rol: str, source: Optional[RelationInteractor] = None,
-                              target: Optional[Agent] = None,
-                              source_uuid: Optional[str] = None, source_typeURI: Optional[str] = None,
-                              target_uuid: Optional[str] = None, target_typeURI: Optional[str] = None,
-                              model_directory: Path = None) -> Optional[HeeftBetrokkene]:
+def create_betrokkenerelation(rol: str, source: RelationInteractor | None = None,
+                              target: Agent | None = None,
+                              source_uuid: str | None = None, source_typeURI: str | None = None,
+                              target_uuid: str | None = None, target_typeURI: str | None = None,
+                              model_directory: Path | None = None) -> HeeftBetrokkene | None:
     relation = create_relation(source=source, target=target, source_uuid=source_uuid, source_typeURI=source_typeURI,
                                target_uuid=target_uuid, target_typeURI=target_typeURI, model_directory=model_directory,
                                relation_type=HeeftBetrokkene)

@@ -1,10 +1,14 @@
 import os
-from typing import List, Dict
 
-from otlmow_modelbuilder.DatatypeBuilderFunctions import get_single_field_from_type_uri, get_type_link_from_attribuut, \
-    get_type_name_of_complex_attribuut, get_type_name_of_union_attribuut, get_field_name_from_type_uri, \
-    get_non_single_field_from_type_uri, get_field_name_by_type_uri
-from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes, escape_backslash
+from otlmow_modelbuilder.DatatypeBuilderFunctions import (
+    get_field_name_by_type_uri,
+    get_non_single_field_from_type_uri,
+    get_single_field_from_type_uri,
+    get_type_link_from_attribuut,
+    get_type_name_of_complex_attribuut,
+    get_type_name_of_union_attribuut,
+)
+from otlmow_modelbuilder.HelperFunctions import escape_backslash, wrap_in_quotes
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 
@@ -75,8 +79,8 @@ def get_type_hint_from_field(oslo_collector, attribute, datablock, valid_uri_and
     return ''
 
 
-def add_attributen_to_data_block(oslo_collector: OSLOCollector, attributen: [OSLOAttribuut], datablock: List[str],
-                                 valid_uri_and_types: Dict, for_class_use=False, type_field=''):
+def add_attributen_to_data_block(oslo_collector: OSLOCollector, attributen: list[OSLOAttribuut], datablock: list[str],
+                                 valid_uri_and_types: dict, for_class_use=False, type_field=''):
     prop_datablock = []
     for attribuut in sorted(attributen, key=lambda a: a.name):
         if attribuut.overerving == 1:
@@ -121,23 +125,23 @@ def add_attributen_to_data_block(oslo_collector: OSLOCollector, attributen: [OSL
 
         type_hint = get_type_hint_from_field(oslo_collector, attribuut, datablock, valid_uri_and_types)
 
-        prop_datablock.append(f'    @property'),
+        prop_datablock.append('    @property'),
         prop_datablock.append(f'    def {attribuut.name}(self){type_hint}:'),
         prop_datablock.append(f'        """{attribuut.definition}"""'),
         if type_field == 'KwantWrd' and attribuut.name == 'standaardEenheid':
             prop_datablock.append(f'        return self._{attribuut.name}.usagenote.split(\'"\')[1]'),
         else:
             prop_datablock.append(f'        return self._{attribuut.name}.get_waarde()'),
-        prop_datablock.append(f''),
+        prop_datablock.append(''),
         if not attribuut.readonly:
             prop_datablock.append(f'    @{attribuut.name}.setter'),
             prop_datablock.append(f'    def {attribuut.name}(self, value):'),
 
             prop_datablock.append(f'        self._{attribuut.name}.set_waarde(value{owner_self})'),
             if type_field == 'UnionType':
-                prop_datablock.append(f'        if value is not None:')
+                prop_datablock.append('        if value is not None:')
                 prop_datablock.append(f"            self.clear_other_props('_{attribuut.name}')")
-            prop_datablock.append(f'')
+            prop_datablock.append('')
 
     datablock.extend(prop_datablock)
 
@@ -173,7 +177,7 @@ def get_fields_to_import_from_list_of_attributes(oslo_collector, attributen, val
     return sorted_list
 
 
-def write_to_file(filename, directory: str, data_to_write: List[str], relative_path='', write_mode='w'):
+def write_to_file(filename, directory: str, data_to_write: list[str], relative_path='', write_mode='w'):
     if relative_path == '':
         base_dir = os.path.dirname(os.path.realpath(__file__))
         base_dir = os.path.abspath(os.path.join(base_dir, os.pardir))
@@ -185,5 +189,4 @@ def write_to_file(filename, directory: str, data_to_write: List[str], relative_p
         os.makedirs(dir_path)
 
     with open(path, write_mode, encoding='utf-8') as file:
-        for line in data_to_write:
-            file.write(line + "\n")
+        file.writelines(line + "\n" for line in data_to_write)

@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import base64
 import re
-from typing import Optional, Match
+from re import Match
 
 from ..BaseClasses.URIField import URIField
 
@@ -83,7 +85,7 @@ def get_aim_id_from_uuid_and_typeURI(uuid: str, type_uri: str):
     return f'{uuid}-{encoded_uri}'
 
 
-def validate_guid(uuid: str) -> Optional[Match]:
+def validate_guid(uuid: str) -> Match | None:
     uuid_pattern = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
     return re.match(uuid_pattern, uuid)
 

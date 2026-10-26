@@ -1,6 +1,7 @@
 import logging
+
+logger = logging.getLogger(__name__)
 import re
-from typing import Dict
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
@@ -10,17 +11,17 @@ from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplex import OSLODatatypeC
 class OTLComplexDatatypeCreator(AbstractDatatypeCreator):
     def __init__(self, oslo_collector: OSLOCollector):
         super().__init__(oslo_collector)
-        logging.info("Created an instance of OTLComplexDatatypeCreator")
+        logger.info("Created an instance of OTLComplexDatatypeCreator")
 
     def create_block_to_write_from_complex_types(self, oslo_datatype_complex: OSLODatatypeComplex,
-                                                 complex_datatype_validation_rules: Dict, model_location='') -> [str]:
+                                                 complex_datatype_validation_rules: dict, model_location='') -> list[str]:
         if not isinstance(oslo_datatype_complex, OSLODatatypeComplex):
-            raise ValueError(f"Input is not a OSLODatatypeComplex")
+            raise TypeError("Input is not a OSLODatatypeComplex")
 
         if oslo_datatype_complex.objectUri == '':
             raise ValueError(f"OSLODatatypeComplex.objectUri is invalid. Value = '{oslo_datatype_complex.objectUri}'")
 
-        if oslo_datatype_complex.objectUri in complex_datatype_validation_rules['valid_uri_and_types'].keys():
+        if oslo_datatype_complex.objectUri in complex_datatype_validation_rules['valid_uri_and_types']:
             pass
         else:
             match_re = False

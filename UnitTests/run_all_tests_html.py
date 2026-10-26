@@ -1,4 +1,5 @@
-import os, pathlib
+import os
+import pathlib
 import webbrowser
 
 import pytest

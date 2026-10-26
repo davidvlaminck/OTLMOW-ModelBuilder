@@ -1,12 +1,11 @@
-import os
 from pathlib import Path
 
-import pytest
+from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+    create_block_from_class as rust_create_block,
+)
 
-from otlmow_modelbuilder._otlmow_modelbuilder_rs import create_block_from_class as rust_create_block
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OTLClassCreator import OTLClassCreator
-
 
 CURRENT_DIR = Path(__file__).parent
 

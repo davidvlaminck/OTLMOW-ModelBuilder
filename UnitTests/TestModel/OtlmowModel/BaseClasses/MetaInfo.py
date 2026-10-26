@@ -1,9 +1,9 @@
-﻿from typing import Union
+﻿from __future__ import annotations
 
-from .OTLObject import OTLObject, OTLAttribuut
+from .OTLObject import OTLAttribuut, OTLObject
 
 
-def meta_info(obj: Union[OTLObject, OTLAttribuut], attribute: str = '') -> str:
+def meta_info(obj: OTLObject | OTLAttribuut, attribute: str = '') -> str:
     """Returns metadata of the object or attribute"""
     if attribute != '':
         if '.' in attribute:
@@ -59,7 +59,7 @@ def _meta_info_attribute(attribute: OTLAttribuut) -> str:
         field = field()
 
     if hasattr(field, 'options'):
-        object_string += f'valid values:\n'
+        object_string += 'valid values:\n'
         options = getattr(field, 'options', {})
         valid_options = [(k, v) for k, v in options.items() if getattr(v, 'status', '') != 'verwijderd']
         for i, (k, v) in enumerate(valid_options):
@@ -78,7 +78,7 @@ def _meta_info_attribute(attribute: OTLAttribuut) -> str:
 
     waardeObject = getattr(field, 'waardeObject', None)
     if waardeObject is not None:
-        object_string += f'attributes:\n'
+        object_string += 'attributes:\n'
         for attr in waardeObject():
             attr_line = f'    {getattr(attr, "naam", "")} (type: {getattr(getattr(attr, "field", None), "naam", "")}'
             kard_min = getattr(attr, 'kardinaliteit_min', '1')

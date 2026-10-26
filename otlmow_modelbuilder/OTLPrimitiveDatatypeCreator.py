@@ -1,26 +1,30 @@
 import logging
+
+logger = logging.getLogger(__name__)
 import re
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import OSLODatatypePrimitive
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import (
+    OSLODatatypePrimitive,
+)
 
 
 class OTLPrimitiveDatatypeCreator(AbstractDatatypeCreator):
     def __init__(self, oslo_collector: OSLOCollector):
         super().__init__(oslo_collector)
-        logging.info("Created an instance of OTLPrimitiveDatatypeCreator")
+        logger.info("Created an instance of OTLPrimitiveDatatypeCreator")
 
     def create_block_to_write_from_primitive_types(self, oslo_datatype_primitive: OSLODatatypePrimitive,
                                                    primitive_datatype_validation_rules,
-                                                   model_location: str = '') -> [str]:
+                                                   model_location: str = '') -> list[str]:
         if not isinstance(oslo_datatype_primitive, OSLODatatypePrimitive):
-            raise ValueError("Input is not a OSLODatatypePrimitive")
+            raise TypeError("Input is not a OSLODatatypePrimitive")
 
         if oslo_datatype_primitive.objectUri == '':
             raise ValueError(f"OSLODatatypePrimitive.objectUri is invalid. Value = '{oslo_datatype_primitive.objectUri}'")
 
-        if oslo_datatype_primitive.objectUri not in primitive_datatype_validation_rules['valid_uri_and_types'].keys():
+        if oslo_datatype_primitive.objectUri not in primitive_datatype_validation_rules['valid_uri_and_types']:
             match_re = False
             for regex in primitive_datatype_validation_rules["valid_regexes"]:
                 match_re = re.match(pattern=regex, string=oslo_datatype_primitive.objectUri)

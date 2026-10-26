@@ -1,10 +1,13 @@
+from __future__ import annotations
+
 from abc import ABC
-from typing import Dict
 
 from otlmow_modelbuilder.DatatypeBuilderFunctions import get_attributen_by_type_field
-from otlmow_modelbuilder.GenericBuilderFunctions import add_attributen_to_data_block, \
-    get_fields_to_import_from_list_of_attributes
-from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes, escape_backslash
+from otlmow_modelbuilder.GenericBuilderFunctions import (
+    add_attributen_to_data_block,
+    get_fields_to_import_from_list_of_attributes,
+)
+from otlmow_modelbuilder.HelperFunctions import escape_backslash, wrap_in_quotes
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 
 
@@ -13,13 +16,14 @@ class AbstractDatatypeCreator(ABC):
         self.oslo_collector = oslo_collector
 
     def create_block_to_write_from_complex_primitive_or_union_types(self, oslo_datatype, type_field='',
-                                                                    model_location='', valid_uri_and_types: Dict = None):
+                                                                    model_location='', valid_uri_and_types: dict | None = None):
         if valid_uri_and_types is None:
             valid_uri_and_types = {}
 
         try:
-            from otlmow_modelbuilder._otlmow_modelbuilder_rs import \
-                create_block_to_write_from_complex_primitive_or_union_types as rust_create
+            from otlmow_modelbuilder._otlmow_modelbuilder_rs import (
+                create_block_to_write_from_complex_primitive_or_union_types as rust_create,
+            )
             attributen = get_attributen_by_type_field(self.oslo_collector, type_field, oslo_datatype)
             type_links = [(t.item_uri, t.item_tabel) for t in self.oslo_collector.typeLinks]
             enumerations = [(e.objectUri, e.name) for e in self.oslo_collector.enumerations]
@@ -42,7 +46,7 @@ class AbstractDatatypeCreator(ABC):
                 oslo_datatype.usagenote,
                 oslo_datatype.deprecated_version,
                 self.__class__.__name__)
-        except Exception:
+        except ImportError:
             pass
 
         attributen = get_attributen_by_type_field(self.oslo_collector, type_field, oslo_datatype)
@@ -55,16 +59,20 @@ class AbstractDatatypeCreator(ABC):
             list_fields_to_start_with.append('UnionWaarden')
         elif type_field == 'Complex':
             datablock.append('from ..BaseClasses.WaardenObject import WaardenObject')
-        elif type_field == 'Primitive' or type_field == 'KwantWrd':
-            datablock.append('from ..BaseClasses.OTLField import OTLField')
-            datablock.append('from ..BaseClasses.WaardenObject import WaardenObject')
+        elif type_field in {'Primitive', 'KwantWrd'}:
+            datablock.extend(
+                (
+                    'from ..BaseClasses.OTLField import OTLField',
+                    'from ..BaseClasses.WaardenObject import WaardenObject',
+                )
+            )
             list_fields_to_start_with = []
         list_of_fields = get_fields_to_import_from_list_of_attributes(self.oslo_collector, attributen,
                                                                       valid_uri_and_types=valid_uri_and_types,
                                                                       list_to_start_from=list_fields_to_start_with)
-        base_fields = ['BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
-                       'IntegerField', 'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField', 
-                       'NonNegIntegerField', 'TimeField', 'StringField', 'UnionWaarden']
+        base_fields = {'BooleanField', 'ComplexField', 'DateField', 'DateTimeField', 'FloatOrDecimalField',
+                       'IntegerField', 'KeuzelijstField', 'UnionTypeField', 'URIField', 'LiteralField',
+                       'NonNegIntegerField', 'TimeField', 'StringField', 'UnionWaarden'}
         for module in list_of_fields:
             if module not in base_fields:
                 datablock.append(f'from ..Datatypes.{module} import {module}')
@@ -86,7 +94,7 @@ class AbstractDatatypeCreator(ABC):
         add_attributen_to_data_block(oslo_collector=self.oslo_collector, attributen=attributen, datablock=datablock,
                                      type_field=type_field, valid_uri_and_types=valid_uri_and_types)
 
-        if type_field == 'Primitive' or type_field == 'KwantWrd':
+        if type_field in ['Primitive', 'KwantWrd']:
             type_field = 'OTL'
 
         datablock.append(''),
@@ -108,8 +116,8 @@ class AbstractDatatypeCreator(ABC):
         if type_field == 'OTL':
             datablock.append('    waarde_shortcut_applicable = True')
         datablock.append(f'    waardeObject = {oslo_datatype.name}Waarden')
-        datablock.append(f'')
-        datablock.append(f'    def __str__(self):')
+        datablock.append('')
+        datablock.append('    def __str__(self):')
         datablock.append(f'        return {type_field}Field.__str__(self)')
         datablock.append('')
 

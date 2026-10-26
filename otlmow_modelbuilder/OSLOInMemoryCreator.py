@@ -8,11 +8,19 @@ from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 from otlmow_modelbuilder.SQLDataClasses.OSLOClass import OSLOClass
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplex import OSLODatatypeComplex
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import OSLODatatypeComplexAttribuut
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import OSLODatatypePrimitive
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitiveAttribuut import OSLODatatypePrimitiveAttribuut
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import (
+    OSLODatatypeComplexAttribuut,
+)
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitive import (
+    OSLODatatypePrimitive,
+)
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypePrimitiveAttribuut import (
+    OSLODatatypePrimitiveAttribuut,
+)
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnion import OSLODatatypeUnion
-from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnionAttribuut import OSLODatatypeUnionAttribuut
+from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeUnionAttribuut import (
+    OSLODatatypeUnionAttribuut,
+)
 from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
 from otlmow_modelbuilder.SQLDataClasses.OSLORelatie import OSLORelatie
 from otlmow_modelbuilder.SQLDataClasses.OSLOTypeLink import OSLOTypeLink
@@ -37,14 +45,14 @@ class OSLOInMemoryCreator:
     def __exit__(self, exc_type, exc_value, exc_traceback):
         self.connection.close()
 
-    def perform_read_query(self, query: str, params=None) -> [tuple]:
+    def perform_read_query(self, query: str, params=None) -> list[tuple]:
         if params is None:
             params = {}
 
         cur = self.connection.cursor()
         return list(cur.execute(query, params))
 
-    def get_general_info(self) -> [tuple]:
+    def get_general_info(self) -> list[tuple]:
         data = self.perform_read_query("SELECT * FROM GeneralInfo")
         return [GeneralInfoRecord(row[0], row[1]) for row in data]
 
@@ -53,7 +61,7 @@ class OSLOInMemoryCreator:
 
         return None if len(data) == 0 else data[0][0]
 
-    def get_all_primitive_datatype_attributes(self) -> [OSLODatatypePrimitiveAttribuut]:
+    def get_all_primitive_datatype_attributes(self) -> list[OSLODatatypePrimitiveAttribuut]:
         data = self.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
             "overerving, constraints, readonly, usagenote_nl, deprecated_version "
@@ -64,7 +72,7 @@ class OSLOInMemoryCreator:
             row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12])
             for row in data]
 
-    def get_all_primitive_datatypes(self) -> [OSLODatatypePrimitive]:
+    def get_all_primitive_datatypes(self) -> list[OSLODatatypePrimitive]:
         data = self.perform_read_query(
             "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version "
             "FROM OSLODatatypePrimitive "
@@ -72,7 +80,7 @@ class OSLOInMemoryCreator:
 
         return [OSLODatatypePrimitive(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data]
 
-    def get_all_classes(self) -> [OSLOClass]:
+    def get_all_classes(self) -> list[OSLOClass]:
         data = self.perform_read_query(
             "SELECT label_nl, name, uri, definition_nl, usagenote_nl, abstract, deprecated_version "
             "FROM OSLOClass "
@@ -110,7 +118,7 @@ class OSLOInMemoryCreator:
         if len(class_results) == 1:
             return class_results[0]
 
-    def get_attributes_by_class_uri(self, class_uri, include_abstract=False) -> [OSLOAttribuut]:
+    def get_attributes_by_class_uri(self, class_uri, include_abstract=False) -> list[OSLOAttribuut]:
         overerving_in_query = '' if include_abstract else 'overerving = 0 AND '
         data = self.perform_read_query(
             query="SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
@@ -122,7 +130,7 @@ class OSLOInMemoryCreator:
         return [OSLOAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
                               row[11], row[12]) for row in data]
 
-    def get_all_attributes(self, include_abstract=False) -> [OSLOAttribuut]:
+    def get_all_attributes(self, include_abstract=False) -> list[OSLOAttribuut]:
         overerving_in_query = '' if include_abstract else 'overerving = 0 AND '
         data = self.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
@@ -133,7 +141,7 @@ class OSLOInMemoryCreator:
         return [OSLOAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
                               row[11], row[12]) for row in data]
 
-    def get_all_inheritances(self) -> [Inheritance]:
+    def get_all_inheritances(self) -> list[Inheritance]:
         data = self.perform_read_query(
             "SELECT base_name, base_uri, class_uri, class_name, deprecated_version "
             "FROM InternalBaseClass "
@@ -147,7 +155,7 @@ class OSLOInMemoryCreator:
 
         return [Inheritance(row[0], row[1], row[2], row[3], row[4]) for row in data]
 
-    def get_all_complex_datatypes(self) -> [OSLODatatypeComplex]:
+    def get_all_complex_datatypes(self) -> list[OSLODatatypeComplex]:
         data = self.perform_read_query(
             "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version "
             "FROM OSLODatatypeComplex "
@@ -155,7 +163,7 @@ class OSLOInMemoryCreator:
 
         return [OSLODatatypeComplex(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data]
 
-    def get_all_complex_datatype_attributes(self) -> [OSLODatatypeComplexAttribuut]:
+    def get_all_complex_datatype_attributes(self) -> list[OSLODatatypeComplexAttribuut]:
         data = self.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
             "overerving, constraints, readonly, usagenote_nl, deprecated_version "
@@ -165,7 +173,7 @@ class OSLOInMemoryCreator:
         return [OSLODatatypeComplexAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
                                              row[9], row[10], row[11], row[12]) for row in data]
 
-    def get_all_union_datatypes(self) -> [OSLODatatypeUnion]:
+    def get_all_union_datatypes(self) -> list[OSLODatatypeUnion]:
         data = self.perform_read_query(
             "SELECT name, uri, definition_nl, label_nl, usagenote_nl, deprecated_version "
             "FROM OSLODatatypeUnion "
@@ -173,7 +181,7 @@ class OSLOInMemoryCreator:
 
         return [OSLODatatypeUnion(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data]
 
-    def get_all_union_datatype_attributes(self) -> [OSLODatatypeUnionAttribuut]:
+    def get_all_union_datatype_attributes(self) -> list[OSLODatatypeUnionAttribuut]:
         data = self.perform_read_query(
             "SELECT name, label_nl, definition_nl, class_uri, kardinaliteit_min, kardinaliteit_max, uri, type, "
             "overerving, constraints, readonly, usagenote_nl, deprecated_version "
@@ -183,7 +191,7 @@ class OSLOInMemoryCreator:
         return [OSLODatatypeUnionAttribuut(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
                                            row[9], row[10], row[11], row[12]) for row in data]
 
-    def get_all_enumerations(self) -> [OSLOEnumeration]:
+    def get_all_enumerations(self) -> list[OSLOEnumeration]:
         data = self.perform_read_query(
             "SELECT name, uri, usagenote_nl, definition_nl, label_nl, codelist, deprecated_version "
             "FROM OSLOEnumeration "
@@ -191,7 +199,7 @@ class OSLOInMemoryCreator:
 
         return [OSLOEnumeration(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in data]
 
-    def get_all_typelinks(self) -> [OSLOTypeLink]:
+    def get_all_typelinks(self) -> list[OSLOTypeLink]:
         data = self.perform_read_query(
             "SELECT item_uri, item_tabel, deprecated_version "
             "FROM TypeLinkTabel "
@@ -199,7 +207,7 @@ class OSLOInMemoryCreator:
 
         return [OSLOTypeLink(row[0], row[1], row[2]) for row in data]
 
-    def get_all_relations(self) -> [OSLORelatie]:
+    def get_all_relations(self) -> list[OSLORelatie]:
         data = self.perform_read_query(
             "SELECT * "
             "FROM OSLORelaties "

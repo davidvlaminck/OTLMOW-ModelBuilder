@@ -1,0 +1,104 @@
+# Copy this file to .github/workflows/quality.yml to activate the gate.
+# In this repository it is already installed there: keep both files in sync.
+#
+# The gate runs in two stages, so the first run is not red and the workflow does
+# not get disabled on day two:
+#   1. ADVISORY   — the gates with a known budget report but do not block
+#      (`continue-on-error: true`): lint, format and type check.
+#   2. ENFORCING  — remove `continue-on-error` from a step when its budget is
+#      zero. The ratchet (lint counts may not increase) and the gates named in
+#      `--fail-on` always block.
+#
+# The workflow runs on the lowest supported Python version as well, because type
+# and lint results differ per version.
+
+name: Quality gate
+run-name: Quality gate for ${{ github.sha }}
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  quality:
+    name: Quality gate for Python 3.9
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install uv with Python 3.9
+        # The gate runs on the lowest supported Python version, because the type
+        # and lint results differ per version.
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: '3.9'
+
+      - name: Install project dependencies
+        run: |
+          uv venv --python 3.9
+          uv pip install -r pyproject.toml --extra test
+
+      - name: Install quality tools
+        # Pin ruff: a new release can introduce new findings and break the gate.
+        # mypy must stay < 2: mypy 2.x refuses to target Python 3.9, which is the
+        # minimum version this package supports.
+        # Note: `uv sync` removes tools that are not in the lock file, so install
+        # the quality tools explicitly instead of using `uv sync`.
+        run: uv pip install ruff==0.17.0 "mypy<2" radon bandit vulture
+
+      - name: Tests and coverage
+        env:
+          COVERAGE_RCFILE: code_quality/coverage.cfg
+        run: |
+          uv run python -m pytest \
+            --cov=otlmow_modelbuilder \
+            --cov-report=json:code_quality/reports/coverage.json \
+            --cov-fail-under=80 \
+            -q
+
+      # The steps below only make the findings visible in the log. The gates
+      # that block a merge are enforced by the `Quality gates` step, with the
+      # thresholds of code_quality/scripts/qa_report.py.
+      - name: Lint
+        continue-on-error: true
+        run: uv run ruff check otlmow_modelbuilder UnitTests code_quality/scripts
+
+      - name: Format check
+        continue-on-error: true
+        run: uv run ruff format --check otlmow_modelbuilder UnitTests code_quality/scripts
+
+      - name: Type check
+        continue-on-error: true
+        run: uv run mypy otlmow_modelbuilder UnitTests code_quality/scripts
+
+      - name: Security
+        continue-on-error: true
+        run: uv run bandit -q -r otlmow_modelbuilder
+
+      - name: Dead code
+        continue-on-error: true
+        run: uv run vulture otlmow_modelbuilder --min-confidence 80
+
+      - name: Quality gates
+        # The gates that block a merge, on top of the ratchet that every run
+        # enforces: a lint count may never go up. The thresholds are the ones
+        # of code_quality/scripts/qa_report.py, so there is a single source.
+        # `--no-history`: a run on the CI must not change the ratchet history.
+        run: |
+          uv run python code_quality/scripts/qa_report.py \
+            --skip-tests \
+            --no-history \
+            --fail-on coverage,coverage-branch,crap,complexity,bandit,dead-code
+
+      - name: Upload QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-report-${{ github.sha }}
+          path: |
+            code_quality/QA-REPORT.md
+            code_quality/reports/

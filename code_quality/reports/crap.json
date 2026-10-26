@@ -1,0 +1,524 @@
+{
+  "crap": [
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_direct_relations_of",
+      "block_type": "method",
+      "complexity": 6,
+      "coverage": 100.0,
+      "crap": 6.0,
+      "lineno": 256
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_concrete_relations_of",
+      "block_type": "method",
+      "complexity": 6,
+      "coverage": 100.0,
+      "crap": 6.0,
+      "lineno": 262
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_select_relations",
+      "block_type": "method",
+      "complexity": 6,
+      "coverage": 100.0,
+      "crap": 6.0,
+      "lineno": 269
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_remove_head",
+      "block_type": "method",
+      "complexity": 6,
+      "coverage": 100.0,
+      "crap": 6.0,
+      "lineno": 302
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_raise_if_duplicate_uris",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 50.0,
+      "crap": 6.0,
+      "lineno": 377
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_build_mro_maps",
+      "block_type": "method",
+      "complexity": 6,
+      "coverage": 100.0,
+      "crap": 6.0,
+      "lineno": 392
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_build_graph",
+      "block_type": "method",
+      "complexity": 5,
+      "coverage": 100.0,
+      "crap": 5.0,
+      "lineno": 332
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "query_correct_base_classes",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 50.0,
+      "crap": 4.1,
+      "lineno": 224
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "get_inheritance_map",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 80.0,
+      "crap": 4.1,
+      "lineno": 410
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_build_relations_by_uri_map",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 69
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_find_by_class_uri",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 117
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_python_find_subclasses",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 153
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_outgoing_relations",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 210
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_all_concrete_relations",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 234
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_c3_merge",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 282
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_find_candidate",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 293
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_find_valid_base_order_uris",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 88.9,
+      "crap": 4.0,
+      "lineno": 308
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_topo_sort",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 85.7,
+      "crap": 4.0,
+      "lineno": 322
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_process_queue",
+      "block_type": "method",
+      "complexity": 4,
+      "coverage": 100.0,
+      "crap": 4.0,
+      "lineno": 344
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_try_rust_find_subclasses",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 71.4,
+      "crap": 3.2,
+      "lineno": 144
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_raise_if_cyclic",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 33.3,
+      "crap": 3.2,
+      "lineno": 357
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_all_indirect_inheritances_by_class_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 122
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_subclasses_uri_by_class_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 136
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_path_is_valid",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 157
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_indirect_subclasses_uri_by_class_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 161
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_class_by_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 174
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_primitive_datatype_by_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 177
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_complex_datatype_by_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 185
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_union_datatype_by_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 193
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_enumeration_by_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 201
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_enumeration_by_codelist",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 204
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_type_link_by_uri",
+      "block_type": "method",
+      "complexity": 3,
+      "coverage": 100.0,
+      "crap": 3.0,
+      "lineno": 207
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_attributes_by_class",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 66.7,
+      "crap": 2.1,
+      "lineno": 100
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_inheritances_by_class",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 66.7,
+      "crap": 2.1,
+      "lineno": 106
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_inheritances_by_class_uri",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 66.7,
+      "crap": 2.1,
+      "lineno": 111
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_build_lookup_maps",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 53
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_group_by_class_uri",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 80.0,
+      "crap": 2.0,
+      "lineno": 61
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_collect_all_indirect_inheritances",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 129
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_collect_indirect_subclasses",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 167
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_relations_of",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 246
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_sorted_or_as_is",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 278
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_compute_mros",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 366
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "_build_direct_bases",
+      "block_type": "method",
+      "complexity": 2,
+      "coverage": 100.0,
+      "crap": 2.0,
+      "lineno": 384
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "__init__",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 27
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "collect_all",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 83
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_primitive_datatype_attributes_by_class_uri",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 180
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_complex_datatype_attributes_by_class_uri",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 188
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_union_datatype_attributes_by_class_uri",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 196
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "name": "find_all_relations",
+      "block_type": "method",
+      "complexity": 1,
+      "coverage": 100.0,
+      "crap": 1.0,
+      "lineno": 214
+    }
+  ],
+  "hotspots": [
+    {
+      "file": "otlmow_modelbuilder/OTLModelCreator.py",
+      "commits": 4,
+      "lines_changed": 1149,
+      "max_complexity": 6,
+      "score": 6894
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLClassCreator.py",
+      "commits": 6,
+      "lines_changed": 513,
+      "max_complexity": 5,
+      "score": 2565
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOCollector.py",
+      "commits": 3,
+      "lines_changed": 374,
+      "max_complexity": 6,
+      "score": 2244
+    },
+    {
+      "file": "otlmow_modelbuilder/GeometrieInheritanceProcessor.py",
+      "commits": 2,
+      "lines_changed": 110,
+      "max_complexity": 14,
+      "score": 1540
+    },
+    {
+      "file": "otlmow_modelbuilder/AbstractDatatypeCreator.py",
+      "commits": 2,
+      "lines_changed": 39,
+      "max_complexity": 22,
+      "score": 858
+    },
+    {
+      "file": "otlmow_modelbuilder/DatatypeBuilderFunctions.py",
+      "commits": 1,
+      "lines_changed": 51,
+      "max_complexity": 8,
+      "score": 408
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLEnumerationCreator.py",
+      "commits": 2,
+      "lines_changed": 22,
+      "max_complexity": 13,
+      "score": 286
+    },
+    {
+      "file": "otlmow_modelbuilder/LegacyClassCreator.py",
+      "commits": 1,
+      "lines_changed": 2,
+      "max_complexity": 10,
+      "score": 20
+    },
+    {
+      "file": "otlmow_modelbuilder/OSLOInMemoryCreator.py",
+      "commits": 0,
+      "lines_changed": 4,
+      "max_complexity": 4,
+      "score": 16
+    },
+    {
+      "file": "otlmow_modelbuilder/OTLExtraChecker.py",
+      "commits": 1,
+      "lines_changed": 3,
+      "max_complexity": 5,
+      "score": 15
+    },
+    {
+      "file": "otlmow_modelbuilder/ModelData.py",
+      "commits": 1,
+      "lines_changed": 32,
+      "max_complexity": 0,
+      "score": 0
+    }
+  ]
+}
