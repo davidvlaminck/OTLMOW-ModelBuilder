@@ -6,6 +6,7 @@ from otlmow_modelbuilder.GenericBuilderFunctions import (
     add_attributen_to_data_block,
     get_fields_to_import_from_list_of_attributes,
     get_white_space_equivalent,
+    import_datetime,
     write_to_file,
 )
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
@@ -19,6 +20,14 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 complex_datatype_validation_rules = {'valid_uri_and_types': {},
                                      'valid_regexes': ["^https://wegenenverkeer.data.vlaanderen.be/ns/.+#Dtc.+"]}
+
+
+def test_import_datetime_adds_date_only_once():
+    datablock = ['# coding=utf-8', '', '']
+    import_datetime(datablock, 'date')
+    import_datetime(datablock, 'date')
+    import_datetime(datablock, 'date')
+    assert datablock[1] == 'from datetime import date'
 
 
 def set_up() -> OSLOCollector:

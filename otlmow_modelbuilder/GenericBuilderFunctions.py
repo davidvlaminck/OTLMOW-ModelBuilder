@@ -23,7 +23,8 @@ def import_datetime(datablock, var_datetime):
             datablock.insert(1, f'from datetime import {var_datetime}')
             break
         if 'datetime' in line:
-            datablock[index] = line + ', ' + var_datetime
+            if var_datetime not in line:
+                datablock[index] = line + ', ' + var_datetime
             break
 
 
