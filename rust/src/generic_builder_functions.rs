@@ -48,6 +48,35 @@ impl TypeLookup {
     }
 }
 
+const PYTHON_BUILTIN_NAMES: &[&str] = &[
+    "ArithmeticError", "AssertionError", "AttributeError", "BaseException", "BaseExceptionGroup",
+    "BlockingIOError", "BrokenPipeError", "BufferError", "BytesWarning", "ChildProcessError",
+    "ConnectionAbortedError", "ConnectionError", "ConnectionRefusedError", "ConnectionResetError",
+    "DeprecationWarning", "EOFError", "Ellipsis", "EncodingWarning", "EnvironmentError", "Exception",
+    "ExceptionGroup", "False", "FileExistsError", "FileNotFoundError", "FloatingPointError",
+    "FutureWarning", "GeneratorExit", "IOError", "ImportError", "ImportWarning", "IndentationError",
+    "IndexError", "InterruptedError", "IsADirectoryError", "KeyError", "KeyboardInterrupt",
+    "LookupError", "MemoryError", "ModuleNotFoundError", "NameError", "None", "NotADirectoryError",
+    "NotImplemented", "NotImplementedError", "OSError", "OverflowError", "PendingDeprecationWarning",
+    "PermissionError", "ProcessLookupError", "RecursionError", "ReferenceError", "ResourceWarning",
+    "RuntimeError", "RuntimeWarning", "StopAsyncIteration", "StopIteration", "SyntaxError",
+    "SyntaxWarning", "SystemError", "SystemExit", "TabError", "TimeoutError", "True", "TypeError",
+    "UnboundLocalError", "UnicodeDecodeError", "UnicodeEncodeError", "UnicodeError",
+    "UnicodeTranslateError", "UnicodeWarning", "UserWarning", "ValueError", "Warning",
+    "ZeroDivisionError", "abs", "aiter", "all", "anext", "any", "ascii", "bin", "bool", "breakpoint",
+    "bytearray", "bytes", "callable", "chr", "classmethod", "compile", "complex", "copyright",
+    "credits", "delattr", "dict", "dir", "divmod", "enumerate", "eval", "exec", "exit", "filter",
+    "float", "format", "frozenset", "getattr", "globals", "hasattr", "hash", "help", "hex", "id",
+    "input", "int", "isinstance", "issubclass", "iter", "len", "license", "list", "locals", "map",
+    "max", "memoryview", "min", "next", "object", "oct", "open", "ord", "pow", "print", "property",
+    "quit", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted",
+    "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip",
+];
+
+fn is_python_builtin(name: &str) -> bool {
+    PYTHON_BUILTIN_NAMES.contains(&name)
+}
+
 fn import_datetime(datablock: &mut Vec<String>, var_datetime: &str) {
     for (index, line) in datablock.iter().enumerate() {
         if line.is_empty() {
@@ -233,26 +262,51 @@ pub fn add_attributen_to_data_block(
             Err(e) => panic!("Failed to get type hint: {e}"),
         };
 
-        prop_datablock.push("    @property".to_string());
-        prop_datablock.push(format!("    def {}(self){}:", attribuut.name, type_hint));
-        prop_datablock.push(format!("        \"\"\"{}\"\"\"", attribuut.definition));
-        if type_field == "KwantWrd" && attribuut.name == "standaardEenheid" {
-            prop_datablock.push(format!("        return self._{}.usagenote.split('\"')[1]", attribuut.name));
+        let getter_body = if type_field == "KwantWrd" && attribuut.name == "standaardEenheid" {
+            format!("        return self._{}.usagenote.split('\"')[1]", attribuut.name)
         } else {
-            prop_datablock.push(format!("        return self._{}.get_waarde()", attribuut.name));
-        }
-        prop_datablock.push(String::new());
+            format!("        return self._{}.get_waarde()", attribuut.name)
+        };
 
-        if attribuut.readonly == 0 {
-            prop_datablock.push(format!("    @{}.setter", attribuut.name));
-            prop_datablock.push(format!("    def {}(self, value):", attribuut.name));
-            prop_datablock.push(format!("        self._{}.set_waarde(value{})", attribuut.name, owner_self));
+        if is_python_builtin(&attribuut.name) {
+            prop_datablock.push(format!("    def _get_{}(self){}:", attribuut.name, type_hint));
+            prop_datablock.push(format!("        \"\"\"{}\"\"\"", attribuut.definition));
+            prop_datablock.push(getter_body);
+            prop_datablock.push(String::new());
 
-            if type_field == "UnionType" {
-                prop_datablock.push("        if value is not None:".to_string());
-                prop_datablock.push(format!("            self.clear_other_props('_{}')", attribuut.name));
+            if attribuut.readonly == 0 {
+                prop_datablock.push(format!("    def _set_{}(self, value):", attribuut.name));
+                prop_datablock.push(format!("        self._{}.set_waarde(value{})", attribuut.name, owner_self));
+
+                if type_field == "UnionType" {
+                    prop_datablock.push("        if value is not None:".to_string());
+                    prop_datablock.push(format!("            self.clear_other_props('_{}')", attribuut.name));
+                }
+                prop_datablock.push(format!(
+                    "    {} = property(_get_{}, _set_{})",
+                    attribuut.name, attribuut.name, attribuut.name));
+            } else {
+                prop_datablock.push(format!("    {} = property(_get_{})", attribuut.name, attribuut.name));
             }
             prop_datablock.push(String::new());
+        } else {
+            prop_datablock.push("    @property".to_string());
+            prop_datablock.push(format!("    def {}(self){}:", attribuut.name, type_hint));
+            prop_datablock.push(format!("        \"\"\"{}\"\"\"", attribuut.definition));
+            prop_datablock.push(getter_body);
+            prop_datablock.push(String::new());
+
+            if attribuut.readonly == 0 {
+                prop_datablock.push(format!("    @{}.setter", attribuut.name));
+                prop_datablock.push(format!("    def {}(self, value):", attribuut.name));
+                prop_datablock.push(format!("        self._{}.set_waarde(value{})", attribuut.name, owner_self));
+
+                if type_field == "UnionType" {
+                    prop_datablock.push("        if value is not None:".to_string());
+                    prop_datablock.push(format!("            self.clear_other_props('_{}')", attribuut.name));
+                }
+                prop_datablock.push(String::new());
+            }
         }
     }
 

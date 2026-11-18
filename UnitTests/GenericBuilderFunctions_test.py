@@ -188,6 +188,44 @@ def test_add_attributen_to_dataBlock_KwantWrd():
     assert add_attributen_to_data_block(collector, [attribuut], [], valid_uri_and_types={}) == expected_datablock
 
 
+def test_add_attributen_to_data_block_name_that_shadows_a_builtin():
+    collector = set_up()
+    attribuut = OSLOAttribuut('type','type','De typering of categorie van de bijlage.','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage','1','*','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage.type','http://www.w3.org/2001/XMLSchema#string',0,'',0,'','')
+
+    expected_datablock = [
+        '        self._type = OTLAttribuut(field=StringField,',
+        "                                  naam='type',",
+        "                                  label='type',",
+        ("                                  objectUri='https://wegenenverkeer.data.vlaanderen.be"
+        "/ns/implementatieelement#Bijlage.type',"),
+        "                                  kardinaliteit_max='*',",
+        "                                  definition='De typering of categorie van de bijlage.',",
+        '                                  owner=self)',
+        '',
+        '    def _get_type(self) -> List[str]:',
+        '        """De typering of categorie van de bijlage."""',
+        '        return self._type.get_waarde()',
+        '',
+        '    def _set_type(self, value):',
+        '        self._type.set_waarde(value, owner=self._parent)',
+        '    type = property(_get_type, _set_type)',
+        '']
+
+    result = add_attributen_to_data_block(collector, [attribuut], [], valid_uri_and_types={})
+    assert [line for line in result if not line.startswith('from typing import')] == expected_datablock
+
+
+def test_add_attributen_to_data_block_name_that_shadows_a_builtin_keeps_owner_for_class_use():
+    collector = set_up()
+    attribuut = OSLOAttribuut('type','type','De typering of categorie van de bijlage.','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage','1','*','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage.type','http://www.w3.org/2001/XMLSchema#string',0,'',0,'','')
+
+    result = add_attributen_to_data_block(collector, [attribuut], [], valid_uri_and_types={},
+                                          for_class_use=True)
+
+    assert '        self._type.set_waarde(value, owner=self)' in result
+    assert '    type = property(_get_type, _set_type)' in result
+
+
 def test_add_attributen_to_data_block_DtcAdres():
     collector = set_up()
     attribuut = OSLODatatypeComplexAttribuut('assetId','asset-id','Unieke identificatie van de asset zoals toegekend door de assetbeheerder of n.a.v. eerste aanlevering door de leverancier.','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject','1','1','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject.assetId','https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#DtcIdentificator',0,'',0,'','')

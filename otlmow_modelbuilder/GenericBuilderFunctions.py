@@ -1,3 +1,4 @@
+import builtins
 import os
 
 from otlmow_modelbuilder.DatatypeBuilderFunctions import (
@@ -15,6 +16,11 @@ from otlmow_modelbuilder.SQLDataClasses.OSLOAttribuut import OSLOAttribuut
 
 def get_white_space_equivalent(string):
     return ''.join(' ' * len(string))
+
+
+def shadows_builtin(name: str) -> bool:
+    """True when the name shadows a Python builtin, which ruff reports as A003 on a setter decorator."""
+    return name in builtins.__dict__
 
 
 def import_datetime(datablock, var_datetime):
@@ -126,23 +132,39 @@ def add_attributen_to_data_block(oslo_collector: OSLOCollector, attributen: list
 
         type_hint = get_type_hint_from_field(oslo_collector, attribuut, datablock, valid_uri_and_types)
 
-        prop_datablock.append('    @property'),
-        prop_datablock.append(f'    def {attribuut.name}(self){type_hint}:'),
-        prop_datablock.append(f'        """{attribuut.definition}"""'),
+        getter_body = f'        return self._{attribuut.name}.get_waarde()'
         if type_field == 'KwantWrd' and attribuut.name == 'standaardEenheid':
-            prop_datablock.append(f'        return self._{attribuut.name}.usagenote.split(\'"\')[1]'),
-        else:
-            prop_datablock.append(f'        return self._{attribuut.name}.get_waarde()'),
-        prop_datablock.append(''),
-        if not attribuut.readonly:
-            prop_datablock.append(f'    @{attribuut.name}.setter'),
-            prop_datablock.append(f'    def {attribuut.name}(self, value):'),
+            getter_body = f'        return self._{attribuut.name}.usagenote.split(\'"\')[1]'
 
-            prop_datablock.append(f'        self._{attribuut.name}.set_waarde(value{owner_self})'),
-            if type_field == 'UnionType':
-                prop_datablock.append('        if value is not None:')
-                prop_datablock.append(f"            self.clear_other_props('_{attribuut.name}')")
+        setter_body = [f'        self._{attribuut.name}.set_waarde(value{owner_self})']
+        if type_field == 'UnionType':
+            setter_body.append('        if value is not None:')
+            setter_body.append(f"            self.clear_other_props('_{attribuut.name}')")
+
+        if shadows_builtin(attribuut.name):
+            prop_datablock.append(f'    def _get_{attribuut.name}(self){type_hint}:')
+            prop_datablock.append(f'        """{attribuut.definition}"""')
+            prop_datablock.append(getter_body)
             prop_datablock.append('')
+            if attribuut.readonly:
+                prop_datablock.append(f'    {attribuut.name} = property(_get_{attribuut.name})')
+            else:
+                prop_datablock.append(f'    def _set_{attribuut.name}(self, value):')
+                prop_datablock.extend(setter_body)
+                prop_datablock.append(f'    {attribuut.name} = property(_get_{attribuut.name}, '
+                                      f'_set_{attribuut.name})')
+            prop_datablock.append('')
+        else:
+            prop_datablock.append('    @property')
+            prop_datablock.append(f'    def {attribuut.name}(self){type_hint}:')
+            prop_datablock.append(f'        """{attribuut.definition}"""')
+            prop_datablock.append(getter_body)
+            prop_datablock.append('')
+            if not attribuut.readonly:
+                prop_datablock.append(f'    @{attribuut.name}.setter')
+                prop_datablock.append(f'    def {attribuut.name}(self, value):')
+                prop_datablock.extend(setter_body)
+                prop_datablock.append('')
 
     datablock.extend(prop_datablock)
 

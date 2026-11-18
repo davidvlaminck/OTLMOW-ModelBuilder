@@ -175,6 +175,39 @@ class TestAddAttributenToDataBlockComparison:
             complex_attrs, [], [], type_links, enums, complexes, unions, False, "")
         assert rust_result == py_result
 
+    def test_name_that_shadows_a_builtin_matches_python(self):
+        collector = set_up()
+        type_links, enums, complexes, unions = extract_lookup_data(collector)
+        attribuut = OSLOAttribuut(
+            'type', 'type', 'De typering of categorie van de bijlage.',
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage',
+            '1', '*',
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage.type',
+            'http://www.w3.org/2001/XMLSchema#string', 0, '', 0, '', '')
+
+        for for_class_use in (False, True):
+            py_result = add_attributen_to_data_block(
+                collector, [attribuut], [], valid_uri_and_types={}, for_class_use=for_class_use)
+            rust_result = rust_add_attributen_to_data_block(
+                [attribuut], [], [], type_links, enums, complexes, unions, for_class_use, "")
+            assert rust_result == py_result
+
+    def test_readonly_name_that_shadows_a_builtin_matches_python(self):
+        collector = set_up()
+        type_links, enums, complexes, unions = extract_lookup_data(collector)
+        attribuut = OSLOAttribuut(
+            'type', 'type', 'De typering of categorie van de bijlage.',
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage',
+            '1', '1',
+            'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Bijlage.type',
+            'http://www.w3.org/2001/XMLSchema#string', 0, '', 1, '', '')
+
+        py_result = add_attributen_to_data_block(
+            collector, [attribuut], [], valid_uri_and_types={}, for_class_use=True)
+        rust_result = rust_add_attributen_to_data_block(
+            [attribuut], [], [], type_links, enums, complexes, unions, True, "")
+        assert rust_result == py_result
+
     def test_union_type_matches_python(self):
         collector = set_up()
         type_links, enums, complexes, unions = extract_lookup_data(collector)
