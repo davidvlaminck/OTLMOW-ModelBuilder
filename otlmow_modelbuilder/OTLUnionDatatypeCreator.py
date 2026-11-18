@@ -16,7 +16,7 @@ class OTLUnionDatatypeCreator(AbstractDatatypeCreator):
     def create_block_to_write_from_union_types(self, union_datatype: OSLODatatypeUnion,
                                                union_datatype_validation_rules: dict, model_location: str = '') -> list[str]:
         if not isinstance(union_datatype, OSLODatatypeUnion):
-            raise TypeError("Input is not a OSLODatatypeUnion")
+            raise ValueError("Input is not a OSLODatatypeUnion")
 
         if union_datatype.objectUri == '':
             raise ValueError(f"OSLODatatypeUnion.objectUri is invalid. Value = '{union_datatype.objectUri}'")

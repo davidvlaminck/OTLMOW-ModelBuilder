@@ -16,7 +16,7 @@ class OTLComplexDatatypeCreator(AbstractDatatypeCreator):
     def create_block_to_write_from_complex_types(self, oslo_datatype_complex: OSLODatatypeComplex,
                                                  complex_datatype_validation_rules: dict, model_location='') -> list[str]:
         if not isinstance(oslo_datatype_complex, OSLODatatypeComplex):
-            raise TypeError("Input is not a OSLODatatypeComplex")
+            raise ValueError("Input is not a OSLODatatypeComplex")
 
         if oslo_datatype_complex.objectUri == '':
             raise ValueError(f"OSLODatatypeComplex.objectUri is invalid. Value = '{oslo_datatype_complex.objectUri}'")

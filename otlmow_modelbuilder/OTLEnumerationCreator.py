@@ -102,7 +102,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
     def create_block_to_write_from_enumerations(self, oslo_enumeration: OSLOEnumeration, enumeration_validation_rules,
                                                 environment: str = default_environment) -> list[str]:
         if not isinstance(oslo_enumeration, OSLOEnumeration):
-            raise TypeError("Input is not a OSLOEnumeration")
+            raise ValueError("Input is not a OSLOEnumeration")
 
         if oslo_enumeration.objectUri == '':
             raise ValueError(f"OSLOEnumeration.objectUri is invalid (empty). Value = '{oslo_enumeration.objectUri}'")
@@ -143,11 +143,10 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
                 oslo_enumeration.codelist,
                 oslo_enumeration.deprecated_version,
                 self.__class__.__name__)
-        except (ImportError, TypeError):
+        except Exception:
             pass
 
         datablock = ['# coding=utf-8',
-                     'from types import MappingProxyType',
                      'from ..BaseClasses.KeuzelijstField import KeuzelijstField']
         if len(keuzelijst_waardes) > 0:
             datablock.append('from ..BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde')

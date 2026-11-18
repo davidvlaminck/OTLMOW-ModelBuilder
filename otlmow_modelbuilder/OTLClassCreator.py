@@ -98,7 +98,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
     @staticmethod
     def _ensure_oslo_class(oslo_class) -> None:
         if not isinstance(oslo_class, OSLOClass):
-            raise TypeError("Input is not a OSLOClass")
+            raise ValueError("Input is not a OSLOClass")
 
     @staticmethod
     def _get_valid_uri_and_types(rules: dict) -> dict:
@@ -145,7 +145,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
                 oslo_class.abstract,
                 oslo_class.deprecated_version,
                 self.__class__.__name__)
-        except ImportError:
+        except Exception:
             return None
 
     def _collect_type_links(self):
