@@ -176,18 +176,16 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
         for waarde in sorted(keuzelijst_waardes, key=lambda w: w.invulwaarde):
             if oslo_enumeration.objectUri == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlFiguratieCode':
                 waarde.definitie = waarde.definitie.replace('²', '^2')
-                waarde.invulwaarde = waarde.invulwaarde.replace("'", "\\'")
-                waarde.label = waarde.label.replace("'", "\\'")
-                waarde.objectUri = waarde.objectUri.replace("'", "\\'")
 
-            whitespace = get_white_space_equivalent(f"        '{waarde.invulwaarde}': KeuzelijstWaarde(")
-            datablock.append(f"        '{waarde.invulwaarde}': KeuzelijstWaarde(invulwaarde='{waarde.invulwaarde}',")
+            key = wrap_in_quotes(waarde.invulwaarde)
+            whitespace = get_white_space_equivalent(f"        {key}: KeuzelijstWaarde(")
+            datablock.append(f"        {key}: KeuzelijstWaarde(invulwaarde={wrap_in_quotes(waarde.invulwaarde)},")
             datablock.append(f"{whitespace}label={wrap_in_quotes(waarde.label)},")
             if waarde.status != '':
-                datablock.append(f"{whitespace}status='{waarde.status}',")
+                datablock.append(f"{whitespace}status={wrap_in_quotes(waarde.status)},")
             if waarde.definitie != '':
                 datablock.append(f"{whitespace}definitie={wrap_in_quotes(waarde.definitie)},")
-            datablock.append(f"{whitespace}objectUri='{waarde.objectUri}'),")
+            datablock.append(f"{whitespace}objectUri={wrap_in_quotes(waarde.objectUri)}),")
 
         if len(keuzelijst_waardes) > 0:
             datablock[-1] = datablock[-1][:-1]

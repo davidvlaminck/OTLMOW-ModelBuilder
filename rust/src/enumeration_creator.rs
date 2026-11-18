@@ -72,20 +72,21 @@ pub fn create_block_to_write_from_enumeration(
         let object_uri = &waarde.object_uri;
         let status = &waarde.status;
 
-        let whitespace = get_white_space_equivalent(&format!("        '{}': KeuzelijstWaarde(", invulwaarde));
+        let key = wrap_in_quotes(invulwaarde);
+        let whitespace = get_white_space_equivalent(&format!("        {key}: KeuzelijstWaarde("));
 
-        datablock.push(format!("        '{}': KeuzelijstWaarde(invulwaarde='{}',", invulwaarde, invulwaarde));
+        datablock.push(format!("        {key}: KeuzelijstWaarde(invulwaarde={},", wrap_in_quotes(invulwaarde)));
         datablock.push(format!("{}label={},", whitespace, wrap_in_quotes(label)));
 
         if !status.is_empty() {
-            datablock.push(format!("{}status='{}',", whitespace, status));
+            datablock.push(format!("{}status={},", whitespace, wrap_in_quotes(status)));
         }
 
         if !definitie.is_empty() {
             datablock.push(format!("{}definitie={},", whitespace, wrap_in_quotes(definitie)));
         }
 
-        datablock.push(format!("{}objectUri='{}'),", whitespace, object_uri));
+        datablock.push(format!("{}objectUri={}),", whitespace, wrap_in_quotes(object_uri)));
     }
 
     if !keuzelijst_waardes.is_empty() {
