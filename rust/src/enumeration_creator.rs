@@ -56,7 +56,11 @@ pub fn create_block_to_write_from_enumeration(
     }
 
     datablock.push(format!("    codelist = {}", wrap_in_quotes(datatype_codelist)));
-    datablock.push("    options: MappingProxyType[str, KeuzelijstWaarde] = MappingProxyType({".to_string());
+    if !keuzelijst_waardes.is_empty() {
+        datablock.push("    options: MappingProxyType[str, KeuzelijstWaarde] = MappingProxyType({".to_string());
+    } else {
+        datablock.push("    options: MappingProxyType = MappingProxyType({".to_string());
+    }
 
     let mut sorted_waardes: Vec<&PyKeuzelijstWaarde> = keuzelijst_waardes.iter().collect();
     sorted_waardes.sort_by(|a, b| a.invulwaarde.cmp(&b.invulwaarde));
