@@ -5,6 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 import random
 import warnings
+from types import MappingProxyType
 from typing import Any
 
 from ..Exceptions.AttributeDeprecationWarning import AttributeDeprecationWarning
@@ -15,7 +16,7 @@ from .OTLField import OTLField
 
 
 class KeuzelijstField(OTLField):
-    options: dict[str, KeuzelijstWaarde] = {}
+    options: MappingProxyType[str, KeuzelijstWaarde] = MappingProxyType({})
     codelist = ''
     clearing_value = '88888888'
     native_type = str

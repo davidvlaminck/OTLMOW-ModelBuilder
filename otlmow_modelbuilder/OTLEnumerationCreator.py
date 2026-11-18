@@ -143,10 +143,11 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
                 oslo_enumeration.codelist,
                 oslo_enumeration.deprecated_version,
                 self.__class__.__name__)
-        except ImportError:
+        except (ImportError, TypeError):
             pass
 
         datablock = ['# coding=utf-8',
+                     'from types import MappingProxyType',
                      'from ..BaseClasses.KeuzelijstField import KeuzelijstField']
         if len(keuzelijst_waardes) > 0:
             datablock.append('from ..BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde')
@@ -167,7 +168,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             oslo_enumeration.deprecated_version = oslo_enumeration.deprecated_version.split('-')[0]
             datablock.append(f'    deprecated_version = {wrap_in_quotes(oslo_enumeration.deprecated_version)}')
         datablock.append(f'    codelist = {wrap_in_quotes(oslo_enumeration.codelist)}')
-        datablock.append('    options = {')
+        datablock.append('    options: MappingProxyType[str, KeuzelijstWaarde] = MappingProxyType({')
 
         for waarde in sorted(keuzelijst_waardes, key=lambda w: w.invulwaarde):
             if oslo_enumeration.objectUri == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlFiguratieCode':
@@ -187,7 +188,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
 
         if len(keuzelijst_waardes) > 0:
             datablock[-1] = datablock[-1][:-1]
-        datablock.append('    }')
+        datablock.append('    })')
         datablock.append("")
         datablock.append("    @classmethod")
         datablock.append("    def create_dummy_data(cls):")
