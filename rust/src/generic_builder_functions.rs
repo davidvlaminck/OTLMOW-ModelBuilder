@@ -90,18 +90,9 @@ fn import_datetime(datablock: &mut Vec<String>, var_datetime: &str) {
     }
 }
 
-fn cardinality_check(attr: &Attribute, type_string: &str, datablock: &mut Vec<String>) -> String {
+fn cardinality_check(attr: &Attribute, type_string: &str) -> String {
     if attr.kardinaliteit_max != "1" {
-        for (index, line) in datablock.iter().enumerate() {
-            if line.is_empty() {
-                datablock.insert(1, "from typing import List".to_string());
-                break;
-            }
-            if line == "from typing import List" {
-                break;
-            }
-        }
-        format!("List[{type_string}]")
+        format!("list[{type_string}]")
     } else {
         type_string.to_string()
     }
@@ -123,34 +114,34 @@ fn get_type_hint_from_field(
 
     match field_name.as_str() {
         "StringField" | "URIField" => {
-            Ok(format!(" -> {}", cardinality_check(attr, "str", datablock)))
+            Ok(format!(" -> {}", cardinality_check(attr, "str")))
         }
         "FloatOrDecimalField" => {
-            Ok(format!(" -> {}", cardinality_check(attr, "float", datablock)))
+            Ok(format!(" -> {}", cardinality_check(attr, "float")))
         }
         "BooleanField" => {
-            Ok(format!(" -> {}", cardinality_check(attr, "bool", datablock)))
+            Ok(format!(" -> {}", cardinality_check(attr, "bool")))
         }
         "IntegerField" | "NonNegIntegerField" => {
-            Ok(format!(" -> {}", cardinality_check(attr, "int", datablock)))
+            Ok(format!(" -> {}", cardinality_check(attr, "int")))
         }
         "DateField" => {
             import_datetime(datablock, "date");
-            Ok(format!(" -> {}", cardinality_check(attr, "date", datablock)))
+            Ok(format!(" -> {}", cardinality_check(attr, "date")))
         }
         "DateTimeField" => {
             import_datetime(datablock, "datetime");
-            Ok(format!(" -> {}", cardinality_check(attr, "datetime", datablock)))
+            Ok(format!(" -> {}", cardinality_check(attr, "datetime")))
         }
         "TimeField" => {
             import_datetime(datablock, "time");
-            Ok(format!(" -> {}", cardinality_check(attr, "time", datablock)))
+            Ok(format!(" -> {}", cardinality_check(attr, "time")))
         }
         _ => {
             let field_parts = get_non_single_field_from_type_uri(&attr.type_uri, valid_uri_and_types)?;
             match field_parts[0].as_str() {
                 "KeuzelijstField" => {
-                    Ok(format!(" -> {}", cardinality_check(attr, "str", datablock)))
+                    Ok(format!(" -> {}", cardinality_check(attr, "str")))
                 }
                 "ComplexField" | "UnionTypeField" => {
                     let type_name = &field_parts[1];
@@ -175,7 +166,7 @@ fn get_type_hint_from_field(
                     } else {
                         type_name_waarden.clone()
                     };
-                    Ok(format!(" -> {}", cardinality_check(attr, &type_name_waarden, datablock)))
+                    Ok(format!(" -> {}", cardinality_check(attr, &type_name_waarden)))
                 }
                 _ => {
                     eprintln!("not complexe waarde");

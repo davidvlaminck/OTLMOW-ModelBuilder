@@ -34,15 +34,9 @@ def import_datetime(datablock, var_datetime):
             break
 
 
-def cardinality_check(attribute, type_string, datablock):
+def cardinality_check(attribute, type_string):
     if attribute.kardinaliteit_max != '1':
-        for index, line in enumerate(datablock):
-            if line == '':
-                datablock.insert(1, 'from typing import List')
-                break
-            if line == 'from typing import List':
-                break
-        return f'List[{type_string}]'
+        return f'list[{type_string}]'
     else:
         return type_string
 
@@ -50,26 +44,26 @@ def cardinality_check(attribute, type_string, datablock):
 def get_type_hint_from_field(oslo_collector, attribute, datablock, valid_uri_and_types):
     field_name = get_field_name_by_type_uri(oslo_collector, attribute.type)
     if field_name == 'StringField' or field_name == 'URIField':
-        return f' -> {cardinality_check(attribute, "str", datablock)}'
+        return f' -> {cardinality_check(attribute, "str")}'
     elif field_name == 'FloatOrDecimalField':
-        return f' -> {cardinality_check(attribute, "float", datablock)}'
+        return f' -> {cardinality_check(attribute, "float")}'
     elif field_name == 'BooleanField':
-        return f' -> {cardinality_check(attribute, "bool", datablock)}'
+        return f' -> {cardinality_check(attribute, "bool")}'
     elif field_name in ['IntegerField', 'NonNegIntegerField']:
-        return f' -> {cardinality_check(attribute, "int", datablock)}'
+        return f' -> {cardinality_check(attribute, "int")}'
     elif field_name == 'DateField':
         import_datetime(datablock, 'date')
-        return f' -> {cardinality_check(attribute, "date", datablock)}'
+        return f' -> {cardinality_check(attribute, "date")}'
     elif field_name == 'DateTimeField':
         import_datetime(datablock, 'datetime')
-        return f' -> {cardinality_check(attribute, "datetime", datablock)}'
+        return f' -> {cardinality_check(attribute, "datetime")}'
     elif field_name == 'TimeField':
         import_datetime(datablock, 'time')
-        return f' -> {cardinality_check(attribute, "time", datablock)}'
+        return f' -> {cardinality_check(attribute, "time")}'
     else:
         field_name = get_non_single_field_from_type_uri(attribute.type, valid_uri_and_types)
         if field_name[0] == 'KeuzelijstField':
-            return f' -> {cardinality_check(attribute, "str", datablock)}'
+            return f' -> {cardinality_check(attribute, "str")}'
         if field_name[0] == 'ComplexField' or field_name[0] == 'UnionTypeField':
             for index, line in enumerate(datablock):
                 if line[0] not in ['#', 'f']:  # only loop over the import part
@@ -80,7 +74,7 @@ def get_type_hint_from_field(oslo_collector, attribute, datablock, valid_uri_and
                     break
                 datablock[index] = line + f', {field_name[1]}Waarden'
                 break
-            return f' -> {cardinality_check(attribute, field_name[1] + "Waarden", datablock)}'
+            return f' -> {cardinality_check(attribute, field_name[1] + "Waarden")}'
         else:
             print('not complexe waarde')
     return ''

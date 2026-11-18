@@ -262,7 +262,6 @@ def test_InValidType():
 
 
 expectedDataContainerBuis = ['# coding=utf-8',
-                             'from typing import List',
                              'from ...BaseClasses.OTLObject import OTLAttribuut',
                              'from abc import abstractmethod, ABC',
                              'from ...BaseClasses.StringField import StringField',
@@ -296,7 +295,7 @@ expectedDataContainerBuis = ['# coding=utf-8',
                              "                                   owner=self)",
                              '',
                              '    @property',
-                             '    def kleur(self) -> List[str]:',
+                             '    def kleur(self) -> list[str]:',
                              '        """De kleur van de coating."""',
                              '        return self._kleur.get_waarde()',
                              '',
@@ -383,7 +382,7 @@ def test_CheckInheritances_Agent():
     data_to_write = creator.create_blocks_to_write_from_classes(agent, class_validation_rules=class_validation_rules)
     inheritance_line = 'class Agent(RelationInteractor, OTLObject):'
 
-    assert data_to_write[11] == inheritance_line
+    assert data_to_write[10] == inheritance_line
 
 
 def test_CheckInheritances_AIMObject():
@@ -394,7 +393,7 @@ def test_CheckInheritances_AIMObject():
     data_to_write = creator.create_blocks_to_write_from_classes(aim_object, class_validation_rules=class_validation_rules)
     inheritance_line = 'class AIMObject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor, AIMVersie):'
 
-    assert data_to_write[17] == inheritance_line
+    assert data_to_write[16] == inheritance_line
 
 
 def test_CheckInheritances_RelatieObject():
@@ -417,7 +416,7 @@ def test_CheckInheritances_DerdenObject():
                                                                 class_validation_rules=class_validation_rules)
     inheritance_line = 'class Derdenobject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):'
 
-    assert data_to_write[14] == inheritance_line
+    assert data_to_write[13] == inheritance_line
 
 
 def test_check_inheritances_RelationInteractor():

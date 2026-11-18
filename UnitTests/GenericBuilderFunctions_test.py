@@ -202,7 +202,7 @@ def test_add_attributen_to_data_block_name_that_shadows_a_builtin():
         "                                  definition='De typering of categorie van de bijlage.',",
         '                                  owner=self)',
         '',
-        '    def _get_type(self) -> List[str]:',
+        '    def _get_type(self) -> list[str]:',
         '        """De typering of categorie van de bijlage."""',
         '        return self._type.get_waarde()',
         '',
