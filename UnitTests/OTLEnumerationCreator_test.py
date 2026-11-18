@@ -18,6 +18,7 @@ ROOT_DIR = CURRENT_DIR.parent.parent
 
 
 expectedKeuzelijst = ['# coding=utf-8',
+                      'from types import MappingProxyType',
                       'from ..BaseClasses.KeuzelijstField import KeuzelijstField',
                       'from ..BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde',
                       '',
@@ -31,7 +32,7 @@ expectedKeuzelijst = ['# coding=utf-8',
                       "    definition = 'Keuzelijst met test waarden.'",
                       "    status = 'ingebruik'",
                       "    codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlTestKeuzelijst'",
-                      '    options = {',
+                      '    options: MappingProxyType[str, KeuzelijstWaarde] = MappingProxyType({',
                       "        'waarde-1': KeuzelijstWaarde(invulwaarde='waarde-1',",
                       "                                     label='waarde 1',",
                       ('                                     '
@@ -59,7 +60,7 @@ expectedKeuzelijst = ['# coding=utf-8',
                       "                                     status='verwijderd',",
                       ('                                     '
                       "objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlTestKeuzelijst/waarde-6')"),
-                      '    }',
+                      '    })',
                       '',
                       '    @classmethod',
                       '    def create_dummy_data(cls):',
