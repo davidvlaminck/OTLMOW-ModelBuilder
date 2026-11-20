@@ -5,6 +5,7 @@ from abc import ABC
 from otlmow_modelbuilder.DatatypeBuilderFunctions import get_attributen_by_type_field
 from otlmow_modelbuilder.GenericBuilderFunctions import (
     add_attributen_to_data_block,
+    add_noqa_ruf001_if_needed,
     get_fields_to_import_from_list_of_attributes,
 )
 from otlmow_modelbuilder.HelperFunctions import escape_backslash, wrap_in_quotes
@@ -99,12 +100,12 @@ class AbstractDatatypeCreator(ABC):
 
         datablock.append(''),
         datablock.append(f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit')
-        datablock.append(f'class {oslo_datatype.name}({type_field}Field):')
-        datablock.append(f'    """{oslo_datatype.definition}"""')
+        datablock.append(add_noqa_ruf001_if_needed(f'class {oslo_datatype.name}({type_field}Field):'))
+        datablock.append(add_noqa_ruf001_if_needed(f'    """{oslo_datatype.definition}"""'))
         datablock.append(f'    naam = {wrap_in_quotes(oslo_datatype.name)}')
         datablock.append(f'    label = {wrap_in_quotes(oslo_datatype.label)}')
         datablock.append(f'    objectUri = {wrap_in_quotes(oslo_datatype.objectUri)}')
-        datablock.append(f'    definition = {wrap_in_quotes(oslo_datatype.definition)}')
+        datablock.append(add_noqa_ruf001_if_needed(f'    definition = {wrap_in_quotes(oslo_datatype.definition)}'))
         if oslo_datatype.usagenote != '':
             if oslo_datatype.deprecated_version != '' and 'uit gebruik sinds versie' in oslo_datatype.usagenote:
                 no_tag = oslo_datatype.deprecated_version.split('-')[0]

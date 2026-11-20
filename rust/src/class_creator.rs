@@ -2,7 +2,7 @@ use pyo3::prelude::*;
 use std::collections::HashMap;
 
 use crate::generic_builder_functions::{Attribute, TypeLookup, add_attributen_to_data_block};
-use crate::helper_functions::{get_ns_and_name_from_uri, get_class_directory_from_ns, wrap_in_quotes};
+use crate::helper_functions::{get_ns_and_name_from_uri, get_class_directory_from_ns, wrap_in_quotes, add_noqa_ruf001_if_needed};
 use crate::datatype_builder_functions::get_fields_to_import_from_list_of_attributes;
 
 #[derive(Clone)]
@@ -150,8 +150,8 @@ pub fn create_block_from_class(
     let class_line = get_class_line_from_class_and_inheritances(
         class_name, class_abstract, &inheritances, geometry_types, inheritance_map,
     );
-    datablock.push(class_line);
-    datablock.push(format!("    \"\"\"{}\"\"\"", class_definition));
+    datablock.push(add_noqa_ruf001_if_needed(&class_line));
+    datablock.push(add_noqa_ruf001_if_needed(&format!("    \"\"\"{}\"\"\"", class_definition)));
     datablock.push(String::new());
     datablock.push(format!("    typeURI = '{}'", class_object_uri));
     datablock.push("    \"\"\"De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI.\"\"\"".to_string());

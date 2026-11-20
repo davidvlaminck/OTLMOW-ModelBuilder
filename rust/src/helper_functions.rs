@@ -27,6 +27,14 @@ pub fn get_white_space_equivalent(string: &str) -> String {
     " ".repeat(string.len())
 }
 
+pub fn add_noqa_ruf001_if_needed(line: &str) -> String {
+    if line.contains('×') {
+        format!("{line}  # noqa: RUF001")
+    } else {
+        line.to_string()
+    }
+}
+
 pub fn py_title(s: &str) -> String {
     let mut result = String::new();
     let mut capitalize_next = true;
@@ -123,6 +131,12 @@ pub fn py_wrap_in_quotes(text: &str) -> String {
 #[pyo3(name = "get_white_space_equivalent")]
 pub fn py_get_white_space_equivalent(string: &str) -> String {
     get_white_space_equivalent(string)
+}
+
+#[pyfunction]
+#[pyo3(name = "add_noqa_ruf001_if_needed")]
+pub fn py_add_noqa_ruf001_if_needed(line: &str) -> String {
+    add_noqa_ruf001_if_needed(line)
 }
 
 #[pyfunction]

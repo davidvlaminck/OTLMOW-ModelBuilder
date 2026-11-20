@@ -8,6 +8,7 @@ import re
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 from otlmow_modelbuilder.GenericBuilderFunctions import (
     add_attributen_to_data_block,
+    add_noqa_ruf001_if_needed,
     get_fields_to_import_from_list_of_attributes,
 )
 from otlmow_modelbuilder.GeometrieArtefactCollector import GeometrieArtefactCollector
@@ -184,9 +185,9 @@ class OTLClassCreator(AbstractDatatypeCreator):
         datablock.append('')
         datablock.append(f'# Generated with {self.__class__.__name__}. To modify: extend, do not edit')
 
-        datablock.append(self.get_class_line_from_class_and_inheritances(oslo_class=oslo_class,
-                                                                         inheritances=inheritances,
-                                                                         geometry_types=list_of_geometry_types))
+        datablock.append(add_noqa_ruf001_if_needed(self.get_class_line_from_class_and_inheritances(oslo_class=oslo_class,
+                                                                           inheritances=inheritances,
+                                                                           geometry_types=list_of_geometry_types)))
         datablock.append(f'    """{oslo_class.definition}"""')
         datablock.append('')
 

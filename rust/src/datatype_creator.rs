@@ -5,7 +5,7 @@ use crate::datatype_builder_functions::{
     get_single_field_from_type_uri, get_type_name_of_complex_attribuut,
 };
 use crate::generic_builder_functions::{add_attributen_to_data_block, Attribute, TypeLookup};
-use crate::helper_functions::{wrap_in_quotes, escape_backslash};
+use crate::helper_functions::{wrap_in_quotes, escape_backslash, add_noqa_ruf001_if_needed};
 
 pub fn create_block_to_write_from_complex_primitive_or_union_types(
     attributen: Vec<Attribute>,
@@ -78,12 +78,12 @@ pub fn create_block_to_write_from_complex_primitive_or_union_types(
 
     datablock.push(String::new());
     datablock.push(format!("# Generated with {}. To modify: extend, do not edit", creator_name));
-    datablock.push(format!("class {}({}Field):", datatype_name, effective_type_field));
-    datablock.push(format!("    \"\"\"{}\"\"\"", datatype_definition));
+    datablock.push(add_noqa_ruf001_if_needed(&format!("class {}({}Field):", datatype_name, effective_type_field)));
+    datablock.push(add_noqa_ruf001_if_needed(&format!("    \"\"\"{}\"\"\"", datatype_definition)));
     datablock.push(format!("    naam = {}", wrap_in_quotes(datatype_name)));
     datablock.push(format!("    label = {}", wrap_in_quotes(datatype_label)));
     datablock.push(format!("    objectUri = {}", wrap_in_quotes(datatype_object_uri)));
-    datablock.push(format!("    definition = {}", wrap_in_quotes(datatype_definition)));
+    datablock.push(add_noqa_ruf001_if_needed(&format!("    definition = {}", wrap_in_quotes(datatype_definition))));
 
     if datatype_usagenote != "" {
         let usagenote = if !datatype_deprecated_version.is_empty() && datatype_usagenote.contains("uit gebruik sinds versie") {

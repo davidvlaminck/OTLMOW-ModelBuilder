@@ -2,7 +2,7 @@ use pyo3::prelude::*;
 use pyo3::types::PyAnyMethods;
 use std::collections::HashMap;
 
-use crate::helper_functions::{escape_backslash, wrap_in_quotes, get_white_space_equivalent};
+use crate::helper_functions::{escape_backslash, wrap_in_quotes, get_white_space_equivalent, add_noqa_ruf001_if_needed};
 use crate::datatype_builder_functions::{
     get_single_field_from_type_uri, get_non_single_field_from_type_uri,
     get_type_name_of_complex_attribuut, get_type_name_of_union_attribuut,
@@ -238,7 +238,7 @@ pub fn add_attributen_to_data_block(
             datablock.push(format!("{whitespace}kardinaliteit_max={},", wrap_in_quotes(&attribuut.kardinaliteit_max)));
         }
         let definitie = wrap_in_quotes(&attribuut.definition.replace('\n', ""));
-        datablock.push(format!("{whitespace}definition={},", definitie));
+        datablock.push(add_noqa_ruf001_if_needed(&format!("{whitespace}definition={},", definitie)));
         datablock.push(format!("{whitespace}owner=self)"));
         datablock.push(String::new());
 
@@ -261,7 +261,7 @@ pub fn add_attributen_to_data_block(
 
         if is_python_builtin(&attribuut.name) {
             prop_datablock.push(format!("    def _get_{}(self){}:", attribuut.name, type_hint));
-            prop_datablock.push(format!("        \"\"\"{}\"\"\"", attribuut.definition));
+            prop_datablock.push(add_noqa_ruf001_if_needed(&format!("        \"\"\"{}\"\"\"", attribuut.definition)));
             prop_datablock.push(getter_body);
             prop_datablock.push(String::new());
 
@@ -283,7 +283,7 @@ pub fn add_attributen_to_data_block(
         } else {
             prop_datablock.push("    @property".to_string());
             prop_datablock.push(format!("    def {}(self){}:", attribuut.name, type_hint));
-            prop_datablock.push(format!("        \"\"\"{}\"\"\"", attribuut.definition));
+            prop_datablock.push(add_noqa_ruf001_if_needed(&format!("        \"\"\"{}\"\"\"", attribuut.definition)));
             prop_datablock.push(getter_body);
             prop_datablock.push(String::new());
 

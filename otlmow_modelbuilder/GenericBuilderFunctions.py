@@ -18,6 +18,12 @@ def get_white_space_equivalent(string):
     return ''.join(' ' * len(string))
 
 
+def add_noqa_ruf001_if_needed(line: str) -> str:
+    if '×' in line:
+        return f'{line}  # noqa: RUF001'
+    return line
+
+
 def shadows_builtin(name: str) -> bool:
     """True when the name shadows a Python builtin, which ruff reports as A003 on a setter decorator."""
     return name in builtins.__dict__
@@ -94,7 +100,7 @@ def add_attributen_to_data_block(oslo_collector: OSLOCollector, attributen: list
             attribuut.objectUri = attribuut.objectUri.replace('?', '_')
             attribuut.name = attribuut.name.replace('?', '_')
 
-        datablock.append(f'        self._{attribuut.name} = OTLAttribuut(field={field_name},')
+        datablock.append(add_noqa_ruf001_if_needed(f'        self._{attribuut.name} = OTLAttribuut(field={field_name},'))
         datablock.append(f'{whitespace}naam={wrap_in_quotes(attribuut.name)},')
         datablock.append(f'{whitespace}label={wrap_in_quotes(attribuut.label)},')
         datablock.append(f'{whitespace}objectUri={wrap_in_quotes(attribuut.objectUri)},')
@@ -116,7 +122,7 @@ def add_attributen_to_data_block(oslo_collector: OSLOCollector, attributen: list
         if attribuut.kardinaliteit_max != '1':
             datablock.append(f'{whitespace}kardinaliteit_max={wrap_in_quotes(attribuut.kardinaliteit_max)},')
         definitie = wrap_in_quotes(attribuut.definition.replace('\n', ''))
-        datablock.append(f'{whitespace}definition={definitie},')
+        datablock.append(add_noqa_ruf001_if_needed(f'{whitespace}definition={definitie},'))
         datablock.append(f'{whitespace}owner=self)')
         datablock.append('')
 
@@ -137,7 +143,7 @@ def add_attributen_to_data_block(oslo_collector: OSLOCollector, attributen: list
 
         if shadows_builtin(attribuut.name):
             prop_datablock.append(f'    def _get_{attribuut.name}(self){type_hint}:')
-            prop_datablock.append(f'        """{attribuut.definition}"""')
+            prop_datablock.append(add_noqa_ruf001_if_needed(f'        """{attribuut.definition}"""'))
             prop_datablock.append(getter_body)
             prop_datablock.append('')
             if attribuut.readonly:
@@ -151,7 +157,7 @@ def add_attributen_to_data_block(oslo_collector: OSLOCollector, attributen: list
         else:
             prop_datablock.append('    @property')
             prop_datablock.append(f'    def {attribuut.name}(self){type_hint}:')
-            prop_datablock.append(f'        """{attribuut.definition}"""')
+            prop_datablock.append(add_noqa_ruf001_if_needed(f'        """{attribuut.definition}"""'))
             prop_datablock.append(getter_body)
             prop_datablock.append('')
             if not attribuut.readonly:

@@ -11,7 +11,7 @@ import rdflib
 from rdflib import RDF, Graph, URIRef
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
-from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent
+from otlmow_modelbuilder.GenericBuilderFunctions import get_white_space_equivalent, add_noqa_ruf001_if_needed
 from otlmow_modelbuilder.HelperFunctions import wrap_in_quotes
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.SQLDataClasses.OSLOEnumeration import OSLOEnumeration
@@ -184,7 +184,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             if waarde.status != '':
                 datablock.append(f"{whitespace}status={wrap_in_quotes(waarde.status)},")
             if waarde.definitie != '':
-                datablock.append(f"{whitespace}definitie={wrap_in_quotes(waarde.definitie)},")
+                datablock.append(add_noqa_ruf001_if_needed(f"{whitespace}definitie={wrap_in_quotes(waarde.definitie)},"))
             datablock.append(f"{whitespace}objectUri={wrap_in_quotes(waarde.objectUri)}),")
 
         if len(keuzelijst_waardes) > 0:
