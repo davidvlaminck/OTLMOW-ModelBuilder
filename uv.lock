@@ -516,7 +516,7 @@ wheels = [
 
 [[package]]
 name = "otlmow-modelbuilder"
-version = "0.45rc1"
+version = "0.45"
 source = { editable = "." }
 dependencies = [
     { name = "rdflib" },
