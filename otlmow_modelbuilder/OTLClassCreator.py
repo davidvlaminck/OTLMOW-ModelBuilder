@@ -209,17 +209,18 @@ class OTLClassCreator(AbstractDatatypeCreator):
 
         add_attributen_to_data_block(oslo_collector=self.oslo_collector, attributen=attributen, datablock=datablock,
                                      for_class_use=True, valid_uri_and_types=valid_uri_and_types)
-        self._finalize_datablock(datablock, inheritances, attributen)
+        relations = self.oslo_collector.find_all_relations(oslo_class.objectUri, allow_duplicates=False)
+        self._finalize_datablock(datablock, inheritances, attributen, has_relations=len(relations) > 0)
 
         return datablock
 
     @staticmethod
-    def _finalize_datablock(datablock, inheritances, attributen):
-        if len(inheritances) == 0 and len(attributen) == 0:
-            datablock.append('        pass')
-
+    def _finalize_datablock(datablock, inheritances, attributen, has_relations=False):
         if datablock[-1] == '':
             datablock.pop()
+
+        if len(inheritances) == 0 and len(attributen) == 0 and not has_relations:
+            datablock.append('        pass')
 
     @staticmethod
     def _import_prefix(oslo_class: OSLOClass) -> str:

@@ -735,11 +735,29 @@ def test_a_class_with_attributes_imports_the_attribute_class():
 
 def test_a_class_without_bases_and_without_attributes_gets_a_pass():
     creator = a_creator(CollectorStub())
-    datablock = ['        pass']
+    datablock = ['        super().__init__()', '']
 
     creator._finalize_datablock(datablock, [], [])
 
-    assert datablock == ['        pass', '        pass']
+    assert datablock == ['        super().__init__()', '        pass']
+
+
+def test_a_class_with_relations_but_no_attributes_or_inheritances_does_not_get_a_pass():
+    creator = a_creator(CollectorStub())
+    datablock = ['        super().__init__()', '']
+
+    creator._finalize_datablock(datablock, [], [], has_relations=True)
+
+    assert datablock == ['        super().__init__()']
+
+
+def test_a_class_without_relations_and_without_attributes_or_inheritances_gets_a_pass():
+    creator = a_creator(CollectorStub())
+    datablock = ['        super().__init__()', '']
+
+    creator._finalize_datablock(datablock, [], [], has_relations=False)
+
+    assert datablock == ['        super().__init__()', '        pass']
 
 
 def test_a_class_with_bases_does_not_get_a_pass():

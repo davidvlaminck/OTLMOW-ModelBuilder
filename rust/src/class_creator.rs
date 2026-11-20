@@ -183,7 +183,8 @@ pub fn create_block_from_class(
         "",
     );
 
-    if inheritances.is_empty() && attr_list.is_empty() {
+    let has_relations = !relations.is_empty();
+    if inheritances.is_empty() && attr_list.is_empty() && !has_relations {
         datablock.push("        pass".to_string());
     }
 
