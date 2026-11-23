@@ -4,6 +4,7 @@ import pytest
 
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
 from otlmow_modelbuilder.OTLModelCreator import OTLModelCreator
+from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 from otlmow_modelbuilder.SQLDataClasses.OSLODatatypeComplexAttribuut import (
     OSLODatatypeComplexAttribuut,
 )
@@ -174,3 +175,25 @@ def test_generate_class_dict():
              'ns': 'onderdeel'}}
 
     assert class_dict == expected_class_dict
+
+
+def test_generate_class_dict_includes_added_inheritances():
+    current_file_path = Path(__file__)
+    base_dir = current_file_path.parents[0]
+    subset_file_location = Path(f'{base_dir}/OTL_AllCasesTestClass.db')
+
+    collector = OSLOCollector(subset_file_location)
+    collector.collect_all()
+
+    legacy_object_uri = 'https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'
+    collector.inheritances.append(Inheritance(
+        base_name='AIMDBStatus',
+        base_uri='https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMDBStatus',
+        class_name='LegacyObject',
+        class_uri=legacy_object_uri,
+        deprecated_version=''))
+
+    class_dict = OTLModelCreator.generate_class_dict(oslo_collector=collector)
+
+    assert legacy_object_uri in class_dict[
+        'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMDBStatus']['direct_subclasses']

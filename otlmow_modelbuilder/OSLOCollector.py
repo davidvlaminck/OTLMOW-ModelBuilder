@@ -145,6 +145,8 @@ class OSLOCollector:
     def find_subclasses_uri_by_class_uri(self, oslo_class_uri: str, sort_by_uri: bool = True) -> list[str]:
         if not oslo_class_uri:
             return []
+        if self.inheritances is not None:
+            return self._python_find_subclasses(oslo_class_uri, sort_by_uri)
         rust_result = self._try_rust_find_subclasses(oslo_class_uri, sort_by_uri)
         if rust_result is not None:
             return rust_result

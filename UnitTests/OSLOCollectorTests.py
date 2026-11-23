@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 
 from otlmow_modelbuilder.OSLOCollector import OSLOCollector
+from otlmow_modelbuilder.SQLDataClasses.Inheritance import Inheritance
 
 current_file_path = Path(__file__)
 base_dir = current_file_path.parent
@@ -82,3 +83,24 @@ def test_python_fallback_is_used_when_path_is_invalid():
     assert result == ['https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass',
                       'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AnotherTestClass',
                       'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#DeprecatedTestClass']
+
+def test_find_subclasses_includes_in_memory_additions():
+    """Inheritances added after loading are included, even when the rust backend is available."""
+    collector = OSLOCollector(test_classes_subset_location)
+    collector.collect_all()
+
+    legacy_object_uri = 'https://lgc.data.wegenenverkeer.be/ns/installatie#LegacyObject'
+    aim_object_uri = 'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject'
+    collector.inheritances.append(Inheritance(
+        base_name='AIMObject',
+        base_uri=aim_object_uri,
+        class_name='LegacyObject',
+        class_uri=legacy_object_uri,
+        deprecated_version=''))
+
+    assert collector.find_subclasses_uri_by_class_uri(aim_object_uri) == [
+        legacy_object_uri,
+        'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass',
+        'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AnotherTestClass',
+        'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#DeprecatedTestClass',
+    ]
