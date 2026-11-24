@@ -200,6 +200,91 @@ def get_fields_to_import_from_list_of_attributes(oslo_collector, attributen, val
     return sorted_list
 
 
+_MAX_IMPORT_LINE_LENGTH = 88
+
+
+def _import_name_sort_key(name: str) -> tuple[int, str]:
+    """Sort imported names the way ruff's isort does with order-by-type: constants, classes, then the rest."""
+    if name.isupper():
+        group = 0
+    elif name[:1].isupper():
+        group = 1
+    else:
+        group = 2
+    return group, name.lower()
+
+
+def _parse_import_line(line: str) -> tuple[str, list[str]]:
+    """Split a generated import line into its module path and the imported names."""
+    if line.startswith('from '):
+        module, _, names = line[len('from '):].partition(' import ')
+        return module, [name.strip() for name in names.split(',') if name.strip()]
+    if line.startswith('import '):
+        return line[len('import '):], []
+    return line, []
+
+
+def _render_import(module: str, names: list[str], is_from: bool) -> list[str]:
+    """Render a single import as one line, or as a parenthesised block when it exceeds the line length."""
+    sorted_names = sorted(set(names), key=_import_name_sort_key)
+    if not is_from:
+        return [f'import {module}']
+    single_line = f'from {module} import {", ".join(sorted_names)}'
+    if len(single_line) <= _MAX_IMPORT_LINE_LENGTH:
+        return [single_line]
+    rendered = [f'from {module} import (']
+    rendered.extend(f'    {name},' for name in sorted_names)
+    rendered.append(')')
+    return rendered
+
+
+def organize_import_block(lines: list[str]) -> list[str]:
+    """Group, merge and sort the leading import block so it matches ruff's isort rules (I001).
+
+    Standard library imports are placed first, followed by a blank line and the relative
+    (local folder) imports. Imports of the same module are merged, the names inside each
+    import are sorted, and lines that get too long are wrapped in parentheses.
+    """
+    end = len(lines)
+    for index, line in enumerate(lines):
+        if line == '':
+            end = index
+            break
+
+    comments: list[str] = []
+    stdlib_modules: dict[str, list[str]] = {}
+    local_modules: dict[str, list[str]] = {}
+    plain_imports: list[str] = []
+    for line in lines[:end]:
+        if line.startswith('#'):
+            comments.append(line)
+            continue
+        module, names = _parse_import_line(line)
+        is_from = line.startswith('from ')
+        if not is_from:
+            plain_imports.append(_render_import(module, names, is_from=False)[0])
+            continue
+        target = local_modules if module.startswith('.') else stdlib_modules
+        target.setdefault(module, []).extend(names)
+
+    def render_group(modules: dict[str, list[str]]) -> list[str]:
+        rendered: list[str] = []
+        for module in sorted(modules, key=str.lower):
+            rendered.extend(_render_import(module, modules[module], is_from=True))
+        return rendered
+
+    stdlib_lines = plain_imports + render_group(stdlib_modules)
+    stdlib_lines.sort(key=lambda line: _parse_import_line(line)[0].lower())
+    local_lines = render_group(local_modules)
+
+    organized = list(comments)
+    organized.extend(stdlib_lines)
+    if stdlib_lines and local_lines:
+        organized.append('')
+    organized.extend(local_lines)
+    return organized + lines[end:]
+
+
 def write_to_file(filename, directory: str, data_to_write: list[str], relative_path='', write_mode='w'):
     if relative_path == '':
         base_dir = os.path.dirname(os.path.realpath(__file__))
@@ -212,4 +297,4 @@ def write_to_file(filename, directory: str, data_to_write: list[str], relative_p
         os.makedirs(dir_path)
 
     with open(path, write_mode, encoding='utf-8') as file:
-        file.writelines(line + "\n" for line in data_to_write)
+        file.writelines(line + "\n" for line in organize_import_block(data_to_write))

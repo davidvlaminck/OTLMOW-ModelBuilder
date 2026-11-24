@@ -17,9 +17,8 @@ fn write_file_content(directory: &str, subdirectory: &str, filename: &str, datab
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent).map_err(|e| e.to_string())?;
     }
-    let content = datablock.join("\n");
-    let content = format!("{}\n", content);
-    fs::write(&path, content).map_err(|e| e.to_string())?;
+    let content = crate::helper_functions::organize_import_block(datablock.to_vec()).join("\n");
+    fs::write(&path, format!("{content}\n")).map_err(|e| e.to_string())?;
     Ok(())
 }
 
