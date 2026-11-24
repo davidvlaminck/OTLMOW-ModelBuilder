@@ -1,7 +1,7 @@
 use pyo3::prelude::*;
 use std::collections::HashMap;
 
-use crate::helper_functions::{get_white_space_equivalent, wrap_in_quotes};
+use crate::helper_functions::{get_white_space_equivalent, wrap_in_quotes, add_noqa_ruf001_if_needed};
 use crate::ttl_reader::PyKeuzelijstWaarde;
 
 pub struct KeuzelijstWaarde {
@@ -76,14 +76,14 @@ pub fn create_block_to_write_from_enumeration(
         let whitespace = get_white_space_equivalent(&format!("        {key}: KeuzelijstWaarde("));
 
         datablock.push(format!("        {key}: KeuzelijstWaarde(invulwaarde={},", wrap_in_quotes(invulwaarde)));
-        datablock.push(format!("{}label={},", whitespace, wrap_in_quotes(label)));
+        datablock.push(add_noqa_ruf001_if_needed(&format!("{}label={},", whitespace, wrap_in_quotes(label))));
 
         if !status.is_empty() {
             datablock.push(format!("{}status={},", whitespace, wrap_in_quotes(status)));
         }
 
         if !definitie.is_empty() {
-            datablock.push(format!("{}definitie={},", whitespace, wrap_in_quotes(definitie)));
+            datablock.push(add_noqa_ruf001_if_needed(&format!("{}definitie={},", whitespace, wrap_in_quotes(definitie))));
         }
 
         datablock.push(format!("{}objectUri={}),", whitespace, wrap_in_quotes(object_uri)));

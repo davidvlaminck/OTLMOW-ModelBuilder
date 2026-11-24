@@ -180,7 +180,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             key = wrap_in_quotes(waarde.invulwaarde)
             whitespace = get_white_space_equivalent(f"        {key}: KeuzelijstWaarde(")
             datablock.append(f"        {key}: KeuzelijstWaarde(invulwaarde={wrap_in_quotes(waarde.invulwaarde)},")
-            datablock.append(f"{whitespace}label={wrap_in_quotes(waarde.label)},")
+            datablock.append(add_noqa_ruf001_if_needed(f"{whitespace}label={wrap_in_quotes(waarde.label)},"))
             if waarde.status != '':
                 datablock.append(f"{whitespace}status={wrap_in_quotes(waarde.status)},")
             if waarde.definitie != '':
