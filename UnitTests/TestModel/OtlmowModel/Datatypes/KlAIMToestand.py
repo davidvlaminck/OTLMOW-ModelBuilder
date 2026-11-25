@@ -1,3 +1,7 @@
+# coding=utf-8
+from types import MappingProxyType
+from typing import ClassVar
+
 from ..BaseClasses.KeuzelijstField import KeuzelijstField
 from ..BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde
 
@@ -11,7 +15,7 @@ class KlAIMToestand(KeuzelijstField):
     definition = 'Keuzelijst met fasen uit de levenscyclus van een object om de toestand op een moment mee vast te leggen.'
     status = 'ingebruik'
     codelist = 'https://wegenenverkeer.data.vlaanderen.be/id/conceptscheme/KlAIMToestand'
-    options = {
+    options: ClassVar[MappingProxyType[str, KeuzelijstWaarde]] = MappingProxyType({
         'geannuleerd': KeuzelijstWaarde(invulwaarde='geannuleerd',
                                         label='geannuleerd',
                                         status='ingebruik',
@@ -52,7 +56,7 @@ class KlAIMToestand(KeuzelijstField):
                                        status='ingebruik',
                                        definitie='  Het object vervult geen functie meer en is fysiek niet meer aanwezig op het terrein.',
                                        objectUri='https://wegenenverkeer.data.vlaanderen.be/id/concept/KlAIMToestand/verwijderd')
-    }
+    })
 
     @classmethod
     def create_dummy_data(cls):

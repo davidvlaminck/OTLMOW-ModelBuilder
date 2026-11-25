@@ -4,6 +4,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 import re
+from typing import ClassVar
 
 from otlmow_modelbuilder.AbstractDatatypeCreator import AbstractDatatypeCreator
 from otlmow_modelbuilder.GenericBuilderFunctions import (
@@ -366,7 +367,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
             target_uri = relation.bron_uri
         return direction, target_uri, RELATION_DIRECTION_COMMENTS[direction]
 
-    relation_interactor_uris = {
+    relation_interactor_uris: ClassVar[set[str]] = {
         'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#AbstracteAanvullendeGeometrie',
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#AIMObject',
         'https://wegenenverkeer.data.vlaanderen.be/ns/implementatieelement#Derdenobject',

@@ -1,7 +1,11 @@
 
 
+from types import MappingProxyType
+from typing import ClassVar
+
+
 class WKTValidator:
-    coord_params = {
+    coord_params: ClassVar[MappingProxyType[str, dict[str, int] | int]] = MappingProxyType({
         'POINT': {'level': 1, 'min': 1, 'len_point': 2},
         'POINT Z': {'level': 1, 'min': 1, 'len_point': 3},
         'LINESTRING': {'level': 1, 'min': 2, 'len_point': 2},
@@ -15,7 +19,7 @@ class WKTValidator:
         'MULTIPOLYGON': {'level': 3, 'min': 3, 'len_point': 2},
         'MULTIPOLYGON Z': {'level': 3, 'min': 3, 'len_point': 3},
         'GEOMETRYCOLLECTION': 0
-    }
+    })
 
     @classmethod
     def split_and_add_to_list(cls, coords_list: list, coords_str: str):

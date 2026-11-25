@@ -4,6 +4,7 @@ logger = logging.getLogger(__name__)
 import re
 import warnings
 from pathlib import Path
+from typing import ClassVar
 from urllib.request import urlretrieve
 from zipfile import ZipFile
 
@@ -34,7 +35,7 @@ class KeuzelijstWaarde:
 
 class OTLEnumerationCreator(AbstractDatatypeCreator):
     default_environment = 'prd'
-    graph_dict: dict[str, dict[str, Graph]] = {'prd': {}, 'tei': {}, 'dev': {}, 'aim': {}}
+    graph_dict: ClassVar[dict[str, dict[str, Graph]]] = {'prd': {}, 'tei': {}, 'dev': {}, 'aim': {}}
 
     def __init__(self, oslo_collector: OSLOCollector, enumeration_locations_by_environment: dict[str, list[str]],
                  env: str = default_environment, include_kl_test_keuzelijst: bool = False):
@@ -148,6 +149,7 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
 
         datablock = ['# coding=utf-8',
                      'from types import MappingProxyType',
+                     'from typing import ClassVar',
                      'from ..BaseClasses.KeuzelijstField import KeuzelijstField']
         if len(keuzelijst_waardes) > 0:
             datablock.append('from ..BaseClasses.KeuzelijstWaarde import KeuzelijstWaarde')
@@ -169,9 +171,9 @@ class OTLEnumerationCreator(AbstractDatatypeCreator):
             datablock.append(f'    deprecated_version = {wrap_in_quotes(oslo_enumeration.deprecated_version)}')
         datablock.append(f'    codelist = {wrap_in_quotes(oslo_enumeration.codelist)}')
         if len(keuzelijst_waardes) > 0:
-            datablock.append('    options: MappingProxyType[str, KeuzelijstWaarde] = MappingProxyType({')
+            datablock.append('    options: ClassVar[MappingProxyType[str, KeuzelijstWaarde]] = MappingProxyType({')
         else:
-            datablock.append('    options: MappingProxyType = MappingProxyType({')
+            datablock.append('    options: ClassVar[MappingProxyType] = MappingProxyType({')
 
         for waarde in sorted(keuzelijst_waardes, key=lambda w: w.invulwaarde):
             if oslo_enumeration.objectUri == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#KlFiguratieCode':

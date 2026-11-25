@@ -27,6 +27,7 @@ pub fn create_block_to_write_from_enumeration(
     let mut datablock = vec![
         "# coding=utf-8".to_string(),
         "from types import MappingProxyType".to_string(),
+        "from typing import ClassVar".to_string(),
         "from ..BaseClasses.KeuzelijstField import KeuzelijstField".to_string(),
     ];
 
@@ -57,9 +58,9 @@ pub fn create_block_to_write_from_enumeration(
 
     datablock.push(format!("    codelist = {}", wrap_in_quotes(datatype_codelist)));
     if !keuzelijst_waardes.is_empty() {
-        datablock.push("    options: MappingProxyType[str, KeuzelijstWaarde] = MappingProxyType({".to_string());
+        datablock.push("    options: ClassVar[MappingProxyType[str, KeuzelijstWaarde]] = MappingProxyType({".to_string());
     } else {
-        datablock.push("    options: MappingProxyType = MappingProxyType({".to_string());
+        datablock.push("    options: ClassVar[MappingProxyType] = MappingProxyType({".to_string());
     }
 
     let mut sorted_waardes: Vec<&PyKeuzelijstWaarde> = keuzelijst_waardes.iter().collect();
