@@ -179,14 +179,9 @@ pub fn create_block_from_class(
             } else {
                 relation.bron_uri.clone()
             };
-            let deprecated = if relation.deprecated_version.is_empty() {
-                "None".to_string()
-            } else {
-                format!("{:?}", relation.deprecated_version.split('-').next().unwrap_or(""))
-            };
-            // ensure None not quoted
-            let dep_str = if relation.deprecated_version.is_empty() { "None".to_string() } else { format!("'{}'", relation.deprecated_version.split('-').next().unwrap_or("")) };
-            datablock.push(format!("        ('{}', '{}', '{}', {}),", relation.object_uri, target_uri, direction, dep_str));
+            let direction_comment = if direction == "u" { "# u = unidirectional" } else if direction == "o" { "# o = direction: outgoing" } else { "# i = direction: incoming" };
+            let deprecated = if relation.deprecated_version.is_empty() { "None".to_string() } else { format!("'{}'", relation.deprecated_version.split('-').next().unwrap_or("")) };
+            datablock.push(format!("        ('{}', '{}', '{}', {}),  {}", relation.object_uri, target_uri, direction, deprecated, direction_comment));
         }
         datablock.push("    ]".to_string());
     }
@@ -282,12 +277,6 @@ fn add_relations_to_datablock(
         return;
     }
 
-    if relations.is_empty() {
-        return;
-    }
-
-    // ClassVar list
-    // handled in main? For simplicity emit helper call only
     datablock.push("        self.add_valid_relations(self._VALID_RELATIONS)".to_string());
     datablock.push(String::new());
 }

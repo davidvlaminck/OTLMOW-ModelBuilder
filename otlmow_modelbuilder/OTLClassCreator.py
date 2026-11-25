@@ -196,16 +196,21 @@ class OTLClassCreator(AbstractDatatypeCreator):
         datablock.append(f"    typeURI = '{oslo_class.objectUri}'")
         datablock.append('    """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""')
 
+        if oslo_class.deprecated_version != '':
+            oslo_class.deprecated_version = oslo_class.deprecated_version.split('-')[0]
+            datablock.append('')
+            datablock.append(f"    deprecated_version = '{oslo_class.deprecated_version}'")
+
         relations = self.oslo_collector.find_all_relations(oslo_class.objectUri, allow_duplicates=False)
         if len(relations) > 0:
             datablock.append('')
             datablock.append('    _VALID_RELATIONS: ClassVar[list[tuple[str, str, str, str | None]]] = [')
             for relation in relations:
-                direction, target_uri, _ = self._get_direction_and_target(relation, oslo_class.objectUri)
+                direction, target_uri, direction_comment = self._get_direction_and_target(relation, oslo_class.objectUri)
                 deprecated_version = relation.deprecated_version.split('-')[0] if relation.deprecated_version else None
                 if deprecated_version == '':
                     deprecated_version = None
-                datablock.append(f"        ('{relation.objectUri}', '{target_uri}', '{direction}', {repr(deprecated_version)}),")
+                datablock.append(f"        ('{relation.objectUri}', '{target_uri}', '{direction}', {repr(deprecated_version)}),  {direction_comment}")
             datablock.append('    ]')
 
         datablock.append('')

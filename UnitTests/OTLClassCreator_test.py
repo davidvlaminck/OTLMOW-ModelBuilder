@@ -265,6 +265,7 @@ expectedDataContainerBuis = ['# coding=utf-8',
                              'from ...BaseClasses.OTLObject import OTLAttribuut',
                              'from abc import abstractmethod, ABC',
                              'from ...BaseClasses.StringField import StringField',
+                             'from typing import ClassVar',
                              '',
                              '',
                              '# Generated with OTLClassCreator. To modify: extend, do not edit',
@@ -274,17 +275,16 @@ expectedDataContainerBuis = ['# coding=utf-8',
                              "    typeURI = 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis'",
                              '    """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""',
                              '',
+                             '    _VALID_RELATIONS: ClassVar[list[tuple[str, str, str, str | None]]] = [',
+                             "        ('https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult', 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis', 'o', '2.3.0'),  # o = direction: outgoing",
+                             "        ('https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult', 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Mantelbuis', 'o', '2.3.0'),  # o = direction: outgoing",
+                             '    ]',
+                             '',
                              '    @abstractmethod',
                              '    def __init__(self):',
                              '        super().__init__()',
-                             '',('        '
-                             "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult', "
-                             "target='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#ContainerBuis', "
-                             "direction='o', deprecated='2.3.0')  # o = direction: outgoing"),
-                             ('        '
-                             "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Omhult', "
-                             "target='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Mantelbuis', "
-                             "direction='o', deprecated='2.3.0')  # o = direction: outgoing"),
+                             '',
+                             '        self.add_valid_relations(self._VALID_RELATIONS)',
                              '',
                              '        self._kleur = OTLAttribuut(field=StringField,',
                              "                                   naam='kleur',",
@@ -317,6 +317,7 @@ expectedDataGebouw = ['# coding=utf-8',
                       'from ...Classes.Abstracten.Behuizing import Behuizing',
                       'from ...Datatypes.DtcDocument import DtcDocument, DtcDocumentWaarden',
                       'from ...GeometrieTypes.VlakGeometrie import VlakGeometrie',
+                      'from typing import ClassVar',
                       '',
                       '',
                       '# Generated with OTLClassCreator. To modify: extend, do not edit',
@@ -326,22 +327,17 @@ expectedDataGebouw = ['# coding=utf-8',
                       "    typeURI = 'https://wegenenverkeer.data.vlaanderen.be/ns/installatie#Gebouw'",
                       '    """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""',
                       "",
+                      '    _VALID_RELATIONS: ClassVar[list[tuple[str, str, str, str | None]]] = [',
+                      "        ('https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging', 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#LEDBord', 'u', None),  # u = unidirectional",
+                      "        ('https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging', 'https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Laag', 'u', None),  # u = unidirectional",
+                      "        ('https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging', 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestigingsbeugel', 'u', None),  # u = unidirectional",
+                      '    ]',
+                      "",
                       "    def __init__(self):",
                       '        super().__init__()',
                       "",
-                      ('        '
-                      "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging', "
-                      "target='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#LEDBord', "
-                      "direction='u')  # u = unidirectional"),
-                      ('        '
-                      "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging', "
-                      "target='https://wegenenverkeer.data.vlaanderen.be/ns/abstracten#Laag', "
-                      "direction='u')  # u = unidirectional"),
-                      ('        '
-                      "self.add_valid_relation(relation='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestiging', "
-                      "target='https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestigingsbeugel', "
-                      "direction='u')  # u = unidirectional"),
-                      '',
+                      '        self.add_valid_relations(self._VALID_RELATIONS)',
+                      "",
                       "        self._grondplan = OTLAttribuut(field=DtcDocument,",
                       "                                       naam='grondplan',",
                       "                                       label='grondplan',",
@@ -354,7 +350,7 @@ expectedDataGebouw = ['# coding=utf-8',
                       '        """Plattegrond van het gebouw met aanduidingen van de verschillende aanwezige elementen zoals kelder, kasten met kastnummers, toegangscontrole en meer."""',
                       "        return self._grondplan.get_waarde()",
                       "",
-                      "    @grondplan.setter",
+                      '    @grondplan.setter',
                       "    def grondplan(self, value):",
                       "        self._grondplan.set_waarde(value, owner=self)"]
 
@@ -382,7 +378,7 @@ def test_CheckInheritances_Agent():
     data_to_write = creator.create_blocks_to_write_from_classes(agent, class_validation_rules=class_validation_rules)
     inheritance_line = 'class Agent(RelationInteractor, OTLObject):'
 
-    assert data_to_write[10] == inheritance_line
+    assert data_to_write[11] == inheritance_line
 
 
 def test_CheckInheritances_AIMObject():
@@ -393,7 +389,7 @@ def test_CheckInheritances_AIMObject():
     data_to_write = creator.create_blocks_to_write_from_classes(aim_object, class_validation_rules=class_validation_rules)
     inheritance_line = 'class AIMObject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor, AIMVersie):'
 
-    assert data_to_write[16] == inheritance_line
+    assert data_to_write[17] == inheritance_line
 
 
 def test_CheckInheritances_RelatieObject():
@@ -416,7 +412,7 @@ def test_CheckInheritances_DerdenObject():
                                                                 class_validation_rules=class_validation_rules)
     inheritance_line = 'class Derdenobject(AIMDBStatus, AIMToestand, OTLAsset, RelationInteractor):'
 
-    assert data_to_write[13] == inheritance_line
+    assert data_to_write[14] == inheritance_line
 
 
 def test_check_inheritances_RelationInteractor():
@@ -568,18 +564,7 @@ def test_the_relations_are_added_to_the_datablock_with_their_direction():
     creator.add_relations_to_datablock(datablock, OBJECT_URI)
 
     assert datablock == [
-        (
-            f"        self.add_valid_relation(relation='{OBJECT_URI}', target='{OTHER_URI}', direction='o')"
-            '  # o = direction: outgoing'
-        ),
-        (
-            f"        self.add_valid_relation(relation='{OBJECT_URI}', target='{OTHER_URI}', direction='i')"
-            '  # i = direction: incoming'
-        ),
-        (
-            f"        self.add_valid_relation(relation='{OBJECT_URI}', target='{OTHER_URI}', direction='u')"
-            '  # u = unidirectional'
-        ),
+        '        self.add_valid_relations(self._VALID_RELATIONS)',
         '',
     ]
 
