@@ -179,7 +179,9 @@ class OTLClassCreator(AbstractDatatypeCreator):
         self._add_inheritance_imports(datablock, oslo_class, inheritances)
         self._check_readonly(attributen)
         self._add_field_imports(datablock, oslo_class, attributen, valid_uri_and_types)
-        self._add_geometry_imports(datablock, list_of_geometry_types)
+        relations = self.oslo_collector.find_all_relations(oslo_class.objectUri, allow_duplicates=False)
+        if len(relations) > 0:
+            datablock.append('from typing import ClassVar')
 
         datablock.append('')
         datablock.append('')
@@ -194,10 +196,17 @@ class OTLClassCreator(AbstractDatatypeCreator):
         datablock.append(f"    typeURI = '{oslo_class.objectUri}'")
         datablock.append('    """De URI van het object volgens https://www.w3.org/2001/XMLSchema#anyURI."""')
 
-        if oslo_class.deprecated_version != '':
-            oslo_class.deprecated_version = oslo_class.deprecated_version.split('-')[0]
+        relations = self.oslo_collector.find_all_relations(oslo_class.objectUri, allow_duplicates=False)
+        if len(relations) > 0:
             datablock.append('')
-            datablock.append(f"    deprecated_version = '{oslo_class.deprecated_version}'")
+            datablock.append('    _VALID_RELATIONS: ClassVar[list[tuple[str, str, str, str | None]]] = [')
+            for relation in relations:
+                direction, target_uri, _ = self._get_direction_and_target(relation, oslo_class.objectUri)
+                deprecated_version = relation.deprecated_version.split('-')[0] if relation.deprecated_version else None
+                if deprecated_version == '':
+                    deprecated_version = None
+                datablock.append(f"        ('{relation.objectUri}', '{target_uri}', '{direction}', {repr(deprecated_version)}),")
+            datablock.append('    ]')
 
         datablock.append('')
         if oslo_class.abstract == 1:
@@ -329,12 +338,7 @@ class OTLClassCreator(AbstractDatatypeCreator):
         if len(relations) == 0:
             return
 
-        for relation in relations:
-            deprecated = self._get_deprecated_argument(relation)
-            direction, target_uri, direction_comment = self._get_direction_and_target(relation, object_uri)
-            datablock.append(
-                f"        self.add_valid_relation(relation='{relation.objectUri}', target='{target_uri}', "
-                f"direction='{direction}'{deprecated})  {direction_comment}")
+        datablock.append('        self.add_valid_relations(self._VALID_RELATIONS)')
         datablock.append('')
 
     @staticmethod

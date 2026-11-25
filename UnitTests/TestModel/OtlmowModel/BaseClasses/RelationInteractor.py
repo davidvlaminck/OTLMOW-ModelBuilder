@@ -20,6 +20,11 @@ class RelationInteractor:
             self._valid_relations[relation][target] = {}
         self._valid_relations[relation][target][direction] = deprecated
 
+    def add_valid_relations(self, relations):
+        for relation, target, direction, deprecated in relations:
+            self.add_valid_relation(relation=relation, target=target, direction=direction,
+                                   deprecated=deprecated if deprecated is not None else '')
+
     @abstractmethod
     def __init__(self):
         super().__init__()
